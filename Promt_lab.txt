@@ -1,0 +1,835 @@
+ ▐▛███▛█   Claude Code v2.1.287
+▝▜██████▀  Opus 5.5 · Claude Pro
+ ▝▝   ▝▝   C:\Dev\Project\MSIS207_Lab1
+
+
+❯ Tạo 1 project-rules.md đề xuất cho lab này đi                                 
+
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● Write(project-rules.md)
+  ⎿  Wrote 93 lines to project-rules.md
+      1 # Project Rules – MSIS207 Lab 1
+      2 
+      3 > Persistent context for every AI coding assistant used in this r
+      4 > **Mandate: Always parse `project-rules.md` before proposing any
+         code changes.**
+      5 > If a request conflicts with these rules, stop and point out the
+         conflict instead of silently breaking a rule.
+      7 ---
+      8 
+      9 ## 1. Project Architectural Constraints
+     … +140 lines (ctrl+o to expand)
+
+● I've created project-rules.md in the repo root, built from the template on
+  slide 6 of the lab PDF plus the constraints in the PDF and in BRAINSTORM.md. I
+  haven't committed it.
+
+  What's in it:
+  1. Architectural Constraints: the 7 rules from slide 6, kept close to the
+     original wording, plus a ban on opening files via file:///.
+  2. AI Workflow Rules: one prompt per sub-task, contracts come first, AI may
+     only touch the files you name, an "audit" request only lists problems
+     without rewriting code, and settings live in one place so live-defense
+     changes are a one-line edit.
+  3. HTML Rules: standard boilerplate, the landmark structure, exactly 1 <h1>,
+     banned tags and attributes, images, tables and forms.
+  4. CSS Rules: the reset, design tokens in :root (no hard-coded hex values
+     outside it), dark mode, Flexbox vs Grid, contrast ≥ 4.5:1, :focus-visible,
+     reduced motion.
+  5. JS Rules: addEventListener, keydown with event.key, event.repeat, an
+     explicit data-state attribute for state, localStorage key theme,
+     fetch/try-catch, a countdown timer that doesn't drift, double-submit
+     protection.
+  6. Git Rules: the conventional commit format, never mixing HTML+CSS or CSS+JS
+     in one commit, and the spec commit before any code.
+  7. Definition of Done: a checklist to run after each sub-task.
+
+  The file is in English so it matches the slide template and reads well as
+  context for the AI. If you want it in Vietnamese, I can translate it.
+
+  Suggested next step: commit it together with Exercise_1/TASK_DECOMPOSITION.md
+  in one spec commit, before any code:
+  git add project-rules.md Exercise_1/TASK_DECOMPOSITION.md
+  git commit -m "docs(spec): define project rules, ex1 landmark contract & WBS"
+
+  Also check that BRAINSTORM.md and the PDF are listed in .git/info/exclude
+  before you commit. Right now git status only shows Exercise_1/, which suggests
+  they're already excluded.
+
+✻ Worked for 47s · done 4:14 PM
+
+❯ Ok cho bài exercise 1: Dựa trên project-rules.md, đề xuất cây landmark cho    
+  trang portfolio cá nhân. Chỉ outline dạng cây, CHƯA viết code. Ràng buộc: 0   
+  div, 1 h1, có skip-link.                                                      
+
+● Cây landmark đề xuất – Exercise 1 (portfolio cá nhân)
+
+  body
+  ├── a.skip-link → #main-content            [phần tử focus được đầu tiên]
+  │
+  ├── header                                  [landmark: banner]
+  │   ├── h1  "Tên – Vai trò"                 [h1 DUY NHẤT của trang]
+  │   └── p   tagline ngắn
+  │
+  ├── nav  aria-label="Primary"               [landmark: navigation]
+  │   └── ul
+  │       ├── li > a → #about
+  │       ├── li > a → #skills
+  │       ├── li > a → #projects
+  │       └── li > a → #contact
+  │
+  ├── main#main-content                       [landmark: main, đích của 
+  skip-link]
+  │   │
+  │   ├── section#about     aria-labelledby="about-title"     [region]
+  │   │   ├── h2#about-title  "About"
+  │   │   ├── img (avatar: alt, width, height)
+  │   │   └── p, blockquote
+  │   │
+  │   ├── section#skills    aria-labelledby="skills-title"    [region]
+  │   │   ├── h2#skills-title  "Skills"
+  │   │   └── table
+  │   │       ├── caption
+  │   │       ├── thead > tr > th[scope=col]
+  │   │       └── tbody > tr > th[scope=row] + td
+  │   │
+  │   ├── section#projects  aria-labelledby="projects-title"  [region]
+  │   │   ├── h2#projects-title  "Projects"
+  │   │   └── article  (× 2–3, mỗi project 1 cái)
+  │   │       ├── header > h3  tên project
+  │   │       ├── picture > source(avif, webp) + img (lazy)
+  │   │       ├── p  mô tả (strong / em / code / del)
+  │   │       └── footer > a[aria-label="View <tên> source code"]
+  │   │
+  │   └── section#contact   aria-labelledby="contact-title"   [region]
+  │       ├── h2#contact-title  "Contact"
+  │       ├── address  (email, GitHub)
+  │       └── form
+  │           ├── label[for] + input#name   (required, minlength)
+  │           ├── label[for] + input#email  (type=email, required)
+  │           ├── p#email-hint  ← aria-describedby
+  │           └── button[type=submit]
+  │
+  └── footer                                  [landmark: contentinfo]
+      └── p  &copy; 2026 Tên
+
+  Vì sao cây này thỏa các ràng buộc
+
+  ┌────────────┬────────────────────────────────────────────────────────────┐
+  │ Ràng buộc  │                      Cách cây đáp ứng                      │
+  ├────────────┼────────────────────────────────────────────────────────────┤
+  │            │ Mọi khối gom nhóm đều là thẻ có ngữ nghĩa: section cho các │
+  │ 0 <div>    │  phần có heading, article cho nội dung đứng độc lập được,  │
+  │            │ header/footer bên trong article cho phần đầu/cuối của      │
+  │            │ card, ul/li cho danh sách link.                            │
+  ├────────────┼────────────────────────────────────────────────────────────┤
+  │ Đúng 1     │ h1 chỉ nằm trong header của trang. Các section dùng h2,    │
+  │ <h1>       │ card dùng h3, không nhảy cấp.                              │
+  ├────────────┼────────────────────────────────────────────────────────────┤
+  │ Có         │ Đây là phần tử đầu tiên trong body, trỏ tới                │
+  │ skip-link  │ main#main-content.                                         │
+  ├────────────┼────────────────────────────────────────────────────────────┤
+  │ Liên kết   │ Mỗi href="#x" trong nav và skip-link đều trỏ tới một id có │
+  │ anchor     │  thật.                                                     │
+  └────────────┴────────────────────────────────────────────────────────────┘
+
+  Những chỗ bạn cần quyết định trước khi viết code
+
+  1. Dùng hay bỏ role viết tay? Slide có role="banner", role="navigation",
+     role="main". Các thẻ này đã tự mang sẵn role đó nên viết thêm là thừa. Mình
+     đề xuất bỏ đi và ghi lý do vào dev log. Lúc vấn đáp, bạn chỉ cần giải
+     thích được "implicit ARIA role" là gì.
+  2. Có nên thêm #skills và form? Cây trong TASK_DECOMPOSITION.md hiện chỉ có
+     about, projects và contact. Mình thêm #skills dạng bảng và một form để minh
+     họa slide 10–11 (table, form). Bạn có hai lựa chọn:
+     - Giữ lại: khi đó cần cập nhật contract mục 3.1/3.2, và có thể thêm
+       sub-task T-01e cho table và form.
+     - Bỏ đi: giữ đúng contract đã commit, bài sẽ gọn hơn.
+  3. header bên trong article: việc này hợp lệ và không tạo thêm landmark
+     banner, vì header chỉ được tính là banner khi nằm trực tiếp dưới body. Đây
+     là câu hỏi vấn đáp hay gặp.
+
+  Khi bạn đã chốt hai điểm trên, bước tiếp theo là prompt T-01b: viết phần
+  <body> gồm các landmark và section rỗng theo đúng cây này, không thêm nội
+  dung, không CSS, không JS.
+
+✻ Cooked for 18s · done 4:15 PM
+
+❯ Ok thực hiện viết HTML theo đúng outline đã chốt. Chỉ HTML, không CSS, không  
+  JS. Bỏ role viết tay di, không cần thêm skill và form, và header ok.          
+
+● Write(Exercise_1\index.html)
+  ⎿  Wrote 143 lines to Exercise_1\index.html
+       1 <!DOCTYPE html>
+       2 <html lang="en">
+       4   <meta charset="UTF-8">
+       5   <meta name="viewport" content="width=device-width, initial-sca
+         le=1.0">
+         ng, Information Systems student and front-end developer.">
+       7   <title>Phu Hung | Developer Portfolio</title>
+       8 </head>
+      10   <a href="#main-content" class="skip-link">Skip to main content
+         </a>
+     … +154 lines (ctrl+o to expand)
+
+● Bash(cd /c/Dev/Project/MSIS207_Lab1/Exercise_1 && sed -i
+      's/come4f00d123@gmail.com/your.email@example.com/g' index.html &&
+      f=index.html && echo "div: $(grep -c '<div…)
+  ⎿  div: 0
+     h1: 1
+     style/script/onclick/role:
+     … +7 lines (ctrl+o to expand)
+  ⎿  Updated Exercise_1\index.html (+1 -1)
+      129      <section id="contact" aria-labelledby="contact-title">
+      130        <h2 id="contact-title">Contact</h2>
+      131        <address>
+      132 -        Email: <a href="mailto:come4f00d123@gmail.com">come4f0
+          -0d123@gmail.com</a><br>                                       
+      132 +        Email: <a href="mailto:your.email@example.com">your.em
+          +ail@example.com</a><br>                                       
+      133          GitHub: <a href="https://github.com/">github.com/your-
+           username</a><br>
+      134          Ho Chi Minh City, Vietnam
+      135        </address>
+
+● I've written Exercise_1/index.html from the agreed outline: HTML only, no CSS
+  or JS, no hand-written role, and no skills table or form.
+
+  What's in the file:
+  - Head: the standard boilerplate with lang="en", charset, viewport, a
+    description meta and a title. There's no X-UA-Compatible, and no <link 
+    rel="stylesheet"> because this exercise has no CSS.
+  - Before main: the skip-link comes first, then header (the only h1, plus a
+    tagline), then nav[aria-label="Primary"] with links to #about, #projects and
+    #contact.
+  - #about:
+    - The avatar has alt, width and height.
+    - The avatar has no loading="lazy" because it sits near the top of the page
+      and is probably the image that loads first as the largest element.
+    - The text uses strong, em, del, sub, sup, the &deg; entity and a
+      blockquote.
+  - #projects:
+    - Three articles, each laid out as header > h3, then picture (avif, webp,
+      then a fallback jpg), a description using code/s/strong, and footer > 
+      a[aria-label].
+    - These images use loading="lazy".
+  - #contact and page footer: address holds the email and GitHub links, and the
+    page footer has &copy; 2026.
+
+  Automated checks I ran, all passing:
+
+  ┌───────────────────────────────────────┬─────────────────────────────────┐
+  │                 Check                 │             Result              │
+  ├───────────────────────────────────────┼─────────────────────────────────┤
+  │ Number of <div>                       │ 0                               │
+  ├───────────────────────────────────────┼─────────────────────────────────┤
+  │ Number of <h1>                        │ 1                               │
+  ├───────────────────────────────────────┼─────────────────────────────────┤
+  │ style=, <script, onclick, role=,      │ none found                      │
+  │ <strike, X-UA                         │                                 │
+  ├───────────────────────────────────────┼─────────────────────────────────┤
+  │ Each href="#..." points to an         │ all 4 OK                        │
+  │ existing id                           │                                 │
+  ├───────────────────────────────────────┼─────────────────────────────────┤
+  │ Heading order                         │ h1 → h2 → h3 ×3 → h2, no        │
+  │                                       │ skipped levels                  │
+  └───────────────────────────────────────┴─────────────────────────────────┘
+
+  Things you need to fill in yourself:
+  - The email is a placeholder (your.email@example.com), so your real email
+    doesn't end up in a public repo. Replace it if you want, and also update the
+    GitHub link and the project hrefs.
+  - The images in assets/ (avatar.webp, portfolio.*, drum-kit.*, event-hub.*)
+    don't exist yet. Either add them or remove the picture blocks. If you run
+    Lighthouse while they're missing, you'll see 404 errors in the console.
+
+  Checks you still need to do by hand:
+  - V3: in DevTools, open Accessibility with the full tree turned on and confirm
+    you see banner, navigation "Primary", main and contentinfo. There should be
+    no extra banner from the headers inside the articles.
+  - V4: open the page with Live Server, press Tab once and the skip-link should
+    get focus, then press Enter and you should jump to main.
+  - V8: run it through validator.w3.org.
+
+  When you're ready to commit (I haven't committed anything):
+  git add Exercise_1/index.html
+  git commit -m "feat(html): semantic landmark tree"
+  Following the plan in TASK_DECOMPOSITION.md, commit the spec (project-rules.md
+  and TASK_DECOMPOSITION.md) first, before this commit.
+
+✻ Brewed for 38s · done 4:17 PM
+
+❯ Audit đoạn HTML: đếm số div, kiểm tra heading hierarchy, thuộc tính           
+  alt/width/height, label của input.                                            
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Audit Exercise_1/index.html
+
+  Theo project-rules.md, ở chế độ audit mình chỉ liệt kê vấn đề, chưa sửa gì.
+
+  1. Kết quả 4 tiêu chí bạn yêu cầu
+
+  ┌───────────────────┬─────────┬──────────────────────────────────────────┐
+  │     Tiêu chí      │ Kết quả │                 Chi tiết                 │
+  ├───────────────────┼─────────┼──────────────────────────────────────────┤
+  │ Số <div>          │ ✅ Đạt  │                                          │
+  │                   │ (0)     │                                          │
+  ├───────────────────┼─────────┼──────────────────────────────────────────┤
+  │                   │         │ h1 (dòng 13) → h2 About (27) → h2        │
+  │ Thứ tự heading    │ ✅ Đạt  │ Projects (54) → h3 ×3 (58, 82, 106) → h2 │
+  │                   │         │  Contact (130). Có đúng 1 h1, không nhảy │
+  │                   │         │  cấp.                                    │
+  ├───────────────────┼─────────┼──────────────────────────────────────────┤
+  │ alt/width/height  │         │ Cả 4 <img> đều đủ 3 thuộc tính. 3 ảnh    │
+  │ của ảnh           │ ✅ Đạt  │ project có loading="lazy"; avatar cố ý   │
+  │                   │         │ không lazy.                              │
+  ├───────────────────┼─────────┼──────────────────────────────────────────┤
+  │                   │ ➖      │ Trang không có form, input, select hay   │
+  │ label của input   │ Không   │ textarea vì đã chốt bỏ form.             │
+  │                   │ áp dụng │                                          │
+  └───────────────────┴─────────┴──────────────────────────────────────────┘
+
+  2. Lỗi và rủi ro phát hiện thêm (từ nặng đến nhẹ)
+
+  1. Trích dẫn ghi sai nguồn (dòng 48–50):
+     - blockquote cite="https://developer.mozilla.org/", nhưng câu này lấy từ
+       slide của thầy (slide 1), không phải từ MDN.
+     - Câu trích cũng bị cắt mất vế cuối "AI enhances the developer."
+     - Đây là lỗi về độ chính xác của nội dung, và rất dễ bị hỏi khi vấn đáp.
+  2. Ảnh không tồn tại: chưa có thư mục assets/, nên cả 4 ảnh sẽ báo 404. Hậu
+     quả: console có lỗi, Lighthouse bị trừ điểm, và trang hiển thị icon ảnh
+     hỏng kèm alt text.
+  3. Alt text đang mô tả ảnh chưa có: ví dụ "Portrait of Phu Hung smiling in
+     front of a laptop" hay "landmark tree in Chrome DevTools". Khi thêm ảnh
+     thật, alt phải khớp với nội dung ảnh thật. Phần này nên ghi vào AI Failure
+     Audit, vì đây là AI bịa nội dung alt.
+  4. Nội dung sai về mặt kỹ thuật (dòng 44–45): "2<sup>10</sup> = 1024 bytes in
+     a kilobyte". Theo chuẩn SI, 1 kilobyte = 1000 byte; 1024 byte là kibibyte 
+     (KiB). Thầy có thể bắt lỗi chỗ này.
+  5. Link giữ chỗ:
+     - Cả 3 link "Source code" đều trỏ cùng một URL https://github.com/ dù
+       aria-label khác nhau.
+     - Link GitHub trong address hiển thị github.com/your-username nhưng href
+       vẫn là trang chủ GitHub.
+  6. aria-label lệch với chữ hiển thị (dòng 76, 100, 124):
+     - Chữ hiển thị là "Source code", còn tên trợ năng là "View … source code on
+       GitHub".
+     - Vẫn đạt WCAG 2.5.3 (Label in Name) vì tên trợ năng có chứa chữ hiển thị,
+       nhưng nó không nằm ở đầu.
+     - Người dùng điều khiển bằng giọng nói nói "click Source code" vẫn được.
+       Mức độ: nhẹ.
+  7. Dùng <s> thừa nghĩa (dòng 96): "Mouse-only version retired". <s> đã có
+     nghĩa là "không còn đúng", thêm chữ "retired" là lặp ý và đọc khá gượng.
+  8. <del> thiếu datetime (dòng 39): thuộc tính này không bắt buộc, nhưng thêm
+     vào thì <del> có ngữ nghĩa đầy đủ hơn. Mức độ: rất nhẹ.
+
+  3. Những điểm đã kiểm tra và không có vấn đề
+
+  - Không có role viết tay, style=, <script>, onclick, <strike> hay
+    X-UA-Compatible.
+  - Mọi href="#..." đều trỏ tới một id có thật.
+  - Mỗi section có aria-labelledby trỏ đúng tới h2 của nó.
+  - header và footer nằm trong article nên không tạo thêm landmark banner hay
+    contentinfo.
+  - Các entity &copy;, &mdash;, &deg;, &lt;, &gt; đều dùng đúng.
+
+  Đề xuất bước tiếp theo
+
+  - Phải sửa trước khi commit: lỗi 1–4. Riêng lỗi 2, bạn chọn: thêm ảnh thật,
+    hoặc tạm bỏ các picture/img project.
+  - Tùy bạn: lỗi 5–8.
+
+  Bạn chọn mục nào cần sửa thì mình sẽ sửa đúng các mục đó.
+
+✻ Brewed for 31s · done 4:19 PM
+
+❯ Tạm bỏ các picture/img đi, và fix các lỗi rủi ro, link github                 
+  https://github.com/Prosperum26.                                               
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(Exercise_1\index.html)
+  ⎿  Added 23 lines, removed 49 lines
+      25    <main id="main-content">
+      26      <section id="about" aria-labelledby="about-title">
+      27        <h2 id="about-title">About</h2>
+      28 -      <img                                                     
+      29 -        src="assets/avatar.webp"                               
+      30 -        alt="Portrait of Phu Hung smiling in front of a laptop"
+      31 -        width="320"                                            
+      32 -        height="320"                                           
+      33 -        decoding="async">                                      
+      28        <p>
+      29          I am an <strong>Information Systems student</strong> at
+           the University of
+      30          Information Technology, VNU-HCM. I focus on <em>semanti
+          c</em> HTML, modern
+      31          CSS layouts and vanilla JavaScript.
+      32        </p>
+      33        <p>
+      40 -        My workflow used to be <del>copying whole assignments i
+         -nto an AI chat</del>;                                          
+      34 +        My workflow used to be                                 
+      35 +        <del datetime="2026-10-02">copying whole assignments in
+         +to an AI chat</del>;                                           
+      36          now I decompose every feature into small, verifiable ta
+          sks before writing
+      37          a single line of code.
+      38        </p>
+      39        <p>
+      40          Fun fact: I can explain why H<sub>2</sub>O boils at 100
+          &deg;C and why
+      46 -        2<sup>10</sup> = 1024 bytes in a kilobyte.             
+      41 +        2<sup>10</sup> = 1024 bytes make one kibibyte (KiB), no
+         +t one kilobyte.                                                
+      42        </p>
+      48 -      <blockquote cite="https://developer.mozilla.org/">       
+      49 -        <p>HTML is the foundation. CSS enhances presentation. J
+         -avaScript enhances behavior.</p>                               
+      50 -      </blockquote>                                            
+      43 +      <figure>                                                 
+      44 +        <blockquote>                                           
+      45 +          <p>                                                  
+      46 +            HTML is the foundation. CSS enhances presentation. 
+         +JavaScript enhances                                            
+      47 +            behavior. AI enhances the developer.               
+      48 +          </p>                                                 
+      49 +        </blockquote>                                          
+      50 +        <figcaption>                                           
+      51 +          &mdash; <cite lang="vi">MSc. Trần Vĩnh Khiêm</cite>, 
+         +Lab 1: Modern Web Development &amp; AI-Assisted Engineering    
+      52 +        </figcaption>                                          
+      53 +      </figure>                                                
+      54      </section>
+      55  
+      56      <section id="projects" aria-labelledby="projects-title">
+     ...
+      60          <header>
+      61            <h3>Semantic Portfolio</h3>
+      62          </header>
+      60 -        <picture>                                              
+      61 -          <source type="image/avif" srcset="assets/portfolio.av
+         -if">                                                           
+      62 -          <source type="image/webp" srcset="assets/portfolio.we
+         -bp">                                                           
+      63 -          <img                                                 
+      64 -            src="assets/portfolio.jpg"                         
+      65 -            alt="Screenshot of the portfolio landmark tree in C
+         -hrome DevTools"                                                
+      66 -            width="640"                                        
+      67 -            height="360"                                       
+      68 -            loading="lazy"                                     
+      69 -            decoding="async">                                  
+      70 -        </picture>                                             
+      63          <p>
+      64            A zero-<code>&lt;div&gt;</code> personal site built o
+          nly with HTML5
+      65            landmarks and a keyboard-friendly skip-link.
+      66          </p>
+      67          <footer>
+      76 -          <a href="https://github.com/" aria-label="View Semant
+         -ic Portfolio source code on GitHub">Source code</a>            
+      68 +          <a href="https://github.com/Prosperum26/MSIS207_Lab1/
+         +tree/main/Exercise_1"                                          
+      69 +             aria-label="Source code of Semantic Portfolio on G
+         +itHub">Source code</a>                                         
+      70          </footer>
+      71        </article>
+      72  
+     ...
+       74          <header>
+       75            <h3>Drum Kit Engine</h3>
+       76          </header>
+       84 -        <picture>                                             
+       85 -          <source type="image/avif" srcset="assets/drum-kit.av
+          -if">                                                          
+       86 -          <source type="image/webp" srcset="assets/drum-kit.we
+          -bp">                                                          
+       87 -          <img                                                
+       88 -            src="assets/drum-kit.jpg"                         
+       89 -            alt="Grid of drum pads labelled with keyboard keys
+          - A to L"                                                      
+       90 -            width="640"                                       
+       91 -            height="360"                                      
+       92 -            loading="lazy"                                    
+       93 -            decoding="async">                                 
+       94 -        </picture>                                            
+       77          <p>
+       78            A polyphonic drum machine driven by <code>data-*</co
+           de> attributes and
+       97 -          the <code>keydown</code> event. <s>Mouse-only versio
+          -n</s> retired.                                                
+       79 +          the <code>keydown</code> event.                     
+       80 +          Input: <s>mouse only</s> keyboard and mouse.        
+       81          </p>
+       82          <footer>
+      100 -          <a href="https://github.com/" aria-label="View Drum 
+          -Kit Engine source code on GitHub">Source code</a>             
+       83 +          <a href="https://github.com/Prosperum26/MSIS207_Lab1
+          +/tree/main/HW2_DrumKit"                                       
+       84 +             aria-label="Source code of Drum Kit Engine on Git
+          +Hub">Source code</a>                                          
+       85          </footer>
+       86        </article>
+       87  
+     ...
+       89          <header>
+       90            <h3>Resilient Event Hub</h3>
+       91          </header>
+      108 -        <picture>                                             
+      109 -          <source type="image/avif" srcset="assets/event-hub.a
+          -vif">                                                         
+      110 -          <source type="image/webp" srcset="assets/event-hub.w
+          -ebp">                                                         
+      111 -          <img                                                
+      112 -            src="assets/event-hub.jpg"                        
+      113 -            alt="Event registration page showing a countdown t
+          -imer and signup form"                                         
+      114 -            width="640"                                       
+      115 -            height="360"                                      
+      116 -            loading="lazy"                                    
+      117 -            decoding="async">                                 
+      118 -        </picture>                                            
+       92          <p>
+       93            An event landing page with a drift-free countdown an
+           d a form state
+       94            machine that <strong>never</strong> renders user inp
+           ut as HTML.
+       95          </p>
+       96          <footer>
+      124 -          <a href="https://github.com/" aria-label="View Resil
+          -ient Event Hub source code on GitHub">Source code</a>         
+       97 +          <a href="https://github.com/Prosperum26/MSIS207_Lab1
+          +/tree/main/HW3_EventHub"                                      
+       98 +             aria-label="Source code of Resilient Event Hub on
+          + GitHub">Source code</a>                                      
+       99          </footer>
+      100        </article>
+      101      </section>
+     ...
+      104        <h2 id="contact-title">Contact</h2>
+      105        <address>
+      106          Email: <a href="mailto:your.email@example.com">your.em
+           ail@example.com</a><br>
+      133 -        GitHub: <a href="https://github.com/">github.com/your-
+          -username</a><br>                                              
+      107 +        GitHub: <a href="https://github.com/Prosperum26">githu
+          +b.com/Prosperum26</a><br>                                     
+      108          Ho Chi Minh City, Vietnam
+      109        </address>
+      110      </section>
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mình đã bỏ toàn bộ ảnh và sửa xong 7 lỗi còn lại từ bản audit. Chạy lại script
+  kiểm tra thì tất cả đều đạt: 0 div, 1 h1, 0 img/picture, thứ tự heading đúng,
+  4/4 anchor trỏ đúng id, không còn link giữ chỗ github.com/.
+
+  Những gì đã sửa:
+
+  #: 2, 3
+  Lỗi: Ảnh 404 và alt text bịa
+  Cách sửa: Bỏ avatar cùng 3 khối picture/img
+  ────────────────────────────────────────
+  #: 1
+  Lỗi: Trích dẫn ghi sai nguồn và bị cắt
+  Cách sửa: Bọc trong figure > blockquote + figcaption > cite, ghi đúng là MSc.
+  Trần Vĩnh Khiêm và slide Lab 1, đủ câu có vế "AI enhances the developer.". Bỏ
+   cite="…MDN". Tên tiếng Việt có lang="vi" để trình đọc màn hình phát âm đúng.
+  ────────────────────────────────────────
+  #: 4
+  Lỗi: Sai về kilobyte
+  Cách sửa: Sửa thành "1024 bytes make one kibibyte (KiB), not one kilobyte"
+  ────────────────────────────────────────
+  #: 5
+  Lỗi: Link giữ chỗ
+  Cách sửa: Các link GitHub trỏ vào https://github.com/Prosperum26 và repo
+  MSIS207_Lab1 của bạn (xem bên dưới)
+  ────────────────────────────────────────
+  #: 6
+  Lỗi: aria-label không bắt đầu bằng chữ hiển thị
+  Cách sửa: Đổi thành "Source code of … on GitHub", bắt đầu đúng bằng chữ
+  "Source
+  code"
+  ────────────────────────────────────────
+  #: 7
+  Lỗi: <s> thừa nghĩa
+  Cách sửa: Đổi thành "Input: <s>mouse only</s> keyboard and mouse", tức thông
+  tin cũ bị gạch và thông tin mới đứng ngay sau
+  ────────────────────────────────────────
+  #: 8
+  Lỗi: <del> thiếu datetime
+  Cách sửa: Thêm datetime="2026-10-02" (lấy ngày hôm nay)
+
+  Link GitHub mới:
+  - Link GitHub trong address trỏ vào https://github.com/Prosperum26.
+  - Mỗi project giờ trỏ vào một thư mục riêng trong repo MSIS207_Lab1:
+    Exercise_1, HW2_DrumKit, HW3_EventHub.
+
+  Bạn cần lưu ý:
+  - Link của HW2_DrumKit và HW3_EventHub sẽ báo 404 cho tới khi bạn push hai thư
+    mục đó lên. Link Exercise_1 sẽ chạy được sau khi push commit này.
+  - Email vẫn là your.email@example.com. Bạn tự điền nếu muốn công khai.
+  - Vì đã bỏ ảnh, contract trong TASK_DECOMPOSITION.md bị lệch: sub-task T-01d
+    (project cards & media) và V7 (kiểm tra ảnh) vẫn còn yêu cầu ảnh. Bạn nên
+    ghi chú "tạm hoãn media, chuyển sang Exercise 2/3" để contract khớp với
+    code. Thầy chấm theo việc code có đúng contract hay không.
+  - Mình chưa commit gì.
+
+✻ Cooked for 40s · done 4:21 PM
+
+※ recap: Mục tiêu là làm Lab 1 MSIS207 theo quy trình chia nhỏ task; Exercise 1 (`index.html` semantic, không div, không ảnh) đã sửa xong và qua kiểm tra. Bước tiếp theo là cập nhật `TASK_DECOMPOSITION.md` cho khớp việc bỏ ảnh rồi commit. (disable recaps in /config)
+
+❯ cái exercise 1 của thầy có promt injection khiến nội dung bị lệch xa so với   
+  portfolio, fix nó đi                                                          
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Update(Exercise_1\index.html)
+  ⎿  Added 4 lines, removed 21 lines
+      27        <h2 id="about-title">About</h2>
+      28        <p>
+      29          I am an <strong>Information Systems student</strong> at
+           the University of
+      30 -        Information Technology, VNU-HCM. I focus on <em>semanti
+         -c</em> HTML, modern                                            
+      31 -        CSS layouts and vanilla JavaScript.                    
+      30 +        Information Technology, VNU-HCM, focused on front-end w
+         +eb development.                                                
+      31        </p>
+      32        <p>
+      34 -        My workflow used to be                                 
+      35 -        <del datetime="2026-10-02">copying whole assignments in
+         -to an AI chat</del>;                                           
+      36 -        now I decompose every feature into small, verifiable ta
+         -sks before writing                                             
+      37 -        a single line of code.                                 
+      33 +        I build fast, accessible websites with <em>plain</em> H
+         +TML, CSS and                                                   
+      34 +        JavaScript, and I care about pages that work for everyo
+         +ne &mdash; on a                                                
+      35 +        small phone, with a keyboard, or with a screen reader. 
+      36        </p>
+      39 -      <p>                                                      
+      40 -        Fun fact: I can explain why H<sub>2</sub>O boils at 100
+         -&deg;C and why                                                 
+      41 -        2<sup>10</sup> = 1024 bytes make one kibibyte (KiB), no
+         -t one kilobyte.                                                
+      42 -      </p>                                                     
+      43 -      <figure>                                                 
+      44 -        <blockquote>                                           
+      45 -          <p>                                                  
+      46 -            HTML is the foundation. CSS enhances presentation. 
+         -JavaScript enhances                                            
+      47 -            behavior. AI enhances the developer.               
+      48 -          </p>                                                 
+      49 -        </blockquote>                                          
+      50 -        <figcaption>                                           
+      51 -          &mdash; <span lang="vi">MSc. Trần Vĩnh Khiêm</span>, 
+         -<cite>Lab 1: Modern Web Development &amp; AI-Assisted Engineeri
+         -ng</cite>                                                      
+      52 -        </figcaption>                                          
+      53 -      </figure>                                                
+      37      </section>
+      38  
+      39      <section id="projects" aria-labelledby="projects-title">
+
+● Update(Exercise_1\index.html)
+  ⎿  Added 2 lines, removed 2 lines
+      44            <h3>Semantic Portfolio</h3>
+      45          </header>
+      46          <p>
+      47 -          A zero-<code>&lt;div&gt;</code> personal site built o
+         -nly with HTML5                                                 
+      48 -          landmarks and a keyboard-friendly skip-link.         
+      47 +          This personal site: a lightweight portfolio written i
+         +n semantic HTML5,                                              
+      48 +          fully navigable by keyboard.                         
+      49          </p>
+      50          <footer>
+      51            <a href="https://github.com/Prosperum26/MSIS207_Lab1/
+          tree/main/Exercise_1"
+
+● Update(Exercise_1\index.html)
+  ⎿  Added 2 lines, removed 3 lines
+      58            <h3>Drum Kit Engine</h3>
+      59          </header>
+      60          <p>
+      61 -          A polyphonic drum machine driven by <code>data-*</cod
+         -e> attributes and                                              
+      62 -          the <code>keydown</code> event.                      
+      63 -          Input: <s>mouse only</s> keyboard and mouse.         
+      61 +          A browser drum machine: play sounds with your keyboar
+         +d or mouse, then                                               
+      62 +          record a beat and play it back.                      
+      63          </p>
+      64          <footer>
+      65            <a href="https://github.com/Prosperum26/MSIS207_Lab1/
+          tree/main/HW2_DrumKit"
+
+● Update(Exercise_1\index.html)
+  ⎿  Added 2 lines, removed 2 lines
+      72            <h3>Resilient Event Hub</h3>
+      73          </header>
+      74          <p>
+      75 -          An event landing page with a drift-free countdown and
+         - a form state                                                  
+      76 -          machine that <strong>never</strong> renders user inpu
+         -t as HTML.                                                     
+      75 +          An event landing page with a live countdown to the op
+         +ening day and a                                                
+      76 +          registration form.                                   
+      77          </p>
+      78          <footer>
+      79            <a href="https://github.com/Prosperum26/MSIS207_Lab1/
+          tree/main/HW3_EventHub"
+● Now I'll add a rule to project-rules.md so this doesn't happen again in later
+  exercises.
+
+● Update(project-rules.md)
+  ⎿  Added 1 line
+      27  5. **Explain, don't just dump.** Each answer includes: the code
+          , a short explanation per block, and how to verify it (DevTools
+           step / grep command).
+      28  6. **Review mode.** When asked to "audit" or "review", list iss
+          ues only — do not rewrite the code.
+      29  7. **Keep it editable.** Data and configuration (attribute name
+          s, key bindings, tokens, timestamps) live in one place, so a si
+          ngle constraint change during live defense needs a one-line edi
+          t.
+      30 +8. **Slides teach syntax, not content.** Page copy must read li
+         +ke a real portfolio written for visitors. Never paste slide dem
+         +o text (e.g. `H<sub>2</sub>O`, `2<sup>10</sup>`, slide quotes),
+         + lab requirements ("zero-div", "never uses innerHTML") or AI-wo
+         +rkflow commentary into visible content. Use a semantic element 
+         +only where the real content calls for it.                      
+      31  
+      32  ---
+      33  
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mình đã sửa xong: nội dung trang giờ đọc như một portfolio thật, viết cho
+  người xem. Các kiểm tra chạy lại đều đạt: 0 div, 1 h1, thứ tự heading đúng,
+  4/4 anchor trỏ đúng id.
+
+  Nguyên nhân thật: mình đã đọc lại cả 26 slide và không thấy câu lệnh ẩn nào
+  nhắm vào AI. Lỗi nằm ở mình: khi viết HTML, mình nhồi các ví dụ minh họa của
+  slide vào nội dung trang, chẳng hạn H<sub>2</sub>O và 2<sup>10</sup> từ slide
+  8, câu trích từ slide 1, và các yêu cầu đề như "zero-div" hay "never renders
+  user input as HTML". Vì vậy trang giống bài nộp mô tả đề hơn là portfolio. Đây
+  là một lỗi AI thật, bạn có thể ghi vào AI_FAILURE_AUDIT.md.
+
+  Những gì đã sửa trong Exercise_1/index.html:
+
+  Phần: About
+  Trước: 4 khối: đoạn del về workflow AI, đoạn "fun fact" H<sub>2</sub>O/KiB,
+  figure trích slide của thầy, cùng đoạn giới thiệu
+  Sau: 2 đoạn giới thiệu bản thân, chỉ dùng strong/em ở chỗ thật sự cần
+  ────────────────────────────────────────
+  Phần: Semantic Portfolio
+  Trước: "A zero-<div> personal site…"
+  Sau: Mô tả trang cho người xem: portfolio HTML5, dùng được hoàn toàn bằng bàn
+  phím
+  ────────────────────────────────────────
+  Phần: Drum Kit Engine
+  Trước: data-*, keydown, câu "Input" dùng <s> gượng ép
+  Sau: Chức năng cho người dùng: chơi trống bằng phím hoặc chuột, ghi beat rồi
+  phát lại
+  ────────────────────────────────────────
+  Phần: Resilient Event Hub
+  Trước: "drift-free countdown", "state machine", "never renders user input as
+  HTML"
+  Sau: Trang sự kiện có đồng hồ đếm ngược và form đăng ký
+
+  Mình giữ nguyên cấu trúc landmark, link GitHub, address và &copy;.
+
+  Trong project-rules.md: mình thêm luật thứ 8 vào mục 2. Slide chỉ dùng để học
+  cú pháp, không được chép ví dụ của slide, yêu cầu đề hay lời bình về workflow
+  AI vào nội dung hiển thị. Thẻ ngữ nghĩa chỉ dùng khi nội dung thật cần đến nó.
+
+  Bạn cần biết:
+  - Trang không còn dùng del/s/sub/sup/blockquote. TASK_DECOMPOSITION.md không
+    bắt buộc các thẻ này, nên vẫn khớp contract. Khi vấn đáp, bạn chỉ cần giải
+    thích được chúng, không cần ép vào trang.
+  - Đoạn About là nội dung chung chung mình tự viết. Bạn nên sửa lại cho đúng về
+    bản thân, như sở thích, công nghệ đang học, mục tiêu.
+
+✻ Churned for 48s · done 4:28 PM
+
+※ recap: Bạn đang làm Exercise 1 của Lab 1 MSIS207: trang portfolio HTML ngữ nghĩa, giờ đã có nội dung portfolio thật và qua mọi kiểm tra nhưng chưa commit. Bước tiếp theo: sửa đoạn About cho đúng về bạn, rồi commit spec trước, HTML sau. (disable recaps in /config)
+
+❯ Ok lưu log lại đi                                                             
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Write(PROMPT_LOG.md)
+  ⎿  Wrote 43 lines to PROMPT_LOG.md
+       1 # PROMPT_LOG – MSIS207 Lab 1
+       3 > Nhật ký prompt AI theo từng sub-task. Mỗi dòng = 1 prompt atom
+         ic.
+       4 > Công cụ: **Claude Code (CLI)**, model Claude Opus 5.5. Claude 
+       5 > nên transcript được export (`/export`) và lưu vào `docs/prompt
+         s/`.
+         `](AI_FAILURE_AUDIT.md).
+       7 
+       8 ---
+      10 ## Phiên 2026-10-02 – Setup & Exercise 1
+     … +69 lines (ctrl+o to expand)
+
+● Write(AI_FAILURE_AUDIT.md)
+  ⎿  Wrote 122 lines to AI_FAILURE_AUDIT.md
+      1 # AI_FAILURE_AUDIT – MSIS207 Lab 1
+      2 
+      3 > Các lỗi **thật** do AI (Claude Code – Claude Opus 5.5) sinh ra 
+      4 > Mỗi lỗi gồm: (1) Defect Description, (2) Diagnostic Method, (3)
+         Refactored Solution.
+      5 > Prompt tương ứng xem trong [`PROMPT_LOG.md`](PROMPT_LOG.md).
+      6 
+      8 
+      9 ## F-01 – Nội dung minh họa của slide bị nhồi vào portfolio (cont
+        ent drift)
+     … +156 lines (ctrl+o to expand)
+
+● Mình đã lưu log thành 2 file ở thư mục gốc. Cả hai đều chưa commit.
+
+  1. PROMPT_LOG.md
+  - Bảng 7 prompt của phiên hôm nay (P-01 đến P-07). Mỗi dòng ghi task ID,
+    prompt tóm tắt, AI đã làm gì, bạn đã kiểm tra hoặc sửa gì, và commit tương
+    ứng. Có ghi rõ chỗ bạn từ chối đề xuất của AI (#skills, form, role) và chỗ
+    bạn tự sửa tay (<cite>).
+  - Trạng thái 9 tiêu chí kiểm tra (V1–V9):
+    - Đạt: V1, V2, V5, V6, V9.
+    - Chưa làm, cần chụp màn hình: V3 (landmark tree), V4 (skip-link), V8 (W3C
+      validator).
+    - Hoãn: V7, vì đã bỏ ảnh.
+
+  2. AI_FAILURE_AUDIT.md
+  Có 6 lỗi thật, mỗi lỗi ghi theo đúng 3 phần slide 25 yêu cầu: mô tả lỗi, cách
+  phát hiện, cách sửa.
+  - F-01: nội dung minh họa của slide bị nhồi vào portfolio.
+  - F-02: ảnh trỏ tới file không tồn tại, alt text bịa nội dung.
+  - F-03: trích dẫn ghi sai nguồn là MDN và bị cắt mất vế cuối.
+  - F-04: sai kiến thức, 1 kilobyte không phải 1024 byte (1024 byte là 1 KiB).
+  - F-05: AI dùng sai <cite> cho tên người, và bạn là người bắt được lỗi này.
+  - F-06: link giữ chỗ và đề xuất vượt contract.
+
+  Slide yêu cầu 3 lỗi cho HW3. Lỗi từ Exercise 1 vẫn dùng làm minh chứng cho
+  phần dev log được. Khi làm HW3 bạn bổ sung thêm lỗi của HW3 vào đây.
+
+  Cần xử lý trước khi push. Ba commit này chưa push nên vẫn sửa an toàn được:
+  - e7c62e1 gộp phần spec (project-rules.md, TASK_DECOMPOSITION.md) với
+    index.html: 370 dòng trong 3 file. Đề cho 0 điểm với commit 100+ dòng trải
+    nhiều file, và commit này cũng vi phạm luật "spec commit trước code".
+  - 082430b gộp docs (project-rules.md) với feat(html) trong cùng một commit.
+
+  Mình có thể tách lại theo thứ tự docs(spec) → feat(html): semantic landmark 
+  tree → các commit fix(html) → docs(log). Việc này phải viết lại lịch sử commit
+  cục bộ, nên mình chỉ làm khi bạn đồng ý.
+
+  Claude Code không có link share công khai. Bạn gõ /export để lưu transcript
+  vào docs/prompts/; PROMPT_LOG.md đã ghi sẵn đường dẫn này.
+
+✻ Crunched for 1m 17s · done 4:33 PM
