@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio of Quang Phu Hung, Information Systems student building backend and AI-powered full-stack systems.">
+  <title>Quang Phu Hung | Backend &amp; AI Developer</title>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <script src="js/theme.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header>
+    <h1>Quang Phu Hung &mdash; Backend &amp; AI Developer</h1>
+    <p>Building high-performance full-stack systems with a focus on backend and AI.</p>
+    <button type="button" id="theme-toggle" aria-pressed="false">Dark mode</button>
+  </header>
+
+  <nav aria-label="Primary">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <p>
+        I am an <strong>Information Systems student</strong> at the University of
+        Information Technology, VNU-HCM, ranked first in the Information Systems
+        Advanced Program in my first semester of 2025&ndash;2026.
+      </p>
+      <p>
+        I design backend services with NestJS and PostgreSQL, build retrieval and
+        reinforcement learning pipelines in Python, and have led two student teams
+        from requirements to deployment.
+      </p>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+
+      <ul class="project-grid">
+        <li>
+          <article class="project-card">
+            <header>
+              <h3>GreenGrass</h3>
+            </header>
+            <p>
+              A green event platform for VNU-HCM students, with JWT refresh-token
+              rotation, role-based access and a check-in that combines rotating QR
+              codes with GPS geofencing. Encouragement Prize at WebDev Adventure 2026.
+            </p>
+            <p>NestJS &middot; React &middot; PostgreSQL &middot; Prisma &middot; Docker</p>
+            <footer>
+              <a href="https://github.com/Prosperum26/greengrass-backend"
+                 aria-label="Backend source of GreenGrass on GitHub">Backend source</a>
+              <a href="https://github.com/Prosperum26/greengrass-frontend"
+                 aria-label="Frontend source of GreenGrass on GitHub">Frontend source</a>
+            </footer>
+          </article>
+        </li>
+
+        <li>
+          <article class="project-card">
+            <header>
+              <h3>Diabetes Q&amp;A Assistant</h3>
+            </header>
+            <p>
+              A retrieval-augmented question answering system that grounds every
+              answer in crawled medical sources, running a local LLM so sensitive
+              questions never leave the machine.
+            </p>
+            <p>Python &middot; ChromaDB &middot; Ollama &middot; BeautifulSoup</p>
+            <footer>
+              <a href="https://github.com/Prosperum26/qna-systeam-diabetes-rag"
+                 aria-label="Source code of Diabetes Q&amp;A Assistant on GitHub">Source code</a>
+            </footer>
+          </article>
+        </li>
+
+        <li>
+          <article class="project-card">
+            <header>
+              <h3>RL Dynamic Pricing</h3>
+            </header>
+            <p>
+              A pricing engine that models an online store as a Markov decision
+              process and learns prices that balance short-term profit with
+              long-term customer retention.
+            </p>
+            <p>Python &middot; Reinforcement Learning &middot; Pandas &middot; NumPy</p>
+            <footer>
+              <a href="https://github.com/Prosperum26/rl-dynamic-pricing"
+                 aria-label="Source code of RL Dynamic Pricing on GitHub">Source code</a>
+            </footer>
+          </article>
+        </li>
+
+        <li>
+          <article class="project-card">
+            <header>
+              <h3>Chuck King</h3>
+            </header>
+            <p>
+              A vertical rage platformer with a hand-written physics engine and an
+              AI narrator that taunts you based on how often you fall.
+            </p>
+            <p>JavaScript &middot; HTML5 Canvas &middot; LLM API</p>
+            <footer>
+              <a href="https://github.com/Prosperum26/chuck-king"
+                 aria-label="Source code of Chuck King on GitHub">Source code</a>
+            </footer>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <address>
+        Email: <a href="mailto:24520626@gm.uit.edu.vn">24520626@gm.uit.edu.vn</a><br>
+        GitHub: <a href="https://github.com/Prosperum26">github.com/Prosperum26</a><br>
+        Ho Chi Minh City, Vietnam
+      </address>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Quang Phu Hung. All rights reserved.</p>
+  </footer>
+</body>
+</html>
