@@ -1,0 +1,898 @@
+ ▐▛███▛█   Claude Code v2.1.287
+▝▜██████▀  Opus 5.5 · Claude Pro
+ ▝▝   ▝▝   C:\Dev\Project\MSIS207_Lab1
+
+
+❯ C:\Dev\Project\MSIS207_Lab1\QuangPhuHung_FPT_QACI_CV.pdf đây là cv của mình,  
+  loại bỏ nó khỏi commit bằng local luôn đi để tránh gitignore, nó sẽ là nguồn  
+  tri thức cho bạn để thiết kế proposal ổn hơn.                                 
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Đã ẩn file khỏi git. Giờ mình đọc CV để nắm thông tin.
+
+  Read 1 file, ran 1 shell command, wrote 1 memory (ctrl+o to expand)
+
+● Xong rồi. Mình đã thêm QuangPhuHung_FPT_QACI_CV.pdf vào .git/info/exclude.
+  File này chỉ có tác dụng trên máy bạn, không bị commit, nên repo chung không
+  bị đụng tới và bạn không cần sửa .gitignore. git status giờ không còn hiện
+  file CV nữa. Chỉ có một trường hợp file vẫn vào commit: nếu bạn chạy git add 
+  -f.
+
+  Mình đã đọc hết CV và lưu vào bộ nhớ những điểm chính để dùng cho proposal:
+  - Học vấn: UIT, ngành Hệ thống Thông tin (2024–2028), đứng thứ 1 chương trình
+    Tiên tiến HTTT ở học kỳ 1 năm học 2025–2026.
+  - Kinh nghiệm dẫn dắt nhóm:
+    - Trưởng nhóm 5 người dự án GreenGrass (NestJS, React, PostgreSQL, Prisma),
+      đoạt giải Khuyến khích WebDev Adventure 2026.
+    - Trưởng nhóm dự án Frontendly (TypeScript, React, Tailwind, Node) tại
+      Fessior DevCamp 2026.
+  - Các dự án AI:
+    - Hệ thống hỏi đáp về bệnh tiểu đường dùng RAG (ChromaDB, Ollama).
+    - Hệ thống định giá động bằng học tăng cường (MDP).
+    - Game Chuck King viết bằng HTML5 Canvas, có câu chọc ghẹo người chơi do LLM
+      tạo ra.
+  - Đóng góp cộng đồng: mẫu báo cáo LaTeX cho sinh viên UIT.
+  - Định hướng: sinh viên thiên về Backend và AI, xây dựng hệ thống full-stack
+    hiệu năng cao.
+
+  Bạn muốn bắt đầu proposal từ đâu? Ví dụ: đưa nội dung CV vào index.html của
+  portfolio, hoặc viết một proposal riêng.
+
+✻ Brewed for 26s · done 9:07 PM
+
+※ recap: Mục tiêu là dùng CV của bạn để viết proposal và portfolio tốt hơn; mình đã đọc CV và loại nó khỏi commit bằng `.git/info/exclude`. Tiếp theo, bạn chọn đưa nội dung vào `index.html` hay viết proposal riêng. (disable recaps in /config)
+
+❯ oK bắt đầu với exercise số 2, tạo file task decomposition đi: Exercise 2:     
+  Enterprise Developer Portfolio Decomposition Pipeline (Mandatory Sub-Tasks)•  
+  SUB-TASK T-02A: Tokens & Reset -> git commit -m 'feat(css): tokens & reset'•  
+  SUB-TASK T-02B: 2D Grid Layout -> git commit -m 'feat(css): responsive grid'• 
+  SUB-TASK T-02C: Theme Engine -> git commit -m 'feat(js): dark mode engine'•   
+  CONTRACT-FIRST CONSTRAINTS:• • State persistence strictly via localStorage    
+  key 'theme'.• • Colors paired via CSS variables; zero hardcoded hex codes in  
+  rules.• • Performance Budget: Zero CLS, LCP < 2.0s on DevTools Fast 3G.       
+  Strict Acceptance Criteria Matrix• • Monolithic Dump Ban: Commits combining   
+  CSS & JS in 1 shot = 0 pts.• • Renders cleanly at 375px mobile (zero          
+  horizontal scroll).• • Passes WCAG 2.2 AA contrast ratios (>= 4.5:1).• • Zero 
+  console errors during dynamic theme toggling.• • Navigation must support      
+  full keyboard Tab & Enter flow.• • 3-Minute Live Defense: Instructor alters   
+  CSS token; must fix in 60s.                                                   
+
+  Searched for 1 pattern, ran 4 shell commands (ctrl+o to expand)
+
+● Mình đã tính xong tỷ lệ tương phản cho bảng màu. Giờ mình viết file
+  Exercise_2/TASK_DECOMPOSITION.md.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(Exercise_2\TASK_DECOMPOSITION.md)
+  ⎿  Wrote 272 lines to Exercise_2\TASK_DECOMPOSITION.md
+      1 # TASK_DECOMPOSITION – Exercise 2: Enterprise Developer Portfolio
+         Decomposition Pipeline
+      2 
+      4 > Tài liệu này được viết và commit **trước** khi prompt AI sinh c
+        ode (`docs(spec)` đi trước mọi commit code).
+      5 > Mọi prompt AI đều tham chiếu đúng **1** task ID dưới đây và đín
+        h kèm `project-rules.md` + phần contract liên quan.
+      7 ---
+      8 
+      9 ## 1. Mục tiêu bài
+     … +394 lines (ctrl+o to expand)
+
+● Mình đã tạo file Exercise_2/TASK_DECOMPOSITION.md, viết cùng cấu trúc với file
+  của Exercise 1. Mình chưa commit, bạn xem trước đã.
+
+  Nội dung chính:
+  - Contract chốt trước (tên file, tên biến màu, class, id, key lưu theme):
+    - 3 file: css/tokens.css, css/layout.css, js/theme.js (nạp bằng defer).
+    - Token màu chia 2 tầng. Mã hex chỉ nằm ở tầng --palette-*, còn mọi rule chỉ
+      dùng --color-*. Nhờ vậy khi giảng viên đổi token lúc bảo vệ, bạn chỉ cần
+      sửa 1 dòng.
+    - Bảng cặp màu: mình đã tính tỷ lệ tương phản cho từng cặp chữ/nền, cả light
+      lẫn dark, cặp thấp nhất là 6.12:1 (yêu cầu ≥ 4.5:1).
+    - Theme: key theme nhận 'dark'/'light'. Class .dark-theme/.light-theme gắn
+      trên <html>. Nút #theme-toggle có aria-pressed và nhãn cố định, nên bấm
+      đổi theme không làm xô lệch bố cục (CLS = 0).
+  - 5 sub-task: T-02-0 (sửa HTML) → T-02A → T-02B → T-02C → T-02D (chỉ rà lỗi).
+    Mỗi task chỉ đụng 1 loại file, kèm sẵn prompt mẫu.
+  - Ma trận nghiệm thu A1–A12: mỗi tiêu chí của đề có lệnh grep hoặc bước
+    DevTools cụ thể để kiểm tra.
+  - Kịch bản bảo vệ 60 giây: 5 tình huống giảng viên có thể sửa token, kèm cách
+    tìm lỗi và cách sửa.
+
+  Có 3 quyết định bạn nên xem lại:
+  1. Thêm commit feat(html): ex2 portfolio hooks, không có trong đề. HTML cần
+     thêm <link>, nút toggle và lớp bọc grid. Nếu không tách riêng, phần HTML
+     này phải đi chung commit với CSS hoặc JS, và commit như vậy bị 0 điểm.
+  2. Theme có thể nháy sai màu lúc tải trang. Chuyện này chỉ xảy ra khi theme đã
+     lưu khác với theme của hệ điều hành. Mình chấp nhận vì project-rules.md
+     yêu cầu script phải defer. Đổi màu không phải xô lệch bố cục, nên CLS vẫn
+     bằng 0.
+  3. Nội dung lấy theo CV: h1 là "Backend & AI Developer", có 4 thẻ dự án là
+     GreenGrass, Diabetes RAG, RL Pricing và Chuck King. CV không ghi URL repo,
+     nên trước khi làm T-02-0 bạn cần gửi link GitHub thật của từng dự án. Bạn
+     cũng cần chọn email: giữ email trường như Exercise 1, hay dùng
+     qphunguit@gmail.com trong CV?
+
+  Nếu bạn đồng ý, mình sẽ commit file này với message docs(spec): define ex2 
+  token, theme & grid contract, rồi làm tiếp T-02-0.
+
+✻ Churned for 4m 43s · done 9:17 PM
+
+❯ Không cần thêm commit include luôn trong commit tới, không tự commit, dùng    
+  gmail trường nhe, thực hiện subtask  SUB-TASK T-02 đi                         
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Repo GitHub của cả 4 dự án đều public, mình sẽ dùng link thật. Giờ mình viết
+  HTML (đi chung commit tới) và tokens.css (T-02A).
+
+● Write(Exercise_2\index.html)
+  ⎿  Wrote 137 lines to Exercise_2\index.html
+       1 <!DOCTYPE html>
+       2 <html lang="en">
+       4   <meta charset="UTF-8">
+       5   <meta name="viewport" content="width=device-width, initial-sca
+         le=1.0">
+          Information Systems student building backend and AI-powered ful
+         l-stack systems.">
+       7   <title>Quang Phu Hung | Backend &amp; AI Developer</title>
+       9   <link rel="stylesheet" href="css/layout.css">
+      10   <script src="js/theme.js" defer></script>
+     … +159 lines (ctrl+o to expand)
+
+● Write(Exercise_2\css\tokens.css)
+  ⎿  Wrote 167 lines to Exercise_2\css\tokens.css
+       1 /* =============================================================
+       2    T-02A – Tokens & Reset
+       3    Contract: Exercise_2/TASK_DECOMPOSITION.md §3.2 (tokens), §3.
+       4    Hex values live ONLY in the primitive block below. Every rule
+       5    semantic tokens (--color-*), so any color change is a one-lin
+         e edit.
+         ============= */
+       7 
+         ------------- */
+      10 :root {
+     … +169 lines (ctrl+o to expand)
+
+● text-wrap: balance chưa đạt mức Baseline Widely available (quy định ở §2.4),
+  nên mình bỏ nó. Sau đó mình cập nhật kế hoạch commit trong spec.
+
+● Bash(cd /c/Dev/Project/MSIS207_Lab1/Exercise_2 && sed -i '/text-wrap:
+      balance;/d' css/tokens.css && grep -n "text-wrap" css/tokens.css; echo ok)
+  ⎿  ok
+  ⎿  Updated Exercise_2\css\tokens.css (+0 -1)
+      127  h2,
+      128  h3 {
+      129    line-height: 1.2;
+      130 -  text-wrap: balance;                                         
+      130  }
+      131  
+      132  h1 {
+
+  Read 1 file (ctrl+o to expand)
+
+● Giờ mình sửa spec cho khớp quyết định mới: HTML đi chung commit T-02A.
+
+● Update(Exercise_2\TASK_DECOMPOSITION.md)
+  ⎿  Added 6 lines, removed 7 lines
+      238  
+      239  | # | Commit message | Nội dung | Loại file |
+      240  |---|---|---|---|
+      241 -| 1 | `docs(spec): define ex2 token, theme & grid contract` | 
+          -File này | `.md` |                                            
+      242 -| 2 | `feat(html): ex2 portfolio hooks` | `Exercise_2/index.ht
+          -ml` (T-02-0) | `.html` |                                      
+      243 -| 3 | `feat(css): tokens & reset` | `Exercise_2/css/tokens.css
+          -` (T-02A) | `.css` |                                          
+      244 -| 4 | `feat(css): responsive grid` | `Exercise_2/css/layout.cs
+          -s` (T-02B) | `.css` |                                         
+      245 -| 5 | `feat(js): dark mode engine` | `Exercise_2/js/theme.js` 
+          -(T-02C) | `.js` |                                             
+      246 -| 6+ | `fix(css): ...` / `fix(js): ...` / `fix(html): ...` | B
+          -ản sửa sau audit T-02D, mỗi commit 1 loại file | 1 loại |     
+      241 +| 1 | `feat(css): tokens & reset` | File này + `Exercise_2/ind
+          +ex.html` (T-02-0) + `Exercise_2/css/tokens.css` (T-02A) | `.md
+          +` + `.html` + `.css` |                                        
+      242 +| 2 | `feat(css): responsive grid` | `Exercise_2/css/layout.cs
+          +s` (T-02B) | `.css` |                                         
+      243 +| 3 | `feat(js): dark mode engine` | `Exercise_2/js/theme.js` 
+          +(T-02C) | `.js` |                                             
+      244 +| 4+ | `fix(css): ...` / `fix(js): ...` | Bản sửa sau audit T-
+          +02D, mỗi commit 1 loại file | 1 loại |                        
+      245  
+      248 -> Commit 2 không có trong danh sách bắt buộc của đề nhưng cần 
+          -thiết: nếu không có, HTML hook sẽ phải đi chung với CSS hoặc J
+          -S → vi phạm A1.                                               
+      246 +> Quyết định: chỉ dùng đúng 3 commit bắt buộc của đề. HTML hoo
+          +k (T-02-0) không có commit riêng mà đi chung commit T-02A.    
+      247 +> Mục này đi ngược `project-rules.md` §6 (không trộn HTML + CS
+          +S; `docs(spec)` commit trước code) và được chấp nhận có chủ đí
+          +ch. Luật của đề (A1) chỉ cấm trộn **CSS + JS**, và yêu cầu này
+          + vẫn được giữ.                                                
+      248  
+      249  ---
+      250  
+
+● Update(Exercise_2\TASK_DECOMPOSITION.md)
+  ⎿  Added 1 line, removed 1 line
+      203  
+      204  | # | Tiêu chí | Cách kiểm tra | Task |
+      205  |---|---|---|---|
+      206 -| A1 | **Monolithic Dump Ban** – không commit nào trộn CSS + J
+          -S (hay HTML + CSS) | `git log --stat --oneline` → mỗi commit c
+          -hỉ chứa 1 loại file `.html` / `.css` / `.js` | Tất cả |       
+      206 +| A1 | **Monolithic Dump Ban** – không commit nào trộn CSS + J
+          +S | `git log --stat --oneline` → không commit nào chứa cả `.cs
+          +s` và `.js` (HTML đi chung commit T-02A, xem mục 7) | Tất cả |
+      207  | A2 | 0 hex/rgb hardcode ngoài khối primitive | `grep -nE "#[
+           0-9a-fA-F]{3,8}\b\|rgb\(" Exercise_2/css/layout.css` → rỗng; t
+           rong `tokens.css` chỉ khớp ở các dòng `--palette-*` | T-02A, T
+           -02B |
+      208  | A3 | Không có token "ma" (dùng mà chưa khai báo) | So `grep 
+           -oh "var(--[a-z0-9-]*" Exercise_2/css/*.css \| sort -u` với `g
+           rep -oh "^\s*--[a-z0-9-]*" Exercise_2/css/tokens.css \| sort -
+           u` | T-02A, T-02B |
+      209  | A4 | Render sạch ở 375px, 0 cuộn ngang | DevTools → Device t
+           oolbar 375×667 → Console chạy `document.documentElement.scroll
+           Width <= innerWidth` → `true` | T-02B |
+
+● Update(Exercise_2\TASK_DECOMPOSITION.md)
+  ⎿  Added 2 lines, removed 1 line
+      172  - Cập nhật nội dung theo CV (Backend & AI-oriented):
+      173    - `h1`: "Quang Phu Hung — Backend &amp; AI Developer"
+      174    - Project cards: **GreenGrass** (NestJS, React, PostgreSQL),
+            **Diabetes QnA (RAG)** (Python, ChromaDB, Ollama), **RL Dynam
+           ic Pricing** (Python, RL), **Chuck King** (JavaScript, Canvas)
+           .
+      175 -  - Link repo phải là URL thật (cần xác nhận từng URL trước kh
+          -i commit); `aria-label` bắt đầu bằng text hiển thị.           
+      175 +  - Link repo là URL thật trên `github.com/Prosperum26` (Green
+          +Grass có 2 link: backend + frontend); `aria-label` bắt đầu bằn
+          +g text hiển thị.                                              
+      176 +  - Liên hệ dùng email trường `24520626@gm.uit.edu.vn`.       
+      177  - Không thêm ảnh ở màn hình đầu → LCP là text (`h1`), đạt ngân
+            sách dễ dàng.
+      178  
+      179  ---
+
+● Giờ mình chạy các cổng kiểm tra A2, A3 và A12.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Mình đã làm xong T-02A, gồm cả phần HTML đi chung commit. Mình chưa commit.
+  Các lệnh grep kiểm tra đều sạch: không có mã hex nào ngoài khối --palette-*,
+  không có token nào dùng mà chưa khai báo, không có var/innerHTML/onclick.
+  Trang có 1 <h1>, 0 <div>, và mọi anchor đều trỏ tới id có thật. Phần hiển thị
+  trong trình duyệt mình chưa mở để kiểm tra.
+
+  Lưu ý trước khi commit: project-rules.md §6 cấm trộn HTML + CSS trong một
+  commit và yêu cầu commit spec trước code. Đây là quyết định của bạn, nên mình
+  đã ghi rõ lý do vào mục 7 của spec. Mình cũng sửa A1 thành "chỉ cấm trộn CSS +
+  JS", đúng như luật của đề. Bạn có thể cân nhắc sửa luôn §6 trong
+  project-rules.md cho hai file không mâu thuẫn nhau.
+
+  Thay đổi trong Exercise_2/:
+  - index.html (lấy cây landmark của Exercise 1):
+    - Thêm 2 <link> CSS và <script src="js/theme.js" defer>.
+    - Thêm nút #theme-toggle (aria-pressed="false", nhãn cố định "Dark mode").
+    - Bọc các dự án thành ul.project-grid > li > article.project-card.
+    - Nội dung lấy theo CV: GreenGrass (2 link backend/frontend), Diabetes Q&A,
+      RL Dynamic Pricing, Chuck King. Đều là link repo public thật trên GitHub
+      của bạn. Phần liên hệ dùng email trường.
+  - css/tokens.css:
+    - Mã hex chỉ nằm ở 9 dòng --palette-*. Màu dùng trong rule là các token
+      --color-* (light mặc định, dark qua @media và .dark-theme).
+    - Có thêm token spacing/typography/layout, reset, :focus-visible, và hiệu
+      ứng chuyển cảnh chỉ bật khi người dùng không chọn giảm chuyển động.
+    - Mình đã bỏ text-wrap: balance vì thuộc tính này chưa đạt mức Baseline
+      Widely available.
+  - TASK_DECOMPOSITION.md: cập nhật kế hoạch commit, link repo và email.
+
+  Khi kiểm tra bằng Live Server:
+  - Console sẽ báo 404 cho css/layout.css và js/theme.js vì hai file này thuộc
+    T-02B và T-02C. Lỗi này hết khi làm xong hai task đó.
+  - Nút toggle chưa có tác dụng cho đến khi có theme.js.
+  - Bạn vẫn kiểm tra được dark mode: DevTools → Rendering → Emulate 
+    prefers-color-scheme: dark. Hoặc gõ vào Console:
+    document.documentElement.classList.add('dark-theme').
+
+  Commit gợi ý:
+  git add Exercise_2/TASK_DECOMPOSITION.md Exercise_2/index.html 
+  Exercise_2/css/tokens.css
+  git commit -m 'feat(css): tokens & reset'
+
+✻ Brewed for 1m 35s · done 9:20 PM
+
+❯ ok tiếp tục tới • SUB-TASK T-02B: 2D Grid Layou, chỉnh tên mành có dấu bằng   
+  front tiếng việt Quảng Phú Hưng, ngoài ra cải thiện khung sườn layout thêm tí 
+  các phần cho khớp với cv như skills, experience.                              
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mình sẽ làm layout.css (T-02B), thêm hai section Experience và Skills theo CV,
+  và đổi tên thành "Quảng Phú Hưng". Trước hết là HTML.
+
+● Write(Exercise_2\index.html)
+  ⎿  Added 143 lines, removed 8 lines
+       3  <head>
+       4    <meta charset="UTF-8">
+       5    <meta name="viewport" content="width=device-width, initial-sc
+          ale=1.0">
+       6 -  <meta name="description" content="Portfolio of Quang Phu Hung
+         -, Information Systems student building backend and AI-powered f
+         -ull-stack systems.">                                           
+       7 -  <title>Quang Phu Hung | Backend &amp; AI Developer</title>   
+       6 +  <meta name="description" content="Portfolio of Quảng Phú Hưng
+         +, Information Systems student building backend and AI-powered f
+         +ull-stack systems.">                                           
+       7 +  <title>Quảng Phú Hưng | Backend &amp; AI Developer</title>   
+       8    <link rel="stylesheet" href="css/tokens.css">
+       9    <link rel="stylesheet" href="css/layout.css">
+      10    <script src="js/theme.js" defer></script>
+     ...
+      13    <a href="#main-content" class="skip-link">Skip to main conten
+          t</a>
+      14  
+      15    <header>
+      16 -    <h1>Quang Phu Hung &mdash; Backend &amp; AI Developer</h1> 
+      16 +    <h1><span lang="vi">Quảng Phú Hưng</span> &mdash; Backend &
+         +amp; AI Developer</h1>                                         
+      17      <p>Building high-performance full-stack systems with a focu
+          s on backend and AI.</p>
+      18      <button type="button" id="theme-toggle" aria-pressed="false
+          ">Dark mode</button>
+      19    </header>
+     ...
+      21    <nav aria-label="Primary">
+      22      <ul>
+      23        <li><a href="#about">About</a></li>
+      24 +      <li><a href="#experience">Experience</a></li>            
+      25        <li><a href="#projects">Projects</a></li>
+      26 +      <li><a href="#skills">Skills</a></li>                    
+      27        <li><a href="#contact">Contact</a></li>
+      28      </ul>
+      29    </nav>
+     ...
+      43        </p>
+      44      </section>
+      45  
+      46 +    <section id="experience" aria-labelledby="experience-title"
+         +>                                                              
+      47 +      <h2 id="experience-title">Experience</h2>                
+      48 +                                                               
+      49 +      <ol class="timeline">                                    
+      50 +        <li>                                                   
+      51 +          <article class="experience-item">                    
+      52 +            <header>                                           
+      53 +              <h3>Team Leader, WebDev Adventure 2026</h3>      
+      54 +              <p class="experience-meta">                      
+      55 +                WebDev Studios Club &amp; UIT, VNU-HCM<br>     
+      56 +                <time datetime="2026-03">Mar 2026</time> &ndash
+         +; <time datetime="2026-05">May 2026</time>                     
+      57 +              </p>                                             
+      58 +            </header>                                          
+      59 +            <ul>                                               
+      60 +              <li>Led a five-person team building GreenGrass fr
+         +om requirement analysis to deployment.</li>                    
+      61 +              <li>Ran weekly syncs, a shared project board and 
+         +peer code reviews to keep the architecture consistent.</li>    
+      62 +              <li>Presented the platform to a panel of industry
+         + judges and won the <strong>Encouragement Prize</strong>.</li> 
+      63 +            </ul>                                              
+      64 +          </article>                                           
+      65 +        </li>                                                  
+      66 +                                                               
+      67 +        <li>                                                   
+      68 +          <article class="experience-item">                    
+      69 +            <header>                                           
+      70 +              <h3>Team Leader, Fessior DevCamp 2026</h3>       
+      71 +              <p class="experience-meta">                      
+      72 +                Fessior DevCamp<br>                            
+      73 +                <time datetime="2026-01">Jan 2026</time> &ndash
+         +; <time datetime="2026-04">Apr 2026</time>                     
+      74 +              </p>                                             
+      75 +            </header>                                          
+      76 +            <ul>                                               
+      77 +              <li>Directed the team building Frontendly, a full
+         +-stack app with React, Tailwind CSS and Node.js.</li>          
+      78 +              <li>Set shared TypeScript standards using generic
+         +s and utility types across the codebase.</li>                  
+      79 +              <li>Coordinated a reusable component library and 
+         +REST middleware for validation and error handling.</li>        
+      80 +            </ul>                                              
+      81 +          </article>                                           
+      82 +        </li>                                                  
+      83 +      </ol>                                                    
+      84 +    </section>                                                 
+      85 +                                                               
+      86      <section id="projects" aria-labelledby="projects-title">
+      87        <h2 id="projects-title">Projects</h2>
+      88  
+     ...
+       97                rotation, role-based access and a check-in that 
+           combines rotating QR
+       98                codes with GPS geofencing. Encouragement Prize a
+           t WebDev Adventure 2026.
+       99              </p>
+       58 -            <p>NestJS &middot; React &middot; PostgreSQL &midd
+          -ot; Prisma &middot; Docker</p>                                
+      100 +            <ul class="tag-list" aria-label="Tech stack">     
+      101 +              <li>NestJS</li>                                 
+      102 +              <li>React</li>                                  
+      103 +              <li>PostgreSQL</li>                             
+      104 +              <li>Prisma</li>                                 
+      105 +              <li>Docker</li>                                 
+      106 +            </ul>                                             
+      107              <footer>
+      108                <a href="https://github.com/Prosperum26/greengra
+           ss-backend"
+      109                   aria-label="Backend source of GreenGrass on G
+           itHub">Backend source</a>
+     ...
+      123                answer in crawled medical sources, running a loc
+           al LLM so sensitive
+      124                questions never leave the machine.
+      125              </p>
+       78 -            <p>Python &middot; ChromaDB &middot; Ollama &middo
+          -t; BeautifulSoup</p>                                          
+      126 +            <ul class="tag-list" aria-label="Tech stack">     
+      127 +              <li>Python</li>                                 
+      128 +              <li>ChromaDB</li>                               
+      129 +              <li>Ollama</li>                                 
+      130 +              <li>BeautifulSoup</li>                          
+      131 +            </ul>                                             
+      132              <footer>
+      133                <a href="https://github.com/Prosperum26/qna-syst
+           eam-diabetes-rag"
+      134                   aria-label="Source code of Diabetes Q&amp;A A
+           ssistant on GitHub">Source code</a>
+     ...
+      146                process and learns prices that balance short-ter
+           m profit with
+      147                long-term customer retention.
+      148              </p>
+       96 -            <p>Python &middot; Reinforcement Learning &middot;
+          - Pandas &middot; NumPy</p>                                    
+      149 +            <ul class="tag-list" aria-label="Tech stack">     
+      150 +              <li>Python</li>                                 
+      151 +              <li>Reinforcement Learning</li>                 
+      152 +              <li>Pandas</li>                                 
+      153 +              <li>NumPy</li>                                  
+      154 +            </ul>                                             
+      155              <footer>
+      156                <a href="https://github.com/Prosperum26/rl-dynam
+           ic-pricing"
+      157                   aria-label="Source code of RL Dynamic Pricing
+            on GitHub">Source code</a>
+     ...
+      168                A vertical rage platformer with a hand-written p
+           hysics engine and an
+      169                AI narrator that taunts you based on how often y
+           ou fall.
+      170              </p>
+      113 -            <p>JavaScript &middot; HTML5 Canvas &middot; LLM A
+          -PI</p>                                                        
+      171 +            <ul class="tag-list" aria-label="Tech stack">     
+      172 +              <li>JavaScript</li>                             
+      173 +              <li>HTML5 Canvas</li>                           
+      174 +              <li>LLM API</li>                                
+      175 +            </ul>                                             
+      176              <footer>
+      177                <a href="https://github.com/Prosperum26/chuck-ki
+           ng"
+      178                   aria-label="Source code of Chuck King on GitH
+           ub">Source code</a>
+     ...
+      182        </ul>
+      183      </section>
+      184  
+      185 +    <section id="skills" aria-labelledby="skills-title">      
+      186 +      <h2 id="skills-title">Skills</h2>                       
+      187 +                                                              
+      188 +      <ul class="skill-grid">                                 
+      189 +        <li class="skill-group">                              
+      190 +          <h3>AI &amp; Machine Learning</h3>                  
+      191 +          <ul class="tag-list">                               
+      192 +            <li>Reinforcement Learning (PPO, MDP)</li>        
+      193 +            <li>RAG pipelines</li>                            
+      194 +            <li>ChromaDB</li>                                 
+      195 +            <li>Ollama</li>                                   
+      196 +            <li>PyTorch</li>                                  
+      197 +            <li>TensorFlow</li>                               
+      198 +            <li>NumPy</li>                                    
+      199 +            <li>Pandas</li>                                   
+      200 +          </ul>                                               
+      201 +        </li>                                                 
+      202 +                                                              
+      203 +        <li class="skill-group">                              
+      204 +          <h3>Backend</h3>                                    
+      205 +          <ul class="tag-list">                               
+      206 +            <li>Node.js</li>                                  
+      207 +            <li>NestJS</li>                                   
+      208 +            <li>Express</li>                                  
+      209 +            <li>PostgreSQL</li>                               
+      210 +            <li>MongoDB</li>                                  
+      211 +            <li>Prisma ORM</li>                               
+      212 +            <li>REST</li>                                     
+      213 +            <li>JWT &amp; RBAC</li>                           
+      214 +          </ul>                                               
+      215 +        </li>                                                 
+      216 +                                                              
+      217 +        <li class="skill-group">                              
+      218 +          <h3>Frontend</h3>                                   
+      219 +          <ul class="tag-list">                               
+      220 +            <li>React</li>                                    
+      221 +            <li>Tailwind CSS</li>                             
+      222 +            <li>HTML5</li>                                    
+      223 +            <li>CSS3</li>                                     
+      224 +            <li>Redux</li>                                    
+      225 +            <li>Zustand</li>                                  
+      226 +          </ul>                                               
+      227 +        </li>                                                 
+      228 +                                                              
+      229 +        <li class="skill-group">                              
+      230 +          <h3>Languages</h3>                                  
+      231 +          <ul class="tag-list">                               
+      232 +            <li>Python</li>                                   
+      233 +            <li>TypeScript</li>                               
+      234 +            <li>JavaScript</li>                               
+      235 +            <li>C++</li>                                      
+      236 +            <li>SQL</li>                                      
+      237 +            <li>LaTeX</li>                                    
+      238 +          </ul>                                               
+      239 +        </li>                                                 
+      240 +                                                              
+      241 +        <li class="skill-group">                              
+      242 +          <h3>Infrastructure &amp; Tools</h3>                 
+      243 +          <ul class="tag-list">                               
+      244 +            <li>Docker</li>                                   
+      245 +            <li>GitHub Actions</li>                           
+      246 +            <li>Swagger / OpenAPI</li>                        
+      247 +            <li>Git</li>                                      
+      248 +            <li>Vercel</li>                                   
+      249 +            <li>Render</li>                                   
+      250 +            <li>Postman</li>                                  
+      251 +            <li>Figma</li>                                    
+      252 +            <li>Linux / WSL</li>                              
+      253 +          </ul>                                               
+      254 +        </li>                                                 
+      255 +      </ul>                                                   
+      256 +    </section>                                                
+      257 +                                                              
+      258      <section id="contact" aria-labelledby="contact-title">
+      259        <h2 id="contact-title">Contact</h2>
+      260        <address>
+     ...
+      266    </main>
+      267  
+      268    <footer>
+      134 -    <p>&copy; 2026 Quang Phu Hung. All rights reserved.</p>   
+      269 +    <p>&copy; 2026 <span lang="vi">Quảng Phú Hưng</span>. All 
+          +rights reserved.</p>                                          
+      270    </footer>
+      271  </body>
+      272  </html>
+
+● Write(Exercise_2\css\layout.css)
+  ⎿  Wrote 207 lines to Exercise_2\css\layout.css
+       1 /* =============================================================
+       2    T-02B – 2D Grid Layout
+       3    Contract: Exercise_2/TASK_DECOMPOSITION.md §3.4
+         :
+       6    =============================================================
+         ============= */
+       8 /* 1. Page frame -----------------------------------------------
+         --------------
+         apper divs.
+         ntent-max. */
+     … +213 lines (ctrl+o to expand)
+
+● Update(Exercise_2\css\layout.css)
+  ⎿  Removed 1 line
+      195  
+      196  @media (min-width: 48rem) {
+      197    body > main {
+      198 -    gap: var(--space-8);                                      
+      198      padding-block: var(--space-8) calc(var(--space-8) * 2);
+      199    }
+      200  
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Ảnh chụp ở 375px bị cắt bên phải — có thể do giới hạn cửa sổ của Edge headless
+  hoặc trang thực sự tràn ngang. Mình sẽ đo lại bằng chế độ giả lập thiết bị
+  qua DevTools protocol để xác nhận.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Không có tràn ngang ở 375px và 320px; ảnh bị cắt trước đó chỉ do giới hạn cửa
+  sổ Edge headless. Lỗi console duy nhất là theme.js chưa tồn tại (thuộc T-02C);
+  giờ mình kiểm tra ảnh mobile ở chế độ light.
+
+  Read 1 file (ctrl+o to expand)
+
+● Layout hiển thị ổn ở cả 3 kích thước. Giờ mình cập nhật spec cho khớp các
+  class mới, rồi chạy lại các lệnh grep kiểm tra.
+
+● Update(Exercise_2\TASK_DECOMPOSITION.md)
+  ⎿  Added 7 lines, removed 3 lines
+      156  | `header` | Flex (1D) | tên + nút toggle, `flex-wrap: wrap`, 
+           `gap` |
+      157  | `nav[aria-label="Primary"] ul` | Flex (1D) | `flex-wrap: wra
+           p`, `gap: var(--space-4)`, bỏ bullet |
+      158  | `main` | Khối căn giữa | `max-width: var(--content-max)`, `m
+           argin-inline: auto`, padding ngang `var(--space-4)` (16px) |
+      159 -| `.project-grid` | Grid (2D) | `repeat(auto-fit, minmax(min(v
+          -ar(--card-min), 100%), 1fr))`, `gap: var(--space-6)` |        
+      160 -| `.project-card` | Grid item | nền `--color-surface`, viền `-
+          --color-border`, bo `--radius` |                               
+      161 -| `.skip-link` | Ẩn ngoài viewport, hiện khi `:focus-visible` 
+          -| không dùng `display:none` (vẫn phải focus được) |           
+      159 +| `body > header/nav/main/footer` | Dải full-width | `padding-
+          +inline: max(var(--space-4), calc((100% - var(--content-max)) /
+          + 2))` → gutter 16px trên mobile, nội dung tối đa `--content-ma
+          +x`, không cần `<div>` wrapper |                               
+      160 +| `body > header` | Grid (2D) | areas `"title toggle" / "tagli
+          +ne tagline"` |                                                
+      161 +| `.timeline` > `.experience-item` | Grid | mobile 1 cột; ≥ 48
+          +rem: cột trái vai trò + thời gian, cột phải thành tích |      
+      162 +| `.project-grid`, `.skill-grid` | Grid (2D) | `repeat(auto-fi
+          +t, minmax(min(var(--card-min), 100%), 1fr))`, `gap: var(--spac
+          +e-6)` |                                                       
+      163 +| `.project-card`, `.skill-group` | Flex column | nền `--color
+          +-surface`, viền `--color-border`, bo `--radius`; footer card `
+          +margin-top: auto` để link thẳng hàng |                        
+      164 +| `.tag-list` | Flex wrap (1D) | tag công nghệ dùng chung cho 
+          +project và skills |                                           
+      165 +| `.skip-link` | Ẩn ngoài viewport, hiện khi `:focus` | dùng `
+          +transform`, không dùng `display:none` (vẫn phải focus được) | 
+      166  
+      167  - Mobile-first: style gốc cho 375px, chỉ thêm `@media (min-wid
+           th: ...)` khi cần.
+      168  - `min(var(--card-min), 100%)` đảm bảo màn rất hẹp (320px) cũn
+           g không tràn ngang.
+
+● Update(Exercise_2\TASK_DECOMPOSITION.md)
+  ⎿  Added 2 lines, removed 1 line
+      174  - Thêm 2 `<link>` + 1 `<script defer>` (mục 3.1) và nút `#them
+           e-toggle` (mục 3.3).
+      175  - Bọc các `<article>` trong `<ul class="project-grid">` → `<li
+           ><article class="project-card">`.
+      176  - Cập nhật nội dung theo CV (Backend & AI-oriented):
+      177 -  - `h1`: "Quang Phu Hung — Backend &amp; AI Developer"       
+      177 +  - `h1`: "<span lang=\"vi\">Quảng Phú Hưng</span> — Backend &
+          +amp; AI Developer". Tên có dấu được bọc `lang="vi"` để trình đ
+          +ọc màn hình phát âm đúng và trình duyệt chọn font hỗ trợ tiếng
+          + Việt. Không dùng web font: system font (Segoe UI, SF Pro, Rob
+          +oto) đã đủ dấu tiếng Việt và không tốn request trên Fast 3G.  
+      178 +  - Thêm `section#experience` (`ol.timeline > li > article.exp
+          +erience-item`, ngày tháng dùng `<time datetime>`) và `section#
+          +skills` (`ul.skill-grid > li.skill-group > h3 + ul.tag-list`).
+          + Nav thứ tự: About → Experience → Projects → Skills → Contact 
+          +(theo thứ tự CV).                                             
+      179    - Project cards: **GreenGrass** (NestJS, React, PostgreSQL),
+            **Diabetes QnA (RAG)** (Python, ChromaDB, Ollama), **RL Dynam
+           ic Pricing** (Python, RL), **Chuck King** (JavaScript, Canvas)
+           .
+      180    - Link repo là URL thật trên `github.com/Prosperum26` (Green
+           Grass có 2 link: backend + frontend); `aria-label` bắt đầu bằn
+           g text hiển thị.
+      181    - Liên hệ dùng email trường `24520626@gm.uit.edu.vn`.
+
+● Update(Exercise_2\TASK_DECOMPOSITION.md)
+  ⎿  Added 1 line, removed 1 line
+      245  | # | Commit message | Nội dung | Loại file |
+      246  |---|---|---|---|
+      247  | 1 | `feat(css): tokens & reset` | File này + `Exercise_2/ind
+           ex.html` (T-02-0) + `Exercise_2/css/tokens.css` (T-02A) | `.md
+           ` + `.html` + `.css` |
+      248 -| 2 | `feat(css): responsive grid` | `Exercise_2/css/layout.cs
+          -s` (T-02B) | `.css` |                                         
+      248 +| 2 | `feat(css): responsive grid` | `Exercise_2/css/layout.cs
+          +s` (T-02B) + `index.html` (thêm Experience, Skills, tên có dấu
+          +) + file này | `.css` + `.html` + `.md` |                     
+      249  | 3 | `feat(js): dark mode engine` | `Exercise_2/js/theme.js` 
+           (T-02C) | `.js` |
+      250  | 4+ | `fix(css): ...` / `fix(js): ...` | Bản sửa sau audit T-
+           02D, mỗi commit 1 loại file | 1 loại |
+      251  
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mình đã làm xong T-02B, kèm thêm Experience, Skills và tên có dấu. Mình chưa
+  commit.
+
+  Đã kiểm tra:
+  - Mình giả lập điện thoại qua DevTools protocol. Ở 375px và 320px đều không có
+    cuộn ngang, cả light lẫn dark. Ở 1280px thì grid tự xếp 3 cột.
+  - Các lệnh grep đều sạch: không có mã hex nào trong layout.css, không có token
+    nào dùng mà chưa khai báo. Trang có 6/6 anchor hợp lệ, 1 <h1>, 0 <div>.
+  - Console chỉ còn một lỗi 404 do js/theme.js chưa có. Lỗi này hết khi làm xong
+    T-02C. Nút toggle cũng chưa có tác dụng cho tới lúc đó.
+
+  Những gì đã thay đổi:
+  - Tên có dấu: "Quảng Phú Hưng" ở <h1>, <title> và footer. Tên được bọc trong
+    <span lang="vi"> để trình đọc màn hình phát âm đúng tiếng Việt.
+    - Mình không thêm web font vì font hệ thống (Segoe UI trên Windows, SF Pro
+      trên Mac, Roboto trên Android) đã hiển thị đủ dấu, như trong ảnh chụp.
+    - Một web font tự host sẽ làm chậm LCP trên Fast 3G và có thể gây xô lệch bố
+      cục khi font đổi, nên dễ vượt hai giới hạn hiệu năng của đề.
+  - Experience: dạng timeline. Trên điện thoại là 1 cột; từ 48rem trở lên, vai
+    trò và thời gian nằm cột trái, thành tích nằm cột phải. Ngày tháng dùng thẻ
+    <time datetime>.
+  - Skills: 5 nhóm lấy từ CV, hiển thị dạng thẻ trong grid giống phần Projects.
+    Công nghệ của từng dự án giờ cũng hiển thị dạng tag.
+  - Nav: About → Experience → Projects → Skills → Contact, theo thứ tự trong CV.
+  - layout.css:
+    - Header, nav, main và footer kéo dài hết bề ngang trang, nội dung được căn
+      giữa bằng padding-inline: max(...) nên không cần thêm <div> bọc ngoài.
+    - Grid dùng auto-fit + minmax(min(280px, 100%), 1fr).
+    - Skip-link ẩn bằng transform để vẫn nhận focus được.
+    - Link ở chân mỗi thẻ dự án luôn thẳng hàng với nhau.
+  - TASK_DECOMPOSITION.md: cập nhật bảng layout (mục 3.4), nội dung (mục 3.5) và
+    kế hoạch commit.
+
+  Trước khi commit:
+  - Hiện layout.css và index.html đã được stage, nhưng TASK_DECOMPOSITION.md thì
+    chưa.
+  - Ở bản desktop, phần Projects có 4 thẻ nên hàng thứ hai chỉ có 1 thẻ nằm lẻ.
+    Nếu bạn muốn xếp 2×2 thì mình chỉnh lại.
+
+  Lệnh commit:
+  git add Exercise_2/TASK_DECOMPOSITION.md Exercise_2/index.html 
+  Exercise_2/css/layout.css
+  git commit -m 'feat(css): responsive grid'
+
+✻ Brewed for 3m 2s · done 9:26 PM
+
+❯ SUB-TASK T-02C: Theme Engine ok thực hiện subtask này, vẫn áp dụng đầy đủ các 
+  ràng buộc của thầy.                                                           
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mọi thay đổi trước đó đã được commit. Giờ mình viết theme.js theo state
+  machine trong mục 3.3 của spec.
+
+● Write(Exercise_2\js\theme.js)
+  ⎿  Wrote 70 lines to Exercise_2\js\theme.js
+       1 /* =============================================================
+       2    T-02C – Theme Engine
+       3    Contract: Exercise_2/TASK_DECOMPOSITION.md §3.3
+         othing else)
+         e OS via
+       6      @media in tokens.css (no class), tracked here only for aria
+       7    =============================================================
+         ============= */
+       9 const STORAGE_KEY = 'theme';
+          };
+     … +75 lines (ctrl+o to expand)
+
+● Giờ mình kiểm tra qua HTTP với điều kiện mạng Fast 3G: lưu theme, bấm toggle
+  liên tục, phím Enter/Space, Tab, CLS, LCP và độ tương phản.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Shell không xử lý được heredoc này, nên mình ghi script bằng công cụ Write.
+
+  Made 1 scratchpad edit +61, ran 1 shell command (ctrl+o to expand)
+
+● Hầu hết kiểm tra đã đạt, còn 3 vấn đề cần xử lý: phím Enter chưa đổi theme (sẽ
+  chạy lại kiểm tra), console báo lỗi 404 favicon (sẽ thêm icon placeholder),
+  và LCP đạt chuẩn nhưng phần tử thực tế là <p> chứ không phải h1 như spec (sẽ
+  cập nhật lại spec).
+
+● Update(Exercise_2\index.html)
+  ⎿  Added 1 line
+       5    <meta name="viewport" content="width=device-width, initial-sc
+          ale=1.0">
+       6    <meta name="description" content="Portfolio of Quảng Phú Hưng
+          , Information Systems student building backend and AI-powered f
+          ull-stack systems.">
+       7    <title>Quảng Phú Hưng | Backend &amp; AI Developer</title>
+       8 +  <link rel="icon" href="data:,">                              
+       9    <link rel="stylesheet" href="css/tokens.css">
+      10    <link rel="stylesheet" href="css/layout.css">
+      11    <script src="js/theme.js" defer></script>
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Lệnh sed đã chèn ký tự xuống dòng thật vào script. Mình sửa trực tiếp file
+  thay vì dùng sed.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Lần chạy này đạt toàn bộ, console không còn lỗi hay cảnh báo nào. Mình sửa
+  spec phần LCP rồi chạy lại các lệnh grep.
+
+● Bash(sed -i 's/→ LCP marker < 2000 ms (LCP element = `h1`)/→ LCP marker < 2000
+      ms (LCP element là text `h1`\/`p`, không có ảnh; favicon tắt bằng `<link
+      rel="icon" hr…)  ⎿  222:| A11 | LCP < 2.0s trên Fast 3G | Network: *Fast 3G*, Disable cach
+     e → Performance record reload → LCP marker < 2000 ms (LCP element là t
+     ext `h1`/`p`, không có ảnh; favicon tắt bằng `<link rel="icon" href="d
+     … +9 lines (ctrl+o to expand)
+  ⎿  Updated Exercise_2\TASK_DECOMPOSITION.md (+1 -1)
+      219  | A8 | 0 lỗi console khi toggle liên tục | Console mở, nhấn to
+           ggle 20 lần (cả bằng chuột và `Enter`/`Space`) → không có erro
+           r/warning; thử thêm ở cửa sổ ẩn danh | T-02C |
+      220  | A9 | Bàn phím: Tab & Enter đầy đủ | Chỉ dùng phím: `Tab` → s
+           kip-link hiện → `Enter` tới main; `Tab` qua toggle (`Enter` đổ
+           i theme) → nav links (`Enter` cuộn đúng section) → link projec
+           t; luôn thấy focus ring | T-02B, T-02C |
+      221  | A10 | CLS = 0 | DevTools Performance → record reload + toggl
+           e 3 lần → *Layout Shifts* trống; Lighthouse CLS = 0 | T-02B, T
+           -02C |
+      222 -| A11 | LCP < 2.0s trên Fast 3G | Network: *Fast 3G*, Disable 
+          -cache → Performance record reload → LCP marker < 2000 ms (LCP 
+          -element = `h1`) | Tất cả |                                    
+      222 +| A11 | LCP < 2.0s trên Fast 3G | Network: *Fast 3G*, Disable 
+          +cache → Performance record reload → LCP marker < 2000 ms (LCP 
+          +element là text `h1`/`p`, không có ảnh; favicon tắt bằng `<lin
+          +k rel="icon" href="data:,">` để không có request 404) | Tất cả
+          + |                                                            
+      223  | A12 | Grep sạch theo DoD | `grep -rnE "var \|innerHTML\|oncl
+           ick=\|keyCode\|keypress\|style=\"\|https://cdn" Exercise_2/` →
+            rỗng | T-02D |
+      224  
+      225  ---
+
+● Mình đã làm xong T-02C và chưa commit. Mình kiểm tra trên Edge headless (giả
+  lập màn 375px, phục vụ qua HTTP), tất cả cổng kiểm tra đều đạt và console
+  không có lỗi hay cảnh báo nào.
+
+  js/theme.js làm gì:
+  - Khi tải trang: đọc localStorage.theme. Nếu có giá trị hợp lệ ('dark' hoặc
+    'light') thì gắn .dark-theme hoặc .light-theme lên <html>. Nếu chưa có,
+    script không gắn class nào và để @media theo hệ điều hành; matchMedia chỉ
+    dùng để đặt aria-pressed cho đúng.
+  - Khi bấm nút: đổi theme, gắn class, cập nhật aria-pressed và lưu key theme.
+    - Đây là <button> gốc nên Enter và Space đều hoạt động mà không cần bắt sự
+      kiện phím.
+    - Mọi truy cập localStorage đều nằm trong try/catch, nên ở chế độ ẩn danh
+      hay khi trình duyệt chặn lưu trữ cũng không có lỗi console.
+  - Thêm: khi người dùng chưa tự chọn theme, trang đổi theo ngay lúc hệ điều
+    hành chuyển sáng/tối.
+  - Theo quy định: chỉ dùng const/let và addEventListener, không dùng innerHTML,
+    keyCode hay keypress. localStorage chỉ dùng đúng key theme.
+
+  Kết quả kiểm tra theo ma trận:
+
+  ┌───────────────┬─────────────────────────────────────────────────────────┐
+  │   Tiêu chí    │                         Kết quả                         │
+  ├───────────────┼─────────────────────────────────────────────────────────┤
+  │ Lưu theme     │ Enter, Space và click đều đổi theme và ghi theme =      │
+  │ (A6)          │ dark/light. Tải lại trang vẫn giữ theme                 │
+  ├───────────────┼─────────────────────────────────────────────────────────┤
+  │ Theo hệ điều  │ Không có key → theo OS. Key sai (ví dụ banana) → bỏ     │
+  │ hành (A7)     │ qua. Đã lưu light trong khi OS tối → vẫn sáng           │
+  ├───────────────┼─────────────────────────────────────────────────────────┤
+  │ 0 lỗi console │ Bấm nhanh 20 lần liên tục: không có lỗi hay cảnh báo    │
+  │  (A8)         │                                                         │
+  ├───────────────┼─────────────────────────────────────────────────────────┤
+  │               │ Thứ tự Tab: skip-link → toggle → 5 link nav → link dự   │
+  │ Bàn phím (A9) │ án. Enter trên skip-link và trên nav đều nhảy đúng      │
+  │               │ section                                                 │
+  ├───────────────┼─────────────────────────────────────────────────────────┤
+  │ Tương phản    │ Đo 15 phần tử ở cả 2 theme: thấp nhất 6.12:1 (light) và │
+  │ (A5)          │  8.11:1 (dark)                                          │
+  ├───────────────┼─────────────────────────────────────────────────────────┤
+  │ CLS (A10)     │ 0, cả khi tải trang lẫn khi bấm toggle                  │
+  ├───────────────┼─────────────────────────────────────────────────────────┤
+  │ LCP Fast 3G   │ Khoảng 1.25–1.30s (< 2.0s), tắt cache                   │
+  │ (A11)         │                                                         │
+  └───────────────┴─────────────────────────────────────────────────────────┘
+
+  Bạn nên biết:
+  - Mình thêm <link rel="icon" href="data:,"> vào index.html. Không có dòng này,
+    trình duyệt tự gọi /favicon.ico, bị 404 và hiện lỗi đỏ trong console, vi
+    phạm yêu cầu "0 lỗi console".
+  - Commit này gồm JS, HTML và spec nhưng không có file CSS nào, nên vẫn tuân
+    thủ luật cấm trộn CSS + JS.
+
+  git add Exercise_2/js/theme.js Exercise_2/index.html 
+  Exercise_2/TASK_DECOMPOSITION.md
+  git commit -m 'feat(js): dark mode engine'
+
+  Trước buổi bảo vệ, bạn nên tự chạy Lighthouse trong DevTools một lần ở cả 2
+  theme để chụp ảnh làm bằng chứng cho mục 9 của spec.
+
+✻ Sautéed for 7m 8s · done 9:35 PM
