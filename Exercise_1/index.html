@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Personal portfolio of Phu Hung, Information Systems student and front-end developer.">
+  <title>Phu Hung | Developer Portfolio</title>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header>
+    <h1>Phu Hung &mdash; Front-End Developer</h1>
+    <p>Building accessible, standards-first web interfaces.</p>
+  </header>
+
+  <nav aria-label="Primary">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <img
+        src="assets/avatar.webp"
+        alt="Portrait of Phu Hung smiling in front of a laptop"
+        width="320"
+        height="320"
+        decoding="async">
+      <p>
+        I am an <strong>Information Systems student</strong> at the University of
+        Information Technology, VNU-HCM. I focus on <em>semantic</em> HTML, modern
+        CSS layouts and vanilla JavaScript.
+      </p>
+      <p>
+        My workflow used to be <del>copying whole assignments into an AI chat</del>;
+        now I decompose every feature into small, verifiable tasks before writing
+        a single line of code.
+      </p>
+      <p>
+        Fun fact: I can explain why H<sub>2</sub>O boils at 100&deg;C and why
+        2<sup>10</sup> = 1024 bytes in a kilobyte.
+      </p>
+      <blockquote cite="https://developer.mozilla.org/">
+        <p>HTML is the foundation. CSS enhances presentation. JavaScript enhances behavior.</p>
+      </blockquote>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+
+      <article>
+        <header>
+          <h3>Semantic Portfolio</h3>
+        </header>
+        <picture>
+          <source type="image/avif" srcset="assets/portfolio.avif">
+          <source type="image/webp" srcset="assets/portfolio.webp">
+          <img
+            src="assets/portfolio.jpg"
+            alt="Screenshot of the portfolio landmark tree in Chrome DevTools"
+            width="640"
+            height="360"
+            loading="lazy"
+            decoding="async">
+        </picture>
+        <p>
+          A zero-<code>&lt;div&gt;</code> personal site built only with HTML5
+          landmarks and a keyboard-friendly skip-link.
+        </p>
+        <footer>
+          <a href="https://github.com/" aria-label="View Semantic Portfolio source code on GitHub">Source code</a>
+        </footer>
+      </article>
+
+      <article>
+        <header>
+          <h3>Drum Kit Engine</h3>
+        </header>
+        <picture>
+          <source type="image/avif" srcset="assets/drum-kit.avif">
+          <source type="image/webp" srcset="assets/drum-kit.webp">
+          <img
+            src="assets/drum-kit.jpg"
+            alt="Grid of drum pads labelled with keyboard keys A to L"
+            width="640"
+            height="360"
+            loading="lazy"
+            decoding="async">
+        </picture>
+        <p>
+          A polyphonic drum machine driven by <code>data-*</code> attributes and
+          the <code>keydown</code> event. <s>Mouse-only version</s> retired.
+        </p>
+        <footer>
+          <a href="https://github.com/" aria-label="View Drum Kit Engine source code on GitHub">Source code</a>
+        </footer>
+      </article>
+
+      <article>
+        <header>
+          <h3>Resilient Event Hub</h3>
+        </header>
+        <picture>
+          <source type="image/avif" srcset="assets/event-hub.avif">
+          <source type="image/webp" srcset="assets/event-hub.webp">
+          <img
+            src="assets/event-hub.jpg"
+            alt="Event registration page showing a countdown timer and signup form"
+            width="640"
+            height="360"
+            loading="lazy"
+            decoding="async">
+        </picture>
+        <p>
+          An event landing page with a drift-free countdown and a form state
+          machine that <strong>never</strong> renders user input as HTML.
+        </p>
+        <footer>
+          <a href="https://github.com/" aria-label="View Resilient Event Hub source code on GitHub">Source code</a>
+        </footer>
+      </article>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <address>
+        Email: <a href="mailto:your.email@example.com">your.email@example.com</a><br>
+        GitHub: <a href="https://github.com/">github.com/your-username</a><br>
+        Ho Chi Minh City, Vietnam
+      </address>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Phu Hung. All rights reserved.</p>
+  </footer>
+</body>
+</html>
