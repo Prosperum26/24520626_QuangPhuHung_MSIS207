@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio of Quảng Phú Hưng, Information Systems student building backend and AI-powered full-stack systems.">
+  <title>Quảng Phú Hưng | Backend &amp; AI Developer</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components/hero.css">
+  <link rel="stylesheet" href="css/components/theme-switcher.css">
+  <link rel="stylesheet" href="css/components/skills-matrix.css">
+  <link rel="stylesheet" href="css/components/project-card.css">
+  <link rel="stylesheet" href="css/components/contact-form.css">
+  <script src="js/theme.js" defer></script>
+  <script src="js/project-filter.js" defer></script>
+  <script src="js/contact-form.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header>
+    <h1><span lang="vi">Quảng Phú Hưng</span> &mdash; Backend &amp; AI Developer</h1>
+    <p>Building high-performance full-stack systems with a focus on backend and AI.</p>
+    <button type="button" id="theme-toggle" aria-pressed="false">Dark mode</button>
+  </header>
+
+  <nav aria-label="Primary">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <p>
+        I am an <strong>Information Systems student</strong> at the University of
+        Information Technology, VNU-HCM, ranked first in the Information Systems
+        Advanced Program in my first semester of 2025&ndash;2026.
+      </p>
+      <p>
+        I design backend services with NestJS and PostgreSQL, build retrieval and
+        reinforcement learning pipelines in Python, and have led two student teams
+        from requirements to deployment.
+      </p>
+    </section>
+
+    <section id="experience" aria-labelledby="experience-title">
+      <h2 id="experience-title">Experience</h2>
+
+      <ol class="timeline">
+        <li>
+          <article class="experience-item">
+            <header>
+              <h3>Team Leader, WebDev Adventure 2026</h3>
+              <p class="experience-meta">
+                WebDev Studios Club &amp; UIT, VNU-HCM<br>
+                <time datetime="2026-03">Mar 2026</time> &ndash; <time datetime="2026-05">May 2026</time>
+              </p>
+            </header>
+            <ul>
+              <li>Led a five-person team building GreenGrass from requirement analysis to deployment.</li>
+              <li>Ran weekly syncs, a shared project board and peer code reviews to keep the architecture consistent.</li>
+              <li>Presented the platform to a panel of industry judges and won the <strong>Encouragement Prize</strong>.</li>
+            </ul>
+          </article>
+        </li>
+
+        <li>
+          <article class="experience-item">
+            <header>
+              <h3>Team Leader, Fessior DevCamp 2026</h3>
+              <p class="experience-meta">
+                Fessior DevCamp<br>
+                <time datetime="2026-01">Jan 2026</time> &ndash; <time datetime="2026-04">Apr 2026</time>
+              </p>
+            </header>
+            <ul>
+              <li>Directed the team building Frontendly, a full-stack app with React, Tailwind CSS and Node.js.</li>
+              <li>Set shared TypeScript standards using generics and utility types across the codebase.</li>
+              <li>Coordinated a reusable component library and REST middleware for validation and error handling.</li>
+            </ul>
+          </article>
+        </li>
+      </ol>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+
+      <ul class="project-grid">
+        <li>
+          <article class="project-card">
+            <header>
+              <h3>GreenGrass</h3>
+            </header>
+            <p>
+              A green event platform for VNU-HCM students, with JWT refresh-token
+              rotation, role-based access and a check-in that combines rotating QR
+              codes with GPS geofencing. Encouragement Prize at WebDev Adventure 2026.
+            </p>
+            <ul class="tag-list" aria-label="Tech stack">
+              <li>NestJS</li>
+              <li>React</li>
+              <li>PostgreSQL</li>
+              <li>Prisma</li>
+              <li>Docker</li>
+            </ul>
+            <footer>
+              <a href="https://github.com/Prosperum26/greengrass-backend"
+                 aria-label="Backend source of GreenGrass on GitHub">Backend source</a>
+              <a href="https://github.com/Prosperum26/greengrass-frontend"
+                 aria-label="Frontend source of GreenGrass on GitHub">Frontend source</a>
+            </footer>
+          </article>
+        </li>
+
+        <li>
+          <article class="project-card">
+            <header>
+              <h3>Diabetes Q&amp;A Assistant</h3>
+            </header>
+            <p>
+              A retrieval-augmented question answering system that grounds every
+              answer in crawled medical sources, running a local LLM so sensitive
+              questions never leave the machine.
+            </p>
+            <ul class="tag-list" aria-label="Tech stack">
+              <li>Python</li>
+              <li>ChromaDB</li>
+              <li>Ollama</li>
+              <li>BeautifulSoup</li>
+            </ul>
+            <footer>
+              <a href="https://github.com/Prosperum26/qna-systeam-diabetes-rag"
+                 aria-label="Source code of Diabetes Q&amp;A Assistant on GitHub">Source code</a>
+            </footer>
+          </article>
+        </li>
+
+        <li>
+          <article class="project-card">
+            <header>
+              <h3>RL Dynamic Pricing</h3>
+            </header>
+            <p>
+              A pricing engine that models an online store as a Markov decision
+              process and learns prices that balance short-term profit with
+              long-term customer retention.
+            </p>
+            <ul class="tag-list" aria-label="Tech stack">
+              <li>Python</li>
+              <li>Reinforcement Learning</li>
+              <li>Pandas</li>
+              <li>NumPy</li>
+            </ul>
+            <footer>
+              <a href="https://github.com/Prosperum26/rl-dynamic-pricing"
+                 aria-label="Source code of RL Dynamic Pricing on GitHub">Source code</a>
+            </footer>
+          </article>
+        </li>
+
+        <li>
+          <article class="project-card">
+            <header>
+              <h3>Chuck King</h3>
+            </header>
+            <p>
+              A vertical rage platformer with a hand-written physics engine and an
+              AI narrator that taunts you based on how often you fall.
+            </p>
+            <ul class="tag-list" aria-label="Tech stack">
+              <li>JavaScript</li>
+              <li>HTML5 Canvas</li>
+              <li>LLM API</li>
+            </ul>
+            <footer>
+              <a href="https://github.com/Prosperum26/chuck-king"
+                 aria-label="Source code of Chuck King on GitHub">Source code</a>
+            </footer>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <section id="skills" aria-labelledby="skills-title">
+      <h2 id="skills-title">Skills</h2>
+
+      <ul class="skill-grid">
+        <li class="skill-group">
+          <h3>AI &amp; Machine Learning</h3>
+          <ul class="tag-list">
+            <li>Reinforcement Learning (PPO, MDP)</li>
+            <li>RAG pipelines</li>
+            <li>ChromaDB</li>
+            <li>Ollama</li>
+            <li>PyTorch</li>
+            <li>TensorFlow</li>
+            <li>NumPy</li>
+            <li>Pandas</li>
+          </ul>
+        </li>
+
+        <li class="skill-group">
+          <h3>Backend</h3>
+          <ul class="tag-list">
+            <li>Node.js</li>
+            <li>NestJS</li>
+            <li>Express</li>
+            <li>PostgreSQL</li>
+            <li>MongoDB</li>
+            <li>Prisma ORM</li>
+            <li>REST</li>
+            <li>JWT &amp; RBAC</li>
+          </ul>
+        </li>
+
+        <li class="skill-group">
+          <h3>Frontend</h3>
+          <ul class="tag-list">
+            <li>React</li>
+            <li>Tailwind CSS</li>
+            <li>HTML5</li>
+            <li>CSS3</li>
+            <li>Redux</li>
+            <li>Zustand</li>
+          </ul>
+        </li>
+
+        <li class="skill-group">
+          <h3>Languages</h3>
+          <ul class="tag-list">
+            <li>Python</li>
+            <li>TypeScript</li>
+            <li>JavaScript</li>
+            <li>C++</li>
+            <li>SQL</li>
+            <li>LaTeX</li>
+          </ul>
+        </li>
+
+        <li class="skill-group">
+          <h3>Infrastructure &amp; Tools</h3>
+          <ul class="tag-list">
+            <li>Docker</li>
+            <li>GitHub Actions</li>
+            <li>Swagger / OpenAPI</li>
+            <li>Git</li>
+            <li>Vercel</li>
+            <li>Render</li>
+            <li>Postman</li>
+            <li>Figma</li>
+            <li>Linux / WSL</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <address>
+        Email: <a href="mailto:24520626@gm.uit.edu.vn">24520626@gm.uit.edu.vn</a><br>
+        GitHub: <a href="https://github.com/Prosperum26">github.com/Prosperum26</a><br>
+        Ho Chi Minh City, Vietnam
+      </address>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 <span lang="vi">Quảng Phú Hưng</span>. All rights reserved.</p>
+  </footer>
+</body>
+</html>
+
