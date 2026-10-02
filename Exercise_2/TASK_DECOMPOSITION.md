@@ -156,9 +156,13 @@ apply:  toggle .dark-theme / .light-theme trên <html>; set aria-pressed
 | `header` | Flex (1D) | tên + nút toggle, `flex-wrap: wrap`, `gap` |
 | `nav[aria-label="Primary"] ul` | Flex (1D) | `flex-wrap: wrap`, `gap: var(--space-4)`, bỏ bullet |
 | `main` | Khối căn giữa | `max-width: var(--content-max)`, `margin-inline: auto`, padding ngang `var(--space-4)` (16px) |
-| `.project-grid` | Grid (2D) | `repeat(auto-fit, minmax(min(var(--card-min), 100%), 1fr))`, `gap: var(--space-6)` |
-| `.project-card` | Grid item | nền `--color-surface`, viền `--color-border`, bo `--radius` |
-| `.skip-link` | Ẩn ngoài viewport, hiện khi `:focus-visible` | không dùng `display:none` (vẫn phải focus được) |
+| `body > header/nav/main/footer` | Dải full-width | `padding-inline: max(var(--space-4), calc((100% - var(--content-max)) / 2))` → gutter 16px trên mobile, nội dung tối đa `--content-max`, không cần `<div>` wrapper |
+| `body > header` | Grid (2D) | areas `"title toggle" / "tagline tagline"` |
+| `.timeline` > `.experience-item` | Grid | mobile 1 cột; ≥ 48rem: cột trái vai trò + thời gian, cột phải thành tích |
+| `.project-grid`, `.skill-grid` | Grid (2D) | `repeat(auto-fit, minmax(min(var(--card-min), 100%), 1fr))`, `gap: var(--space-6)` |
+| `.project-card`, `.skill-group` | Flex column | nền `--color-surface`, viền `--color-border`, bo `--radius`; footer card `margin-top: auto` để link thẳng hàng |
+| `.tag-list` | Flex wrap (1D) | tag công nghệ dùng chung cho project và skills |
+| `.skip-link` | Ẩn ngoài viewport, hiện khi `:focus` | dùng `transform`, không dùng `display:none` (vẫn phải focus được) |
 
 - Mobile-first: style gốc cho 375px, chỉ thêm `@media (min-width: ...)` khi cần.
 - `min(var(--card-min), 100%)` đảm bảo màn rất hẹp (320px) cũng không tràn ngang.
@@ -170,7 +174,8 @@ apply:  toggle .dark-theme / .light-theme trên <html>; set aria-pressed
 - Thêm 2 `<link>` + 1 `<script defer>` (mục 3.1) và nút `#theme-toggle` (mục 3.3).
 - Bọc các `<article>` trong `<ul class="project-grid">` → `<li><article class="project-card">`.
 - Cập nhật nội dung theo CV (Backend & AI-oriented):
-  - `h1`: "Quang Phu Hung — Backend &amp; AI Developer"
+  - `h1`: "<span lang=\"vi\">Quảng Phú Hưng</span> — Backend &amp; AI Developer". Tên có dấu được bọc `lang="vi"` để trình đọc màn hình phát âm đúng và trình duyệt chọn font hỗ trợ tiếng Việt. Không dùng web font: system font (Segoe UI, SF Pro, Roboto) đã đủ dấu tiếng Việt và không tốn request trên Fast 3G.
+  - Thêm `section#experience` (`ol.timeline > li > article.experience-item`, ngày tháng dùng `<time datetime>`) và `section#skills` (`ul.skill-grid > li.skill-group > h3 + ul.tag-list`). Nav thứ tự: About → Experience → Projects → Skills → Contact (theo thứ tự CV).
   - Project cards: **GreenGrass** (NestJS, React, PostgreSQL), **Diabetes QnA (RAG)** (Python, ChromaDB, Ollama), **RL Dynamic Pricing** (Python, RL), **Chuck King** (JavaScript, Canvas).
   - Link repo là URL thật trên `github.com/Prosperum26` (GreenGrass có 2 link: backend + frontend); `aria-label` bắt đầu bằng text hiển thị.
   - Liên hệ dùng email trường `24520626@gm.uit.edu.vn`.
@@ -240,7 +245,7 @@ Kịch bản: giảng viên sửa 1 CSS token, mình phải phát hiện và s�
 | # | Commit message | Nội dung | Loại file |
 |---|---|---|---|
 | 1 | `feat(css): tokens & reset` | File này + `Exercise_2/index.html` (T-02-0) + `Exercise_2/css/tokens.css` (T-02A) | `.md` + `.html` + `.css` |
-| 2 | `feat(css): responsive grid` | `Exercise_2/css/layout.css` (T-02B) | `.css` |
+| 2 | `feat(css): responsive grid` | `Exercise_2/css/layout.css` (T-02B) + `index.html` (thêm Experience, Skills, tên có dấu) + file này | `.css` + `.html` + `.md` |
 | 3 | `feat(js): dark mode engine` | `Exercise_2/js/theme.js` (T-02C) | `.js` |
 | 4+ | `fix(css): ...` / `fix(js): ...` | Bản sửa sau audit T-02D, mỗi commit 1 loại file | 1 loại |
 
