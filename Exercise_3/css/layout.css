@@ -37,31 +37,11 @@ body > footer {
   transform: translateY(0);
 }
 
-/* 3. Header: title + toggle on one row, tagline below ---------------------- */
-
-body > header {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas:
-    "title   toggle"
-    "tagline tagline";
-  align-items: start;
-  gap: var(--space-2) var(--space-4);
-  padding-block: var(--space-8) var(--space-6);
-  background-color: var(--color-surface);
-}
-
-body > header h1 {
-  grid-area: title;
-}
-
-body > header p {
-  grid-area: tagline;
-  color: var(--color-text-muted);
-}
+/* 3. Header -----------------------------------------------------------------
+   Hero layout lives in components/hero.css (T-03-1C).
+   Toggle look stays here until it moves to theme-switcher.css (T-03-2C). */
 
 #theme-toggle {
-  grid-area: toggle;
   min-height: 2.75rem;
   padding: var(--space-2) var(--space-4);
   border: 0;
