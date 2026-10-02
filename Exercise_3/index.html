@@ -20,9 +20,23 @@
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <header>
-    <h1><span lang="vi">Quảng Phú Hưng</span> &mdash; Backend &amp; AI Developer</h1>
-    <p>Building high-performance full-stack systems with a focus on backend and AI.</p>
+  <header class="hero">
+    <picture class="hero-portrait">
+      <source type="image/avif"
+              srcset="assets/hero-avatar-320.avif 320w, assets/hero-avatar-640.avif 640w"
+              sizes="(min-width: 48rem) 14rem, 10rem">
+      <source type="image/webp"
+              srcset="assets/hero-avatar-320.webp 320w, assets/hero-avatar-640.webp 640w"
+              sizes="(min-width: 48rem) 14rem, 10rem">
+      <img src="assets/hero-avatar-320.jpg"
+           srcset="assets/hero-avatar-320.jpg 320w, assets/hero-avatar-640.jpg 640w"
+           sizes="(min-width: 48rem) 14rem, 10rem"
+           width="320" height="320"
+           alt="Avatar: a cheetah cub looking up in golden grass"
+           fetchpriority="high" decoding="async">
+    </picture>
+    <h1 class="hero-title"><span lang="vi">Quảng Phú Hưng</span> &mdash; Backend &amp; AI Developer</h1>
+    <p class="hero-pitch">Building high-performance full-stack systems with a focus on backend and AI.</p>
     <button type="button" id="theme-toggle" aria-pressed="false">Dark mode</button>
   </header>
 
