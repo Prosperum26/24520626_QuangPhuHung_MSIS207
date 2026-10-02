@@ -1,10 +1,28 @@
 /* ==========================================================================
-   T-03-4C – Project Cards + Filter
+   T-03-4C – Project Cards + Filter (+ T-03B-C live data state)
    Contract: Exercise_3/TASK_DECOMPOSITION.md §3.6
+             Exercise_4/TASK_DECOMPOSITION.md §3.4 (visibility by state)
    State is read from attributes only:
+   - #projects[data-state] → which block is shown (cards only in "success")
    - .filter-button[aria-pressed="true"] → active filter
    - <li hidden> on filtered-out cards (UA style, no custom class)
    ========================================================================== */
+
+/* 0. Visibility by feed state ---------------------------------------------- */
+
+#projects:not([data-state="success"]) .project-grid {
+  display: none;
+}
+
+/* Loading: keep the filter bar's space so cards don't push it in later */
+#projects[data-state="loading"] :is(.filter-bar, .filter-status) {
+  visibility: hidden;
+}
+
+/* Nothing to filter when there are no cards */
+#projects:is([data-state="empty"], [data-state="error"]) :is(.filter-bar, .filter-status) {
+  display: none;
+}
 
 /* 1. Filter bar (1D flex) -------------------------------------------------- */
 

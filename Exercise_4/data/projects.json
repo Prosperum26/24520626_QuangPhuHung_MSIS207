@@ -1,0 +1,49 @@
+{
+  "projects": [
+    {
+      "id": "greengrass",
+      "title": "GreenGrass",
+      "category": "backend",
+      "categoryLabel": "Backend",
+      "description": "A green event platform for VNU-HCM students, with JWT refresh-token rotation, role-based access and a check-in that combines rotating QR codes with GPS geofencing. Encouragement Prize at WebDev Adventure 2026.",
+      "stack": ["NestJS", "React", "PostgreSQL", "Prisma", "Docker"],
+      "links": [
+        { "label": "Backend source", "url": "https://github.com/Prosperum26/greengrass-backend" },
+        { "label": "Frontend source", "url": "https://github.com/Prosperum26/greengrass-frontend" }
+      ]
+    },
+    {
+      "id": "diabetes-qa",
+      "title": "Diabetes Q&A Assistant",
+      "category": "ai",
+      "categoryLabel": "AI",
+      "description": "A retrieval-augmented question answering system that grounds every answer in crawled medical sources, running a local LLM so sensitive questions never leave the machine.",
+      "stack": ["Python", "ChromaDB", "Ollama", "BeautifulSoup"],
+      "links": [
+        { "label": "Source code", "url": "https://github.com/Prosperum26/qna-systeam-diabetes-rag" }
+      ]
+    },
+    {
+      "id": "rl-pricing",
+      "title": "RL Dynamic Pricing",
+      "category": "ai",
+      "categoryLabel": "AI",
+      "description": "A pricing engine that models an online store as a Markov decision process and learns prices that balance short-term profit with long-term customer retention.",
+      "stack": ["Python", "Reinforcement Learning", "Pandas", "NumPy"],
+      "links": [
+        { "label": "Source code", "url": "https://github.com/Prosperum26/rl-dynamic-pricing" }
+      ]
+    },
+    {
+      "id": "chuck-king",
+      "title": "Chuck King",
+      "category": "frontend",
+      "categoryLabel": "Frontend",
+      "description": "A vertical rage platformer with a hand-written physics engine and an AI narrator that taunts you based on how often you fall.",
+      "stack": ["JavaScript", "HTML5 Canvas", "LLM API"],
+      "links": [
+        { "label": "Source code", "url": "https://github.com/Prosperum26/chuck-king" }
+      ]
+    }
+  ]
+}

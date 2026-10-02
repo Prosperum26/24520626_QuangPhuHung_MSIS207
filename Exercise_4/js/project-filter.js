@@ -1,9 +1,12 @@
 /* ==========================================================================
-   T-03-4J – Project Filter
+   T-03-4J – Project Filter (+ T-03D-J dynamic cards)
    Contract: Exercise_3/TASK_DECOMPOSITION.md §3.6
+             Exercise_4/TASK_DECOMPOSITION.md §3.7
    - Single source of truth: .project-grid[data-active-filter]
    - Valid filters come from the buttons in the DOM (no list in JS), so a new
      category only needs a new <button data-filter> + data-category in HTML.
+   - Cards arrive later from project-feed.js, so they are queried on every
+     render. The only link to that file is the "projects:rendered" event.
    - Everything lives inside one named function: classic scripts share one
      global scope, and theme.js already declares top-level consts.
    ========================================================================== */
@@ -18,12 +21,12 @@ const initProjectFilter = () => {
   }
 
   const buttons = [...filterBar.querySelectorAll('.filter-button')];
-  const items = [...grid.querySelectorAll(':scope > li')];
   const validFilters = new Set(buttons.map((button) => button.dataset.filter));
 
   // Derive the whole view from the one state attribute.
   const render = () => {
     const active = grid.dataset.activeFilter;
+    const items = [...grid.querySelectorAll(':scope > li')];
     let shown = 0;
 
     items.forEach((item) => {
@@ -58,6 +61,11 @@ const initProjectFilter = () => {
     grid.dataset.activeFilter = next;
     render();
   });
+
+  // New cards (first load or Retry): re-apply the filter that is still
+  // selected, since data-active-filter lives on the grid and survives.
+  const section = grid.closest('#projects');
+  section?.addEventListener('projects:rendered', render);
 
   // Unknown initial value in the HTML → fall back to "all", then sync the view.
   if (!validFilters.has(grid.dataset.activeFilter)) {

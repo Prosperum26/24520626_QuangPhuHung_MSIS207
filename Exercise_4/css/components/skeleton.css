@@ -9,9 +9,9 @@
    State is read from #projects[data-state]; this file never sets it.
    ========================================================================== */
 
-/* 1. Visibility: the skeleton exists only in the loading state ------------- */
+/* 1. Visibility: skeleton + "Loading projects…" exist only while loading -- */
 
-#projects:not([data-state="loading"]) .skeleton-list {
+#projects:not([data-state="loading"]) :is(.skeleton-list, .feed-status) {
   display: none;
 }
 
