@@ -161,19 +161,10 @@ const initProjectFeed = () => {
   // An Error tagged with one of the 4 kinds above.
   const feedError = (kind, status) => Object.assign(new Error(kind), { kind, status });
 
-  const toKind = (error) => {
-    if (error.kind) {
-      return error.kind;
-    }
-    if (error.name === 'TimeoutError') {
-      return 'timeout';
-    }
-    // fetch() rejects with TypeError when the request never got a response.
-    if (error instanceof TypeError) {
-      return 'network';
-    }
-    return 'format';
-  };
+  // Every expected failure is tagged where it happens (request, readJson,
+  // validation). An untagged error is a bug in this file, e.g. a TypeError
+  // while rendering; it must not be blamed on the visitor's connection.
+  const toKind = (error) => error?.kind ?? 'format';
 
   // Prefer AbortSignal.timeout(); fall back to AbortController + timer.
   // The signal also covers reading the body, so call clear() after json().
@@ -190,12 +181,25 @@ const initProjectFeed = () => {
     return { signal: controller.signal, clear: () => clearTimeout(timer) };
   };
 
+  // Only errors thrown by fetch() itself mean "no response": the signal timed
+  // out, or the request never reached the server (TypeError).
+  const request = async (url, signal) => {
+    try {
+      return await fetch(url, { signal });
+    } catch (error) {
+      throw feedError(error.name === 'TimeoutError' ? 'timeout' : 'network');
+    }
+  };
+
+  // Bad syntax is a data problem; the body stream can also time out or drop.
   const readJson = async (response) => {
     try {
       return await response.json();
     } catch (error) {
-      // Bad syntax is a data problem; a timeout while reading stays a timeout.
-      throw error.name === 'SyntaxError' ? feedError('format') : error;
+      if (error.name === 'SyntaxError') {
+        throw feedError('format');
+      }
+      throw feedError(error.name === 'TimeoutError' ? 'timeout' : 'network');
     }
   };
 
@@ -211,7 +215,7 @@ const initProjectFeed = () => {
     errorMessage.textContent = '';
 
     try {
-      const response = await fetch(getDataUrl(), { signal: timeout.signal });
+      const response = await request(getDataUrl(), timeout.signal);
 
       if (!response.ok) {
         throw feedError('http', response.status);

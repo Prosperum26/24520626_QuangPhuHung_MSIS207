@@ -51,20 +51,41 @@
   background-size: 200% 100%;
 }
 
-/* h3 is 1rem at line-height 1.2 */
+/* Each bar matches the block it stands in for, so the skeleton card is about
+   as tall as a real one (4–6 description lines, 2 badge rows on phones) and
+   swapping to "success" barely moves anything below. */
+
+/* Header row is as tall as the category badge (sm text + padding + border) */
 .skeleton-title {
   width: 60%;
-  height: calc(var(--font-size-base) * 1.2);
+  height: calc(var(--font-size-sm) * var(--line-height) + var(--space-2) + 2px);
+}
+
+/* Description: 5 bars of glyph height spaced like lines of body text */
+.skeleton-text {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--font-size-base) * (var(--line-height) - 1));
+  padding-block: calc(var(--font-size-base) * (var(--line-height) - 1) / 2);
+}
+
+.skeleton-line {
+  height: var(--font-size-base);
 }
 
 .skeleton-line-short {
   width: 70%;
 }
 
-/* One row of badges: text line + vertical padding + 1px borders */
+/* Two rows of badges: 2 × (text line + padding + border) + row gap */
 .skeleton-badges {
   width: 80%;
-  height: calc(var(--font-size-base) * var(--line-height) + var(--space-2) + 2px);
+  height: calc(2 * (var(--font-size-base) * var(--line-height) + var(--space-2) + 2px) + var(--space-2));
+}
+
+/* Footer: one line of link text */
+.skeleton-link {
+  width: 40%;
 }
 
 /* 5. Shimmer: opt-in to motion (WCAG 2.3.3) -------------------------------- */

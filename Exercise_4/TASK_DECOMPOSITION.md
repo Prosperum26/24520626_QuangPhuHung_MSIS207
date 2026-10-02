@@ -141,11 +141,13 @@ Thứ tự trong `<head>` (thêm vào sau link/script của Ex3):
   <!-- T-03A: loading -->
   <ul class="skeleton-list" aria-hidden="true">
     <li class="skeleton-card">
-      <span class="skeleton-item skeleton-title"></span>
-      <span class="skeleton-item skeleton-line"></span>
-      <span class="skeleton-item skeleton-line"></span>
-      <span class="skeleton-item skeleton-line skeleton-line-short"></span>
-      <span class="skeleton-item skeleton-badges"></span>
+      <span class="skeleton-item skeleton-title"></span>      <!-- = header (badge category) -->
+      <span class="skeleton-text">                             <!-- = mô tả, 5 dòng -->
+        <span class="skeleton-item skeleton-line"></span> ×4
+        <span class="skeleton-item skeleton-line skeleton-line-short"></span>
+      </span>
+      <span class="skeleton-item skeleton-badges"></span>     <!-- = 2 hàng badge -->
+      <span class="skeleton-item skeleton-link"></span>       <!-- = footer link -->
     </li>
     … (4 thẻ li, bằng số project thật)
   </ul>
@@ -201,7 +203,7 @@ Panel empty/error là **`<p>`**, không dùng `<div>` (Ex1: 0 div), không dùng
 | `data-state="loading"` + `aria-busy="true"` **có sẵn trong HTML** | Skeleton hiện ngay ở lần paint đầu, không chờ JS → không có khung trống rồi nhảy |
 | Skeleton `aria-hidden="true"` | Là hình trang trí; screen reader nghe `.feed-status` "Loading projects…" thay vì 20 thẻ span rỗng |
 | `aria-busy` trên section (Errata slide 18) | Báo AT rằng vùng đang cập nhật; tắt về `false` ở cả 3 state kết thúc |
-| Số skeleton card = 4, cấu trúc giống card thật (title, 3 dòng, badge) | Chiều cao skeleton ≈ card thật → giảm shift khi đổi state |
+| Số skeleton card = 4, cấu trúc giống card thật (header, 5 dòng mô tả, 2 hàng badge, footer) | Đo ở 375px: card thật 326–377px (mô tả 4–6 dòng). Skeleton phải nằm trong khoảng này → gần như không shift khi đổi state |
 | `<template>` thay vì chuỗi HTML trong JS | Markup và class nằm trong HTML (contract), JS không cần `innerHTML` |
 | `h2` có `tabindex="-1"` | Đích focus sau khi bấm Retry (nút Retry biến mất khi về `loading`, nếu không focus sẽ rơi về `<body>`) |
 | `.feed-error-message` rỗng trong HTML, JS ghi text khi vào `error` | `role="alert"` chỉ đọc khi nội dung **thay đổi**; ghi text sau khi panel đã hiện thì mới được đọc |
@@ -341,11 +343,12 @@ const FETCH_TIMEOUT_MS = 8000;
 
 | Kind | Phát hiện | Thông báo (ghi vào `.feed-error-message`) |
 |---|---|---|
-| `timeout` | `AbortSignal.timeout(FETCH_TIMEOUT_MS)` → `error.name === 'TimeoutError'` | "Loading projects took too long." |
-| `network` | `fetch` reject `TypeError` | "Couldn't reach the server. Check your connection." |
+| `timeout` | `fetch()` hoặc `response.json()` bị signal huỷ: `error.name === 'TimeoutError'` | "Loading projects took too long." |
+| `network` | `fetch()` reject (không có response), hoặc body bị đứt khi đang đọc | "Couldn't reach the server. Check your connection." |
 | `http` | `!response.ok` | "The project list is unavailable right now (error <status>)." |
 | `format` | `response.json()` ném `SyntaxError`, hoặc thiếu `projects` / không phải mảng / 0 item hợp lệ | "The project list couldn't be read." |
 
+- **Gắn kind ngay tại chỗ phát sinh** (`request()`, `readJson()`, validate). Lỗi không có kind là bug trong code (vd `TypeError` lúc render) → hiển thị như `format`, không đổ cho mạng của người dùng.
 - Lối thoát nằm sẵn trong HTML: nút Retry + link GitHub cạnh nó (3.3). JS chỉ ghi câu mô tả lỗi.
 - **Không** in `error.message` gốc ra giao diện (lộ chi tiết kỹ thuật); không `console.error` (DoD: 0 lỗi console). Lưu ý: `?demo=error` vẫn có 1 dòng *GET … 404* do **trình duyệt** tự in ở Network/console — đây là hành vi đúng, ghi chú trong B13.
 - `AbortSignal.timeout()`: kiểm tra MDN Baseline trước khi dùng (§2.4). Nếu chưa Widely available → `AbortController` + `setTimeout` + `clearTimeout` trong `finally`.

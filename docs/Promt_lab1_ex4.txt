@@ -1,0 +1,2175 @@
+ ▐▛███▛█   Claude Code v2.1.287
+▝▜██████▀  Opus 5.5 · Claude Pro
+ ▝▝   ▝▝   C:\Dev\Project\MSIS207_Lab1\Exercise_4
+
+
+> Ok task cuối, brainstorm task 4 và tạo file task decomposition đi:            
+  ⎿  Interrupted · What should Claude do instead?
+
+> Ok task cuối, brainstorm task 4 và tạo file task decomposition đi:            
+  HANDS-ON LAB: EXERCISE 3                                                      
+  Exercise 4: Resilient Component Architecture                                  
+  The 4-State Resilient Component Contract                                      
+  SUB-TASK T-03A: Loading Skeleton (Pure CSS Shimmer gradient).                 
+  SUB-TASK T-03B: Live Data State (Flexbox metadata badges & Grid list).        
+  SUB-TASK T-03C: Empty & Error States with accessible retry trigger.           
+  DECOMPOSITION SUBMISSION PIPELINE:                                            
+  Define state machine in TASK_DECOMPOSITION.md before prompting Al.            
+  Commit each state individually: git commit -m 'feat(css): skeleton'           
+  Prompt Rule: Never prompt Al for all 4 states at once.                        
+  ...                                                                           
+  skeleton.css                                                                  
+  /* SUB-TASK T-03A: Pure CSS Shimmer Skeleton */                               
+  .skeleton-item {                                                              
+  height: 48px;                                                                 
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);    
+  }                                                                             
+  background-size: 200% 100%;                                                   
+  animation: shimmer 1.5s infinite;                                             
+  @keyframes shimmer {                                                          
+  0% { background-position: 200% 0; }                                           
+  100% { background-position: -200% 0; }                                        
+  }                                                                             
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Đang chốt kiến trúc cho Exercise 4 (biến section Projects thành component nạp
+  dữ liệu qua fetch), giờ mình viết file decomposition.
+
+● API Error: Connection lost mid-response. The response above may be 
+  incomplete.
+
+✻ Crunched for 5m 4s · done 22:22
+
+> Continue                                                                      
+
+● Write(TASK_DECOMPOSITION.md)
+  ⎿  Wrote 511 lines to TASK_DECOMPOSITION.md
+       1 # TASK_DECOMPOSITION – Exercise 4: Resilient Component Architect
+       2 
+       3 > Work Breakdown Structure (WBS) cho Exercise 4.
+       4 > Tài liệu này được viết và commit **trước** khi prompt AI sinh 
+       5 > Mọi prompt AI đều tham chiếu đúng **1** task ID dưới đây và đí
+         nh kèm `project-rules.md` + phần contract liên quan.
+         úc. Mỗi state có prompt riêng và commit riêng.
+       7 
+       8 ---
+      10 ## 1. Mục tiêu bài
+     … +735 lines (ctrl+o to expand)
+
+● Mình dọn lại 2 chỗ còn dở dang trong bản nháp (phần chọn thẻ cho panel và câu
+  link GitHub ở panel error).
+
+● Update(TASK_DECOMPOSITION.md)
+  ⎿  Added 2 lines, removed 3 lines
+      167      </li>
+      168    </template>
+      169  
+      170 -  <!-- T-03C: empty -->                                       
+      171 -  <div class="feed-panel feed-empty">…</div>  ← KHÔNG dùng div
+          -, xem dưới                                                    
+      170 +  <!-- T-03C: empty & error, xem ngay dưới -->                
+      171  </section>
+      172  ```
+      173  
+      175 -Panel empty và error dùng `<section>`? Không: section con cần 
+          -heading. Dùng `<p>` + `<button>` trực tiếp, bọc trong `<articl
+          -e>`? Cũng không đúng ngữ nghĩa. **Chốt:** mỗi panel là 1 `<asi
+          -de>`? Không phải nội dung phụ. → Dùng **`<p>` cho thông điệp v
+          -à đặt nút trong `<p>`**, không cần wrapper:                   
+      174 +Panel empty/error là **`<p>`**, không dùng `<div>` (Ex1: 0 div
+          +), không dùng `<section>` (section con phải có heading) hay `<
+          +aside>` (không phải nội dung phụ). Nút Retry nằm trong `<p>` l
+          +à hợp lệ (phrasing content):                                  
+      175  
+      176  ```html
+      177    <!-- T-03C: empty -->
+
+● Update(TASK_DECOMPOSITION.md)
+  ⎿  Added 1 line
+      184    <p class="feed-panel feed-error">
+      185      <span class="feed-error-message" role="alert"></span>
+      186      <button type="button" class="feed-retry">Retry</button>
+      187 +    <a href="https://github.com/Prosperum26">See my work on Gi
+          +tHub</a>                                                      
+      188    </p>
+      189  
+      190    <!-- Tắt JS -->
+
+● Update(TASK_DECOMPOSITION.md)
+  ⎿  Added 1 line, removed 1 line
+      346  | `http` | `!response.ok` | "The project list is unavailable r
+           ight now (error <status>)." |
+      347  | `format` | `response.json()` ném `SyntaxError`, hoặc thiếu `
+           projects` / không phải mảng / 0 item hợp lệ | "The project lis
+           t couldn't be read." |
+      348  
+      349 -- Mọi thông báo kết thúc bằng gợi ý: *"Try again, or see my wo
+          -rk on GitHub."* (link trong panel empty dùng lại cho error? Kh
+          -ông, error có nút Retry; link GitHub nằm ở `noscript`/`empty`.
+          - Chốt: thêm link GitHub cạnh nút Retry trong HTML T-03C-H.)   
+      349 +- Lối thoát nằm sẵn trong HTML: nút Retry + link GitHub cạnh n
+          +ó (3.3). JS chỉ ghi câu mô tả lỗi.                            
+      350  - **Không** in `error.message` gốc ra giao diện (lộ chi tiết k
+           ỹ thuật); không `console.error` (DoD: 0 lỗi console). Lưu ý: `
+           ?demo=error` vẫn có 1 dòng *GET … 404* do **trình duyệt** tự i
+           n ở Network/console — đây là hành vi đúng, ghi chú trong B13.
+      351  - `AbortSignal.timeout()`: kiểm tra MDN Baseline trước khi dùn
+           g (§2.4). Nếu chưa Widely available → `AbortController` + `set
+           Timeout` + `clearTimeout` trong `finally`.
+      352  
+
+● Mình đã viết xong Exercise_4/TASK_DECOMPOSITION.md. Chưa có dòng code nào, và
+  mình chưa commit.
+
+  Hướng làm mình đã chọn (bạn đổi được): biến section Projects của Ex3 thành
+  component nạp dữ liệu bằng fetch. Lý do: "Flexbox metadata badges & Grid list"
+  trong đề chính là project card của Ex3 (badge category và tech stack xếp bằng
+  Flex, card xếp bằng Grid). Làm vậy thì dùng lại được project-card.css và bộ
+  lọc. Dữ liệu là data/projects.json, copy nguyên văn 4 project thật từ Ex3,
+  không bịa thêm gì.
+
+  Các điểm chính trong file:
+  - State machine (§3.1): có 4 state loading | success | empty | error, lưu ở
+    #projects[data-state]. Chỉ hàm setState được ghi data-state và aria-busy.
+    Khi Retry, state quay về loading. Có requestId để response về muộn không ghi
+    đè state mới.
+  - Lỗi trong mẫu skeleton.css của slide (§3.5):
+    - background-size và animation nằm ngoài dấu }, nên trình duyệt bỏ qua và
+      shimmer không chạy.
+    - Màu viết cứng bằng hex.
+    - Không tôn trọng reduced-motion.
+    - Mọi dòng đều cao 48px, không giống card thật.
+
+    Mình đưa token --color-skeleton-* (có cả dark mode) và một rule đã sửa vào
+    file.
+  - Ép từng state để chụp screenshot: dùng ?demo=empty|error|malformed, trong đó
+    error là lỗi 404 thật. State loading chụp bằng throttling Slow 3G của
+    DevTools, không làm chậm giả bằng setTimeout.
+  - An toàn khi render: card được tạo từ <template> và điền bằng textContent. Dữ
+    liệu được kiểm tra trước, chặn cả URL javascript:. Lỗi chia 4 loại:
+    timeout, network, http, format. Lỗi được báo qua role="alert", có nút Retry
+    là <button> thật, và sau khi bấm thì focus chuyển về heading "Projects".
+  - Khi tắt JS: <noscript><link href="css/noscript.css"> ẩn skeleton và hiện
+    link GitHub.
+  - Sửa project-filter.js (T-03D): file của Ex3 chỉ đọc danh sách card lúc khởi
+    động, khi grid còn rỗng. Bản sửa đọc lại card mỗi lần render và nghe event
+    projects:rendered.
+  - Kế hoạch prompt và commit: chia theo từng state. JS cũng tách thành 4 prompt
+    và 4 commit (loading → success → empty → error + retry), đúng luật "never
+    prompt all 4 states at once". Có 21 tiêu chí nghiệm thu (C1–C21) và runbook
+    cho phần vấn đáp.
+
+  Điểm cần bạn chốt:
+  1. Dữ liệu: mình dùng JSON local, không gọi GitHub API thật vì API bị giới hạn
+     60 request/giờ và mạng lúc vấn đáp không chắc ổn. Nếu bạn muốn gọi API
+     thật thì báo mình.
+  2. Mất card tĩnh: khi tắt JS, Ex4 không còn card tĩnh như Ex3 (chỉ hiện link
+     GitHub). Mình chấp nhận điểm này vì Ex3 vẫn giữ bản tĩnh.
+
+  Commit đầu tiên mình đề xuất (bạn tự chạy):
+  git add Exercise_4/TASK_DECOMPOSITION.md
+  git commit -m "docs(spec): exercise 4 resilient component state machine"
+
+✻ Baked for 2m 34s · done 22:25
+
+> Đọc project-rules.md và TASK_DECOMPOSITION Exercise 4 trước khi code. Thực    
+  hiện Baseline + T-03A (loading) cho Exercise_4/.                              
+                                                                                
+  Phạm vi:                                                                      
+                                                                                
+  - Copy baseline Exercise 3 sang Exercise_4/: index.html, css/, js/, assets/.  
+  - Chỉ sửa phần cần thiết cho Exercise 4.                                      
+  - Cập nhật section#projects theo contract 3.3: data-state="loading",          
+  aria-busy="true", .feed-status, 4 skeleton cards và các CSS/JS mới.           
+  - Thêm skeleton.css, noscript.css và các token skeleton trong tokens.css.     
+  - Skeleton phải dùng CSS shimmer, prefers-reduced-motion, không hard-code     
+  hex/rgb ngoài primitive tokens.                                               
+  - Thêm project-feed.js với STATES, DATA_SOURCES, timeout config và            
+  setState().                                                                   
+  - load() bắt đầu bằng fetch() + async/await; chưa implement                   
+  success/empty/error rendering.                                                
+  - Không dùng setTimeout để giả lập loading.                                   
+  - JS chỉ ghi data-state/aria-busy, CSS chỉ đọc state.                         
+  - Khi JavaScript bị tắt: skeleton và filter phải được ẩn bằng noscript.css,   
+  đồng thời hiện link GitHub.                                                   
+  - Không sửa các section khác.                                                 
+                                                                                
+  Sau khi code: kiểm tra loading bằng DevTools Slow 3G và reduced-motion. Chỉ   
+  báo cáo lỗi nếu có, chưa tự mở rộng sang success/empty/error.                 
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Không có .visually-hidden sẵn, nên mình sẽ thêm vào layout.css. Giờ copy
+  baseline.
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1" && cp -r Exercise_3/index.html
+      Exercise_3/css Exercise_3/js Exercise_3/assets Exercise_4/ && find
+      Exercise_4 -type f | sort &&…)
+  ⎿  Exercise_4/TASK_DECOMPOSITION.md
+     Exercise_4/assets/hero-avatar-320.avif
+     Exercise_4/assets/hero-avatar-320.jpg
+     … +16 lines (ctrl+o to expand)
+  ⎿  Created css\components\contact-form.css (+98 -0)
+       1 +/* ============================================================
+         +==============                                                 
+       2 +   T-03-5C – Contact Form                                      
+       3 +   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.7             
+       4 +   CSS only reads state written by js/contact-form.js:         
+       5 +   - [aria-invalid="true"]      → field has an error           
+       6 +   - .contact-form[data-state]  → idle | invalid | submitting |
+         + success | error                                               
+       7 +   The form sits on --color-bg (not in a card), so danger/succe
+         +ss text                                                        
+       8 +   always uses the pairs checked against --color-bg in §3.2.   
+       9 +   ============================================================
+         +============== */                                              
+      10 +                                                               
+      11 +/* 1. Layout --------------------------------------------------
+         +-------------- */                                              
+      12 +                                                               
+      13 +.contact-form {                                                
+      14 +  display: grid;                                               
+      15 +  gap: var(--space-4);                                         
+      16 +  max-width: 40rem;                                            
+      17 +}                                                              
+      18 +                                                               
+      19 +.form-field {                                                  
+      20 +  display: grid;                                               
+      21 +  gap: var(--space-1);                                         
+      22 +}                                                              
+      23 +                                                               
+      24 +.form-field label {                                            
+      25 +  font-weight: 600;                                            
+      26 +}                                                              
+      27 +                                                               
+      28 +/* 2. Controls ------------------------------------------------
+         +-------------- */                                              
+      29 +                                                               
+      30 +.form-field input,                                             
+      31 +.form-field textarea {                                         
+      32 +  width: 100%;                                                 
+      33 +  padding: var(--space-2) var(--space-3);                      
+      34 +  border: 1px solid var(--color-border);                       
+      35 +  border-radius: var(--radius);                                
+      36 +  background-color: var(--color-bg);                           
+      37 +  color: var(--color-text);                                    
+      38 +  font: inherit;                                               
+      39 +}                                                              
+      40 +                                                               
+     … 58 more lines (ctrl+o to expand)
+  ⎿  Created css\components\hero.css (+75 -0)
+       1 +/* ============================================================
+         +==============                                                 
+       2 +   T-03-1C – Hero Section                                      
+       3 +   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.3             
+       4 +   Page banner: avatar + headline + pitch, with the theme toggl
+         +e in a corner.                                                 
+       5 +   The <img> carries width/height="320", so the browser reserve
+         +s a 1:1 box                                                    
+       6 +   before the file arrives (CLS = 0); CSS only scales it to --a
+         +vatar-size.                                                    
+       7 +   ============================================================
+         +============== */                                              
+       8 +                                                               
+       9 +/* 1. Grid: mobile stacks avatar/toggle, then title, then pitch
+         + ------------- */                                              
+      10 +                                                               
+      11 +.hero {                                                        
+      12 +  display: grid;                                               
+      13 +  grid-template-columns: 1fr auto;                             
+      14 +  grid-template-areas:                                         
+      15 +    "avatar toggle"                                            
+      16 +    "title  title"                                             
+      17 +    "pitch  pitch";                                            
+      18 +  align-items: start;                                          
+      19 +  gap: var(--space-4);                                         
+      20 +  padding-block: var(--space-8) var(--space-6);                
+      21 +  background-color: var(--color-surface);                      
+      22 +}                                                              
+      23 +                                                               
+      24 +.hero-portrait {                                               
+      25 +  grid-area: avatar;                                           
+      26 +}                                                              
+      27 +                                                               
+      28 +.hero > #theme-toggle {                                        
+      29 +  grid-area: toggle;                                           
+      30 +}                                                              
+      31 +                                                               
+      32 +.hero-title {                                                  
+      33 +  grid-area: title;                                            
+      34 +}                                                              
+      35 +                                                               
+      36 +.hero-pitch {                                                  
+      37 +  grid-area: pitch;                                            
+      38 +  max-width: 60ch;                                             
+      39 +  color: var(--color-text-muted);                              
+      40 +}                                                              
+     … 35 more lines (ctrl+o to expand)
+  ⎿  Created css\components\project-card.css (+83 -0)
+       1 +/* ============================================================
+         +==============                                                 
+       2 +   T-03-4C – Project Cards + Filter                            
+       3 +   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.6             
+       4 +   State is read from attributes only:                         
+       5 +   - .filter-button[aria-pressed="true"] → active filter       
+       6 +   - <li hidden> on filtered-out cards (UA style, no custom cla
+         +ss)                                                            
+       7 +   ============================================================
+         +============== */                                              
+       8 +                                                               
+       9 +/* 1. Filter bar (1D flex) ------------------------------------
+         +-------------- */                                              
+      10 +                                                               
+      11 +.filter-bar {                                                  
+      12 +  display: flex;                                               
+      13 +  flex-wrap: wrap;                                             
+      14 +  gap: var(--space-2);                                         
+      15 +  list-style: none;                                            
+      16 +}                                                              
+      17 +                                                               
+      18 +.filter-button {                                               
+      19 +  min-height: 2.75rem; /* 44px touch target, WCAG 2.5.8 */     
+      20 +  padding: var(--space-2) var(--space-4);                      
+      21 +  border: 1px solid var(--color-accent);                       
+      22 +  border-radius: var(--radius);                                
+      23 +  background-color: var(--color-bg);                           
+      24 +  color: var(--color-accent);                                  
+      25 +  cursor: pointer;                                             
+      26 +}                                                              
+      27 +                                                               
+      28 +/* Pressed = solid accent; same box size, so switching never sh
+         +ifts layout */                                                 
+      29 +.filter-button[aria-pressed="true"] {                          
+      30 +  background-color: var(--color-accent);                       
+      31 +  color: var(--color-on-accent);                               
+      32 +}                                                              
+      33 +                                                               
+      34 +.filter-status {                                               
+      35 +  color: var(--color-text-muted);                              
+      36 +  font-size: var(--font-size-sm);                              
+      37 +}                                                              
+      38 +                                                               
+      39 +/* 2. Card grid (2D) ------------------------------------------
+         +-------------- */                                              
+      40 +                                                               
+     … 43 more lines (ctrl+o to expand)
+  ⎿  Created css\components\skills-matrix.css (+25 -0)
+       1 +/* ============================================================
+         +==============                                                 
+       2 +   T-03-3C – Skills Matrix                                     
+       3 +   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.5             
+       4 +   2D: groups flow in an auto-fit grid. 1D: badges inside a gro
+         +up wrap                                                        
+       5 +   with flex (.badge-list/.badge are shared primitives in layou
+         +t.css).                                                        
+       6 +   min(--card-min, 100%) keeps one column from overflowing at 3
+         +20–375px.                                                      
+       7 +   ============================================================
+         +============== */                                              
+       8 +                                                               
+       9 +.skill-grid {                                                  
+      10 +  display: grid;                                               
+      11 +  grid-template-columns: repeat(auto-fit, minmax(min(var(--card
+         +-min), 100%), 1fr));                                           
+      12 +  gap: var(--space-6);                                         
+      13 +  list-style: none;                                            
+      14 +}                                                              
+      15 +                                                               
+      16 +.skill-group {                                                 
+      17 +  display: flex;                                               
+      18 +  flex-direction: column;                                      
+      19 +  gap: var(--space-3);                                         
+      20 +  height: 100%;                                                
+      21 +  padding: var(--space-6);                                     
+      22 +  border: 1px solid var(--color-border);                       
+      23 +  border-radius: var(--radius);                                
+      24 +  background-color: var(--color-surface);                      
+      25 +}                                                              
+  ⎿  Created css\components\theme-switcher.css (+34 -0)
+       1 +/* ============================================================
+         +==============                                                 
+       2 +   T-03-2C – Theme Switcher                                    
+       3 +   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.4             
+       4 +   Single source of truth is aria-pressed, written by js/theme.
+         +js.                                                            
+       5 +   CSS only reads it: sun = light is active, moon = dark is act
+         +ive.                                                           
+       6 +   Both icons share one fixed size and the label never changes,
+       7 +   so toggling never resizes the button (CLS = 0).             
+       8 +   ============================================================
+         +============== */                                              
+       9 +                                                               
+      10 +.theme-switcher {                                              
+      11 +  display: inline-flex;                                        
+      12 +  align-items: center;                                         
+      13 +  gap: var(--space-2);                                         
+      14 +  min-height: 2.75rem; /* 44px touch target, WCAG 2.5.8 */     
+      15 +  padding: var(--space-2) var(--space-4);                      
+      16 +  border: 0;                                                   
+      17 +  border-radius: var(--radius);                                
+      18 +  background-color: var(--color-accent);                       
+      19 +  color: var(--color-on-accent);                               
+      20 +  cursor: pointer;                                             
+      21 +}                                                              
+      22 +                                                               
+      23 +/* Icons inherit the label color through stroke="currentColor" 
+         +*/                                                             
+      24 +.theme-icon {                                                  
+      25 +  flex: none;                                                  
+      26 +  width: var(--icon-size);                                     
+      27 +  height: var(--icon-size);                                    
+      28 +}                                                              
+      29 +                                                               
+      30 +/* Show only the icon that matches the current state */        
+      31 +.theme-switcher[aria-pressed="true"] .theme-icon-sun,          
+      32 +.theme-switcher[aria-pressed="false"] .theme-icon-moon {       
+      33 +  display: none;                                               
+      34 +}                                                              
+  ⎿  … 12 more files changed
+
+● Update(index.html)
+  ⎿  Added 3 lines
+      13    <link rel="stylesheet" href="css/components/skills-matrix.css
+          ">
+      14    <link rel="stylesheet" href="css/components/project-card.css"
+          >
+      15    <link rel="stylesheet" href="css/components/contact-form.css"
+          >
+      16 +  <link rel="stylesheet" href="css/components/skeleton.css">   
+      17 +  <noscript><link rel="stylesheet" href="css/noscript.css"></no
+         +script>                                                        
+      18    <script src="js/theme.js" defer></script>
+      19    <script src="js/project-filter.js" defer></script>
+      20    <script src="js/contact-form.js" defer></script>
+      21 +  <script src="js/project-feed.js" defer></script>             
+      22  </head>
+      23  <body>
+      24    <a href="#main-content" class="skip-link">Skip to main conten
+          t</a>
+
+● Update(index.html)
+  ⎿  Added 3 lines, removed 2 lines
+      121        </ol>
+      122      </section>
+      123  
+      124 -    <section id="projects" aria-labelledby="projects-title">  
+      125 -      <h2 id="projects-title">Projects</h2>                   
+      124 +    <section id="projects" aria-labelledby="projects-title"   
+      125 +             data-state="loading" aria-busy="true">           
+      126 +      <h2 id="projects-title" tabindex="-1">Projects</h2>     
+      127  
+      128        <ul class="filter-bar" aria-label="Filter projects by ca
+           tegory">
+      129          <li><button type="button" class="filter-button" data-f
+           ilter="all" aria-pressed="true">All</button></li>
+
+● Update(index.html)
+  ⎿  Added 40 lines
+      133        </ul>
+      134        <p class="filter-status" role="status">Showing 4 of 4 pr
+           ojects</p>
+      135  
+      136 +      <p class="feed-status visually-hidden" role="status">Loa
+          +ding projects…</p>                                            
+      137 +                                                              
+      138 +      <ul class="skeleton-list" aria-hidden="true">           
+      139 +        <li class="skeleton-card">                            
+      140 +          <span class="skeleton-item skeleton-title"></span>  
+      141 +          <span class="skeleton-item skeleton-line"></span>   
+      142 +          <span class="skeleton-item skeleton-line"></span>   
+      143 +          <span class="skeleton-item skeleton-line skeleton-li
+          +ne-short"></span>                                             
+      144 +          <span class="skeleton-item skeleton-badges"></span> 
+      145 +        </li>                                                 
+      146 +        <li class="skeleton-card">                            
+      147 +          <span class="skeleton-item skeleton-title"></span>  
+      148 +          <span class="skeleton-item skeleton-line"></span>   
+      149 +          <span class="skeleton-item skeleton-line"></span>   
+      150 +          <span class="skeleton-item skeleton-line skeleton-li
+          +ne-short"></span>                                             
+      151 +          <span class="skeleton-item skeleton-badges"></span> 
+      152 +        </li>                                                 
+      153 +        <li class="skeleton-card">                            
+      154 +          <span class="skeleton-item skeleton-title"></span>  
+      155 +          <span class="skeleton-item skeleton-line"></span>   
+      156 +          <span class="skeleton-item skeleton-line"></span>   
+      157 +          <span class="skeleton-item skeleton-line skeleton-li
+          +ne-short"></span>                                             
+      158 +          <span class="skeleton-item skeleton-badges"></span> 
+      159 +        </li>                                                 
+      160 +        <li class="skeleton-card">                            
+      161 +          <span class="skeleton-item skeleton-title"></span>  
+      162 +          <span class="skeleton-item skeleton-line"></span>   
+      163 +          <span class="skeleton-item skeleton-line"></span>   
+      164 +          <span class="skeleton-item skeleton-line skeleton-li
+          +ne-short"></span>                                             
+      165 +          <span class="skeleton-item skeleton-badges"></span> 
+      166 +        </li>                                                 
+      167 +      </ul>                                                   
+      168 +                                                              
+      169 +      <noscript>                                              
+      170 +        <p class="feed-panel">                                
+      171 +          Projects load with JavaScript.                      
+      172 +          <a href="https://github.com/Prosperum26">Browse them
+          + on GitHub</a> instead.                                       
+      173 +        </p>                                                  
+      174 +      </noscript>                                             
+      175 +                                                              
+      176        <ul class="project-grid" data-active-filter="all">
+      177          <li>
+      178            <article class="project-card" data-category="backend
+           " aria-labelledby="project-greengrass">
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1/Exercise_4/css" && python - <<'EOF'
+      p='tokens.css'…)
+  ⎿  warning: in the working copy of '../../Exercise_3/css/tokens.css', LF
+     will be replaced by CRLF the next time Git touches it
+     warning: in the working copy of 'tokens.css', LF will be replaced by C
+     … +104 lines (ctrl+o to expand)
+  ⎿  Updated css\tokens.css (+12 -0)
+      2     T-02A – Tokens & Reset (+ T-03-0C component tokens)
+      3     Contract: Exercise_2/TASK_DECOMPOSITION.md §3.2 (tokens), §3.
+         3 (cascade)
+      4               Exercise_3/TASK_DECOMPOSITION.md §3.2 (danger/succe
+         ss, sizes)
+      5 +             Exercise_4/TASK_DECOMPOSITION.md §3.5 (skeleton)   
+      6     Hex values live ONLY in the primitive block below. Every rule
+          uses
+      7     semantic tokens (--color-*), so any color change is a one-lin
+         e edit.
+      8     =============================================================
+         ============= */
+     ...
+      12  :root {
+      13    /* Primitive palette (the only place hex codes are allowed) *
+          /
+      14    --palette-slate-50: #f1f5f9;
+      15 +  --palette-slate-200: #e2e8f0;                                
+      16    --palette-slate-300: #cbd5e1;
+      17    --palette-slate-500: #64748b;
+      18    --palette-slate-600: #475569;
+      19 +  --palette-slate-700: #334155;                                
+      20    --palette-slate-800: #1e293b;
+      21    --palette-slate-900: #0f172a;
+      22    --palette-white: #ffffff;
+     ...
+      38    --color-focus: var(--palette-blue-700);
+      39    --color-danger: var(--palette-red-700);
+      40    --color-success: var(--palette-green-700);
+      41 +  --color-skeleton-base: var(--palette-slate-200);             
+      42 +  --color-skeleton-highlight: var(--palette-slate-50);         
+      43  
+      44    /* Spacing */
+      45    --space-1: 0.25rem;
+     ...
+      66    /* Component sizes (Exercise 3) */
+      67    --avatar-size: 10rem;
+      68    --icon-size: 1.25rem;
+      69 +                                                               
+      70 +  /* Loading skeleton (Exercise 4) */                          
+      71 +  --skeleton-duration: 1.5s;                                   
+      72  }
+      73  
+      74  /* Dark theme from the OS, unless the user forced light */
+     ...
+      83      --color-focus: var(--palette-blue-300);
+      84      --color-danger: var(--palette-red-300);
+      85      --color-success: var(--palette-green-300);
+      86 +    --color-skeleton-base: var(--palette-slate-800);           
+      87 +    --color-skeleton-highlight: var(--palette-slate-700);      
+     … 11 more lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1/Exercise_4/css" && cat >> layout.css
+      <<'EOF'…)
+  ⎿  Created css\components\skeleton.css (+86 -0)
+       1 +/* ============================================================
+         +==============                                                 
+       2 +   T-03A-C – Loading Skeleton (pure CSS shimmer)               
+       3 +   Contract: Exercise_4/TASK_DECOMPOSITION.md §3.4 (visibility)
+         +, §3.5                                                         
+       4 +   Slide 18 errata fixed here:                                 
+       5 +   - background-size / animation live INSIDE the rule (slide cl
+         +osed it early)                                                 
+       6 +   - colors come from --color-skeleton-* tokens, so both themes
+         + work                                                          
+       7 +   - shimmer only runs when the user has not asked for reduced 
+         +motion                                                         
+       8 +   - line heights follow the card's type scale instead of a fla
+         +t 48px                                                         
+       9 +   State is read from #projects[data-state]; this file never se
+         +ts it.                                                         
+      10 +   ============================================================
+         +============== */                                              
+      11 +                                                               
+      12 +/* 1. Visibility: the skeleton exists only in the loading state
+         + ------------- */                                              
+      13 +                                                               
+      14 +#projects:not([data-state="loading"]) .skeleton-list {         
+      15 +  display: none;                                               
+      16 +}                                                              
+      17 +                                                               
+      18 +/* 2. List: same grid as .project-grid, so columns match the re
+         +al cards ----- */                                              
+      19 +                                                               
+      20 +.skeleton-list {                                               
+      21 +  display: grid;                                               
+      22 +  grid-template-columns: repeat(auto-fit, minmax(min(var(--card
+         +-min), 100%), 1fr));                                           
+      23 +  gap: var(--space-6);                                         
+      24 +  list-style: none;                                            
+      25 +}                                                              
+      26 +                                                               
+      27 +/* 3. Card frame: mirrors .project-card (padding, border, gap) 
+         +-------------- */                                              
+      28 +                                                               
+      29 +.skeleton-card {                                               
+      30 +  display: flex;                                               
+      31 +  flex-direction: column;                                      
+      32 +  gap: var(--space-3);                                         
+      33 +  padding: var(--space-6);                                     
+      34 +  border: 1px solid var(--color-border);                       
+      35 +  border-radius: var(--radius);                                
+      36 +  background-color: var(--color-surface);                      
+      37 +}                                                              
+      38 +                                                               
+      39 +/* 4. Placeholder bars ----------------------------------------
+         +-------------- */                                              
+      40 +                                                               
+     … 46 more lines (ctrl+o to expand)
+  ⎿  Updated css\layout.css (+13 -0)
+      150      gap: var(--space-4) var(--space-8);
+      151    }
+      152  }
+      153 +                                                              
+      154 +/* 11. Utilities ---------------------------------------------
+          +----------------                                              
+      155 +   Exercise_4/TASK_DECOMPOSITION.md §3.3: text for screen read
+          +ers only                                                      
+      156 +   (live status messages). Clipped, not display:none, so it is
+          + still read. */                                               
+      157 +                                                              
+      158 +.visually-hidden {                                            
+      159 +  position: absolute;                                         
+      160 +  width: 1px;                                                 
+      161 +  height: 1px;                                                
+      162 +  overflow: hidden;                                           
+      163 +  clip-path: inset(50%);                                      
+      164 +  white-space: nowrap;                                        
+      165 +}                                                             
+  ⎿  Created css\noscript.css (+14 -0)
+       1 +/* ============================================================
+         +==============                                                 
+       2 +   T-03A-C – No-JavaScript fallback                            
+       3 +   Contract: Exercise_4/TASK_DECOMPOSITION.md §3.2, §3.4       
+       4 +   Loaded only inside <noscript> in <head>. Without JS the feed
+         + never leaves                                                  
+       5 +   "loading", so hide everything that waits for it; the <noscri
+         +pt> paragraph                                                  
+       6 +   in #projects links to GitHub instead.                       
+       7 +   ============================================================
+         +============== */                                              
+       8 +                                                               
+       9 +.skeleton-list,                                                
+      10 +.filter-bar,                                                   
+      11 +.filter-status,                                                
+      12 +.feed-status {                                                 
+      13 +  display: none;                                               
+      14 +}                                                              
+
+● Write(js\project-feed.js)
+  ⎿  Wrote 59 lines to js\project-feed.js
+       1 /* =============================================================
+       2    T-03A-J – Project Feed Controller (loading state)
+         e), §3.6
+       4    - Single source of truth: #projects[data-state] ∈ STATES
+         CSS reads them.
+         fake delays,
+         .
+       8    - Everything lives inside one named function: classic scripts
+       9      global scope, and theme.js already declares top-level const
+      10    Not in this task: rendering (T-03B-J), empty (T-03C-J1), e
+     … +60 lines (ctrl+o to expand)
+
+● Code xong T-03A, giờ đang kiểm tra (grep theo DoD, rồi chạy trang thật).
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Phát hiện vài điểm cần đo lại: Edge headless theo dark mode OS, Slow 3G đo quá
+  sớm khi CSS chưa tải xong, và <noscript> chưa xuất hiện trong DOM. Tôi sẽ
+  chạy lại các case này.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Baseline và T-03A đã xong. State loading hoạt động đúng, nhưng có 2 lỗi cần
+  bạn biết (đầu tiên là 1 lỗi console). Mình kiểm tra bằng Edge headless (giả
+  lập Slow 3G, reduced-motion, dark/light, tắt JS qua DevTools Protocol), chưa
+  mở DevTools bằng tay. Screenshot cho prompt log bạn vẫn cần tự chụp.
+
+  Những gì đã làm:
+  - Copy index.html, css/, js/, assets/ từ Ex3 sang Exercise_4/.
+  - Trong index.html, section #projects có thêm data-state="loading",
+    aria-busy="true", tabindex="-1" trên h2, .feed-status, 4 skeleton card và
+    đoạn <noscript> kèm link GitHub. <head> nạp thêm skeleton.css,
+    <noscript><link noscript.css> và project-feed.js. Các section khác không
+    đổi.
+  - tokens.css thêm slate-200, slate-700, --color-skeleton-base/-highlight (có ở
+    cả 2 khối dark) và --skeleton-duration.
+  - layout.css thêm .visually-hidden, vì Ex3 chưa có.
+  - skeleton.css viết mới, đã sửa 4 lỗi của mẫu slide. noscript.css viết mới.
+  - project-feed.js có STATES, DATA_SOURCES, FETCH_TIMEOUT_MS, setState() và
+    load() dùng fetch + AbortSignal.timeout. Không có setTimeout.
+
+  Kết quả kiểm tra:
+
+  ┌────────────────────────────┬────────────────────────────────────────────┐
+  │          Kiểm tra          │                  Kết quả                   │
+  ├────────────────────────────┼────────────────────────────────────────────┤
+  │ Slow 3G                    │ Skeleton có shimmer, data-state="loading", │
+  │                            │  aria-busy="true" suốt quá trình           │
+  ├────────────────────────────┼────────────────────────────────────────────┤
+  │ Reduced motion             │ Không còn animation, skeleton đứng yên     │
+  ├────────────────────────────┼────────────────────────────────────────────┤
+  │ Light / dark               │ Màu skeleton đổi đúng theo token           │
+  ├────────────────────────────┼────────────────────────────────────────────┤
+  │ Tắt JS                     │ Skeleton, filter và status bị ẩn; đoạn     │
+  │                            │ noscript với link GitHub hiện ra           │
+  ├────────────────────────────┼────────────────────────────────────────────┤
+  │ 375px                      │ Không cuộn ngang                           │
+  ├────────────────────────────┼────────────────────────────────────────────┤
+  │ Grep (hex, var, innerHTML, │ Sạch                                       │
+  │  …), token "ma", anchor    │                                            │
+  └────────────────────────────┴────────────────────────────────────────────┘
+
+  Lỗi phát hiện:
+
+  1. Có lỗi trên console. Ngay bây giờ, mỗi lần load đều có Uncaught (in 
+     promise) SyntaxError. Lý do: data/projects.json chưa có (task T-03B-D),
+     server trả trang 404 bằng HTML, và response.json() không có try/catch (task
+     T-03C-J2). Thêm projects.json sẽ hết lỗi cho trường hợp mặc định. Còn
+     ?demo=error và ?demo=malformed sẽ vẫn báo lỗi cho tới T-03C-J2.
+  2. Skeleton thấp hơn card thật. Ở 375px, skeleton card cao 230px còn card thật
+     cao 377px. Card thật có mô tả 5–6 dòng và footer chứa link, trong khi
+     contract §3.3 chỉ vẽ 4 dòng. Khi chuyển sang success, layout sẽ bị dịch.
+     Section này nằm dưới màn hình đầu nên ảnh hưởng tới CLS khó xảy ra, nhưng
+     cách đúng là thêm vài dòng và 1 thanh footer vào skeleton (sửa contract
+     §3.3). Mình chưa sửa vì nằm ngoài phạm vi.
+
+  Lưu ý thêm, không phải lỗi:
+  - 4 card tĩnh và thanh filter vẫn hiện song song với skeleton, vì state chưa
+    bao giờ rời loading. T-03B-H và T-03B-C sẽ xử lý.
+  - Khi tắt JS, aria-busy="true" vẫn nằm trên section. Một số screen reader có
+    thể coi vùng này là đang tải. Không sửa được nếu không có JS, nên cứ chấp
+    nhận.
+
+  Đề xuất chia commit (bạn tự chạy). Commit 3 và 4 là bản copy Ex3 nguyên trạng,
+  nên phải commit file Ex3 trước rồi mới áp thay đổi T-03A lên:
+
+  ┌─────┬────────────────────────────────┬──────────────────────────────────┐
+  │  #  │            Message             │               File               │
+  ├─────┼────────────────────────────────┼──────────────────────────────────┤
+  │     │ docs(spec): exercise 4         │                                  │
+  │ 1   │ resilient component state      │ TASK_DECOMPOSITION.md            │
+  │     │ machine                        │                                  │
+  ├─────┼────────────────────────────────┼──────────────────────────────────┤
+  │ 2   │ chore(assets): exercise 4 hero │ assets/*                         │
+  │     │  avatar                        │                                  │
+  ├─────┼────────────────────────────────┼──────────────────────────────────┤
+  │ 3   │ chore(css): exercise 4         │ css/** bản copy từ Ex3           │
+  │     │ baseline styles                │                                  │
+  ├─────┼────────────────────────────────┼──────────────────────────────────┤
+  │ 4   │ chore(js): exercise 4 baseline │ theme.js, contact-form.js,       │
+  │     │  scripts                       │ project-filter.js                │
+  ├─────┼────────────────────────────────┼──────────────────────────────────┤
+  │ 5   │ feat(html): loading skeleton   │ index.html                       │
+  │     │ markup                         │                                  │
+  ├─────┼────────────────────────────────┼──────────────────────────────────┤
+  │ 6   │ feat(css): skeleton            │ tokens.css, layout.css,          │
+  │     │                                │ skeleton.css, noscript.css       │
+  ├─────┼────────────────────────────────┼──────────────────────────────────┤
+  │ 7   │ feat(js): feed controller      │ project-feed.js                  │
+  │     │ loading state                  │                                  │
+  └─────┴────────────────────────────────┴──────────────────────────────────┘
+
+  index.html hiện đã chứa cả bản copy lẫn thay đổi T-03A. Commit 5 vì vậy gộp
+  luôn baseline HTML, trừ khi bạn tách bằng git add -p.
+
+✻ Worked for 3m 35s · done 22:31
+
+> Đọc project-rules.md và TASK_DECOMPOSITION Exercise 4 trước khi code. Tiếp    
+  tục từ code hiện tại, thực hiện T-03B (success) + T-03D (dynamic filter).     
+                                                                                
+  Success state:                                                                
+                                                                                
+  - Tạo data/projects.json chứa đúng 4 project từ Exercise 3, giữ nguyên nội    
+  dung, không bịa dữ liệu.                                                      
+  - Thay 4 card HTML tĩnh bằng <ul class="project-grid"> rỗng và <template      
+  id="project-card-template">.                                                  
+  - Implement isValidProject() theo contract: validate id, category, text       
+  fields, stack, HTTPS links.                                                   
+  - Render bằng template.cloneNode(), textContent, createElement và             
+  DocumentFragment; tuyệt đối không innerHTML.                                  
+  - Mỗi card phải có aria-labelledby trỏ tới h3 tương ứng.                      
+  - Link chỉ render khi URL hợp lệ.                                             
+  - Sau render: chuyển state sang success, aria-busy="false" và phát            
+  projects:rendered.                                                            
+                                                                                
+  Dynamic filter:                                                               
+                                                                                
+  - Sửa project-filter.js để query cards bên trong render(), không query một    
+  lần lúc init.                                                                 
+  - Lắng nghe projects:rendered để filter hoạt động với dữ liệu được fetch sau. 
+  - Giữ nguyên filter đang chọn khi Retry.                                      
+  - Không import hoặc gọi trực tiếp project-feed.js; giao tiếp chỉ qua          
+  CustomEvent.                                                                  
+  - Giữ nguyên state machine và nguyên tắc DOM state của Exercise 4.            
+                                                                                
+  Kiểm tra: 4 cards, Backend=1, AI=2, Frontend=1; filter/status hoạt động;      
+  375px không overflow; không có innerHTML, inline style hoặc dead link.        
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1/Exercise_4" && mkdir -p data && cat >
+      data/projects.json <<'EOF'
+      {…)
+  ⎿  4
+     176:      <ul class="project-grid" data-active-filter="all">
+     276:    <section id="skills" aria-labelledby="skills-title">
+     … +2 lines (ctrl+o to expand)
+  ⎿  Created data\projects.json (+49 -0)
+       1 +{                                                              
+       2 +  "projects": [                                                
+       3 +    {                                                          
+       4 +      "id": "greengrass",                                      
+       5 +      "title": "GreenGrass",                                   
+       6 +      "category": "backend",                                   
+       7 +      "categoryLabel": "Backend",                              
+       8 +      "description": "A green event platform for VNU-HCM studen
+         +ts, with JWT refresh-token rotation, role-based access and a ch
+         +eck-in that combines rotating QR codes with GPS geofencing. Enc
+         +ouragement Prize at WebDev Adventure 2026.",                   
+       9 +      "stack": ["NestJS", "React", "PostgreSQL", "Prisma", "Doc
+         +ker"],                                                         
+      10 +      "links": [                                               
+      11 +        { "label": "Backend source", "url": "https://github.com
+         +/Prosperum26/greengrass-backend" },                            
+      12 +        { "label": "Frontend source", "url": "https://github.co
+         +m/Prosperum26/greengrass-frontend" }                           
+      13 +      ]                                                        
+      14 +    },                                                         
+      15 +    {                                                          
+      16 +      "id": "diabetes-qa",                                     
+      17 +      "title": "Diabetes Q&A Assistant",                       
+      18 +      "category": "ai",                                        
+      19 +      "categoryLabel": "AI",                                   
+      20 +      "description": "A retrieval-augmented question answering 
+         +system that grounds every answer in crawled medical sources, ru
+         +nning a local LLM so sensitive questions never leave the machin
+         +e.",                                                           
+      21 +      "stack": ["Python", "ChromaDB", "Ollama", "BeautifulSoup"
+         +],                                                             
+      22 +      "links": [                                               
+      23 +        { "label": "Source code", "url": "https://github.com/Pr
+         +osperum26/qna-systeam-diabetes-rag" }                          
+      24 +      ]                                                        
+      25 +    },                                                         
+      26 +    {                                                          
+      27 +      "id": "rl-pricing",                                      
+      28 +      "title": "RL Dynamic Pricing",                           
+      29 +      "category": "ai",                                        
+      30 +      "categoryLabel": "AI",                                   
+      31 +      "description": "A pricing engine that models an online st
+         +ore as a Markov decision process and learns prices that balance
+         + short-term profit with long-term customer retention.",        
+      32 +      "stack": ["Python", "Reinforcement Learning", "Pandas", "
+         +NumPy"],                                                       
+      33 +      "links": [                                               
+      34 +        { "label": "Source code", "url": "https://github.com/Pr
+         +osperum26/rl-dynamic-pricing" }                                
+      35 +      ]                                                        
+      36 +    },                                                         
+      37 +    {                                                          
+      38 +      "id": "chuck-king",                                      
+      39 +      "title": "Chuck King",                                   
+      40 +      "category": "frontend",                                  
+     … 9 more lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1/Exercise_4" && python - <<'EOF'
+      p='index.html'…)
+  ⎿          </li>
+           </ol>
+         </section>
+     … +78 lines (ctrl+o to expand)
+  ⎿  Updated index.html (+10 -93)
+      131          <li><button type="button" class="filter-button" data-f
+           ilter="ai" aria-pressed="false">AI</button></li>
+      132          <li><button type="button" class="filter-button" data-f
+           ilter="frontend" aria-pressed="false">Frontend</button></li>
+      133        </ul>
+      134 -      <p class="filter-status" role="status">Showing 4 of 4 pr
+          -ojects</p>                                                    
+      134 +      <p class="filter-status" role="status"></p>             
+      135  
+      136        <p class="feed-status visually-hidden" role="status">Loa
+           ding projects…</p>
+      137  
+     ...
+      173          </p>
+      174        </noscript>
+      175  
+      176 -      <ul class="project-grid" data-active-filter="all">      
+      177 -        <li>                                                  
+      178 -          <article class="project-card" data-category="backend
+          -" aria-labelledby="project-greengrass">                       
+      179 -            <header class="card-header">                      
+      180 -              <h3 id="project-greengrass">GreenGrass</h3>     
+      181 -              <span class="badge badge-category">Backend</span
+          ->                                                             
+      182 -            </header>                                         
+      183 -            <p>                                               
+      184 -              A green event platform for VNU-HCM students, wit
+          -h JWT refresh-token                                           
+      185 -              rotation, role-based access and a check-in that 
+          -combines rotating QR                                          
+      186 -              codes with GPS geofencing. Encouragement Prize a
+          -t WebDev Adventure 2026.                                      
+      187 -            </p>                                              
+      188 -            <ul class="badge-list" aria-label="Tech stack">   
+      189 -              <li class="badge">NestJS</li>                   
+      190 -              <li class="badge">React</li>                    
+      191 -              <li class="badge">PostgreSQL</li>               
+      192 -              <li class="badge">Prisma</li>                   
+      193 -              <li class="badge">Docker</li>                   
+      194 -            </ul>                                             
+      195 -            <footer class="card-footer">                      
+      196 -              <a href="https://github.com/Prosperum26/greengra
+          -ss-backend"                                                   
+      197 -                 aria-label="Backend source of GreenGrass on G
+          -itHub">Backend source</a>                                     
+      198 -              <a href="https://github.com/Prosperum26/greengra
+          -ss-frontend"                                                  
+      199 -                 aria-label="Frontend source of GreenGrass on 
+          -GitHub">Frontend source</a>                                   
+      200 -            </footer>                                         
+      201 -          </article>                                          
+      202 -        </li>                                                 
+      203 -                                                              
+      204 -        <li>                                                  
+     … 81 more lines (ctrl+o to expand)
+
+● Giờ thêm rule hiển thị theo state vào CSS.
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1/Exercise_4/css/components" && python -
+      <<'EOF'
+      p='project-card.css'…)
+  ⎿  12:/* 1. Visibility: skeleton + "Loading projects…" exist only while l
+     oading -- */
+  ⎿  Updated css\components\project-card.css (+19 -1)
+       1  /* ============================================================
+          ==============
+       2 -   T-03-4C – Project Cards + Filter                            
+       2 +   T-03-4C – Project Cards + Filter (+ T-03B-C live data state)
+       3     Contract: Exercise_3/TASK_DECOMPOSITION.md §3.6
+       4 +             Exercise_4/TASK_DECOMPOSITION.md §3.4 (visibility 
+         +by state)                                                      
+       5     State is read from attributes only:
+       6 +   - #projects[data-state] → which block is shown (cards only i
+         +n "success")                                                   
+       7     - .filter-button[aria-pressed="true"] → active filter
+       8     - <li hidden> on filtered-out cards (UA style, no custom cla
+          ss)
+       9     ============================================================
+          ============== */
+      10  
+      11 +/* 0. Visibility by feed state --------------------------------
+         +-------------- */                                              
+      12 +                                                               
+      13 +#projects:not([data-state="success"]) .project-grid {          
+      14 +  display: none;                                               
+      15 +}                                                              
+      16 +                                                               
+      17 +/* Loading: keep the filter bar's space so cards don't push it 
+         +in later */                                                    
+      18 +#projects[data-state="loading"] :is(.filter-bar, .filter-status
+         +) {                                                            
+      19 +  visibility: hidden;                                          
+      20 +}                                                              
+      21 +                                                               
+      22 +/* Nothing to filter when there are no cards */                
+      23 +#projects:is([data-state="empty"], [data-state="error"]) :is(.f
+         +ilter-bar, .filter-status) {                                   
+      24 +  display: none;                                               
+      25 +}                                                              
+      26 +                                                               
+      27  /* 1. Filter bar (1D flex) ------------------------------------
+          -------------- */
+      28  
+      29  .filter-bar {
+  ⎿  Updated css\components\skeleton.css (+2 -2)
+       9     State is read from #projects[data-state]; this file never se
+          ts it.
+      10     ============================================================
+          ============== */
+      11  
+      12 -/* 1. Visibility: the skeleton exists only in the loading state
+         - ------------- */                                              
+      12 +/* 1. Visibility: skeleton + "Loading projects…" exist only whi
+         +le loading -- */                                               
+      13  
+      14 -#projects:not([data-state="loading"]) .skeleton-list {         
+      14 +#projects:not([data-state="loading"]) :is(.skeleton-list, .feed
+         +-status) {                                                     
+      15    display: none;
+      16  }
+      17  
+
+● Giờ viết phần render vào project-feed.js.
+
+● Write(js\project-feed.js)
+  ⎿  Added 111 lines, removed 5 lines
+       1  /* ============================================================
+          ==============
+       2 -   T-03A-J – Project Feed Controller (loading state)           
+       2 +   T-03A-J + T-03B-J – Project Feed Controller (loading → succe
+         +ss)                                                            
+       3     Contract: Exercise_4/TASK_DECOMPOSITION.md §3.1 (state machi
+          ne), §3.6
+       4     - Single source of truth: #projects[data-state] ∈ STATES
+       5     - setState() is the only writer of data-state and aria-busy;
+           CSS reads them.
+       6     - Pick a data source with ?demo=<key> (see DATA_SOURCES); no
+           fake delays,
+       7       the loading state is shown with DevTools network throttlin
+          g.
+       8 +   - Cards are cloned from #project-card-template and filled wi
+         +th textContent                                                 
+       9 +     only (no innerHTML): the JSON is treated as untrusted inpu
+         +t.                                                             
+      10 +   - Talks to project-filter.js only through the "projects:rend
+         +ered" event.                                                   
+      11     - Everything lives inside one named function: classic script
+          s share one
+      12       global scope, and theme.js already declares top-level cons
+          ts.
+      10 -   Not in this task: rendering (T-03B-J), empty (T-03C-J1), err
+         -or/retry (T-03C-J2).                                           
+      13 +   Not in this task: empty (T-03C-J1), error/retry (T-03C-J2). 
+      14     ============================================================
+          ============== */
+      15  
+      16  const initProjectFeed = () => {
+     ...
+      22      error: 'data/does-not-exist.json', // real 404 from Live Se
+          rver
+      23    };
+      24    const FETCH_TIMEOUT_MS = 8000;
+      25 +  const ID_PATTERN = /^[a-z0-9-]+$/;                           
+      26  
+      27    const section = document.querySelector('#projects');
+      28 +  const grid = section?.querySelector('.project-grid');        
+      29 +  const template = document.querySelector('#project-card-templa
+         +te');                                                          
+      30  
+      25 -  if (!section) {                                              
+      31 +  if (!section || !grid || !template) {                        
+      32      return;
+      33    }
+      34  
+      35 +  // Valid categories come from the filter buttons, so a card c
+         +an never be                                                    
+      36 +  // "orphaned" with a category that no button can show.       
+      37 +  const categories = new Set(                                  
+      38 +    [...section.querySelectorAll('.filter-button')]            
+      39 +      .map((button) => button.dataset.filter)                  
+      40 +      .filter((filter) => filter !== 'all'),                   
+      41 +  );                                                           
+      42 +                                                               
+      43    // Only place that writes state. Unknown values are rejected,
+           not stored.
+      44    const setState = (next) => {
+      45      if (!STATES.includes(next)) {
+     ...
+       56      return Object.hasOwn(DATA_SOURCES, demo) ? DATA_SOURCES[de
+           mo] : DATA_SOURCES.default;
+       57    };
+       58  
+       59 +  /* Validation (§3.6) ---------------------------------------
+          +--------------- */                                            
+       60 +                                                              
+       61 +  const isNonEmptyString = (value) => typeof value === 'string
+          +' && value.trim() !== '';                                     
+       62 +                                                              
+       63 +  // Returns the URL object only for https: links; anything el
+          +se (javascript:,                                              
+       64 +  // http:, relative, garbage) is dropped so it never reaches 
+          +an href.                                                      
+       65 +  const toSafeUrl = (value) => {                              
+       66 +    try {                                                     
+       67 +      const url = new URL(value);                             
+       68 +      return url.protocol === 'https:' ? url : null;          
+       69 +    } catch {                                                 
+       70 +      return null;                                            
+       71 +    }                                                         
+       72 +  };                                                          
+       73 +                                                              
+       74 +  const isValidProject = (project) =>                         
+       75 +    project !== null &&                                       
+       76 +    typeof project === 'object' &&                            
+       77 +    typeof project.id === 'string' &&                         
+       78 +    ID_PATTERN.test(project.id) &&                            
+       79 +    categories.has(project.category) &&                       
+       80 +    isNonEmptyString(project.title) &&                        
+       81 +    isNonEmptyString(project.categoryLabel) &&                
+       82 +    isNonEmptyString(project.description) &&                  
+       83 +    Array.isArray(project.stack) &&                           
+       84 +    project.stack.every(isNonEmptyString) &&                  
+       85 +    Array.isArray(project.links);                             
+       86 +                                                              
+       87 +  /* Rendering (T-03B-J) -------------------------------------
+          +--------------- */                                            
+       88 +                                                              
+       89 +  const createLink = (link, title) => {                       
+       90 +    const url = toSafeUrl(link?.url);                         
+       91 +                                                              
+       92 +    if (!url || !isNonEmptyString(link.label)) {              
+       93 +      return null;                                            
+       94 +    }                                                         
+       95 +                                                              
+       96 +    const anchor = document.createElement('a');               
+       97 +    anchor.href = url.href;                                   
+       98 +    anchor.textContent = link.label;                          
+       99 +    // Starts with the visible text: WCAG 2.5.3 Label in Name.
+      100 +    const site = url.hostname === 'github.com' ? ' on GitHub' 
+          +: '';                                                         
+      101 +    anchor.setAttribute('aria-label', `${link.label} of ${titl
+          +e}${site}`);                                                  
+      102 +    return anchor;                                            
+      103 +  };                                                          
+      104 +                                                              
+      105 +  const createCard = (project) => {                           
+      106 +    const item = template.content.firstElementChild.cloneNode(
+          +true);                                                        
+      107 +    const card = item.querySelector('.project-card');         
+      108 +    const heading = card.querySelector('h3');                 
+      109 +    const headingId = `project-${project.id}`;                
+      110 +                                                              
+      111 +    card.dataset.category = project.category;                 
+      112 +    card.setAttribute('aria-labelledby', headingId);          
+      113 +    heading.id = headingId;                                   
+      114 +    heading.textContent = project.title;                      
+      115 +    card.querySelector('.badge-category').textContent = projec
+          +t.categoryLabel;                                              
+      116 +    card.querySelector('.card-description').textContent = proj
+          +ect.description;                                              
+      117 +                                                              
+      118 +    const stackList = card.querySelector('.badge-list');      
+      119 +    project.stack.forEach((tech) => {                         
+      120 +      const badge = document.createElement('li');             
+      121 +      badge.className = 'badge';                              
+      122 +      badge.textContent = tech;                               
+      123 +      stackList.append(badge);                                
+      124 +    });                                                       
+      125 +                                                              
+      126 +    const footer = card.querySelector('.card-footer');        
+      127 +    project.links                                             
+      128 +      .map((link) => createLink(link, project.title))         
+      129 +      .filter(Boolean)                                        
+      130 +      .forEach((anchor) => footer.append(anchor));            
+      131 +                                                              
+      132 +    return item;                                              
+      133 +  };                                                          
+      134 +                                                              
+      135 +  const render = (projects) => {                              
+      136 +    const fragment = document.createDocumentFragment();       
+      137 +    projects.forEach((project) => fragment.append(createCard(p
+          +roject)));                                                    
+      138 +                                                              
+      139 +    // One DOM write; also clears cards from an earlier load. 
+      140 +    grid.replaceChildren(fragment);                           
+      141 +    setState('success');                                      
+      142 +    section.dispatchEvent(new CustomEvent('projects:rendered')
+          +);                                                            
+      143 +  };                                                          
+      144 +                                                              
+      145 +  /* Loading -------------------------------------------------
+          +--------------- */                                            
+      146 +                                                              
+      147    const load = async () => {
+      148      setState('loading');
+      149  
+      150      const response = await fetch(getDataUrl(), {
+      151        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+      152      });
+      153 +    const data = await response.json();                       
+      154 +    const projects = Array.isArray(data?.projects) ? data.proj
+          +ects.filter(isValidProject) : [];                             
+      155  
+       52 -    // Branching on the result (success / empty / error) comes
+          - in later tasks.                                              
+       53 -    return response.json();                                   
+      156 +    // Empty (T-03C-J1) and error (T-03C-J2) branches come in 
+          +later tasks.                                                  
+      157 +    if (projects.length > 0) {                                
+      158 +      render(projects);                                       
+      159 +    }                                                         
+      160    };
+      161  
+      162    load();
+
+  Read 1 file (ctrl+o to expand)
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1/Exercise_4/js" && python - <<'EOF'
+      p='project-filter.js'…)
+  ⎿  warning: in the working copy of '../../Exercise_3/js/project-filter.js
+     ', LF will be replaced by CRLF the next time Git touches it
+     warning: in the working copy of 'project-filter.js', LF will be replac
+     … +43 lines (ctrl+o to expand)
+  ⎿  Updated js\project-filter.js (+10 -2)
+       1  /* ============================================================
+          ==============
+       2 -   T-03-4J – Project Filter                                    
+       2 +   T-03-4J – Project Filter (+ T-03D-J dynamic cards)          
+       3     Contract: Exercise_3/TASK_DECOMPOSITION.md §3.6
+       4 +             Exercise_4/TASK_DECOMPOSITION.md §3.7             
+       5     - Single source of truth: .project-grid[data-active-filter]
+       6     - Valid filters come from the buttons in the DOM (no list in
+           JS), so a new
+       7       category only needs a new <button data-filter> + data-cate
+          gory in HTML.
+       8 +   - Cards arrive later from project-feed.js, so they are queri
+         +ed on every                                                    
+       9 +     render. The only link to that file is the "projects:render
+         +ed" event.                                                     
+      10     - Everything lives inside one named function: classic script
+          s share one
+      11       global scope, and theme.js already declares top-level cons
+          ts.
+      12     ============================================================
+          ============== */
+     ...
+      21    }
+      22  
+      23    const buttons = [...filterBar.querySelectorAll('.filter-butto
+          n')];
+      21 -  const items = [...grid.querySelectorAll(':scope > li')];     
+      24    const validFilters = new Set(buttons.map((button) => button.d
+          ataset.filter));
+      25  
+      26    // Derive the whole view from the one state attribute.
+      27    const render = () => {
+      28      const active = grid.dataset.activeFilter;
+      29 +    const items = [...grid.querySelectorAll(':scope > li')];   
+      30      let shown = 0;
+      31  
+      32      items.forEach((item) => {
+     ...
+      62      render();
+      63    });
+      64  
+      65 +  // New cards (first load or Retry): re-apply the filter that 
+         +is still                                                       
+      66 +  // selected, since data-active-filter lives on the grid and s
+         +urvives.                                                       
+      67 +  const section = grid.closest('#projects');                   
+      68 +  section?.addEventListener('projects:rendered', render);      
+      69 +                                                               
+      70    // Unknown initial value in the HTML → fall back to "all", th
+          en sync the view.
+      71    if (!validFilters.has(grid.dataset.activeFilter)) {
+      72      grid.dataset.activeFilter = 'all';
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Mọi kiểm tra đều đạt. Chạy grep DoD rồi tắt server test.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Grep DoD bắt được chữ innerHTML trong comment của mình. Sửa lại câu chữ để
+  grep sạch.
+
+● Update(js\project-feed.js)
+  ⎿  Added 1 line, removed 1 line
+       6     - Pick a data source with ?demo=<key> (see DATA_SOURCES); no
+           fake delays,
+       7       the loading state is shown with DevTools network throttlin
+          g.
+       8     - Cards are cloned from #project-card-template and filled wi
+          th textContent
+       9 -     only (no innerHTML): the JSON is treated as untrusted inpu
+         -t.                                                             
+       9 +     only, never parsed as HTML: the JSON is treated as untrust
+         +ed input.                                                      
+      10     - Talks to project-filter.js only through the "projects:rend
+          ered" event.
+      11     - Everything lives inside one named function: classic script
+          s share one
+      12       global scope, and theme.js already declares top-level cons
+          ts.
+
+● T-03B (success) và T-03D (filter động) đã xong, và mọi điểm bạn yêu cầu kiểm
+  tra đều đạt. Mình kiểm tra lại bằng Edge headless ở 375px; screenshot cho
+  prompt log bạn vẫn cần tự chụp.
+
+  Kết quả kiểm tra:
+
+  ┌──────────────────┬──────────────────────────────────────────────────────┐
+  │     Kiểm tra     │                       Kết quả                        │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ Success          │ 4 card; data-state="success", aria-busy="false"      │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ aria-labelledby  │ Mỗi card trỏ đúng tới h3 của chính nó                │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ Bộ lọc           │ Backend 1, AI 2, Frontend 1, All 4; dòng status và   │
+  │                  │ aria-pressed đổi đúng                                │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ Giữ filter khi   │ Đang chọn AI, render lại card rồi phát event: vẫn    │
+  │ Retry            │ hiện 2 card AI                                       │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ 375px            │ Không cuộn ngang                                     │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ Link chết /      │ 0                                                    │
+  │ href="#"         │                                                      │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │                  │ Tiêu đề chứa <img onerror> hiện ra dạng chữ, không   │
+  │ Dữ liệu cố tình  │ tạo <img>. Link javascript: và http: bị bỏ. Item có  │
+  │ xấu              │ id sai, category không có nút lọc, title rỗng hoặc   │
+  │                  │ stack không phải chuỗi đều bị bỏ qua                 │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ Console          │ Sạch ở trang mặc định                                │
+  ├──────────────────┼──────────────────────────────────────────────────────┤
+  │ Grep DoD, hex,   │ Sạch                                                 │
+  │ token "ma"       │                                                      │
+  └──────────────────┴──────────────────────────────────────────────────────┘
+
+  Grep lúc đầu bắt được chữ innerHTML trong comment của project-feed.js; mình đã
+  sửa câu chữ, giờ grep sạch.
+
+  Đã làm:
+  - data/projects.json: 4 project copy nguyên văn từ Ex3, đổi &amp; thành &.
+  - index.html: bỏ 4 card tĩnh, thay bằng <ul class="project-grid"> rỗng và
+    <template id="project-card-template">. Dòng .filter-status để trống, vì JS
+    sẽ ghi.
+  - project-feed.js: thêm isValidProject(), chỉ nhận link HTTPS, render bằng
+    cloneNode, textContent, createElement và DocumentFragment, rồi ghi DOM 1 lần
+    bằng replaceChildren. Sau đó chuyển sang success và phát projects:rendered.
+    Danh sách category hợp lệ lấy từ các nút lọc trong DOM.
+  - project-filter.js: đọc lại card mỗi lần render() và nghe projects:rendered.
+    Không gọi trực tiếp hàm nào của project-feed.js.
+  - CSS (phần T-03B-C, cần để state success hiện đúng):
+    - project-card.css: grid chỉ hiện ở success; filter bar bị visibility: 
+      hidden khi loading và ẩn hẳn khi empty/error.
+    - skeleton.css: ẩn luôn .feed-status ngoài state loading. Nếu không, screen
+      reader vẫn đọc được chữ "Loading projects…" cũ sau khi đã tải xong.
+
+  Còn thiếu, chờ T-03C:
+  - ?demo=error và ?demo=malformed vẫn ném Uncaught (in promise), vì chưa có
+    try/catch (T-03C-J2).
+  - Nếu JSON không còn project hợp lệ nào, state đứng yên ở loading. Nhánh empty
+    là T-03C-J1, còn error kind format là T-03C-J2.
+  - Skeleton vẫn thấp hơn card thật ở 375px, như mình đã báo lần trước.
+
+  Đề xuất chia commit (theo §7, bạn tự chạy):
+
+  ┌─────┬─────────────────────────────────────┬─────────────────────────────┐
+  │  #  │               Message               │            File             │
+  ├─────┼─────────────────────────────────────┼─────────────────────────────┤
+  │ 9   │ chore(data): project list json      │ data/projects.json          │
+  ├─────┼─────────────────────────────────────┼─────────────────────────────┤
+  │ 10  │ feat(html): project card template   │ index.html                  │
+  ├─────┼─────────────────────────────────────┼─────────────────────────────┤
+  │ 11  │ feat(css): live data state          │ project-card.css,           │
+  │     │                                     │ skeleton.css                │
+  ├─────┼─────────────────────────────────────┼─────────────────────────────┤
+  │ 12  │ feat(js): render live data state    │ js/project-feed.js          │
+  ├─────┼─────────────────────────────────────┼─────────────────────────────┤
+  │ 13  │ feat(js): sync project filter with  │ js/project-filter.js        │
+  │     │ live data                           │                             │
+  └─────┴─────────────────────────────────────┴─────────────────────────────┘
+
+  Nếu bạn chưa commit đợt T-03A trước đó, index.html và project-feed.js hiện
+  chứa cả thay đổi của T-03A lẫn T-03B. Muốn tách đúng thứ tự thì dùng git add 
+  -p.
+
+✻ Cooked for 2m 12s · done 22:34
+
+> Đọc project-rules.md và TASK_DECOMPOSITION Exercise 4 trước khi code. Tiếp    
+  tục từ code hiện tại, thực hiện T-03C (empty/error) và cuối cùng T-03E audit. 
+                                                                                
+  Empty:                                                                        
+                                                                                
+  - Tạo projects-empty.json.                                                    
+  - Thêm empty panel theo contract, gồm thông báo và link GitHub.               
+  - projects.length === 0 → empty, aria-busy="false".                           
+  - Không hiển thị skeleton/filter/card.                                        
+                                                                                
+  Error + Retry:                                                                
+                                                                                
+  - Tạo projects-malformed.json.                                                
+  - Thêm error panel với .feed-error-message, role="alert", nút <button> Retry  
+  thật và link GitHub.                                                          
+  - Xử lý 4 loại lỗi: timeout, network, http, format.                           
+  - Dùng timeout 8s; ưu tiên AbortSignal.timeout() nếu môi trường hỗ trợ, nếu   
+  không dùng AbortController.                                                   
+  - Không hiển thị error.message gốc.                                           
+  - Retry chỉ hoạt động khi state=error; chuyển về loading, focus               
+  #projects-title, rồi gọi lại load().                                          
+  - Dùng requestId để chống response cũ ghi đè state mới.                       
+  - Không dùng lỗi giả bằng setTimeout.                                         
+                                                                                
+  Sau khi hoàn thành code: audit toàn bộ Exercise_4/ theo C1–C21. Kiểm tra      
+  state machine, accessibility, responsive 375px, progressive enhancement, CSS  
+  tokens, console, performance và grep DoD (var, innerHTML, onclick, keypress,  
+  keyCode, inline style, CDN).                                                  
+                                                                                
+  Ở bước audit không tự sửa lỗi. Xuất kết quả dạng:                             
+  Criterion | Pass/Fail | Evidence | File/Line | Suggested Fix.                 
+                                                                                
+  Không mở rộng sang API GitHub thật, pagination, cache hoặc các section khác.  
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1/Exercise_4" && printf '{\n  "projects":
+      []\n}\n' > data/projects-empty.json && cat > data/projects-malformed.json
+      <<'EOF'
+      {…)
+  ⎿  Created css\components\feed-state.css (+48 -0)
+       1 +/* ============================================================
+         +==============                                                 
+       2 +   T-03C-C – Empty & Error States                              
+       3 +   Contract: Exercise_4/TASK_DECOMPOSITION.md §3.3, §3.4       
+       4 +   Each panel is shown only in its own state, read from #projec
+         +ts[data-state].                                                
+       5 +   .feed-panel is also used by the <noscript> fallback (no stat
+         +e class).                                                      
+       6 +   ============================================================
+         +============== */                                              
+       7 +                                                               
+       8 +/* 1. Visibility ----------------------------------------------
+         +-------------- */                                              
+       9 +                                                               
+      10 +#projects:not([data-state="empty"]) .feed-empty,               
+      11 +#projects:not([data-state="error"]) .feed-error {              
+      12 +  display: none;                                               
+      13 +}                                                              
+      14 +                                                               
+      15 +/* 2. Panel frame: same surface as a card ---------------------
+         +-------------- */                                              
+      16 +                                                               
+      17 +.feed-panel {                                                  
+      18 +  display: flex;                                               
+      19 +  flex-wrap: wrap;                                             
+      20 +  align-items: center;                                         
+      21 +  gap: var(--space-3) var(--space-4);                          
+      22 +  padding: var(--space-6);                                     
+      23 +  border: 1px solid var(--color-border);                       
+      24 +  border-radius: var(--radius);                                
+      25 +  background-color: var(--color-surface);                      
+      26 +}                                                              
+      27 +                                                               
+      28 +/* 3. Error: message on its own line, actions below -----------
+         +-------------- */                                              
+      29 +                                                               
+      30 +.feed-error {                                                  
+      31 +  border-color: var(--color-danger);                           
+      32 +}                                                              
+      33 +                                                               
+      34 +.feed-error-message {                                          
+      35 +  flex-basis: 100%;                                            
+      36 +  color: var(--color-danger);                                  
+      37 +  font-weight: 600;                                            
+      38 +}                                                              
+      39 +                                                               
+      40 +.feed-retry {                                                  
+     … 8 more lines (ctrl+o to expand)
+  ⎿  Created data\projects-empty.json (+3 -0)
+      1 +{                                                               
+      2 +  "projects": []                                                
+      3 +}                                                               
+  ⎿  Created data\projects-malformed.json (+6 -0)
+      1 +{                                                               
+      2 +  "projects": [                                                 
+      3 +    {                                                           
+      4 +      "id": "greengrass",                                       
+      5 +      "title": "GreenGrass",                                    
+      6 +      "category": "backend",                                    
+  ⎿  Updated index.html (+12 -0)
+      14    <link rel="stylesheet" href="css/components/project-card.css"
+          >
+      15    <link rel="stylesheet" href="css/components/contact-form.css"
+          >
+      16    <link rel="stylesheet" href="css/components/skeleton.css">
+      17 +  <link rel="stylesheet" href="css/components/feed-state.css"> 
+      18    <noscript><link rel="stylesheet" href="css/noscript.css"></no
+          script>
+      19    <script src="js/theme.js" defer></script>
+      20    <script src="js/project-filter.js" defer></script>
+     ...
+      189            </article>
+      190          </li>
+      191        </template>
+      192 +                                                              
+      193 +      <p class="feed-panel feed-empty">                       
+      194 +        No projects to show yet.                              
+      195 +        <a href="https://github.com/Prosperum26">See my work o
+          +n GitHub</a>                                                  
+      196 +      </p>                                                    
+      197 +                                                              
+      198 +      <p class="feed-panel feed-error">                       
+      199 +        <span class="feed-error-message" role="alert"></span> 
+      200 +        <button type="button" class="feed-retry">Retry</button
+          +>                                                             
+      201 +        <a href="https://github.com/Prosperum26">See my work o
+          +n GitHub</a>                                                  
+      202 +      </p>                                                    
+      203      </section>
+      204  
+      205      <section id="skills" aria-labelledby="skills-title">
+
+● Giờ thêm nhánh empty, error và Retry vào controller.
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1/Exercise_4/js" && python - <<'EOF'
+      p='project-feed.js'…)
+  ⎿  /* ===================================================================
+     =======
+        T-03A-J … T-03C-J2 – Project Feed Controller (4 states)
+     … +57 lines (ctrl+o to expand)
+  ⎿  Updated js\project-feed.js (+117 -10)
+      1  /* =============================================================
+         =============
+      2 -   T-03A-J + T-03B-J – Project Feed Controller (loading → succes
+        -s)                                                              
+      2 +   T-03A-J … T-03C-J2 – Project Feed Controller (4 states)      
+      3     Contract: Exercise_4/TASK_DECOMPOSITION.md §3.1 (state machin
+         e), §3.6
+      4     - Single source of truth: #projects[data-state] ∈ STATES
+      5     - setState() is the only writer of data-state and aria-busy; 
+         CSS reads them.
+     ...
+       8     - Cards are cloned from #project-card-template and filled wi
+          th textContent
+       9       only, never parsed as HTML: the JSON is treated as untrust
+          ed input.
+      10     - Talks to project-filter.js only through the "projects:rend
+          ered" event.
+      11 +   - Errors are grouped into 4 kinds (timeout | network | http 
+         +| format) and                                                  
+      12 +     shown with a fixed, friendly message; the raw error text n
+         +ever reaches                                                   
+      13 +     the page. Each load() gets a requestId so a late, stale re
+         +sponse can't                                                   
+      14 +     overwrite a newer state.                                  
+      15     - Everything lives inside one named function: classic script
+          s share one
+      16       global scope, and theme.js already declares top-level cons
+          ts.
+      13 -   Not in this task: empty (T-03C-J1), error/retry (T-03C-J2). 
+      17     ============================================================
+          ============== */
+      18  
+      19  const initProjectFeed = () => {
+     ...
+      26    };
+      27    const FETCH_TIMEOUT_MS = 8000;
+      28    const ID_PATTERN = /^[a-z0-9-]+$/;
+      29 +  const ERROR_MESSAGES = {                                     
+      30 +    timeout: () => 'Loading projects took too long.',          
+      31 +    network: () => "Couldn't reach the server. Check your conne
+         +ction.",                                                       
+      32 +    http: (status) => `The project list is unavailable right no
+         +w (error ${status}).`,                                         
+      33 +    format: () => "The project list couldn't be read.",        
+      34 +  };                                                           
+      35  
+      36    const section = document.querySelector('#projects');
+      37    const grid = section?.querySelector('.project-grid');
+      38    const template = document.querySelector('#project-card-templa
+          te');
+      39 +  const heading = section?.querySelector('#projects-title');   
+      40 +  const errorMessage = section?.querySelector('.feed-error-mess
+         +age');                                                         
+      41 +  const retryButton = section?.querySelector('.feed-retry');   
+      42  
+      31 -  if (!section || !grid || !template) {                        
+      43 +  if (!section || !grid || !template || !heading || !errorMessa
+         +ge || !retryButton) {                                          
+      44      return;
+      45    }
+     … 129 more lines (ctrl+o to expand)
+
+● Code T-03C đã xong. Giờ chạy bộ kiểm tra state machine (empty, 404, malformed,
+  offline, timeout, Retry) trên trình duyệt thật.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Code chạy đúng ở mọi nhánh. Giờ sang phần audit: kiểm tra Retry → success,
+  nhánh fallback AbortController, chống race, contrast ở 2 theme, rồi đo LCP/CLS
+  với Fast 3G.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Còn 2 phép đo trả về rỗng (script contrast lỗi, LCP ở 1280px bằng 0). Mình
+  debug lại 2 phần đó.
+
+  Ran 1 shell command (ctrl+o to expand)
+● Contrast và LCP đều đạt. Còn kiểm tra tĩnh (grep DoD, token), trường hợp tắt
+  JS, và lấy số dòng cho bảng audit.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● T-03C đã xong và mình đã audit Exercise_4/ theo C1–C21. Có 20/21 tiêu chí đạt.
+  C1 không đạt vì cách đã commit, không phải lỗi code. Theo yêu cầu, mình không
+  sửa gì ở bước audit.
+
+  Mình kiểm tra bằng Edge headless (giả lập Fast/Slow 3G, offline, treo request
+  để thử timeout, tắt JS, dark/light, 375px và 1280px), cộng với grep và git 
+  log. Có 2 việc mình chưa làm được: nghe thử bằng screen reader thật
+  (NVDA/Narrator) và chạy Lighthouse. Contrast mình tự tính trên màu thực tế mà
+  trình duyệt áp dụng.
+
+  T-03C đã làm:
+  - Thêm projects-empty.json và projects-malformed.json (JSON cố tình bị cắt
+    cụt).
+  - Thêm 2 panel empty và error. Panel error có .feed-error-message với
+    role="alert", nút <button> Retry thật và link GitHub.
+  - Viết feed-state.css mới.
+  - project-feed.js xử lý 4 loại lỗi. Timeout dùng AbortSignal.timeout(), nếu
+    trình duyệt không có thì dùng AbortController. Có requestId, và Retry chỉ
+    chạy khi state là error.
+
+  Audit
+
+  Criterion: C1 Commit atomic
+  Pass/Fail: Fail
+  Evidence: b950743 gộp spec + assets + HTML + CSS + JS (21 file, 2034 dòng).
+  4ff9b14 gộp data + HTML + CSS + JS. Spec không có commit riêng đi trước code
+  (vi phạm §6)
+  File/Line: git log --stat -- Exercise_4
+  Suggested Fix: Nếu chưa push: git reset --soft dbd7a83 rồi commit lại theo
+  bảng
+  §7. Nếu đã push thì ghi nhận lỗi trong prompt log/failure audit, và từ T-03C
+  trở đi commit tách
+  ────────────────────────────────────────
+  Criterion: C2 0 hex ngoài primitive
+  Pass/Fail: Pass
+  Evidence: grep rỗng
+  File/Line: css/
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C3 Không có token "ma"
+  Pass/Fail: Pass
+  Evidence: Mọi var(--…) đều được khai báo trong tokens.css
+  File/Line: css/
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C4 Loading
+  Pass/Fail: Pass
+  Evidence: Khi treo request: loading, aria-busy="true", skeleton có shimmer,
+  filter visibility: hidden
+  File/Line: skeleton.css
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C5 Reduced motion
+  Pass/Fail: Pass
+  Evidence: animation-name: none
+  File/Line: skeleton.css
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C6 Skeleton theo theme
+  Pass/Fail: Pass
+  Evidence: Light dùng slate-200/50, dark dùng slate-800/700
+  File/Line: tokens.css
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C7 Success
+  Pass/Fail: Pass
+  Evidence: 4 card; aria-labelledby trỏ đúng tới h3; aria-busy="false"
+  File/Line: project-feed.js
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C8 Không innerHTML, chặn URL xấu
+  Pass/Fail: Pass
+  Evidence: <img onerror> hiện dạng chữ; link javascript:/http: bị bỏ; item sai
+  bị lọc
+  File/Line: project-feed.js
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C9 Flex/Grid, 375px
+  Pass/Fail: Pass
+  Evidence: Không cuộn ngang ở cả success, empty và error
+  File/Line: —
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C10 Bộ lọc động
+  Pass/Fail: Pass
+  Evidence: All 4 / Backend 1 / AI 2 / Frontend 1. Lỗi kết nối → Retry →
+  success,
+  rồi chọn AI → 2 card
+  File/Line: project-filter.js
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C11 Empty
+  Pass/Fail: Pass
+  Evidence: Chỉ panel empty hiện, có link GitHub
+  File/Line: feed-state.css
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C12 Error 404
+  Pass/Fail: Pass (DOM)
+  Evidence: "…(error 404). Try again…". Chưa nghe thử bằng screen reader thật
+  File/Line: project-feed.js
+  Suggested Fix: Tự kiểm bằng NVDA/Narrator khi chụp screenshot
+  ────────────────────────────────────────
+  Criterion: C13 Malformed
+  Pass/Fail: Pass
+  Evidence: Kind format, console không có lỗi JS. Riêng ?demo=error có dòng 404
+  do trình duyệt tự in, đúng như spec
+  File/Line: —
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C14 Offline
+  Pass/Fail: Pass
+  Evidence: Kind network
+  File/Line: —
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C15 Retry
+  Pass/Fail: Pass
+  Evidence: Focus chuyển về #projects-title; lỗi kết nối → Retry → success; bấm
+  Retry khi đang success thì không có tác dụng
+  File/Line: project-feed.js
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C16 Retry bằng phím, ≥ 44px
+  Pass/Fail: Pass
+  Evidence: Enter hoạt động; nút 86×44
+  File/Line: feed-state.css
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C17 State có 1 nguồn
+  Pass/Fail: Pass
+  Evidence: Mỗi state chỉ đúng 1 khối hiển thị, khớp bảng §3.4
+  File/Line: —
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C18 Tắt JS
+  Pass/Fail: Pass, có lưu ý
+  Evidence: Mọi khối phụ thuộc JS bị ẩn, đoạn noscript hiện ra. Nhưng
+  aria-busy="true" vẫn còn trên section
+  File/Line: index.html:126
+  Suggested Fix: Chấp nhận, hoặc bỏ aria-busy khỏi HTML và để JS đặt (đổi
+  contract §3.3)
+  ────────────────────────────────────────
+  Criterion: C19 Contrast
+  Pass/Fail: Pass
+  Evidence: Thấp nhất: light 5.91 (chữ lỗi), dark 7.71. Mọi chữ ≥ 4.5
+  File/Line: —
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: C20 Performance
+  Pass/Fail: Pass, rủi ro
+  Evidence: Fast 3G: LCP 1.85–1.91 s (dưới ngân sách 2 s chưa tới 0.15 s), CLS 0
+
+  ở cả 375px và 1280px, kể cả khi mở thẳng #projects
+  File/Line: index.html:9-18
+  Suggested Fix: Theo dõi. Nếu vượt 2 s thì gộp CSS component (§8). Spec ghi
+  "LCP
+  là avatar" nhưng thực tế là chữ hero → sửa TASK_DECOMPOSITION.md:433
+  ────────────────────────────────────────
+  Criterion: C21 Grep DoD
+  Pass/Fail: Pass
+  Evidence: var, innerHTML, onclick, keyCode, keypress, style=", CDN, href="#" →
+
+  rỗng
+  File/Line: —
+  Suggested Fix: —
+
+  Phát hiện ngoài ma trận:
+
+  Vấn đề: Skeleton cao 230px, card thật 377px (ở 375px)
+  Mức: Thấp: đo được CLS = 0 vì phần bị đẩy nằm ngoài màn hình
+  File/Line: index.html (skeleton), skeleton.css:60-70
+  Suggested Fix: Thêm 2 dòng và 1 thanh footer vào skeleton (sửa §3.3)
+  ────────────────────────────────────────
+  Vấn đề: toKind coi mọi TypeError là network, kể cả lỗi lập trình trong lúc
+  render → báo "Check your connection" sai
+  Mức: Thấp
+  File/Line: project-feed.js:172
+  Suggested Fix: Bọc riêng lời gọi fetch() để chỉ lỗi của nó mới thành network
+  ────────────────────────────────────────
+  Vấn đề: Không thử được chống race bằng UI: nút Retry bị ẩn khi đang loading
+  nên
+  không tạo được 2 request chồng nhau. Mình chỉ đọc code để xác nhận
+  Mức: Ghi chú
+  File/Line: project-feed.js (requestId)
+  Suggested Fix: Giữ lại như lớp phòng thủ, vấn đáp giải thích được
+
+  T-03C hiện chưa commit. Đề xuất chia commit (bạn tự chạy):
+
+  ┌─────┬───────────────────────────────────────────────┬───────────────────┐
+  │  #  │                    Message                    │       File        │
+  ├─────┼───────────────────────────────────────────────┼───────────────────┤
+  │ 14  │ chore(data): empty & malformed fixtures       │ 2 file            │
+  │     │                                               │ data/*.json       │
+  ├─────┼───────────────────────────────────────────────┼───────────────────┤
+  │ 15  │ feat(html): empty & error panels              │ index.html        │
+  ├─────┼───────────────────────────────────────────────┼───────────────────┤
+  │ 16  │ feat(css): empty & error states               │ feed-state.css    │
+  ├─────┼───────────────────────────────────────────────┼───────────────────┤
+  │ 17  │ feat(js): empty & error states with           │ project-feed.js   │
+  │     │ accessible retry                              │                   │
+  └─────┴───────────────────────────────────────────────┴───────────────────┘
+
+  Commit 17 gộp T-03C-J1 và J2 vì chúng nằm cùng một khối try. Nếu muốn tách
+  đúng §7 thì phải dùng git add -p và chỉnh hunk bằng tay.
+
+✻ Brewed for 6m 39s · done 22:44
+
+> Ok fix 2 lỗi đó nữa là hoàn thiện.                                            
+
+● Mình hiểu là 2 lỗi ở bảng "ngoài ma trận": skeleton thấp hơn card, và toKind
+  gán nhầm TypeError. Trước tiên đo cấu tạo card thật để làm skeleton khớp.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Thẻ thật có header 32px, mô tả 4–6 dòng, badge 2 hàng (79px) và footer link
+  26px, trong khi skeleton chỉ có 4 thanh nên bị thấp hơn. Giờ mình sẽ sửa
+  markup và CSS skeleton cho khớp với cấu trúc này.
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1/Exercise_4" && python - <<'EOF'
+      import re…)
+  ⎿  4
+  ⎿  Updated index.html (+32 -12)
+      139        <ul class="skeleton-list" aria-hidden="true">
+      140          <li class="skeleton-card">
+      141            <span class="skeleton-item skeleton-title"></span>
+      142 -          <span class="skeleton-item skeleton-line"></span>   
+      143 -          <span class="skeleton-item skeleton-line"></span>   
+      144 -          <span class="skeleton-item skeleton-line skeleton-li
+          -ne-short"></span>                                             
+      142 +          <span class="skeleton-text">                        
+      143 +            <span class="skeleton-item skeleton-line"></span> 
+      144 +            <span class="skeleton-item skeleton-line"></span> 
+      145 +            <span class="skeleton-item skeleton-line"></span> 
+      146 +            <span class="skeleton-item skeleton-line"></span> 
+      147 +            <span class="skeleton-item skeleton-line skeleton-
+          +line-short"></span>                                           
+      148 +          </span>                                             
+      149            <span class="skeleton-item skeleton-badges"></span>
+      150 +          <span class="skeleton-item skeleton-link"></span>   
+      151          </li>
+      152          <li class="skeleton-card">
+      153            <span class="skeleton-item skeleton-title"></span>
+      149 -          <span class="skeleton-item skeleton-line"></span>   
+      150 -          <span class="skeleton-item skeleton-line"></span>   
+      151 -          <span class="skeleton-item skeleton-line skeleton-li
+          -ne-short"></span>                                             
+      154 +          <span class="skeleton-text">                        
+      155 +            <span class="skeleton-item skeleton-line"></span> 
+      156 +            <span class="skeleton-item skeleton-line"></span> 
+      157 +            <span class="skeleton-item skeleton-line"></span> 
+      158 +            <span class="skeleton-item skeleton-line"></span> 
+      159 +            <span class="skeleton-item skeleton-line skeleton-
+          +line-short"></span>                                           
+      160 +          </span>                                             
+      161            <span class="skeleton-item skeleton-badges"></span>
+      162 +          <span class="skeleton-item skeleton-link"></span>   
+      163          </li>
+      164          <li class="skeleton-card">
+      165            <span class="skeleton-item skeleton-title"></span>
+      156 -          <span class="skeleton-item skeleton-line"></span>   
+      157 -          <span class="skeleton-item skeleton-line"></span>   
+      158 -          <span class="skeleton-item skeleton-line skeleton-li
+          -ne-short"></span>                                             
+      166 +          <span class="skeleton-text">                        
+      167 +            <span class="skeleton-item skeleton-line"></span> 
+      168 +            <span class="skeleton-item skeleton-line"></span> 
+      169 +            <span class="skeleton-item skeleton-line"></span> 
+     … 23 more lines (ctrl+o to expand)
+
+  Read 1 file (ctrl+o to expand)
+
+● Update(css\components\skeleton.css)
+  ⎿  Added 25 lines, removed 4 lines
+      51    background-size: 200% 100%;
+      52  }
+      53  
+      54 -/* h3 is 1rem at line-height 1.2 */                            
+      54 +/* Each bar matches the block it stands in for, so the skeleton
+         + card is about                                                 
+      55 +   as tall as a real one (4–6 description lines, 2 badge rows o
+         +n phones) and                                                  
+      56 +   swapping to "success" barely moves anything below. */       
+      57 +                                                               
+      58 +/* Header row is as tall as the category badge (sm text + paddi
+         +ng + border) */                                                
+      59  .skeleton-title {
+      60    width: 60%;
+      57 -  height: calc(var(--font-size-base) * 1.2);                   
+      61 +  height: calc(var(--font-size-sm) * var(--line-height) + var(-
+         +-space-2) + 2px);                                              
+      62  }
+      63  
+      64 +/* Description: 5 bars of glyph height spaced like lines of bod
+         +y text */                                                      
+      65 +.skeleton-text {                                               
+      66 +  display: flex;                                               
+      67 +  flex-direction: column;                                      
+      68 +  gap: calc(var(--font-size-base) * (var(--line-height) - 1)); 
+      69 +  padding-block: calc(var(--font-size-base) * (var(--line-heigh
+         +t) - 1) / 2);                                                  
+      70 +}                                                              
+      71 +                                                               
+      72 +.skeleton-line {                                               
+      73 +  height: var(--font-size-base);                               
+      74 +}                                                              
+      75 +                                                               
+      76  .skeleton-line-short {
+      77    width: 70%;
+      78  }
+      79  
+      64 -/* One row of badges: text line + vertical padding + 1px border
+         -s */                                                           
+      80 +/* Two rows of badges: 2 × (text line + padding + border) + row
+         + gap */                                                        
+      81  .skeleton-badges {
+      82    width: 80%;
+      67 -  height: calc(var(--font-size-base) * var(--line-height) + var
+         -(--space-2) + 2px);                                            
+      83 +  height: calc(2 * (var(--font-size-base) * var(--line-height) 
+         ++ var(--space-2) + 2px) + var(--space-2));                     
+      84  }
+      85  
+      86 +/* Footer: one line of link text */                            
+      87 +.skeleton-link {                                               
+      88 +  width: 40%;                                                  
+      89 +}                                                              
+      90 +                                                               
+      91  /* 5. Shimmer: opt-in to motion (WCAG 2.3.3) ------------------
+          -------------- */
+      92  
+      93  @media (prefers-reduced-motion: no-preference) {
+
+  Read 1 file (ctrl+o to expand)
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1/Exercise_4/js" && python - <<'EOF'
+      p='project-feed.js'…)
+  ⎿  167:  const toKind = (error) => error?.kind ?? 'format';
+     190:      throw feedError(error.name === 'TimeoutError' ? 'timeout' :
+     'network');
+     … +7 lines (ctrl+o to expand)
+  ⎿  Updated js\project-feed.js (+20 -16)
+      161    // An Error tagged with one of the 4 kinds above.
+      162    const feedError = (kind, status) => Object.assign(new Error(
+           kind), { kind, status });
+      163  
+      164 -  const toKind = (error) => {                                 
+      165 -    if (error.kind) {                                         
+      166 -      return error.kind;                                      
+      167 -    }                                                         
+      168 -    if (error.name === 'TimeoutError') {                      
+      169 -      return 'timeout';                                       
+      170 -    }                                                         
+      171 -    // fetch() rejects with TypeError when the request never g
+          -ot a response.                                                
+      172 -    if (error instanceof TypeError) {                         
+      173 -      return 'network';                                       
+      174 -    }                                                         
+      175 -    return 'format';                                          
+      176 -  };                                                          
+      164 +  // Every expected failure is tagged where it happens (reques
+          +t, readJson,                                                  
+      165 +  // validation). An untagged error is a bug in this file, e.g
+          +. a TypeError                                                 
+      166 +  // while rendering; it must not be blamed on the visitor's c
+          +onnection.                                                    
+      167 +  const toKind = (error) => error?.kind ?? 'format';          
+      168  
+      169    // Prefer AbortSignal.timeout(); fall back to AbortControlle
+           r + timer.
+      170    // The signal also covers reading the body, so call clear() 
+           after json().
+     ...
+      181      return { signal: controller.signal, clear: () => clearTime
+           out(timer) };
+      182    };
+      183  
+      184 +  // Only errors thrown by fetch() itself mean "no response": 
+          +the signal timed                                              
+      185 +  // out, or the request never reached the server (TypeError).
+      186 +  const request = async (url, signal) => {                    
+      187 +    try {                                                     
+      188 +      return await fetch(url, { signal });                    
+      189 +    } catch (error) {                                         
+      190 +      throw feedError(error.name === 'TimeoutError' ? 'timeout
+          +' : 'network');                                               
+      191 +    }                                                         
+      192 +  };                                                          
+      193 +                                                              
+      194 +  // Bad syntax is a data problem; the body stream can also ti
+          +me out or drop.                                               
+      195    const readJson = async (response) => {
+      196      try {
+      197        return await response.json();
+     … 18 more lines (ctrl+o to expand)
+
+● Cập nhật contract trong TASK_DECOMPOSITION.md cho khớp code (skeleton markup
+  và cách phân loại lỗi).
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Bash(cd "C:/Dev/Project/MSIS207_Lab1/Exercise_4" && python - <<'EOF'
+      p='TASK_DECOMPOSITION.md'…)
+  ⎿  ok
+  ⎿  Updated TASK_DECOMPOSITION.md (+11 -8)
+      141    <!-- T-03A: loading -->
+      142    <ul class="skeleton-list" aria-hidden="true">
+      143      <li class="skeleton-card">
+      144 -      <span class="skeleton-item skeleton-title"></span>      
+      145 -      <span class="skeleton-item skeleton-line"></span>       
+      146 -      <span class="skeleton-item skeleton-line"></span>       
+      147 -      <span class="skeleton-item skeleton-line skeleton-line-s
+          -hort"></span>                                                 
+      148 -      <span class="skeleton-item skeleton-badges"></span>     
+      144 +      <span class="skeleton-item skeleton-title"></span>      
+          +<!-- = header (badge category) -->                            
+      145 +      <span class="skeleton-text">                            
+          + <!-- = mô tả, 5 dòng -->                                     
+      146 +        <span class="skeleton-item skeleton-line"></span> ×4  
+      147 +        <span class="skeleton-item skeleton-line skeleton-line
+          +-short"></span>                                               
+      148 +      </span>                                                 
+      149 +      <span class="skeleton-item skeleton-badges"></span>     
+          +<!-- = 2 hàng badge -->                                       
+      150 +      <span class="skeleton-item skeleton-link"></span>       
+          +<!-- = footer link -->                                        
+      151      </li>
+      152      … (4 thẻ li, bằng số project thật)
+      153    </ul>
+     ...
+      203  | `data-state="loading"` + `aria-busy="true"` **có sẵn trong H
+           TML** | Skeleton hiện ngay ở lần paint đầu, không chờ JS → khô
+           ng có khung trống rồi nhảy |
+      204  | Skeleton `aria-hidden="true"` | Là hình trang trí; screen re
+           ader nghe `.feed-status` "Loading projects…" thay vì 20 thẻ sp
+           an rỗng |
+      205  | `aria-busy` trên section (Errata slide 18) | Báo AT rằng vùn
+           g đang cập nhật; tắt về `false` ở cả 3 state kết thúc |
+      204 -| Số skeleton card = 4, cấu trúc giống card thật (title, 3 dòn
+          -g, badge) | Chiều cao skeleton ≈ card thật → giảm shift khi đổ
+          -i state |                                                     
+      206 +| Số skeleton card = 4, cấu trúc giống card thật (header, 5 dò
+          +ng mô tả, 2 hàng badge, footer) | Đo ở 375px: card thật 326–37
+          +7px (mô tả 4–6 dòng). Skeleton phải nằm trong khoảng này → gần
+          + như không shift khi đổi state |                              
+      207  | `<template>` thay vì chuỗi HTML trong JS | Markup và class n
+           ằm trong HTML (contract), JS không cần `innerHTML` |
+      208  | `h2` có `tabindex="-1"` | Đích focus sau khi bấm Retry (nút 
+           Retry biến mất khi về `loading`, nếu không focus sẽ rơi về `<b
+           ody>`) |
+      209  | `.feed-error-message` rỗng trong HTML, JS ghi text khi vào `
+           error` | `role="alert"` chỉ đọc khi nội dung **thay đổi**; ghi
+            text sau khi panel đã hiện thì mới được đọc |
+     ...
+      343  
+      344  | Kind | Phát hiện | Thông báo (ghi vào `.feed-error-message`)
+            |
+      345  |---|---|---|
+      344 -| `timeout` | `AbortSignal.timeout(FETCH_TIMEOUT_MS)` → `error
+          -.name === 'TimeoutError'` | "Loading projects took too long." 
+          -|                                                             
+      345 -| `network` | `fetch` reject `TypeError` | "Couldn't reach the
+          - server. Check your connection." |                            
+      346 +| `timeout` | `fetch()` hoặc `response.json()` bị signal huỷ: 
+          +`error.name === 'TimeoutError'` | "Loading projects took too l
+          +ong." |                                                       
+      347 +| `network` | `fetch()` reject (không có response), hoặc body 
+          +bị đứt khi đang đọc | "Couldn't reach the server. Check your c
+          +onnection." |                                                 
+      348  | `http` | `!response.ok` | "The project list is unavailable r
+           ight now (error <status>)." |
+      349  | `format` | `response.json()` ném `SyntaxError`, hoặc thiếu `
+           projects` / không phải mảng / 0 item hợp lệ | "The project lis
+           t couldn't be read." |
+      350  
+      351 +- **Gắn kind ngay tại chỗ phát sinh** (`request()`, `readJson(
+          +)`, validate). Lỗi không có kind là bug trong code (vd `TypeEr
+          +ror` lúc render) → hiển thị như `format`, không đổ cho mạng củ
+          +a người dùng.                                                 
+      352  - Lối thoát nằm sẵn trong HTML: nút Retry + link GitHub cạnh n
+           ó (3.3). JS chỉ ghi câu mô tả lỗi.
+      353  - **Không** in `error.message` gốc ra giao diện (lộ chi tiết k
+           ỹ thuật); không `console.error` (DoD: 0 lỗi console). Lưu ý: `
+           ?demo=error` vẫn có 1 dòng *GET … 404* do **trình duyệt** tự i
+           n ở Network/console — đây là hành vi đúng, ghi chú trong B13.
+      354  - `AbortSignal.timeout()`: kiểm tra MDN Baseline trước khi dùn
+           g (§2.4). Nếu chưa Widely available → `AbortController` + `set
+           Timeout` + `clearTimeout` trong `finally`.
+
+● Giờ kiểm tra lại: chiều cao skeleton so với card ở 3 độ rộng, CLS khi đổi
+  state, và toàn bộ 4 kind lỗi (thêm 1 case giả lập bug lúc render).
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Ở 768px và 1280px, skeleton đo ra 0 vì lần navigate chỉ đổi hash nên trang
+  không tải lại. Đo lại 2 độ rộng đó, có reload thật.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mình đã sửa xong 2 lỗi và kiểm tra lại trên trình duyệt; cả 2 đều đã hết.
+
+  1. Skeleton thấp hơn card thật
+  - Trước đây skeleton chỉ có tiêu đề, 3 dòng và 1 hàng badge. Giờ nó có đủ các
+    phần như card thật: header cao bằng badge category, 5 dòng mô tả giãn cách
+    như chữ thật (bọc trong .skeleton-text), 2 hàng badge và 1 thanh footer link
+    (.skeleton-link).
+  - Kết quả đo:
+
+  ┌─────────┬──────────┬───────────┬──────────────────────────────────┐
+  │ Độ rộng │ Skeleton │ Card thật │ Section #skills bên dưới bị dịch │
+  ├─────────┼──────────┼───────────┼──────────────────────────────────┤
+  │ 375px   │ 351px    │ 326–377px │ 25px (trước đây khoảng 590px)    │
+  ├─────────┼──────────┼───────────┼──────────────────────────────────┤
+  │ 768px   │ 351px    │ 326–377px │ 0px                              │
+  ├─────────┼──────────┼───────────┼──────────────────────────────────┤
+  │ 1280px  │ 351px    │ 256–377px │ 69px                             │
+  └─────────┴──────────┴───────────┴──────────────────────────────────┘
+
+  - CLS = 0 ở cả 3 độ rộng, kể cả khi mở thẳng #projects lúc dữ liệu đang tải.
+
+  2. toKind gán mọi TypeError thành lỗi mạng
+  - Giờ loại lỗi được gắn ngay tại chỗ nó xảy ra:
+    - request() bọc riêng fetch(): bị huỷ do timeout thì là timeout, còn lại là
+      network.
+    - readJson(): SyntaxError là format; body bị đứt hoặc hết giờ khi đang đọc
+      thì là network hoặc timeout.
+  - Lỗi không có loại nghĩa là bug trong code, nên hiển thị như format.
+  - Kiểm tra lại đủ các trường hợp: 404 → http, malformed → format, bị từ chối
+    kết nối và offline → network, treo request → timeout sau 8 giây, Retry khi
+    có mạng trở lại → success. Mình giả lập thêm một TypeError lúc render: giờ
+    báo "couldn't be read" thay vì "Check your connection", console vẫn sạch.
+
+  Mình cũng cập nhật contract trong TASK_DECOMPOSITION.md cho khớp code: markup
+  skeleton ở §3.3 và bảng phân loại lỗi ở §3.6. Grep DoD, hex và token "ma" vẫn
+  sạch.
+
+  Còn mở, ngoài 2 lỗi này: dòng 433 của TASK_DECOMPOSITION.md (C20) vẫn ghi "LCP
+  là avatar", trong khi thực tế LCP là chữ hero. Nếu muốn mình sửa nốt.
+
+  Đề xuất chia commit (bạn tự chạy):
+
+  ┌─────┬────────────────────────────────────────────┬───────────────────────┐
+  │  #  │                  Message                   │         File          │
+  ├─────┼────────────────────────────────────────────┼───────────────────────┤
+  │ 1   │ docs(spec): skeleton shape & error kind    │ TASK_DECOMPOSITION.md │
+  │     │ tagging                                    │                       │
+  ├─────┼────────────────────────────────────────────┼───────────────────────┤
+  │ 2   │ fix(html): skeleton mirrors project card   │ index.html            │
+  │     │ structure                                  │                       │
+  ├─────┼────────────────────────────────────────────┼───────────────────────┤
+  │ 3   │ fix(css): skeleton card height matches     │ skeleton.css          │
+  │     │ real cards                                 │                       │
+  ├─────┼────────────────────────────────────────────┼───────────────────────┤
+  │ 4   │ fix(js): tag error kinds at source, not by │ project-feed.js       │
+  │     │  TypeError                                 │                       │
+  └─────┴────────────────────────────────────────────┴───────────────────────┘
+
+✻ Worked for 2m 58s · done 22:49
