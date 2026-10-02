@@ -121,25 +121,34 @@
     <section id="projects" aria-labelledby="projects-title">
       <h2 id="projects-title">Projects</h2>
 
-      <ul class="project-grid">
+      <ul class="filter-bar" aria-label="Filter projects by category">
+        <li><button type="button" class="filter-button" data-filter="all" aria-pressed="true">All</button></li>
+        <li><button type="button" class="filter-button" data-filter="backend" aria-pressed="false">Backend</button></li>
+        <li><button type="button" class="filter-button" data-filter="ai" aria-pressed="false">AI</button></li>
+        <li><button type="button" class="filter-button" data-filter="frontend" aria-pressed="false">Frontend</button></li>
+      </ul>
+      <p class="filter-status" role="status">Showing 4 of 4 projects</p>
+
+      <ul class="project-grid" data-active-filter="all">
         <li>
-          <article class="project-card">
-            <header>
-              <h3>GreenGrass</h3>
+          <article class="project-card" data-category="backend" aria-labelledby="project-greengrass">
+            <header class="card-header">
+              <h3 id="project-greengrass">GreenGrass</h3>
+              <span class="badge badge-category">Backend</span>
             </header>
             <p>
               A green event platform for VNU-HCM students, with JWT refresh-token
               rotation, role-based access and a check-in that combines rotating QR
               codes with GPS geofencing. Encouragement Prize at WebDev Adventure 2026.
             </p>
-            <ul class="tag-list" aria-label="Tech stack">
-              <li>NestJS</li>
-              <li>React</li>
-              <li>PostgreSQL</li>
-              <li>Prisma</li>
-              <li>Docker</li>
+            <ul class="badge-list" aria-label="Tech stack">
+              <li class="badge">NestJS</li>
+              <li class="badge">React</li>
+              <li class="badge">PostgreSQL</li>
+              <li class="badge">Prisma</li>
+              <li class="badge">Docker</li>
             </ul>
-            <footer>
+            <footer class="card-footer">
               <a href="https://github.com/Prosperum26/greengrass-backend"
                  aria-label="Backend source of GreenGrass on GitHub">Backend source</a>
               <a href="https://github.com/Prosperum26/greengrass-frontend"
@@ -149,22 +158,23 @@
         </li>
 
         <li>
-          <article class="project-card">
-            <header>
-              <h3>Diabetes Q&amp;A Assistant</h3>
+          <article class="project-card" data-category="ai" aria-labelledby="project-diabetes-qa">
+            <header class="card-header">
+              <h3 id="project-diabetes-qa">Diabetes Q&amp;A Assistant</h3>
+              <span class="badge badge-category">AI</span>
             </header>
             <p>
               A retrieval-augmented question answering system that grounds every
               answer in crawled medical sources, running a local LLM so sensitive
               questions never leave the machine.
             </p>
-            <ul class="tag-list" aria-label="Tech stack">
-              <li>Python</li>
-              <li>ChromaDB</li>
-              <li>Ollama</li>
-              <li>BeautifulSoup</li>
+            <ul class="badge-list" aria-label="Tech stack">
+              <li class="badge">Python</li>
+              <li class="badge">ChromaDB</li>
+              <li class="badge">Ollama</li>
+              <li class="badge">BeautifulSoup</li>
             </ul>
-            <footer>
+            <footer class="card-footer">
               <a href="https://github.com/Prosperum26/qna-systeam-diabetes-rag"
                  aria-label="Source code of Diabetes Q&amp;A Assistant on GitHub">Source code</a>
             </footer>
@@ -172,22 +182,23 @@
         </li>
 
         <li>
-          <article class="project-card">
-            <header>
-              <h3>RL Dynamic Pricing</h3>
+          <article class="project-card" data-category="ai" aria-labelledby="project-rl-pricing">
+            <header class="card-header">
+              <h3 id="project-rl-pricing">RL Dynamic Pricing</h3>
+              <span class="badge badge-category">AI</span>
             </header>
             <p>
               A pricing engine that models an online store as a Markov decision
               process and learns prices that balance short-term profit with
               long-term customer retention.
             </p>
-            <ul class="tag-list" aria-label="Tech stack">
-              <li>Python</li>
-              <li>Reinforcement Learning</li>
-              <li>Pandas</li>
-              <li>NumPy</li>
+            <ul class="badge-list" aria-label="Tech stack">
+              <li class="badge">Python</li>
+              <li class="badge">Reinforcement Learning</li>
+              <li class="badge">Pandas</li>
+              <li class="badge">NumPy</li>
             </ul>
-            <footer>
+            <footer class="card-footer">
               <a href="https://github.com/Prosperum26/rl-dynamic-pricing"
                  aria-label="Source code of RL Dynamic Pricing on GitHub">Source code</a>
             </footer>
@@ -195,20 +206,21 @@
         </li>
 
         <li>
-          <article class="project-card">
-            <header>
-              <h3>Chuck King</h3>
+          <article class="project-card" data-category="frontend" aria-labelledby="project-chuck-king">
+            <header class="card-header">
+              <h3 id="project-chuck-king">Chuck King</h3>
+              <span class="badge badge-category">Frontend</span>
             </header>
             <p>
               A vertical rage platformer with a hand-written physics engine and an
               AI narrator that taunts you based on how often you fall.
             </p>
-            <ul class="tag-list" aria-label="Tech stack">
-              <li>JavaScript</li>
-              <li>HTML5 Canvas</li>
-              <li>LLM API</li>
+            <ul class="badge-list" aria-label="Tech stack">
+              <li class="badge">JavaScript</li>
+              <li class="badge">HTML5 Canvas</li>
+              <li class="badge">LLM API</li>
             </ul>
-            <footer>
+            <footer class="card-footer">
               <a href="https://github.com/Prosperum26/chuck-king"
                  aria-label="Source code of Chuck King on GitHub">Source code</a>
             </footer>
@@ -297,6 +309,31 @@
         GitHub: <a href="https://github.com/Prosperum26">github.com/Prosperum26</a><br>
         Ho Chi Minh City, Vietnam
       </address>
+
+      <form class="contact-form" id="contact-form" data-state="idle"
+            action="mailto:24520626@gm.uit.edu.vn" method="post" enctype="text/plain">
+        <p class="form-field">
+          <label for="contact-name">Name</label>
+          <input id="contact-name" name="name" type="text" autocomplete="name"
+                 required minlength="2" maxlength="80" aria-describedby="contact-name-error">
+          <span class="field-error" id="contact-name-error"></span>
+        </p>
+        <p class="form-field">
+          <label for="contact-email">Email</label>
+          <input id="contact-email" name="email" type="email" autocomplete="email"
+                 required maxlength="254" aria-describedby="contact-email-error">
+          <span class="field-error" id="contact-email-error"></span>
+        </p>
+        <p class="form-field">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" name="message" rows="5" required minlength="10" maxlength="500"
+                    aria-describedby="contact-message-hint contact-message-error"></textarea>
+          <span class="field-hint" id="contact-message-hint">10&ndash;500 characters.</span>
+          <span class="field-error" id="contact-message-error"></span>
+        </p>
+        <button type="submit" class="form-submit">Send message</button>
+        <p class="form-status" id="contact-status" role="status"></p>
+      </form>
     </section>
   </main>
 
