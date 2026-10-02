@@ -219,7 +219,7 @@ Mọi prompt đều mở đầu bằng: *"Đọc project-rules.md (đính kèm) 
 | A8 | 0 lỗi console khi toggle liên tục | Console mở, nhấn toggle 20 lần (cả bằng chuột và `Enter`/`Space`) → không có error/warning; thử thêm ở cửa sổ ẩn danh | T-02C |
 | A9 | Bàn phím: Tab & Enter đầy đủ | Chỉ dùng phím: `Tab` → skip-link hiện → `Enter` tới main; `Tab` qua toggle (`Enter` đổi theme) → nav links (`Enter` cuộn đúng section) → link project; luôn thấy focus ring | T-02B, T-02C |
 | A10 | CLS = 0 | DevTools Performance → record reload + toggle 3 lần → *Layout Shifts* trống; Lighthouse CLS = 0 | T-02B, T-02C |
-| A11 | LCP < 2.0s trên Fast 3G | Network: *Fast 3G*, Disable cache → Performance record reload → LCP marker < 2000 ms (LCP element = `h1`) | Tất cả |
+| A11 | LCP < 2.0s trên Fast 3G | Network: *Fast 3G*, Disable cache → Performance record reload → LCP marker < 2000 ms (LCP element là text `h1`/`p`, không có ảnh; favicon tắt bằng `<link rel="icon" href="data:,">` để không có request 404) | Tất cả |
 | A12 | Grep sạch theo DoD | `grep -rnE "var \|innerHTML\|onclick=\|keyCode\|keypress\|style=\"\|https://cdn" Exercise_2/` → rỗng | T-02D |
 
 ---
