@@ -25,29 +25,32 @@
   <main id="main-content">
     <section id="about" aria-labelledby="about-title">
       <h2 id="about-title">About</h2>
-      <img
-        src="assets/avatar.webp"
-        alt="Portrait of Phu Hung smiling in front of a laptop"
-        width="320"
-        height="320"
-        decoding="async">
       <p>
         I am an <strong>Information Systems student</strong> at the University of
         Information Technology, VNU-HCM. I focus on <em>semantic</em> HTML, modern
         CSS layouts and vanilla JavaScript.
       </p>
       <p>
-        My workflow used to be <del>copying whole assignments into an AI chat</del>;
+        My workflow used to be
+        <del datetime="2026-10-02">copying whole assignments into an AI chat</del>;
         now I decompose every feature into small, verifiable tasks before writing
         a single line of code.
       </p>
       <p>
         Fun fact: I can explain why H<sub>2</sub>O boils at 100&deg;C and why
-        2<sup>10</sup> = 1024 bytes in a kilobyte.
+        2<sup>10</sup> = 1024 bytes make one kibibyte (KiB), not one kilobyte.
       </p>
-      <blockquote cite="https://developer.mozilla.org/">
-        <p>HTML is the foundation. CSS enhances presentation. JavaScript enhances behavior.</p>
-      </blockquote>
+      <figure>
+        <blockquote>
+          <p>
+            HTML is the foundation. CSS enhances presentation. JavaScript enhances
+            behavior. AI enhances the developer.
+          </p>
+        </blockquote>
+        <figcaption>
+          &mdash; <cite lang="vi">MSc. Trần Vĩnh Khiêm</cite>, Lab 1: Modern Web Development &amp; AI-Assisted Engineering
+        </figcaption>
+      </figure>
     </section>
 
     <section id="projects" aria-labelledby="projects-title">
@@ -57,23 +60,13 @@
         <header>
           <h3>Semantic Portfolio</h3>
         </header>
-        <picture>
-          <source type="image/avif" srcset="assets/portfolio.avif">
-          <source type="image/webp" srcset="assets/portfolio.webp">
-          <img
-            src="assets/portfolio.jpg"
-            alt="Screenshot of the portfolio landmark tree in Chrome DevTools"
-            width="640"
-            height="360"
-            loading="lazy"
-            decoding="async">
-        </picture>
         <p>
           A zero-<code>&lt;div&gt;</code> personal site built only with HTML5
           landmarks and a keyboard-friendly skip-link.
         </p>
         <footer>
-          <a href="https://github.com/" aria-label="View Semantic Portfolio source code on GitHub">Source code</a>
+          <a href="https://github.com/Prosperum26/MSIS207_Lab1/tree/main/Exercise_1"
+             aria-label="Source code of Semantic Portfolio on GitHub">Source code</a>
         </footer>
       </article>
 
@@ -81,23 +74,14 @@
         <header>
           <h3>Drum Kit Engine</h3>
         </header>
-        <picture>
-          <source type="image/avif" srcset="assets/drum-kit.avif">
-          <source type="image/webp" srcset="assets/drum-kit.webp">
-          <img
-            src="assets/drum-kit.jpg"
-            alt="Grid of drum pads labelled with keyboard keys A to L"
-            width="640"
-            height="360"
-            loading="lazy"
-            decoding="async">
-        </picture>
         <p>
           A polyphonic drum machine driven by <code>data-*</code> attributes and
-          the <code>keydown</code> event. <s>Mouse-only version</s> retired.
+          the <code>keydown</code> event.
+          Input: <s>mouse only</s> keyboard and mouse.
         </p>
         <footer>
-          <a href="https://github.com/" aria-label="View Drum Kit Engine source code on GitHub">Source code</a>
+          <a href="https://github.com/Prosperum26/MSIS207_Lab1/tree/main/HW2_DrumKit"
+             aria-label="Source code of Drum Kit Engine on GitHub">Source code</a>
         </footer>
       </article>
 
@@ -105,23 +89,13 @@
         <header>
           <h3>Resilient Event Hub</h3>
         </header>
-        <picture>
-          <source type="image/avif" srcset="assets/event-hub.avif">
-          <source type="image/webp" srcset="assets/event-hub.webp">
-          <img
-            src="assets/event-hub.jpg"
-            alt="Event registration page showing a countdown timer and signup form"
-            width="640"
-            height="360"
-            loading="lazy"
-            decoding="async">
-        </picture>
         <p>
           An event landing page with a drift-free countdown and a form state
           machine that <strong>never</strong> renders user input as HTML.
         </p>
         <footer>
-          <a href="https://github.com/" aria-label="View Resilient Event Hub source code on GitHub">Source code</a>
+          <a href="https://github.com/Prosperum26/MSIS207_Lab1/tree/main/HW3_EventHub"
+             aria-label="Source code of Resilient Event Hub on GitHub">Source code</a>
         </footer>
       </article>
     </section>
@@ -130,7 +104,7 @@
       <h2 id="contact-title">Contact</h2>
       <address>
         Email: <a href="mailto:your.email@example.com">your.email@example.com</a><br>
-        GitHub: <a href="https://github.com/">github.com/your-username</a><br>
+        GitHub: <a href="https://github.com/Prosperum26">github.com/Prosperum26</a><br>
         Ho Chi Minh City, Vietnam
       </address>
     </section>
