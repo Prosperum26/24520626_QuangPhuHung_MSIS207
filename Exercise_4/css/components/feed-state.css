@@ -1,0 +1,48 @@
+/* ==========================================================================
+   T-03C-C – Empty & Error States
+   Contract: Exercise_4/TASK_DECOMPOSITION.md §3.3, §3.4
+   Each panel is shown only in its own state, read from #projects[data-state].
+   .feed-panel is also used by the <noscript> fallback (no state class).
+   ========================================================================== */
+
+/* 1. Visibility ------------------------------------------------------------ */
+
+#projects:not([data-state="empty"]) .feed-empty,
+#projects:not([data-state="error"]) .feed-error {
+  display: none;
+}
+
+/* 2. Panel frame: same surface as a card ----------------------------------- */
+
+.feed-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+}
+
+/* 3. Error: message on its own line, actions below ------------------------- */
+
+.feed-error {
+  border-color: var(--color-danger);
+}
+
+.feed-error-message {
+  flex-basis: 100%;
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.feed-retry {
+  min-height: 2.75rem; /* 44px touch target, WCAG 2.5.8 */
+  padding: var(--space-2) var(--space-6);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  cursor: pointer;
+}

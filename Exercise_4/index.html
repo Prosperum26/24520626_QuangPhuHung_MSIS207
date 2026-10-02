@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="css/components/project-card.css">
   <link rel="stylesheet" href="css/components/contact-form.css">
   <link rel="stylesheet" href="css/components/skeleton.css">
+  <link rel="stylesheet" href="css/components/feed-state.css">
   <noscript><link rel="stylesheet" href="css/noscript.css"></noscript>
   <script src="js/theme.js" defer></script>
   <script src="js/project-filter.js" defer></script>
@@ -188,6 +189,17 @@
           </article>
         </li>
       </template>
+
+      <p class="feed-panel feed-empty">
+        No projects to show yet.
+        <a href="https://github.com/Prosperum26">See my work on GitHub</a>
+      </p>
+
+      <p class="feed-panel feed-error">
+        <span class="feed-error-message" role="alert"></span>
+        <button type="button" class="feed-retry">Retry</button>
+        <a href="https://github.com/Prosperum26">See my work on GitHub</a>
+      </p>
     </section>
 
     <section id="skills" aria-labelledby="skills-title">

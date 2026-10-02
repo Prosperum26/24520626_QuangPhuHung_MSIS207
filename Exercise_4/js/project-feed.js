@@ -1,5 +1,5 @@
 /* ==========================================================================
-   T-03A-J + T-03B-J – Project Feed Controller (loading → success)
+   T-03A-J … T-03C-J2 – Project Feed Controller (4 states)
    Contract: Exercise_4/TASK_DECOMPOSITION.md §3.1 (state machine), §3.6
    - Single source of truth: #projects[data-state] ∈ STATES
    - setState() is the only writer of data-state and aria-busy; CSS reads them.
@@ -8,9 +8,12 @@
    - Cards are cloned from #project-card-template and filled with textContent
      only, never parsed as HTML: the JSON is treated as untrusted input.
    - Talks to project-filter.js only through the "projects:rendered" event.
+   - Errors are grouped into 4 kinds (timeout | network | http | format) and
+     shown with a fixed, friendly message; the raw error text never reaches
+     the page. Each load() gets a requestId so a late, stale response can't
+     overwrite a newer state.
    - Everything lives inside one named function: classic scripts share one
      global scope, and theme.js already declares top-level consts.
-   Not in this task: empty (T-03C-J1), error/retry (T-03C-J2).
    ========================================================================== */
 
 const initProjectFeed = () => {
@@ -23,14 +26,25 @@ const initProjectFeed = () => {
   };
   const FETCH_TIMEOUT_MS = 8000;
   const ID_PATTERN = /^[a-z0-9-]+$/;
+  const ERROR_MESSAGES = {
+    timeout: () => 'Loading projects took too long.',
+    network: () => "Couldn't reach the server. Check your connection.",
+    http: (status) => `The project list is unavailable right now (error ${status}).`,
+    format: () => "The project list couldn't be read.",
+  };
 
   const section = document.querySelector('#projects');
   const grid = section?.querySelector('.project-grid');
   const template = document.querySelector('#project-card-template');
+  const heading = section?.querySelector('#projects-title');
+  const errorMessage = section?.querySelector('.feed-error-message');
+  const retryButton = section?.querySelector('.feed-retry');
 
-  if (!section || !grid || !template) {
+  if (!section || !grid || !template || !heading || !errorMessage || !retryButton) {
     return;
   }
+
+  let currentRequest = 0;
 
   // Valid categories come from the filter buttons, so a card can never be
   // "orphaned" with a category that no button can show.
@@ -142,22 +156,115 @@ const initProjectFeed = () => {
     section.dispatchEvent(new CustomEvent('projects:rendered'));
   };
 
+  /* Errors (T-03C-J2) ----------------------------------------------------- */
+
+  // An Error tagged with one of the 4 kinds above.
+  const feedError = (kind, status) => Object.assign(new Error(kind), { kind, status });
+
+  const toKind = (error) => {
+    if (error.kind) {
+      return error.kind;
+    }
+    if (error.name === 'TimeoutError') {
+      return 'timeout';
+    }
+    // fetch() rejects with TypeError when the request never got a response.
+    if (error instanceof TypeError) {
+      return 'network';
+    }
+    return 'format';
+  };
+
+  // Prefer AbortSignal.timeout(); fall back to AbortController + timer.
+  // The signal also covers reading the body, so call clear() after json().
+  const createTimeout = () => {
+    if (typeof AbortSignal.timeout === 'function') {
+      return { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS), clear: () => {} };
+    }
+
+    const controller = new AbortController();
+    const timer = setTimeout(
+      () => controller.abort(new DOMException('Request timed out', 'TimeoutError')),
+      FETCH_TIMEOUT_MS,
+    );
+    return { signal: controller.signal, clear: () => clearTimeout(timer) };
+  };
+
+  const readJson = async (response) => {
+    try {
+      return await response.json();
+    } catch (error) {
+      // Bad syntax is a data problem; a timeout while reading stays a timeout.
+      throw error.name === 'SyntaxError' ? feedError('format') : error;
+    }
+  };
+
   /* Loading ---------------------------------------------------------------- */
 
   const load = async () => {
+    currentRequest += 1;
+    const requestId = currentRequest;
+    const isStale = () => requestId !== currentRequest;
+    const timeout = createTimeout();
+
     setState('loading');
+    errorMessage.textContent = '';
 
-    const response = await fetch(getDataUrl(), {
-      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-    });
-    const data = await response.json();
-    const projects = Array.isArray(data?.projects) ? data.projects.filter(isValidProject) : [];
+    try {
+      const response = await fetch(getDataUrl(), { signal: timeout.signal });
 
-    // Empty (T-03C-J1) and error (T-03C-J2) branches come in later tasks.
-    if (projects.length > 0) {
+      if (!response.ok) {
+        throw feedError('http', response.status);
+      }
+
+      const data = await readJson(response);
+
+      if (isStale()) {
+        return;
+      }
+
+      if (!Array.isArray(data?.projects)) {
+        throw feedError('format');
+      }
+
+      // T-03C-J1: a valid, empty list is not an error.
+      if (data.projects.length === 0) {
+        setState('empty');
+        return;
+      }
+
+      const projects = data.projects.filter(isValidProject);
+
+      if (projects.length === 0) {
+        throw feedError('format');
+      }
+
       render(projects);
+    } catch (error) {
+      if (isStale()) {
+        return;
+      }
+
+      const kind = toKind(error);
+      setState('error');
+      // Written after the panel is shown, so role="alert" announces it.
+      errorMessage.textContent = `${ERROR_MESSAGES[kind](error.status)} Try again, or see my work on GitHub.`;
+    } finally {
+      timeout.clear();
     }
   };
+
+  // Retry only from "error". The button disappears in "loading", so move
+  // focus to the section heading instead of letting it fall to <body>.
+  retryButton.addEventListener('click', () => {
+    if (section.dataset.state !== 'error') {
+      return;
+    }
+
+    setState('loading');
+    heading.focus();
+    load();
+  });
 
   load();
 };
