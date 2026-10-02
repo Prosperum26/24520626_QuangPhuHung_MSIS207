@@ -79,6 +79,7 @@
 - No commit adding 100+ lines across multiple files without a matching spec in `TASK_DECOMPOSITION.md`.
 - Spec first: the `docs(spec): ...` commit for an exercise comes before any code commit of that exercise.
 - Do not commit `BRAINSTORM.md` or the lab PDF.
+- **AI never commits or pushes.** The AI only edits files, then proposes the commit split (files + message per commit). The student reviews the diff and runs `git commit` themselves.
 
 ---
 

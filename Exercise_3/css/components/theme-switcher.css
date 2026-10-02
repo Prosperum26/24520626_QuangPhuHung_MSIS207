@@ -1,5 +1,34 @@
 /* ==========================================================================
    T-03-2C – Theme Switcher
    Contract: Exercise_3/TASK_DECOMPOSITION.md §3.4
-   Placeholder from the baseline commit; filled in by task T-03-2C.
+   Single source of truth is aria-pressed, written by js/theme.js.
+   CSS only reads it: sun = light is active, moon = dark is active.
+   Both icons share one fixed size and the label never changes,
+   so toggling never resizes the button (CLS = 0).
    ========================================================================== */
+
+.theme-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.75rem; /* 44px touch target, WCAG 2.5.8 */
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  border-radius: var(--radius);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  cursor: pointer;
+}
+
+/* Icons inherit the label color through stroke="currentColor" */
+.theme-icon {
+  flex: none;
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+/* Show only the icon that matches the current state */
+.theme-switcher[aria-pressed="true"] .theme-icon-sun,
+.theme-switcher[aria-pressed="false"] .theme-icon-moon {
+  display: none;
+}

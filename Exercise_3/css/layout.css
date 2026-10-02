@@ -38,18 +38,8 @@ body > footer {
 }
 
 /* 3. Header -----------------------------------------------------------------
-   Hero layout lives in components/hero.css (T-03-1C).
-   Toggle look stays here until it moves to theme-switcher.css (T-03-2C). */
-
-#theme-toggle {
-  min-height: 2.75rem;
-  padding: var(--space-2) var(--space-4);
-  border: 0;
-  border-radius: var(--radius);
-  background-color: var(--color-accent);
-  color: var(--color-on-accent);
-  cursor: pointer;
-}
+   Hero layout: components/hero.css (T-03-1C).
+   Toggle look: components/theme-switcher.css (T-03-2C). */
 
 /* 4. Navigation (1D flex) -------------------------------------------------- */
 
@@ -134,18 +124,17 @@ address {
   padding-inline-start: var(--space-6);
 }
 
-/* 8. Project & skill grids (2D) -------------------------------------------- */
+/* 8. Project grid (2D) – moves to components/project-card.css in T-03-4C ---- */
+/* Skills: components/skills-matrix.css (T-03-3C) */
 
-.project-grid,
-.skill-grid {
+.project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(var(--card-min), 100%), 1fr));
   gap: var(--space-6);
   list-style: none;
 }
 
-.project-card,
-.skill-group {
+.project-card {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);

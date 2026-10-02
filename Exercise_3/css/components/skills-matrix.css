@@ -1,5 +1,25 @@
 /* ==========================================================================
    T-03-3C – Skills Matrix
    Contract: Exercise_3/TASK_DECOMPOSITION.md §3.5
-   Placeholder from the baseline commit; filled in by task T-03-3C.
+   2D: groups flow in an auto-fit grid. 1D: badges inside a group wrap
+   with flex (.badge-list/.badge are shared primitives in layout.css).
+   min(--card-min, 100%) keeps one column from overflowing at 320–375px.
    ========================================================================== */
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--card-min), 100%), 1fr));
+  gap: var(--space-6);
+  list-style: none;
+}
+
+.skill-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+}

@@ -37,7 +37,20 @@
     </picture>
     <h1 class="hero-title"><span lang="vi">Quảng Phú Hưng</span> &mdash; Backend &amp; AI Developer</h1>
     <p class="hero-pitch">Building high-performance full-stack systems with a focus on backend and AI.</p>
-    <button type="button" id="theme-toggle" aria-pressed="false">Dark mode</button>
+    <button type="button" id="theme-toggle" class="theme-switcher" aria-pressed="false">
+      <svg class="theme-icon theme-icon-sun" aria-hidden="true" focusable="false"
+           width="20" height="20" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+      </svg>
+      <svg class="theme-icon theme-icon-moon" aria-hidden="true" focusable="false"
+           width="20" height="20" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+      </svg>
+      <span class="theme-switcher-label">Dark mode</span>
+    </button>
   </header>
 
   <nav aria-label="Primary">
@@ -208,70 +221,70 @@
       <h2 id="skills-title">Skills</h2>
 
       <ul class="skill-grid">
-        <li class="skill-group">
+        <li class="skill-group" data-category="ai">
           <h3>AI &amp; Machine Learning</h3>
-          <ul class="tag-list">
-            <li>Reinforcement Learning (PPO, MDP)</li>
-            <li>RAG pipelines</li>
-            <li>ChromaDB</li>
-            <li>Ollama</li>
-            <li>PyTorch</li>
-            <li>TensorFlow</li>
-            <li>NumPy</li>
-            <li>Pandas</li>
+          <ul class="badge-list">
+            <li class="badge">Reinforcement Learning (PPO, MDP)</li>
+            <li class="badge">RAG pipelines</li>
+            <li class="badge">ChromaDB</li>
+            <li class="badge">Ollama</li>
+            <li class="badge">PyTorch</li>
+            <li class="badge">TensorFlow</li>
+            <li class="badge">NumPy</li>
+            <li class="badge">Pandas</li>
           </ul>
         </li>
 
-        <li class="skill-group">
+        <li class="skill-group" data-category="backend">
           <h3>Backend</h3>
-          <ul class="tag-list">
-            <li>Node.js</li>
-            <li>NestJS</li>
-            <li>Express</li>
-            <li>PostgreSQL</li>
-            <li>MongoDB</li>
-            <li>Prisma ORM</li>
-            <li>REST</li>
-            <li>JWT &amp; RBAC</li>
+          <ul class="badge-list">
+            <li class="badge">Node.js</li>
+            <li class="badge">NestJS</li>
+            <li class="badge">Express</li>
+            <li class="badge">PostgreSQL</li>
+            <li class="badge">MongoDB</li>
+            <li class="badge">Prisma ORM</li>
+            <li class="badge">REST</li>
+            <li class="badge">JWT &amp; RBAC</li>
           </ul>
         </li>
 
-        <li class="skill-group">
+        <li class="skill-group" data-category="frontend">
           <h3>Frontend</h3>
-          <ul class="tag-list">
-            <li>React</li>
-            <li>Tailwind CSS</li>
-            <li>HTML5</li>
-            <li>CSS3</li>
-            <li>Redux</li>
-            <li>Zustand</li>
+          <ul class="badge-list">
+            <li class="badge">React</li>
+            <li class="badge">Tailwind CSS</li>
+            <li class="badge">HTML5</li>
+            <li class="badge">CSS3</li>
+            <li class="badge">Redux</li>
+            <li class="badge">Zustand</li>
           </ul>
         </li>
 
-        <li class="skill-group">
+        <li class="skill-group" data-category="languages">
           <h3>Languages</h3>
-          <ul class="tag-list">
-            <li>Python</li>
-            <li>TypeScript</li>
-            <li>JavaScript</li>
-            <li>C++</li>
-            <li>SQL</li>
-            <li>LaTeX</li>
+          <ul class="badge-list">
+            <li class="badge">Python</li>
+            <li class="badge">TypeScript</li>
+            <li class="badge">JavaScript</li>
+            <li class="badge">C++</li>
+            <li class="badge">SQL</li>
+            <li class="badge">LaTeX</li>
           </ul>
         </li>
 
-        <li class="skill-group">
+        <li class="skill-group" data-category="tools">
           <h3>Infrastructure &amp; Tools</h3>
-          <ul class="tag-list">
-            <li>Docker</li>
-            <li>GitHub Actions</li>
-            <li>Swagger / OpenAPI</li>
-            <li>Git</li>
-            <li>Vercel</li>
-            <li>Render</li>
-            <li>Postman</li>
-            <li>Figma</li>
-            <li>Linux / WSL</li>
+          <ul class="badge-list">
+            <li class="badge">Docker</li>
+            <li class="badge">GitHub Actions</li>
+            <li class="badge">Swagger / OpenAPI</li>
+            <li class="badge">Git</li>
+            <li class="badge">Vercel</li>
+            <li class="badge">Render</li>
+            <li class="badge">Postman</li>
+            <li class="badge">Figma</li>
+            <li class="badge">Linux / WSL</li>
           </ul>
         </li>
       </ul>
