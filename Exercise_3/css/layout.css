@@ -1,0 +1,208 @@
+/* ==========================================================================
+   T-02B – 2D Grid Layout (page frame + shared badge primitive)
+   Contract: Exercise_2/TASK_DECOMPOSITION.md §3.4
+             Exercise_3/TASK_DECOMPOSITION.md §3.1, §3.5 (.badge-list/.badge)
+   Component styles move out to css/components/*.css task by task.
+   Mobile-first (375px). Uses only tokens declared in tokens.css:
+   no new tokens, no color values.
+   ========================================================================== */
+
+/* 1. Page frame -------------------------------------------------------------
+   Full-width bands; content is centred by padding instead of wrapper divs.
+   max() keeps a 16px gutter on phones and caps the line at --content-max. */
+
+body > header,
+body > nav,
+body > main,
+body > footer {
+  padding-inline: max(var(--space-4), calc((100% - var(--content-max)) / 2));
+}
+
+/* 2. Skip link --------------------------------------------------------------
+   Moved off-screen, not display:none, so it stays focusable. */
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 10;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* 3. Header: title + toggle on one row, tagline below ---------------------- */
+
+body > header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "title   toggle"
+    "tagline tagline";
+  align-items: start;
+  gap: var(--space-2) var(--space-4);
+  padding-block: var(--space-8) var(--space-6);
+  background-color: var(--color-surface);
+}
+
+body > header h1 {
+  grid-area: title;
+}
+
+body > header p {
+  grid-area: tagline;
+  color: var(--color-text-muted);
+}
+
+#theme-toggle {
+  grid-area: toggle;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  border-radius: var(--radius);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  cursor: pointer;
+}
+
+/* 4. Navigation (1D flex) -------------------------------------------------- */
+
+body > nav {
+  border-block: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+body > nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  list-style: none;
+}
+
+body > nav a {
+  display: inline-block;
+  padding-block: var(--space-3);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+body > nav a:hover {
+  text-decoration: underline;
+}
+
+/* 5. Main & sections ------------------------------------------------------- */
+
+body > main {
+  display: grid;
+  gap: var(--space-8);
+  padding-block: var(--space-8);
+}
+
+main > section {
+  display: grid;
+  gap: var(--space-4);
+}
+
+address {
+  font-style: normal;
+}
+
+/* 6. Badge list (shared by projects and skills) ---------------------------- */
+
+.badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.badge {
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  color: var(--color-text-muted);
+}
+
+/* 7. Experience timeline --------------------------------------------------- */
+
+.timeline {
+  display: grid;
+  gap: var(--space-6);
+  list-style: none;
+}
+
+.experience-item {
+  display: grid;
+  gap: var(--space-2);
+  padding-inline-start: var(--space-4);
+  border-inline-start: var(--space-1) solid var(--color-accent);
+}
+
+.experience-meta {
+  color: var(--color-text-muted);
+}
+
+.experience-item ul {
+  display: grid;
+  gap: var(--space-1);
+  padding-inline-start: var(--space-6);
+}
+
+/* 8. Project & skill grids (2D) -------------------------------------------- */
+
+.project-grid,
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--card-min), 100%), 1fr));
+  gap: var(--space-6);
+  list-style: none;
+}
+
+.project-card,
+.skill-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+}
+
+/* Links stick to the bottom so cards in one row line up */
+.project-card footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin-top: auto;
+}
+
+/* 9. Footer ---------------------------------------------------------------- */
+
+body > footer {
+  padding-block: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+}
+
+/* 10. Wider screens -------------------------------------------------------- */
+
+@media (min-width: 48rem) {
+  body > main {
+    padding-block: var(--space-8) calc(var(--space-8) * 2);
+  }
+
+  /* Role + dates in a side column, achievements beside them */
+  .experience-item {
+    grid-template-columns: minmax(12rem, 1fr) 2fr;
+    gap: var(--space-4) var(--space-8);
+  }
+}
