@@ -27,6 +27,7 @@
 5. **Explain, don't just dump.** Each answer includes: the code, a short explanation per block, and how to verify it (DevTools step / grep command).
 6. **Review mode.** When asked to "audit" or "review", list issues only — do not rewrite the code.
 7. **Keep it editable.** Data and configuration (attribute names, key bindings, tokens, timestamps) live in one place, so a single constraint change during live defense needs a one-line edit.
+8. **Slides teach syntax, not content.** Page copy must read like a real portfolio written for visitors. Never paste slide demo text (e.g. `H<sub>2</sub>O`, `2<sup>10</sup>`, slide quotes), lab requirements ("zero-div", "never uses innerHTML") or AI-workflow commentary into visible content. Use a semantic element only where the real content calls for it.
 
 ---
 
@@ -81,7 +82,27 @@
 
 ---
 
-## 7. Definition of Done (per sub-task)
+## 7. Slide Errata (do NOT copy these sample snippets verbatim)
+
+The lab slides contain sample code that contradicts the rules above. When a slide and this file disagree, this file wins.
+
+| Slide | Slide sample | Problem | Correct approach |
+|---|---|---|---|
+| 4 | Viewport "enforces 1:1 hardware pixel scaling" | `width=device-width` maps to **CSS pixels**, not device pixels (DPR ≠ 1) | Explain it as CSS-pixel layout viewport in the oral defense |
+| 7 | Skip-link text `href="#main"` vs code `id="main-content"` | Broken anchor | Always `href="#main-content"` |
+| 7 | `<header role="banner">`, `<nav role="navigation">`, `<main role="main">` | Redundant ARIA on native landmarks (validator warning) | Native elements only, no `role` |
+| 9 | Hero/avatar `<img ... loading="lazy">` | Lazy-loading the above-the-fold LCP image delays LCP | No `loading="lazy"` on the LCP image; optionally `fetchpriority="high"` |
+| 11 | "Only GET and POST exist natively" | `method="dialog"` also exists | — |
+| 12 | `:has()` listed as "Newly available" | Widely available since mid-2026 | Check MDN Baseline before deciding |
+| 14 | `<a href="#" aria-label="View State Engine repository">Source Code</a>` | Dead `href="#"`; `aria-label` does not contain visible text (WCAG 2.5.3 Label in Name) | Real URL; `aria-label` starts with the visible text, e.g. "Source code of State Engine on GitHub" |
+| 17 / 19 | `.project-card` uses `var(--border-color)` | Token never declared in `theme.css` | Declare every token in `:root` (and dark overrides) |
+| 18 | Skeleton gradient `#1e293b`, `#334155`; `animation: ... infinite` | Hardcoded hex outside `:root`; ignores reduced motion | Use tokens; disable shimmer in `prefers-reduced-motion: reduce`; `aria-busy="true"` on loading region |
+| 19 + 22 | Dark mode only via `@media`; JS toggles `.dark-theme` | Toggle has no visible effect (no `.dark-theme` rule); saved theme never re-applied on load | Add `.dark-theme` (and light override) token block; read `localStorage.theme` → fallback `matchMedia` on load; set initial `aria-pressed` |
+| 23 | ``querySelector(`.drum-pad[data-key="${key}"]`)`` with raw `e.key` | Keys like `"` or `\` throw `SyntaxError` (console error); `play()` promise rejection unhandled | `CSS.escape(key)` or a lookup map; `audio.play().catch(...)` |
+
+---
+
+## 8. Definition of Done (per sub-task)
 
 - [ ] Matches the contract in `TASK_DECOMPOSITION.md` (names, ids, attributes, states).
 - [ ] Renders correctly at 375px with no horizontal scroll.
