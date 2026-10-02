@@ -1,0 +1,75 @@
+/* ==========================================================================
+   T-03-1C – Hero Section
+   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.3
+   Page banner: avatar + headline + pitch, with the theme toggle in a corner.
+   The <img> carries width/height="320", so the browser reserves a 1:1 box
+   before the file arrives (CLS = 0); CSS only scales it to --avatar-size.
+   ========================================================================== */
+
+/* 1. Grid: mobile stacks avatar/toggle, then title, then pitch ------------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "avatar toggle"
+    "title  title"
+    "pitch  pitch";
+  align-items: start;
+  gap: var(--space-4);
+  padding-block: var(--space-8) var(--space-6);
+  background-color: var(--color-surface);
+}
+
+.hero-portrait {
+  grid-area: avatar;
+}
+
+.hero > #theme-toggle {
+  grid-area: toggle;
+}
+
+.hero-title {
+  grid-area: title;
+}
+
+.hero-pitch {
+  grid-area: pitch;
+  max-width: 60ch;
+  color: var(--color-text-muted);
+}
+
+/* 2. Avatar ---------------------------------------------------------------
+   Circle crop; object-fit keeps the 1:1 image undistorted. */
+
+.hero-portrait img {
+  width: var(--avatar-size);
+  aspect-ratio: 1;
+  border: var(--space-1) solid var(--color-accent);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 3. Wider screens: avatar on the left, text block beside it --------------- */
+
+@media (min-width: 48rem) {
+  .hero {
+    --avatar-size: 14rem;
+
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      "avatar title toggle"
+      "avatar pitch pitch";
+    gap: var(--space-2) var(--space-8);
+  }
+
+  /* Title sits on the avatar's midline, pitch right under it */
+  .hero-title {
+    align-self: end;
+  }
+
+  .hero-pitch {
+    align-self: start;
+  }
+}

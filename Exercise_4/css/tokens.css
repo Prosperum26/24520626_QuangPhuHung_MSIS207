@@ -1,0 +1,194 @@
+/* ==========================================================================
+   T-02A – Tokens & Reset (+ T-03-0C component tokens)
+   Contract: Exercise_2/TASK_DECOMPOSITION.md §3.2 (tokens), §3.3 (cascade)
+             Exercise_3/TASK_DECOMPOSITION.md §3.2 (danger/success, sizes)
+             Exercise_4/TASK_DECOMPOSITION.md §3.5 (skeleton)
+   Hex values live ONLY in the primitive block below. Every rule uses
+   semantic tokens (--color-*), so any color change is a one-line edit.
+   ========================================================================== */
+
+/* 1. Tokens ---------------------------------------------------------------- */
+
+:root {
+  /* Primitive palette (the only place hex codes are allowed) */
+  --palette-slate-50: #f1f5f9;
+  --palette-slate-200: #e2e8f0;
+  --palette-slate-300: #cbd5e1;
+  --palette-slate-500: #64748b;
+  --palette-slate-600: #475569;
+  --palette-slate-700: #334155;
+  --palette-slate-800: #1e293b;
+  --palette-slate-900: #0f172a;
+  --palette-white: #ffffff;
+  --palette-blue-300: #93c5fd;
+  --palette-blue-700: #1d4ed8;
+  --palette-red-300: #fca5a5;
+  --palette-red-700: #b91c1c;
+  --palette-green-300: #86efac;
+  --palette-green-700: #15803d;
+
+  /* Semantic colors – light theme (default) */
+  --color-bg: var(--palette-white);
+  --color-surface: var(--palette-slate-50);
+  --color-text: var(--palette-slate-900);
+  --color-text-muted: var(--palette-slate-600);
+  --color-accent: var(--palette-blue-700);
+  --color-on-accent: var(--palette-white);
+  --color-border: var(--palette-slate-500);
+  --color-focus: var(--palette-blue-700);
+  --color-danger: var(--palette-red-700);
+  --color-success: var(--palette-green-700);
+  --color-skeleton-base: var(--palette-slate-200);
+  --color-skeleton-highlight: var(--palette-slate-50);
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* Typography (system fonts only: no web font request on Fast 3G) */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: clamp(1.75rem, 5vw, 2.5rem);
+  --line-height: 1.6;
+
+  /* Layout */
+  --content-max: 72rem;
+  --card-min: 280px;
+  --radius: 0.5rem;
+  --focus-ring: 3px;
+
+  /* Component sizes (Exercise 3) */
+  --avatar-size: 10rem;
+  --icon-size: 1.25rem;
+
+  /* Loading skeleton (Exercise 4) */
+  --skeleton-duration: 1.5s;
+}
+
+/* Dark theme from the OS, unless the user forced light */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light-theme) {
+    --color-bg: var(--palette-slate-900);
+    --color-surface: var(--palette-slate-800);
+    --color-text: var(--palette-slate-50);
+    --color-text-muted: var(--palette-slate-300);
+    --color-accent: var(--palette-blue-300);
+    --color-on-accent: var(--palette-slate-900);
+    --color-focus: var(--palette-blue-300);
+    --color-danger: var(--palette-red-300);
+    --color-success: var(--palette-green-300);
+    --color-skeleton-base: var(--palette-slate-800);
+    --color-skeleton-highlight: var(--palette-slate-700);
+  }
+}
+
+/* Dark theme forced by the toggle (js/theme.js) */
+:root.dark-theme {
+  --color-bg: var(--palette-slate-900);
+  --color-surface: var(--palette-slate-800);
+  --color-text: var(--palette-slate-50);
+  --color-text-muted: var(--palette-slate-300);
+  --color-accent: var(--palette-blue-300);
+  --color-on-accent: var(--palette-slate-900);
+  --color-focus: var(--palette-blue-300);
+  --color-danger: var(--palette-red-300);
+  --color-success: var(--palette-green-300);
+  --color-skeleton-base: var(--palette-slate-800);
+  --color-skeleton-highlight: var(--palette-slate-700);
+}
+
+/* Native UI (scrollbars, form controls) follows the active theme */
+html {
+  color-scheme: light dark;
+}
+
+:root.dark-theme {
+  color-scheme: dark;
+}
+
+:root.light-theme {
+  color-scheme: light;
+}
+
+/* 2. Reset ----------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* 3. Base typography ------------------------------------------------------- */
+
+body {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: var(--font-size-xl);
+}
+
+h2 {
+  font-size: var(--font-size-lg);
+}
+
+h3 {
+  font-size: var(--font-size-base);
+}
+
+a {
+  color: var(--color-accent);
+  text-underline-offset: 0.2em;
+}
+
+/* 4. Focus ----------------------------------------------------------------- */
+
+:focus-visible {
+  outline: var(--focus-ring) solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* 5. Motion ---------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+}

@@ -1,0 +1,2020 @@
+ ▐▛███▛█   Claude Code v2.1.287
+▝▜██████▀  Opus 5.5 · Claude Pro
+ ▝▝   ▝▝   C:\Dev\Project\MSIS207_Lab1
+
+
+> [Image #1] Ok brainstorm tạo file Task decomposition và chuẩn bị cho Exercise 
+  3 đi                                                                          
+  ⎿  [Image #1]
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Đang đọc BRAINSTORM và slide lab để nắm đề Exercise 3, sau đó sẽ viết file
+  decomposition.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● I've read the Exercise 3 slide (page 14), the Ex2 code, project-rules.md and
+  the Ex3 notes in BRAINSTORM. Two decisions change the contract, so I want to
+  settle them before writing the file:
+
+● User declined to answer questions
+  ⎿  · Hero needs a real portrait photo (rule F-02: never point to an image that
+     doesn't exist or invent alt text). Do you have one? (I have a photo 
+     (Recommended) / No photo yet)
+     · The Contact Form has no backend. How should a valid submit be handled? 
+     (Mailto adapter (Recommended) / Form service (Formspree…) / Simulated 
+     (setTimeout))
+
+● Trước khi viết Exercise_3/TASK_DECOMPOSITION.md, mình cần chốt 2 điểm vì chúng
+  thay đổi contract:
+
+  1. Ảnh chân dung cho Hero. Bạn đã có ảnh thật chưa? Theo bài học F-02, mình sẽ
+     không trỏ tới file ảnh không tồn tại và không tự viết alt text. Nếu có,
+     mình sẽ thêm bước xuất ảnh sang AVIF/WebP/JPG ở 2 cỡ 320/640px, giữ AVIF ≤
+     30 KB để LCP dưới 2s.
+  2. Gửi Contact Form. Trang không có backend nên có 3 cách:
+     - Mailto (mình đề xuất): trung thực, không phụ thuộc dịch vụ ngoài.
+     - Dịch vụ form như Formspree: state lỗi là lỗi thật, nhưng cần tạo tài
+       khoản và dữ liệu đi qua bên thứ ba.
+     - Giả lập bằng setTimeout: dễ demo, nhưng khách sẽ thấy "Đã gửi" dù thực ra
+       chưa gửi gì.
+
+  Bạn muốn làm rõ điểm nào, hoặc có định hướng khác cho Exercise 3 không?
+
+✻ Sautéed for 1m 56s · done 21:46
+
+> Đừng dùng ảnh mình dùng ảnh này đi [Image #2], contact form dùng mail to đi.  
+  ⎿  [Image #2]
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Đã rõ. Mình kiểm tra nhanh thì ảnh có kích thước 1024×1024 RGBA, nặng 2.5 MB,
+  và Pillow trên máy hỗ trợ xuất AVIF/WebP. Giờ mình viết spec.
+
+● Write(Exercise_3\TASK_DECOMPOSITION.md)
+  ⎿  Wrote 496 lines to Exercise_3\TASK_DECOMPOSITION.md
+      1 # TASK_DECOMPOSITION – Exercise 3 (Elevated): Component Architect
+        ure & State Modeling
+      2 
+      4 > Tài liệu này được viết và commit **trước** khi prompt AI sinh c
+        ode (`docs(spec)` đi trước mọi commit code).
+      5 > Mọi prompt AI đều tham chiếu đúng **1** task ID dưới đây và đín
+        h kèm `project-rules.md` + phần contract liên quan.
+      7 ---
+      8 
+      9 ## 1. Mục tiêu bài
+     … +730 lines (ctrl+o to expand)
+
+● Update(Exercise_3\TASK_DECOMPOSITION.md)
+  ⎿  Added 1 line, removed 1 line
+      83  <script src="js/contact-form.js" defer></script>
+      84  ```
+      85  
+      86 -- Mỗi file JS là 1 IIFE-free script `defer` độc lập: tự `queryS
+         -elector` root của component, **thoát sớm nếu không tìm thấy** (
+         -`if (!root) return;` bọc trong hàm `init`). Không có biến globa
+         -l dùng chung giữa các file.                                    
+      86 +- Mỗi file JS là 1 script `defer` độc lập: tự `querySelector` r
+         +oot của component, **thoát sớm nếu không tìm thấy** (`if (!root
+         +) return;` bọc trong hàm `init`). Không có biến global dùng chu
+         +ng giữa các file.                                              
+      87  - Cách nạp 7 file CSS là rủi ro cho LCP vì HTTP/1.1 chỉ mở 6 kế
+          t nối/host. Xem mục 8.
+      88  
+      89  ### 3.2 Token mới (T-03-0C, chỉ thêm, không sửa token của Ex2)
+
+● Mình đã viết xong spec ở Exercise_3/TASK_DECOMPOSITION.md, theo cùng cấu trúc
+  với file của Ex2. Chưa có code nào được viết, chưa commit và chưa xuất ảnh.
+
+  Các quyết định chính trong spec:
+  - Quản lý state: state chỉ nằm trên DOM (data-state, data-active-filter,
+    aria-pressed, aria-invalid). JS chỉ ghi attribute, CSS chỉ đọc attribute để
+    hiển thị.
+  - Theme Switcher: icon sun/moon là SVG viết tay và được đổi hoàn toàn bằng CSS
+    qua [aria-pressed]. Vì vậy theme.js của Ex2 giữ nguyên, không phải sửa.
+  - Project Cards: làm theo markup của slide, nhưng đã sửa phần errata: link
+    thật thay cho href="#", và aria-label bắt đầu bằng text hiển thị. Thêm bộ
+    lọc theo data-category, ẩn từng <li> bằng thuộc tính hidden. Thêm category
+    mới chỉ cần sửa HTML.
+  - Contact Form (mailto):
+    - Có 5 state: idle, invalid, submitting, success, error.
+    - Khi tắt JS, form vẫn gửi được bằng native validation và action="mailto:".
+    - Dùng encodeURIComponent, không dùng URLSearchParams, vì URLSearchParams
+      biến dấu cách thành +.
+    - State error là lỗi thật: tin nhắn tiếng Việt có dấu khi mã hoá có thể làm
+      URL vượt 2000 ký tự. Muốn demo thì thêm ?form=fail.
+    - Trang không bao giờ báo "Message sent", vì nó không biết được email đã
+      thực sự gửi hay chưa.
+  - Commit: 17 commit, mỗi commit chỉ một loại file, tuân thủ đầy đủ §6 của
+    project-rules.md. Ex2 thì có trộn loại file.
+
+  Về ảnh, có 3 điểm đáng chú ý:
+  - Tên file là "BabyLeopard" nhưng ảnh thực ra là báo săn con (cheetah cub): có
+    vệt đen từ mắt xuống miệng và bờm lông xám. Mình để alt là "cheetah cub" để
+    mô tả đúng ảnh.
+  - Góc phải dưới có watermark ✦, nghĩa là ảnh do AI tạo. Crop hình tròn sẽ che
+    mất góc đó, nhưng khi vấn đáp bạn nên nói rõ đây là ảnh minh hoạ do AI tạo.
+  - Ảnh gốc là PNG nặng 2.5 MB và sẽ không được commit. Script Pillow trong spec
+    sẽ xuất ra 6 file AVIF/WebP/JPG ở 2 cỡ 320 và 640px. Máy bạn đã có Pillow
+    hỗ trợ AVIF.
+
+  Rủi ro cần đo: 7 file CSS chặn render có thể đẩy LCP vượt 2s trên Fast 3G, vì
+  Live Server chỉ mở 6 kết nối mỗi host. Spec đã ghi sẵn phương án dự phòng là
+  gộp CSS các component thành một file nếu số đo không đạt.
+
+  Bước tiếp theo, bạn muốn mình commit docs(spec): exercise 3 component 
+  contracts & WBS rồi làm luôn T-03-0A (xuất ảnh) không?
+
+✻ Cogitated for 4m 1s · done 21:51
+
+> ok thực luôn xuất ảnh đi, hoàn thiện architecture, và thực hiện tạo ảnh hero  
+  section đi.                                                                   
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Spec đã commit. Giờ làm baseline (T-03-0H/C/J) và xuất ảnh (T-03-0A).
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1" && mkdir -p Exercise_3/css/components
+      Exercise_3/js Exercise_3/assets && cp Exercise_2/index.html
+      Exercise_3/index.html && cp E…)
+  ⎿    display: flex;
+       flex-wrap: wrap;
+       gap: var(--space-1) var(--space-4);
+     … +124 lines (ctrl+o to expand)
+  ⎿  Created Exercise_3\css\layout.css (+206 -0)
+        1 +/* ===========================================================
+          +===============                                               
+        2 +   T-02B – 2D Grid Layout                                     
+        3 +   Contract: Exercise_2/TASK_DECOMPOSITION.md §3.4            
+        4 +   Mobile-first (375px). Uses only tokens declared in tokens.c
+          +ss:                                                           
+        5 +   no new tokens, no color values.                            
+        6 +   ===========================================================
+          +=============== */                                            
+        7 +                                                              
+        8 +/* 1. Page frame ---------------------------------------------
+          +----------------                                              
+        9 +   Full-width bands; content is centred by padding instead of 
+          +wrapper divs.                                                 
+       10 +   max() keeps a 16px gutter on phones and caps the line at --
+          +content-max. */                                               
+       11 +                                                              
+       12 +body > header,                                                
+       13 +body > nav,                                                   
+       14 +body > main,                                                  
+       15 +body > footer {                                               
+       16 +  padding-inline: max(var(--space-4), calc((100% - var(--conte
+          +nt-max)) / 2));                                               
+       17 +}                                                             
+       18 +                                                              
+       19 +/* 2. Skip link ----------------------------------------------
+          +----------------                                              
+       20 +   Moved off-screen, not display:none, so it stays focusable. 
+          +*/                                                            
+       21 +                                                              
+       22 +.skip-link {                                                  
+       23 +  position: absolute;                                         
+       24 +  top: var(--space-2);                                        
+       25 +  left: var(--space-2);                                       
+       26 +  z-index: 10;                                                
+       27 +  padding: var(--space-2) var(--space-4);                     
+       28 +  border-radius: var(--radius);                               
+       29 +  background-color: var(--color-accent);                      
+       30 +  color: var(--color-on-accent);                              
+       31 +  transform: translateY(-200%);                               
+       32 +}                                                             
+       33 +                                                              
+       34 +.skip-link:focus {                                            
+       35 +  transform: translateY(0);                                   
+       36 +}                                                             
+       37 +                                                              
+       38 +/* 3. Header: title + toggle on one row, tagline below -------
+          +--------------- */                                            
+       39 +                                                              
+       40 +body > header {                                               
+     … 166 more lines (ctrl+o to expand)
+  ⎿  Created Exercise_3\css\tokens.css (+166 -0)
+        1 +/* ===========================================================
+          +===============                                               
+        2 +   T-02A – Tokens & Reset                                     
+        3 +   Contract: Exercise_2/TASK_DECOMPOSITION.md §3.2 (tokens), §
+          +3.3 (cascade)                                                 
+        4 +   Hex values live ONLY in the primitive block below. Every ru
+          +le uses                                                       
+        5 +   semantic tokens (--color-*), so any color change is a one-l
+          +ine edit.                                                     
+        6 +   ===========================================================
+          +=============== */                                            
+        7 +                                                              
+        8 +/* 1. Tokens -------------------------------------------------
+          +--------------- */                                            
+        9 +                                                              
+       10 +:root {                                                       
+       11 +  /* Primitive palette (the only place hex codes are allowed) 
+          +*/                                                            
+       12 +  --palette-slate-50: #f1f5f9;                                
+       13 +  --palette-slate-300: #cbd5e1;                               
+       14 +  --palette-slate-500: #64748b;                               
+       15 +  --palette-slate-600: #475569;                               
+       16 +  --palette-slate-800: #1e293b;                               
+       17 +  --palette-slate-900: #0f172a;                               
+       18 +  --palette-white: #ffffff;                                   
+       19 +  --palette-blue-300: #93c5fd;                                
+       20 +  --palette-blue-700: #1d4ed8;                                
+       21 +                                                              
+       22 +  /* Semantic colors – light theme (default) */               
+       23 +  --color-bg: var(--palette-white);                           
+       24 +  --color-surface: var(--palette-slate-50);                   
+       25 +  --color-text: var(--palette-slate-900);                     
+       26 +  --color-text-muted: var(--palette-slate-600);               
+       27 +  --color-accent: var(--palette-blue-700);                    
+       28 +  --color-on-accent: var(--palette-white);                    
+       29 +  --color-border: var(--palette-slate-500);                   
+       30 +  --color-focus: var(--palette-blue-700);                     
+       31 +                                                              
+       32 +  /* Spacing */                                               
+       33 +  --space-1: 0.25rem;                                         
+       34 +  --space-2: 0.5rem;                                          
+       35 +  --space-3: 0.75rem;                                         
+       36 +  --space-4: 1rem;                                            
+       37 +  --space-6: 1.5rem;                                          
+       38 +  --space-8: 2rem;                                            
+       39 +                                                              
+       40 +  /* Typography (system fonts only: no web font request on Fas
+          +t 3G) */                                                      
+     … 126 more lines (ctrl+o to expand)
+  ⎿  Created Exercise_3\index.html (+274 -0)
+        1 +<!DOCTYPE html>                                               
+        2 +<html lang="en">                                              
+        3 +<head>                                                        
+        4 +  <meta charset="UTF-8">                                      
+        5 +  <meta name="viewport" content="width=device-width, initial-s
+          +cale=1.0">                                                    
+        6 +  <meta name="description" content="Portfolio of Quảng Phú Hưn
+          +g, Information Systems student building backend and AI-powered
+          + full-stack systems.">                                        
+        7 +  <title>Quảng Phú Hưng | Backend &amp; AI Developer</title>  
+        8 +  <link rel="icon" href="data:,">                             
+        9 +  <link rel="stylesheet" href="css/tokens.css">               
+       10 +  <link rel="stylesheet" href="css/layout.css">               
+       11 +  <script src="js/theme.js" defer></script>                   
+       12 +</head>                                                       
+       13 +<body>                                                        
+       14 +  <a href="#main-content" class="skip-link">Skip to main conte
+          +nt</a>                                                        
+       15 +                                                              
+       16 +  <header>                                                    
+       17 +    <h1><span lang="vi">Quảng Phú Hưng</span> &mdash; Backend 
+          +&amp; AI Developer</h1>                                       
+       18 +    <p>Building high-performance full-stack systems with a foc
+          +us on backend and AI.</p>                                     
+       19 +    <button type="button" id="theme-toggle" aria-pressed="fals
+          +e">Dark mode</button>                                         
+       20 +  </header>                                                   
+       21 +                                                              
+       22 +  <nav aria-label="Primary">                                  
+       23 +    <ul>                                                      
+       24 +      <li><a href="#about">About</a></li>                     
+       25 +      <li><a href="#experience">Experience</a></li>           
+       26 +      <li><a href="#projects">Projects</a></li>               
+       27 +      <li><a href="#skills">Skills</a></li>                   
+       28 +      <li><a href="#contact">Contact</a></li>                 
+       29 +    </ul>                                                     
+       30 +  </nav>                                                      
+       31 +                                                              
+       32 +  <main id="main-content">                                    
+       33 +    <section id="about" aria-labelledby="about-title">        
+       34 +      <h2 id="about-title">About</h2>                         
+       35 +      <p>                                                     
+       36 +        I am an <strong>Information Systems student</strong> a
+          +t the University of                                           
+       37 +        Information Technology, VNU-HCM, ranked first in the I
+          +nformation Systems                                            
+       38 +        Advanced Program in my first semester of 2025&ndash;20
+          +26.                                                           
+       39 +      </p>                                                    
+       40 +      <p>                                                     
+     … 234 more lines (ctrl+o to expand)
+  ⎿  Created Exercise_3\js\theme.js (+70 -0)
+       1 +/* ============================================================
+         +==============                                                 
+       2 +   T-02C – Theme Engine                                        
+       3 +   Contract: Exercise_2/TASK_DECOMPOSITION.md §3.3             
+       4 +   - Persistence: localStorage key 'theme' = 'dark' | 'light' (
+         +nothing else)                                                  
+       5 +   - Saved choice → force class on <html>; no choice → follow t
+         +he OS via                                                      
+       6 +     @media in tokens.css (no class), tracked here only for ari
+         +a-pressed.                                                     
+       7 +   ============================================================
+         +============== */                                              
+       8 +                                                               
+       9 +const STORAGE_KEY = 'theme';                                   
+      10 +const THEME_CLASSES = { dark: 'dark-theme', light: 'light-theme
+         +' };                                                           
+      11 +                                                               
+      12 +const root = document.documentElement;                         
+      13 +const toggle = document.querySelector('#theme-toggle');        
+      14 +const systemDark = window.matchMedia('(prefers-color-scheme: da
+         +rk)');                                                         
+      15 +                                                               
+      16 +/* Storage can throw (private mode, blocked site data), so ever
+         +y access is                                                    
+      17 +   guarded: the theme still works for this visit, just without 
+         +persistence. */                                                
+      18 +const readSavedTheme = () => {                                 
+      19 +  try {                                                        
+      20 +    const value = localStorage.getItem(STORAGE_KEY);           
+      21 +    return Object.hasOwn(THEME_CLASSES, value) ? value : null; 
+      22 +  } catch {                                                    
+      23 +    return null;                                               
+      24 +  }                                                            
+      25 +};                                                             
+      26 +                                                               
+      27 +const saveTheme = (theme) => {                                 
+      28 +  try {                                                        
+      29 +    localStorage.setItem(STORAGE_KEY, theme);                  
+      30 +  } catch {                                                    
+      31 +    // Storage blocked: keep the in-memory theme only.         
+      32 +  }                                                            
+      33 +};                                                             
+      34 +                                                               
+      35 +const getSystemTheme = () => (systemDark.matches ? 'dark' : 'li
+         +ght');                                                         
+      36 +                                                               
+      37 +/* forced = true  → user choice, pin it with a class           
+      38 +   forced = false → OS choice, remove both classes and let @med
+         +ia decide */                                                   
+      39 +const applyTheme = (theme, forced) => {                        
+      40 +  root.classList.toggle(THEME_CLASSES.dark, forced && theme ===
+         + 'dark');                                                      
+     … 30 more lines (ctrl+o to expand)
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1" && python - <<'EOF'
+      from PIL import Image…)
+  ⎿  hero-avatar-320.avif 10.9 KB (320, 320)
+     hero-avatar-320.jpg 24.4 KB (320, 320)
+     hero-avatar-320.webp 19.2 KB (320, 320)
+     … +3 lines (ctrl+o to expand)
+  ⎿  6 files changed (binary, mode only or too large to show)
+
+● AVIF 640 nặng 40.3 KB, vượt ngân sách 40 KB một chút, nên mình hạ quality để
+  xuất lại:
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1" && python - <<'EOF'
+      from PIL import Image…)
+  ⎿  33.2 KB
+  ⎿  1 file changed (binary, mode only or too large to show)
+
+  Read 2 files (ctrl+o to expand)
+
+● Ảnh xuất ra ổn. Giờ sửa tokens.css theo §3.2:
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1/Exercise_3/css" && python - <<'EOF'
+      p = "tokens.css"…)
+  ⎿  4:             Exercise_3/TASK_DECOMPOSITION.md §3.2 (danger/success,
+     sizes)
+     22:  --palette-red-300: #fca5a5;
+     … +12 lines (ctrl+o to expand)
+  ⎿  Updated Exercise_3\css\tokens.css (+17 -1)
+      1  /* =============================================================
+         =============
+      2 -   T-02A – Tokens & Reset                                       
+      2 +   T-02A – Tokens & Reset (+ T-03-0C component tokens)          
+      3     Contract: Exercise_2/TASK_DECOMPOSITION.md §3.2 (tokens), §3.
+         3 (cascade)
+      4 +             Exercise_3/TASK_DECOMPOSITION.md §3.2 (danger/succe
+        +ss, sizes)                                                      
+      5     Hex values live ONLY in the primitive block below. Every rule
+          uses
+      6     semantic tokens (--color-*), so any color change is a one-lin
+         e edit.
+      7     =============================================================
+         ============= */
+     ...
+      19    --palette-white: #ffffff;
+      20    --palette-blue-300: #93c5fd;
+      21    --palette-blue-700: #1d4ed8;
+      22 +  --palette-red-300: #fca5a5;                                  
+      23 +  --palette-red-700: #b91c1c;                                  
+      24 +  --palette-green-300: #86efac;                                
+      25 +  --palette-green-700: #15803d;                                
+      26  
+      27    /* Semantic colors – light theme (default) */
+      28    --color-bg: var(--palette-white);
+     ...
+      33    --color-on-accent: var(--palette-white);
+      34    --color-border: var(--palette-slate-500);
+      35    --color-focus: var(--palette-blue-700);
+      36 +  --color-danger: var(--palette-red-700);                      
+      37 +  --color-success: var(--palette-green-700);                   
+      38  
+      39    /* Spacing */
+      40    --space-1: 0.25rem;
+     ...
+      46  
+      47    /* Typography (system fonts only: no web font request on Fast
+           3G) */
+      48    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "H
+          elvetica Neue", Arial, sans-serif;
+      49 +  --font-size-sm: 0.875rem;                                    
+      50    --font-size-base: 1rem;
+      51    --font-size-lg: 1.25rem;
+      52    --font-size-xl: clamp(1.75rem, 5vw, 2.5rem);
+     ...
+      57    --card-min: 280px;
+      58    --radius: 0.5rem;
+      59    --focus-ring: 3px;
+      60 +                                                               
+      61 +  /* Component sizes (Exercise 3) */                           
+      62 +  --avatar-size: 10rem;                                        
+      63 +  --icon-size: 1.25rem;                                        
+     … 19 more lines (ctrl+o to expand)
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1/Exercise_3/css" && python - <<'EOF'
+      p = "layout.css"…)
+  ⎿  true
+     ../Exercise_2/css/layout.css: Unicode text, UTF-8 text
+     css/layout.css:               Unicode text, UTF-8 text
+  ⎿  Updated Exercise_3\css\layout.css (+6 -4)
+      1  /* =============================================================
+         =============
+      2 -   T-02B – 2D Grid Layout                                       
+      2 +   T-02B – 2D Grid Layout (page frame + shared badge primitive) 
+      3     Contract: Exercise_2/TASK_DECOMPOSITION.md §3.4
+      4 +             Exercise_3/TASK_DECOMPOSITION.md §3.1, §3.5 (.badge
+        +-list/.badge)                                                   
+      5 +   Component styles move out to css/components/*.css task by tas
+        +k.                                                              
+      6     Mobile-first (375px). Uses only tokens declared in tokens.css
+         :
+      7     no new tokens, no color values.
+      8     =============================================================
+         ============= */
+     ...
+      113    font-style: normal;
+      114  }
+      115  
+      114 -/* 6. Tag list (shared by projects and skills) ---------------
+          ---------------- */                                            
+      116 +/* 6. Badge list (shared by projects and skills) -------------
+          +--------------- */                                            
+      117  
+      116 -.tag-list {                                                   
+      118 +.badge-list {                                                 
+      119    display: flex;
+      120    flex-wrap: wrap;
+      121    gap: var(--space-2);
+      122    list-style: none;
+      123  }
+      124  
+      123 -.tag-list li {                                                
+      125 +.badge {                                                      
+      126    padding: var(--space-1) var(--space-2);
+      127    border: 1px solid var(--color-border);
+      128    border-radius: var(--radius);
+
+● Tạo file stub cho từng component để thẻ <link>/<script> trong baseline không
+  bị 404:
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1/Exercise_3" && mk() { printf '/* ========
+      ==================================================================\n
+      %s\n   Contract:…)  ⎿  /* ===================================================================
+     =======
+        T-03-1C – Hero Section
+     … +4 lines (ctrl+o to expand)
+  ⎿  Created Exercise_3\css\components\contact-form.css (+5 -0)
+      1 +/* =============================================================
+        +=============                                                   
+      2 +   T-03-5C – Contact Form                                       
+      3 +   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.7              
+      4 +   Placeholder from the baseline commit; filled in by task T-03-
+        +5C.                                                             
+      5 +   =============================================================
+        +============= */                                                
+  ⎿  Created Exercise_3\css\components\hero.css (+5 -0)
+      1 +/* =============================================================
+        +=============                                                   
+      2 +   T-03-1C – Hero Section                                       
+      3 +   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.3              
+      4 +   Placeholder from the baseline commit; filled in by task T-03-
+        +1C.                                                             
+      5 +   =============================================================
+        +============= */                                                
+  ⎿  Created Exercise_3\css\components\project-card.css (+5 -0)
+      1 +/* =============================================================
+        +=============                                                   
+      2 +   T-03-4C – Project Cards                                      
+      3 +   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.6              
+      4 +   Placeholder from the baseline commit; filled in by task T-03-
+        +4C.                                                             
+      5 +   =============================================================
+        +============= */                                                
+  ⎿  Created Exercise_3\css\components\skills-matrix.css (+5 -0)
+      1 +/* =============================================================
+        +=============                                                   
+      2 +   T-03-3C – Skills Matrix                                      
+      3 +   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.5              
+      4 +   Placeholder from the baseline commit; filled in by task T-03-
+        +3C.                                                             
+      5 +   =============================================================
+        +============= */                                                
+  ⎿  Created Exercise_3\css\components\theme-switcher.css (+5 -0)
+      1 +/* =============================================================
+        +=============                                                   
+      2 +   T-03-2C – Theme Switcher                                     
+      3 +   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.4              
+      4 +   Placeholder from the baseline commit; filled in by task T-03-
+        +2C.                                                             
+      5 +   =============================================================
+        +============= */                                                
+  ⎿  … 2 more files changed
+
+● Giờ là baseline HTML (thứ tự <head> theo §3.1):
+
+● Update(Exercise_3\index.html)
+  ⎿  Added 7 lines
+       8    <link rel="icon" href="data:,">
+       9    <link rel="stylesheet" href="css/tokens.css">
+      10    <link rel="stylesheet" href="css/layout.css">
+      11 +  <link rel="stylesheet" href="css/components/hero.css">       
+      12 +  <link rel="stylesheet" href="css/components/theme-switcher.cs
+         +s">                                                            
+      13 +  <link rel="stylesheet" href="css/components/skills-matrix.css
+         +">                                                             
+      14 +  <link rel="stylesheet" href="css/components/project-card.css"
+         +>                                                              
+      15 +  <link rel="stylesheet" href="css/components/contact-form.css"
+         +>                                                              
+      16    <script src="js/theme.js" defer></script>
+      17 +  <script src="js/project-filter.js" defer></script>           
+      18 +  <script src="js/contact-form.js" defer></script>             
+      19  </head>
+      20  <body>
+      21    <a href="#main-content" class="skip-link">Skip to main conten
+          t</a>
+
+  Ran 1 shell command (ctrl+o to expand)
+  ⎿  PostToolUse:Bash says: Tip: Run /ultrareview before you push to catch bugs 
+     with a cloud-based multi-agent review — 3 free reviews left.
+
+● Baseline xong. Giờ làm T-03-1H, markup của hero:
+
+● Update(Exercise_3\index.html)
+  ⎿  Added 17 lines, removed 3 lines
+      20  <body>
+      21    <a href="#main-content" class="skip-link">Skip to main conten
+          t</a>
+      22  
+      23 -  <header>                                                     
+      24 -    <h1><span lang="vi">Quảng Phú Hưng</span> &mdash; Backend &
+         -amp; AI Developer</h1>                                         
+      25 -    <p>Building high-performance full-stack systems with a focu
+         -s on backend and AI.</p>                                       
+      23 +  <header class="hero">                                        
+      24 +    <picture class="hero-portrait">                            
+      25 +      <source type="image/avif"                                
+      26 +              srcset="assets/hero-avatar-320.avif 320w, assets/
+         +hero-avatar-640.avif 640w"                                     
+      27 +              sizes="(min-width: 48rem) 14rem, 10rem">         
+      28 +      <source type="image/webp"                                
+      29 +              srcset="assets/hero-avatar-320.webp 320w, assets/
+         +hero-avatar-640.webp 640w"                                     
+      30 +              sizes="(min-width: 48rem) 14rem, 10rem">         
+      31 +      <img src="assets/hero-avatar-320.jpg"                    
+      32 +           srcset="assets/hero-avatar-320.jpg 320w, assets/hero
+         +-avatar-640.jpg 640w"                                          
+      33 +           sizes="(min-width: 48rem) 14rem, 10rem"             
+      34 +           width="320" height="320"                            
+      35 +           alt="Avatar: a cheetah cub looking up in golden gras
+         +s"                                                             
+      36 +           fetchpriority="high" decoding="async">              
+      37 +    </picture>                                                 
+      38 +    <h1 class="hero-title"><span lang="vi">Quảng Phú Hưng</span
+         +> &mdash; Backend &amp; AI Developer</h1>                      
+      39 +    <p class="hero-pitch">Building high-performance full-stack 
+         +systems with a focus on backend and AI.</p>                    
+      40      <button type="button" id="theme-toggle" aria-pressed="false
+          ">Dark mode</button>
+      41    </header>
+      42  
+
+● Giờ là T-03-1C. Mình chuyển các rule header từ layout.css sang hero.css:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1/Exercise_3/css" && python - <<'EOF'
+      p = "layout.css"…)
+  ⎿  hex-check done
+  ⎿  Updated Exercise_3\css\components\hero.css (+71 -1)
+       1  /* ============================================================
+          ==============
+       2     T-03-1C – Hero Section
+       3     Contract: Exercise_3/TASK_DECOMPOSITION.md §3.3
+       4 -   Placeholder from the baseline commit; filled in by task T-03
+         --1C.                                                           
+       4 +   Page banner: avatar + headline + pitch, with the theme toggl
+         +e in a corner.                                                 
+       5 +   The <img> carries width/height="320", so the browser reserve
+         +s a 1:1 box                                                    
+       6 +   before the file arrives (CLS = 0); CSS only scales it to --a
+         +vatar-size.                                                    
+       7     ============================================================
+          ============== */
+       8 +                                                               
+       9 +/* 1. Grid: mobile stacks avatar/toggle, then title, then pitch
+         + ------------- */                                              
+      10 +                                                               
+      11 +.hero {                                                        
+      12 +  display: grid;                                               
+      13 +  grid-template-columns: 1fr auto;                             
+      14 +  grid-template-areas:                                         
+      15 +    "avatar toggle"                                            
+      16 +    "title  title"                                             
+      17 +    "pitch  pitch";                                            
+      18 +  align-items: start;                                          
+      19 +  gap: var(--space-4);                                         
+      20 +  padding-block: var(--space-8) var(--space-6);                
+      21 +  background-color: var(--color-surface);                      
+      22 +}                                                              
+      23 +                                                               
+      24 +.hero-portrait {                                               
+      25 +  grid-area: avatar;                                           
+      26 +}                                                              
+      27 +                                                               
+      28 +.hero > #theme-toggle {                                        
+      29 +  grid-area: toggle;                                           
+      30 +}                                                              
+      31 +                                                               
+      32 +.hero-title {                                                  
+      33 +  grid-area: title;                                            
+      34 +}                                                              
+      35 +                                                               
+      36 +.hero-pitch {                                                  
+      37 +  grid-area: pitch;                                            
+      38 +  max-width: 60ch;                                             
+      39 +  color: var(--color-text-muted);                              
+     … 36 more lines (ctrl+o to expand)
+  ⎿  Updated Exercise_3\css\layout.css (+3 -23)
+      37    transform: translateY(0);
+      38  }
+      39  
+      40 -/* 3. Header: title + toggle on one row, tagline below --------
+         --------------- */                                              
+      41 -                                                               
+      42 -body > header {                                                
+      43 -  display: grid;                                               
+      44 -  grid-template-columns: 1fr auto;                             
+      45 -  grid-template-areas:                                         
+      46 -    "title   toggle"                                           
+      47 -    "tagline tagline";                                         
+      48 -  align-items: start;                                          
+      49 -  gap: var(--space-2) var(--space-4);                          
+      50 -  padding-block: var(--space-8) var(--space-6);                
+      51 -  background-color: var(--color-surface);                      
+      52 -}                                                              
+      53 -                                                               
+      54 -body > header h1 {                                             
+      55 -  grid-area: title;                                            
+      56 -}                                                              
+      57 -                                                               
+      58 -body > header p {                                              
+      59 -  grid-area: tagline;                                          
+      60 -  color: var(--color-text-muted);                              
+      61 -}                                                              
+      40 +/* 3. Header --------------------------------------------------
+         +---------------                                                
+      41 +   Hero layout lives in components/hero.css (T-03-1C).         
+      42 +   Toggle look stays here until it moves to theme-switcher.css 
+         +(T-03-2C). */                                                  
+      43  
+      44  #theme-toggle {
+      64 -  grid-area: toggle;                                           
+      45    min-height: 2.75rem;
+      46    padding: var(--space-2) var(--space-4);
+      47    border: 0;
+
+● Kiểm tra render thật bằng Edge headless qua một HTTP server (không mở qua
+  file:///):
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+
+● Ảnh chụp ở 375px có vẻ bị tràn ngang, có thể do Edge headless không thu nhỏ
+  cửa sổ đúng kích thước. Mình sẽ kiểm tra lại bằng iframe rộng chính xác 375px
+  để đảm bảo viewport đúng.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Ở 375px mọi thứ hiển thị đúng, không bị tràn ngang; lỗi trong ảnh chụp trước
+  chỉ do giới hạn của headless. Giờ tôi sẽ commit phần hero thành 2 commit riêng
+  cho HTML và CSS.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Spec, architecture và Hero Section của Exercise 3 đã xong, gồm 7 commit trên
+  main. Mỗi commit chỉ chứa một loại file. Mình chưa push.
+
+  Commit: f7a9365 docs(spec)
+  Nội dung: Exercise_3/TASK_DECOMPOSITION.md
+  ────────────────────────────────────────
+  Commit: f4d2e15 chore(css)
+  Nội dung: Copy CSS từ Ex2, thêm token mới (--color-danger/--color-success cho
+  cả 2 theme, --font-size-sm, --avatar-size, --icon-size), đổi .tag-list thành
+  .badge-list/.badge, tạo 5 file CSS component
+  ────────────────────────────────────────
+  Commit: 773bb3b chore(js)
+  Nội dung: theme.js giữ nguyên từ Ex2; thêm 2 file JS rỗng cho filter và form
+  ────────────────────────────────────────
+  Commit: bdee8d8 chore(html)
+  Nội dung: Trang của Ex2, nạp 7 CSS và 3 JS theo đúng thứ tự trong spec
+  ────────────────────────────────────────
+  Commit: 8abfe24 chore(assets)
+  Nội dung: 6 file ảnh hero
+  ────────────────────────────────────────
+  Commit: f461153 feat(html)
+  Nội dung: Hero: header.hero dùng <picture>, có width/height,
+  fetchpriority="high", không lazy-load
+  ────────────────────────────────────────
+  Commit: 04e24a9 feat(css)
+  Nội dung: hero.css: mobile xếp dọc, từ 48rem trở lên avatar nằm cạnh phần chữ;
+
+  avatar crop tròn
+
+  Ảnh hero:
+
+  ┌──────────┬────────────┬───────────┐
+  │   File   │ Kích thước │ Ngân sách │
+  ├──────────┼────────────┼───────────┤
+  │ 320 AVIF │ 10.9 KB    │ ≤ 15 KB   │
+  ├──────────┼────────────┼───────────┤
+  │ 640 AVIF │ 33.2 KB    │ ≤ 40 KB   │
+  ├──────────┼────────────┼───────────┤
+  │ 320 JPG  │ 24.4 KB    │ ≤ 35 KB   │
+  └──────────┴────────────┴───────────┘
+
+  Lần xuất đầu, bản 640 AVIF nặng 40.3 KB, vượt ngân sách. Mình đã hạ quality từ
+  50 xuống 45 để xuất lại.
+
+  Đã kiểm tra trên Edge headless (qua HTTP, không dùng file:///):
+  - Ở 375px (đo trong iframe rộng đúng 375px): không tràn ngang, avatar và nút
+    "Dark mode" cùng nằm hàng đầu, tên tự xuống dòng.
+  - Ở 1280px: avatar bên trái, tiêu đề và pitch bên cạnh, nút toggle ở góc phải.
+  - Chỉ kiểm tra được giao diện dark. Theme light của hero chưa chụp.
+  - Lighthouse, LCP trên Fast 3G và Network để xác nhận trình duyệt chỉ tải đúng
+    bản AVIF 320 vẫn chưa đo. Bạn nhớ kiểm tra bằng Live Server và chụp màn
+    hình cho prompt log.
+
+  Khác với spec:
+  - Mình commit theo thứ tự CSS → JS → HTML thay vì HTML trước, để ở commit nào
+    trang cũng không bị lỗi 404.
+  - Ở bước baseline, mình tạo sẵn các file component rỗng (chỉ có comment
+    header) cũng vì lý do đó.
+
+  Điểm cần nhớ:
+  - Từ giờ tới khi làm T-03-3H/T-03-4H, các tag trong Skills và Projects tạm
+    thời mất style, vì HTML vẫn dùng .tag-list trong khi CSS đã đổi sang
+    .badge-list. Theo spec thì đây là trạng thái tạm.
+  - Style của nút toggle vẫn nằm trong layout.css, sẽ chuyển sang
+    theme-switcher.css ở T-03-2C.
+
+  Task tiếp theo là T-03-2H: thêm icon SVG sun/moon vào nút theme. Bạn muốn mình
+  làm tiếp không?
+
+✻ Sautéed for 3m 1s · done 21:58
+
+> Update rule lần sau không tự commit nữa, bắt đầu thực hiện task T-03-2 và     
+  T-03-3 luôn đi                                                                
+
+● Mình sẽ cập nhật rule trước, sau đó làm T-03-2 và T-03-3. Từ giờ mình không tự
+  commit nữa.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(project-rules.md)
+  ⎿  Added 1 line
+      79  - No commit adding 100+ lines across multiple files without a m
+          atching spec in `TASK_DECOMPOSITION.md`.
+      80  - Spec first: the `docs(spec): ...` commit for an exercise come
+          s before any code commit of that exercise.
+      81  - Do not commit `BRAINSTORM.md` or the lab PDF.
+      82 +- **AI never commits or pushes.** The AI only edits files, then
+         + proposes the commit split (files + message per commit). The st
+         +udent reviews the diff and runs `git commit` themselves.       
+      83  
+      84  ---
+      85  
+
+  Ran 1 shell command, wrote 1 memory (ctrl+o to expand)
+
+● T-03-2H: thêm icon vào nút theme.
+
+● Update(Exercise_3\index.html)
+  ⎿  Added 14 lines, removed 1 line
+      37      </picture>
+      38      <h1 class="hero-title"><span lang="vi">Quảng Phú Hưng</span
+          > &mdash; Backend &amp; AI Developer</h1>
+      39      <p class="hero-pitch">Building high-performance full-stack 
+          systems with a focus on backend and AI.</p>
+      40 -    <button type="button" id="theme-toggle" aria-pressed="false
+         -">Dark mode</button>                                           
+      40 +    <button type="button" id="theme-toggle" class="theme-switch
+         +er" aria-pressed="false">                                      
+      41 +      <svg class="theme-icon theme-icon-sun" aria-hidden="true"
+         + focusable="false"                                             
+      42 +           width="20" height="20" viewBox="0 0 24 24" fill="non
+         +e"                                                             
+      43 +           stroke="currentColor" stroke-width="2" stroke-lineca
+         +p="round">                                                     
+      44 +        <circle cx="12" cy="12" r="4"/>                        
+      45 +        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 
+         +1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>        
+      46 +      </svg>                                                   
+      47 +      <svg class="theme-icon theme-icon-moon" aria-hidden="true
+         +" focusable="false"                                            
+      48 +           width="20" height="20" viewBox="0 0 24 24" fill="non
+         +e"                                                             
+      49 +           stroke="currentColor" stroke-width="2" stroke-lineca
+         +p="round" stroke-linejoin="round">                             
+      50 +        <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"
+         +/>                                                             
+      51 +      </svg>                                                   
+      52 +      <span class="theme-switcher-label">Dark mode</span>      
+      53 +    </button>                                                  
+      54    </header>
+      55  
+      56    <nav aria-label="Primary">
+
+● Giờ là T-03-2C. Mình chuyển style của nút từ layout.css sang
+  theme-switcher.css:
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1/Exercise_3/css" && python - <<'EOF'
+      p = "layout.css"…)
+  ⎿  ---
+     }
+     … +9 lines (ctrl+o to expand)
+  ⎿  Updated Exercise_3\css\components\theme-switcher.css (+30 -1)
+       1  /* ============================================================
+          ==============
+       2     T-03-2C – Theme Switcher
+       3     Contract: Exercise_3/TASK_DECOMPOSITION.md §3.4
+       4 -   Placeholder from the baseline commit; filled in by task T-03
+         --2C.                                                           
+       4 +   Single source of truth is aria-pressed, written by js/theme.
+         +js.                                                            
+       5 +   CSS only reads it: sun = light is active, moon = dark is act
+         +ive.                                                           
+       6 +   Both icons share one fixed size and the label never changes,
+       7 +   so toggling never resizes the button (CLS = 0).             
+       8     ============================================================
+          ============== */
+       9 +                                                               
+      10 +.theme-switcher {                                              
+      11 +  display: inline-flex;                                        
+      12 +  align-items: center;                                         
+      13 +  gap: var(--space-2);                                         
+      14 +  min-height: 2.75rem; /* 44px touch target, WCAG 2.5.8 */     
+      15 +  padding: var(--space-2) var(--space-4);                      
+      16 +  border: 0;                                                   
+      17 +  border-radius: var(--radius);                                
+      18 +  background-color: var(--color-accent);                       
+      19 +  color: var(--color-on-accent);                               
+      20 +  cursor: pointer;                                             
+      21 +}                                                              
+      22 +                                                               
+      23 +/* Icons inherit the label color through stroke="currentColor" 
+         +*/                                                             
+      24 +.theme-icon {                                                  
+      25 +  flex: none;                                                  
+      26 +  width: var(--icon-size);                                     
+      27 +  height: var(--icon-size);                                    
+      28 +}                                                              
+      29 +                                                               
+      30 +/* Show only the icon that matches the current state */        
+      31 +.theme-switcher[aria-pressed="true"] .theme-icon-sun,          
+      32 +.theme-switcher[aria-pressed="false"] .theme-icon-moon {       
+      33 +  display: none;                                               
+      34 +}                                                              
+  ⎿  Updated Exercise_3\css\layout.css (+2 -12)
+      38  }
+      39  
+      40  /* 3. Header --------------------------------------------------
+          ---------------
+      41 -   Hero layout lives in components/hero.css (T-03-1C).         
+      42 -   Toggle look stays here until it moves to theme-switcher.css 
+         -(T-03-2C). */                                                  
+      43 -                                                               
+      44 -#theme-toggle {                                                
+      45 -  min-height: 2.75rem;                                         
+      46 -  padding: var(--space-2) var(--space-4);                      
+      47 -  border: 0;                                                   
+      48 -  border-radius: var(--radius);                                
+      49 -  background-color: var(--color-accent);                       
+      50 -  color: var(--color-on-accent);                               
+      51 -  cursor: pointer;                                             
+      52 -}                                                              
+      41 +   Hero layout: components/hero.css (T-03-1C).                 
+      42 +   Toggle look: components/theme-switcher.css (T-03-2C). */    
+      43  
+      44  /* 4. Navigation (1D flex) ------------------------------------
+          -------------- */
+      45  
+
+● Giờ là T-03-3H: gắn data-category cho từng nhóm skill và đổi class sang badge.
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1/Exercise_3" && python - <<'EOF'
+      import re…)
+  ⎿        <ul class="skill-grid">
+             <li class="skill-group" data-category="ai">
+               <h3>AI &amp; Machine Learning</h3>
+     … +29 lines (ctrl+o to expand)
+  ⎿  Updated Exercise_3\index.html (+47 -47)
+      221        <h2 id="skills-title">Skills</h2>
+      222  
+      223        <ul class="skill-grid">
+      224 -        <li class="skill-group">                              
+      224 +        <li class="skill-group" data-category="ai">           
+      225            <h3>AI &amp; Machine Learning</h3>
+      226 -          <ul class="tag-list">                               
+      227 -            <li>Reinforcement Learning (PPO, MDP)</li>        
+      228 -            <li>RAG pipelines</li>                            
+      229 -            <li>ChromaDB</li>                                 
+      230 -            <li>Ollama</li>                                   
+      231 -            <li>PyTorch</li>                                  
+      232 -            <li>TensorFlow</li>                               
+      233 -            <li>NumPy</li>                                    
+      234 -            <li>Pandas</li>                                   
+      226 +          <ul class="badge-list">                             
+      227 +            <li class="badge">Reinforcement Learning (PPO, MDP
+          +)</li>                                                        
+      228 +            <li class="badge">RAG pipelines</li>              
+      229 +            <li class="badge">ChromaDB</li>                   
+      230 +            <li class="badge">Ollama</li>                     
+      231 +            <li class="badge">PyTorch</li>                    
+      232 +            <li class="badge">TensorFlow</li>                 
+      233 +            <li class="badge">NumPy</li>                      
+      234 +            <li class="badge">Pandas</li>                     
+      235            </ul>
+      236          </li>
+      237  
+      238 -        <li class="skill-group">                              
+      238 +        <li class="skill-group" data-category="backend">      
+      239            <h3>Backend</h3>
+      240 -          <ul class="tag-list">                               
+      241 -            <li>Node.js</li>                                  
+      242 -            <li>NestJS</li>                                   
+      243 -            <li>Express</li>                                  
+      244 -            <li>PostgreSQL</li>                               
+      245 -            <li>MongoDB</li>                                  
+      246 -            <li>Prisma ORM</li>                               
+      247 -            <li>REST</li>                                     
+      248 -            <li>JWT &amp; RBAC</li>                           
+      240 +          <ul class="badge-list">                             
+     … 77 more lines (ctrl+o to expand)
+
+● Giờ là T-03-3C. Mình tách các selector skill khỏi những rule đang dùng chung
+  với project:
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1/Exercise_3/css" && python - <<'EOF'
+      p = "layout.css"…)
+  ⎿  /* 8. Project grid (2D) – moves to components/project-card.css in T-03
+     -4C ---- */
+     /* Skills: components/skills-matrix.css (T-03-3C) */
+     … +31 lines (ctrl+o to expand)
+  ⎿  Updated Exercise_3\css\components\skills-matrix.css (+21 -1)
+       1  /* ============================================================
+          ==============
+       2     T-03-3C – Skills Matrix
+       3     Contract: Exercise_3/TASK_DECOMPOSITION.md §3.5
+       4 -   Placeholder from the baseline commit; filled in by task T-03
+         --3C.                                                           
+       4 +   2D: groups flow in an auto-fit grid. 1D: badges inside a gro
+         +up wrap                                                        
+       5 +   with flex (.badge-list/.badge are shared primitives in layou
+         +t.css).                                                        
+       6 +   min(--card-min, 100%) keeps one column from overflowing at 3
+         +20–375px.                                                      
+       7     ============================================================
+          ============== */
+       8 +                                                               
+       9 +.skill-grid {                                                  
+      10 +  display: grid;                                               
+      11 +  grid-template-columns: repeat(auto-fit, minmax(min(var(--card
+         +-min), 100%), 1fr));                                           
+      12 +  gap: var(--space-6);                                         
+      13 +  list-style: none;                                            
+      14 +}                                                              
+      15 +                                                               
+      16 +.skill-group {                                                 
+      17 +  display: flex;                                               
+      18 +  flex-direction: column;                                      
+      19 +  gap: var(--space-3);                                         
+      20 +  height: 100%;                                                
+      21 +  padding: var(--space-6);                                     
+      22 +  border: 1px solid var(--color-border);                       
+      23 +  border-radius: var(--radius);                                
+      24 +  background-color: var(--color-surface);                      
+      25 +}                                                              
+  ⎿  Updated Exercise_3\css\layout.css (+4 -5)
+      124    padding-inline-start: var(--space-6);
+      125  }
+      126  
+      127 -/* 8. Project & skill grids (2D) -----------------------------
+          ---------------- */                                            
+      127 +/* 8. Project grid (2D) – moves to components/project-card.css
+          + in T-03-4C ---- */                                           
+      128 +/* Skills: components/skills-matrix.css (T-03-3C) */          
+      129  
+      129 -.project-grid,                                                
+      130 -.skill-grid {                                                 
+      130 +.project-grid {                                               
+      131    display: grid;
+      132    grid-template-columns: repeat(auto-fit, minmax(min(var(--car
+           d-min), 100%), 1fr));
+      133    gap: var(--space-6);
+      134    list-style: none;
+      135  }
+      136  
+      137 -.project-card,                                                
+      138 -.skill-group {                                                
+      137 +.project-card {                                               
+      138    display: flex;
+      139    flex-direction: column;
+      140    gap: var(--space-3);
+
+● Kiểm tra render trên cả light và dark, ở 375px và 1024px:
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Icon đổi đúng theo trạng thái: light hiện sun, dark hiện moon. Iframe không tự
+  cuộn tới #skills, nên mình chụp cả trang rồi crop riêng phần Skills:
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Skills Matrix hiển thị đúng ở cả 375px và 1024px. Mình dừng server và chạy các
+  lệnh grep kiểm tra:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mình đã cập nhật rule và làm xong T-03-2 và T-03-3. Lần này mình không commit 
+  gì, mọi thay đổi vẫn đang nằm trong working tree.
+
+  Rule mới:
+  - Đã thêm vào §6 của project-rules.md: "AI never commits or pushes". AI chỉ
+    sửa file và đề xuất cách chia commit, bạn tự review rồi commit.
+  - Mình cũng lưu điều này vào memory nên các phiên sau vẫn nhớ.
+
+  T-03-2: Theme Switcher
+  - HTML: trong #theme-toggle có 2 icon SVG viết tay (sun và moon, aria-hidden,
+    focusable="false", stroke="currentColor"). Nhãn "Dark mode" nằm trong
+    span.theme-switcher-label.
+  - CSS (theme-switcher.css): style của nút được chuyển từ layout.css sang file
+    này. Icon chỉ đổi qua selector [aria-pressed], và theme.js không phải sửa
+    dòng nào.
+  - Đã kiểm tra: ở chế độ light, nút hiện sun và aria-pressed="false". Ở dark
+    (theo OS), nút hiện moon. Kích thước nút không đổi khi chuyển theme.
+
+  T-03-3: Skills Matrix
+  - HTML: 5 nhóm skill có data-category lần lượt là ai, backend, frontend,
+    languages, tools. Có 37 badge dùng .badge-list > .badge.
+  - CSS (skills-matrix.css): rule .skill-grid và .skill-group được tách khỏi
+    layout.css.
+  - Đã kiểm tra: ở 375px là 1 cột, ở 1024px là 3 cột, không tràn ngang.
+
+  Các kiểm tra khác: grep theo DoD không ra kết quả nào, và không có token "ma"
+  (token được dùng nhưng chưa khai báo).
+
+  Tag trong Project cards hiện vẫn hiển thị dạng bullet vì HTML còn dùng
+  .tag-list. Lỗi này sẽ hết khi làm T-03-4H.
+
+  Đề xuất chia commit: index.html đang chứa thay đổi của cả T-03-2H lẫn T-03-3H,
+  nên bạn cần dùng git add -p. Hunk của nút toggle nằm ở đầu file, các hunk
+  skills nằm phía dưới.
+
+  git add project-rules.md
+  git commit -m "docs(rules): AI never commits"
+
+  git add -p Exercise_3/index.html      # chỉ chọn hunk #theme-toggle
+  git commit -m "feat(html): theme switcher icons"
+
+  git add Exercise_3/css/components/theme-switcher.css
+  git add -p Exercise_3/css/layout.css  # chỉ chọn hunk xoá #theme-toggle / 
+  comment mục 3
+  git commit -m "feat(css): theme switcher icon state"
+
+  git add Exercise_3/index.html         # phần skills còn lại
+  git commit -m "feat(html): skills matrix badges"
+
+  git add Exercise_3/css/components/skills-matrix.css Exercise_3/css/layout.css
+  git commit -m "feat(css): skills matrix grid"
+
+  Nhớ thêm dòng Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> vào cuối
+  message nếu bạn muốn giữ attribution.
+
+  Task tiếp theo là T-03-4: Project Cards và bộ lọc.
+
+✻ Cogitated for 1m 58s · done 22:02
+
+※ recap: Exercise 3 đang dựng portfolio theo component. Mình đã làm xong Theme Switcher (T-03-2) và Skills Matrix (T-03-3) nhưng chưa commit. Bước tiếp theo là bạn review rồi tự commit theo cách chia đã đề xuất, sau đó làm T-03-4 Project Cards. (disable recaps in /config)
+
+> Đọc project-rules.md trước khi làm. Thực hiện lần lượt T-03-4 → T-03-5 →      
+  T-03-6 cho Exercise_3/. Không tự ý thay đổi kiến trúc hoặc contract đã chốt.  
+                                                                                
+  T-03-4 — Project Cards + Filter                                               
+                                                                                
+  - Chỉ sửa các file liên quan đến task này.                                    
+  - Cập nhật 4 project cards theo contract §3.6: <article>, card-header,        
+  card-footer, data-category, .badge-list/.badge, link thật, không dùng         
+  href="#".                                                                     
+  - Thêm filter bar gồm all/backend/ai/frontend, aria-pressed và role="status". 
+  - Tạo css/components/project-card.css cho card + filter.                      
+  - Tạo js/project-filter.js theo state machine: state duy nhất là              
+  .project-grid.dataset.activeFilter; lọc bằng hidden trên <li>; cập nhật       
+  aria-pressed và status; dùng event delegation; không hard-code category trong 
+  JS.                                                                           
+  - Không dùng biến state boolean rời rạc.                                      
+                                                                                
+  T-03-5 — Contact Form                                                         
+                                                                                
+  - Cập nhật form theo contract §3.7 với native validation, <label>,            
+  aria-describedby, error/hint và data-state.                                   
+  - Tạo css/components/contact-form.css, dùng [aria-invalid] và [data-state].   
+  - Tạo js/contact-form.js với 5 state: idle → invalid/submitting →             
+  success/error.                                                                
+  - Validate bằng ValidityState, hiển thị lỗi inline bằng textContent.          
+  - Dùng encodeURIComponent, không dùng URLSearchParams/innerHTML.              
+  - mailto: phải giữ nguyên dữ liệu form; không báo giả "Message sent".         
+  - Chống double-submit bằng disabled.                                          
+  - Kiểm tra MAX_MAILTO_LENGTH = 2000 và ?form=fail theo contract.              
+                                                                                
+  T-03-6 — Audit                                                                
+                                                                                
+  Sau khi hoàn thành T-03-4 và T-03-5, audit toàn bộ Exercise_3/ theo B1–B21    
+  trong contract §5.                                                            
+                                                                                
+  - Kiểm tra HTML/CSS/JS, accessibility, responsive 375px, state modeling,      
+  console, links, form, contrast và performance.                                
+  - Đặc biệt grep các lỗi DoD: var, innerHTML, inline onclick, keypress,        
+  keyCode, inline style, CDN.                                                   
+  - Chỉ liệt kê lỗi và tiêu chí bị fail, chưa tự sửa.                           
+  - Cuối cùng xuất bảng ngắn: Criterion | Pass/Fail | Evidence | Suggested Fix. 
+                                                                                
+  Quy tắc chung: giữ nguyên nội dung project từ Exercise 2, chỉ dùng token      
+  trong tokens.css, không thêm dependency/CDN, không sửa theme.js, và không làm 
+  ngoài phạm vi contract.                                                       
+
+● Mình làm T-03-4 trước. Đầu tiên đọc phần Projects hiện tại:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1/Exercise_3" && python - <<'EOF'
+      import re…)
+  ⎿      <section id="projects" aria-labelledby="projects-title">
+           <h2 id="projects-title">Projects</h2>
+     … +44 lines (ctrl+o to expand)
+  ⎿  Updated Exercise_3\index.html (+49 -37)
+      121      <section id="projects" aria-labelledby="projects-title">
+      122        <h2 id="projects-title">Projects</h2>
+      123  
+      124 -      <ul class="project-grid">                               
+      124 +      <ul class="filter-bar" aria-label="Filter projects by ca
+          +tegory">                                                      
+      125 +        <li><button type="button" class="filter-button" data-f
+          +ilter="all" aria-pressed="true">All</button></li>             
+      126 +        <li><button type="button" class="filter-button" data-f
+          +ilter="backend" aria-pressed="false">Backend</button></li>    
+      127 +        <li><button type="button" class="filter-button" data-f
+          +ilter="ai" aria-pressed="false">AI</button></li>              
+      128 +        <li><button type="button" class="filter-button" data-f
+          +ilter="frontend" aria-pressed="false">Frontend</button></li>  
+      129 +      </ul>                                                   
+      130 +      <p class="filter-status" role="status">Showing 4 of 4 pr
+          +ojects</p>                                                    
+      131 +                                                              
+      132 +      <ul class="project-grid" data-active-filter="all">      
+      133          <li>
+      126 -          <article class="project-card">                      
+      127 -            <header>                                          
+      128 -              <h3>GreenGrass</h3>                             
+      134 +          <article class="project-card" data-category="backend
+          +" aria-labelledby="project-greengrass">                       
+      135 +            <header class="card-header">                      
+      136 +              <h3 id="project-greengrass">GreenGrass</h3>     
+      137 +              <span class="badge badge-category">Backend</span
+          +>                                                             
+      138              </header>
+      139              <p>
+      140                A green event platform for VNU-HCM students, wit
+           h JWT refresh-token
+      141                rotation, role-based access and a check-in that 
+           combines rotating QR
+      142                codes with GPS geofencing. Encouragement Prize a
+           t WebDev Adventure 2026.
+      143              </p>
+      135 -            <ul class="tag-list" aria-label="Tech stack">     
+      136 -              <li>NestJS</li>                                 
+      137 -              <li>React</li>                                  
+      138 -              <li>PostgreSQL</li>                             
+      139 -              <li>Prisma</li>                                 
+      140 -              <li>Docker</li>                                 
+      144 +            <ul class="badge-list" aria-label="Tech stack">   
+      145 +              <li class="badge">NestJS</li>                   
+      146 +              <li class="badge">React</li>                    
+      147 +              <li class="badge">PostgreSQL</li>               
+      148 +              <li class="badge">Prisma</li>                   
+      149 +              <li class="badge">Docker</li>                   
+      150              </ul>
+     … 98 more lines (ctrl+o to expand)
+
+● Giờ viết project-card.css và chuyển phần project ra khỏi layout.css:
+
+● Bash(cd "/c/Dev/Project/MSIS207_Lab1/Exercise_3/css" && python - <<'EOF'
+      p = "layout.css"…)
+  ⎿  ok
+  ⎿  Updated Exercise_3\css\components\project-card.css (+80 -2)
+       1  /* ============================================================
+          ==============
+       2 -   T-03-4C – Project Cards                                     
+       2 +   T-03-4C – Project Cards + Filter                            
+       3     Contract: Exercise_3/TASK_DECOMPOSITION.md §3.6
+       4 -   Placeholder from the baseline commit; filled in by task T-03
+         --4C.                                                           
+       4 +   State is read from attributes only:                         
+       5 +   - .filter-button[aria-pressed="true"] → active filter       
+       6 +   - <li hidden> on filtered-out cards (UA style, no custom cla
+         +ss)                                                            
+       7     ============================================================
+          ============== */
+       8 +                                                               
+       9 +/* 1. Filter bar (1D flex) ------------------------------------
+         +-------------- */                                              
+      10 +                                                               
+      11 +.filter-bar {                                                  
+      12 +  display: flex;                                               
+      13 +  flex-wrap: wrap;                                             
+      14 +  gap: var(--space-2);                                         
+      15 +  list-style: none;                                            
+      16 +}                                                              
+      17 +                                                               
+      18 +.filter-button {                                               
+      19 +  min-height: 2.75rem; /* 44px touch target, WCAG 2.5.8 */     
+      20 +  padding: var(--space-2) var(--space-4);                      
+      21 +  border: 1px solid var(--color-accent);                       
+      22 +  border-radius: var(--radius);                                
+      23 +  background-color: var(--color-bg);                           
+      24 +  color: var(--color-accent);                                  
+      25 +  cursor: pointer;                                             
+      26 +}                                                              
+      27 +                                                               
+      28 +/* Pressed = solid accent; same box size, so switching never sh
+         +ifts layout */                                                 
+      29 +.filter-button[aria-pressed="true"] {                          
+      30 +  background-color: var(--color-accent);                       
+      31 +  color: var(--color-on-accent);                               
+      32 +}                                                              
+      33 +                                                               
+      34 +.filter-status {                                               
+      35 +  color: var(--color-text-muted);                              
+      36 +  font-size: var(--font-size-sm);                              
+      37 +}                                                              
+      38 +                                                               
+     … 45 more lines (ctrl+o to expand)
+  ⎿  Updated Exercise_3\css\layout.css (+3 -28)
+      124    padding-inline-start: var(--space-6);
+      125  }
+      126  
+      127 -/* 8. Project grid (2D) – moves to components/project-card.css
+          - in T-03-4C ---- */                                           
+      128 -/* Skills: components/skills-matrix.css (T-03-3C) */          
+      129 -                                                              
+      130 -.project-grid {                                               
+      131 -  display: grid;                                              
+      132 -  grid-template-columns: repeat(auto-fit, minmax(min(var(--car
+          -d-min), 100%), 1fr));                                         
+      133 -  gap: var(--space-6);                                        
+      134 -  list-style: none;                                           
+      135 -}                                                             
+      136 -                                                              
+      137 -.project-card {                                               
+      138 -  display: flex;                                              
+      139 -  flex-direction: column;                                     
+      140 -  gap: var(--space-3);                                        
+      141 -  height: 100%;                                               
+      142 -  padding: var(--space-6);                                    
+      143 -  border: 1px solid var(--color-border);                      
+      144 -  border-radius: var(--radius);                               
+      145 -  background-color: var(--color-surface);                     
+      146 -}                                                             
+      147 -                                                              
+      148 -/* Links stick to the bottom so cards in one row line up */   
+      149 -.project-card footer {                                        
+      150 -  display: flex;                                              
+      151 -  flex-wrap: wrap;                                            
+      152 -  gap: var(--space-2) var(--space-4);                         
+      153 -  margin-top: auto;                                           
+      154 -}                                                             
+      127 +/* 8. Component grids ----------------------------------------
+          +-----------------                                             
+      128 +   Skills: components/skills-matrix.css (T-03-3C).            
+      129 +   Projects + filter: components/project-card.css (T-03-4C). *
+          +/                                                             
+      130  
+      131  /* 9. Footer -------------------------------------------------
+           --------------- */
+      132  
+
+● Giờ tôi viết project-filter.js, đặt toàn bộ biến trong một hàm init riêng để
+  tránh trùng tên const với các biến top-level đã khai báo trong theme.js.
+
+● Write(Exercise_3\js\project-filter.js)
+  ⎿  Added 65 lines, removed 1 line
+       1  /* ============================================================
+          ==============
+       2     T-03-4J – Project Filter
+       3     Contract: Exercise_3/TASK_DECOMPOSITION.md §3.6
+       4 -   Placeholder from the baseline commit; filled in by task T-03
+         --4J.                                                           
+       4 +   - Single source of truth: .project-grid[data-active-filter] 
+       5 +   - Valid filters come from the buttons in the DOM (no list in
+         + JS), so a new                                                 
+       6 +     category only needs a new <button data-filter> + data-cate
+         +gory in HTML.                                                  
+       7 +   - Everything lives inside one named function: classic script
+         +s share one                                                    
+       8 +     global scope, and theme.js already declares top-level cons
+         +ts.                                                            
+       9     ============================================================
+          ============== */
+      10 +                                                               
+      11 +const initProjectFilter = () => {                              
+      12 +  const grid = document.querySelector('.project-grid');        
+      13 +  const filterBar = document.querySelector('.filter-bar');     
+      14 +  const status = document.querySelector('.filter-status');     
+      15 +                                                               
+      16 +  if (!grid || !filterBar || !status) {                        
+      17 +    return;                                                    
+      18 +  }                                                            
+      19 +                                                               
+      20 +  const buttons = [...filterBar.querySelectorAll('.filter-butto
+         +n')];                                                          
+      21 +  const items = [...grid.querySelectorAll(':scope > li')];     
+      22 +  const validFilters = new Set(buttons.map((button) => button.d
+         +ataset.filter));                                               
+      23 +                                                               
+      24 +  // Derive the whole view from the one state attribute.       
+      25 +  const render = () => {                                       
+      26 +    const active = grid.dataset.activeFilter;                  
+      27 +    let shown = 0;                                             
+      28 +                                                               
+      29 +    items.forEach((item) => {                                  
+      30 +      const card = item.querySelector('.project-card');        
+      31 +      const visible = active === 'all' || card?.dataset.categor
+         +y === active;                                                  
+      32 +                                                               
+      33 +      // Hide the <li>, not the <article>: an empty <li> would 
+         +keep its grid cell.                                            
+      34 +      item.hidden = !visible;                                  
+      35 +      if (visible) {                                           
+      36 +        shown += 1;                                            
+      37 +      }                                                        
+      38 +    });                                                        
+      39 +                                                               
+      40 +    buttons.forEach((button) => {                              
+      41 +      button.setAttribute('aria-pressed', String(button.dataset
+         +.filter === active));                                          
+      42 +    });                                                        
+      43 +                                                               
+      44 +    status.textContent = shown > 0                             
+      45 +      ? `Showing ${shown} of ${items.length} projects`         
+      46 +      : 'No projects in this category yet.';                   
+      47 +  };                                                           
+      48 +                                                               
+      49 +  // One delegated listener; native <button> fires "click" for 
+         +Enter and Space.                                               
+      50 +  filterBar.addEventListener('click', (event) => {             
+      51 +    const button = event.target.closest('.filter-button');     
+      52 +    const next = button?.dataset.filter;                       
+      53 +                                                               
+      54 +    if (!validFilters.has(next) || next === grid.dataset.active
+         +Filter) {                                                      
+      55 +      return;                                                  
+      56 +    }                                                          
+      57 +                                                               
+      58 +    grid.dataset.activeFilter = next;                          
+      59 +    render();                                                  
+      60 +  });                                                          
+      61 +                                                               
+      62 +  // Unknown initial value in the HTML → fall back to "all", th
+         +en sync the view.                                              
+      63 +  if (!validFilters.has(grid.dataset.activeFilter)) {          
+      64 +    grid.dataset.activeFilter = 'all';                         
+      65 +  }                                                            
+      66 +  render();                                                    
+      67 +};                                                             
+      68 +                                                               
+      69 +initProjectFilter();                                           
+
+● T-03-4 xong. Giờ là T-03-5H, markup của form:
+
+● Update(Exercise_3\index.html)
+  ⎿  Added 25 lines
+      309          GitHub: <a href="https://github.com/Prosperum26">githu
+           b.com/Prosperum26</a><br>
+      310          Ho Chi Minh City, Vietnam
+      311        </address>
+      312 +                                                              
+      313 +      <form class="contact-form" id="contact-form" data-state=
+          +"idle"                                                        
+      314 +            action="mailto:24520626@gm.uit.edu.vn" method="pos
+          +t" enctype="text/plain">                                      
+      315 +        <p class="form-field">                                
+      316 +          <label for="contact-name">Name</label>              
+      317 +          <input id="contact-name" name="name" type="text" aut
+          +ocomplete="name"                                              
+      318 +                 required minlength="2" maxlength="80" aria-de
+          +scribedby="contact-name-error">                               
+      319 +          <span class="field-error" id="contact-name-error"></
+          +span>                                                         
+      320 +        </p>                                                  
+      321 +        <p class="form-field">                                
+      322 +          <label for="contact-email">Email</label>            
+      323 +          <input id="contact-email" name="email" type="email" 
+          +autocomplete="email"                                          
+      324 +                 required maxlength="254" aria-describedby="co
+          +ntact-email-error">                                           
+      325 +          <span class="field-error" id="contact-email-error"><
+          +/span>                                                        
+      326 +        </p>                                                  
+      327 +        <p class="form-field">                                
+      328 +          <label for="contact-message">Message</label>        
+      329 +          <textarea id="contact-message" name="message" rows="
+          +5" required minlength="10" maxlength="500"                    
+      330 +                    aria-describedby="contact-message-hint con
+          +tact-message-error"></textarea>                               
+      331 +          <span class="field-hint" id="contact-message-hint">1
+          +0–500 characters.</span>                                      
+      332 +          <span class="field-error" id="contact-message-error"
+          +></span>                                                      
+      333 +        </p>                                                  
+      334 +        <button type="submit" class="form-submit">Send message
+          +</button>                                                     
+      335 +        <p class="form-status" id="contact-status" role="statu
+          +s"></p>                                                       
+      336 +      </form>                                                 
+      337      </section>
+      338    </main>
+      339  
+
+● Update(Exercise_3\index.html)
+  ⎿  Added 1 line, removed 1 line
+      328            <label for="contact-message">Message</label>
+      329            <textarea id="contact-message" name="message" rows="
+           5" required minlength="10" maxlength="500"
+      330                      aria-describedby="contact-message-hint con
+           tact-message-error"></textarea>
+      331 -          <span class="field-hint" id="contact-message-hint">1
+          -0–500 characters.</span>                                      
+      331 +          <span class="field-hint" id="contact-message-hint">1
+          +0&ndash;500 characters.</span>                                
+      332            <span class="field-error" id="contact-message-error"
+           ></span>
+      333          </p>
+      334          <button type="submit" class="form-submit">Send message
+           </button>
+
+● Giờ là T-03-5C, contact-form.css:
+
+● Write(Exercise_3\css\components\contact-form.css)
+  ⎿  Added 94 lines, removed 1 line
+       1  /* ============================================================
+          ==============
+       2     T-03-5C – Contact Form
+       3     Contract: Exercise_3/TASK_DECOMPOSITION.md §3.7
+       4 -   Placeholder from the baseline commit; filled in by task T-03
+         --5C.                                                           
+       4 +   CSS only reads state written by js/contact-form.js:         
+       5 +   - [aria-invalid="true"]      → field has an error           
+       6 +   - .contact-form[data-state]  → idle | invalid | submitting |
+         + success | error                                               
+       7 +   The form sits on --color-bg (not in a card), so danger/succe
+         +ss text                                                        
+       8 +   always uses the pairs checked against --color-bg in §3.2.   
+       9     ============================================================
+          ============== */
+      10 +                                                               
+      11 +/* 1. Layout --------------------------------------------------
+         +-------------- */                                              
+      12 +                                                               
+      13 +.contact-form {                                                
+      14 +  display: grid;                                               
+      15 +  gap: var(--space-4);                                         
+      16 +  max-width: 40rem;                                            
+      17 +}                                                              
+      18 +                                                               
+      19 +.form-field {                                                  
+      20 +  display: grid;                                               
+      21 +  gap: var(--space-1);                                         
+      22 +}                                                              
+      23 +                                                               
+      24 +.form-field label {                                            
+      25 +  font-weight: 600;                                            
+      26 +}                                                              
+      27 +                                                               
+      28 +/* 2. Controls ------------------------------------------------
+         +-------------- */                                              
+      29 +                                                               
+      30 +.form-field input,                                             
+      31 +.form-field textarea {                                         
+      32 +  width: 100%;                                                 
+      33 +  padding: var(--space-2) var(--space-3);                      
+      34 +  border: 1px solid var(--color-border);                       
+      35 +  border-radius: var(--radius);                                
+      36 +  background-color: var(--color-bg);                           
+      37 +  color: var(--color-text);                                    
+      38 +  font: inherit;                                               
+      39 +}                                                              
+      40 +                                                               
+      41 +.form-field textarea {                                         
+      42 +  resize: vertical;                                            
+      43 +}                                                              
+      44 +                                                               
+      45 +/* Error ring drawn with box-shadow: no border-width change, so
+         + no shift */                                                   
+      46 +.form-field [aria-invalid="true"] {                            
+      47 +  border-color: var(--color-danger);                           
+      48 +  box-shadow: 0 0 0 1px var(--color-danger);                   
+      49 +}                                                              
+      50 +                                                               
+      51 +/* 3. Hint & error text ---------------------------------------
+         +-------------- */                                              
+      52 +                                                               
+      53 +.field-hint,                                                   
+      54 +.field-error {                                                 
+      55 +  font-size: var(--font-size-sm);                              
+      56 +}                                                              
+      57 +                                                               
+      58 +.field-hint {                                                  
+      59 +  color: var(--color-text-muted);                              
+      60 +}                                                              
+      61 +                                                               
+      62 +/* Always one line tall, empty or not: showing an error never p
+         +ushes content */                                               
+      63 +.field-error {                                                 
+      64 +  min-height: calc(var(--font-size-sm) * var(--line-height));  
+      65 +  color: var(--color-danger);                                  
+      66 +}                                                              
+      67 +                                                               
+      68 +/* 4. Submit --------------------------------------------------
+         +-------------- */                                              
+      69 +                                                               
+      70 +.form-submit {                                                 
+      71 +  justify-self: start;                                         
+      72 +  min-height: 2.75rem; /* 44px touch target, WCAG 2.5.8 */     
+      73 +  padding: var(--space-2) var(--space-6);                      
+      74 +  border: 0;                                                   
+      75 +  border-radius: var(--radius);                                
+      76 +  background-color: var(--color-accent);                       
+      77 +  color: var(--color-on-accent);                               
+      78 +  font-weight: 600;                                            
+      79 +  cursor: pointer;                                             
+      80 +}                                                              
+      81 +                                                               
+      82 +.contact-form[data-state="submitting"] .form-submit {          
+      83 +  cursor: progress;                                            
+      84 +}                                                              
+      85 +                                                               
+      86 +/* 5. Status --------------------------------------------------
+         +-------------- */                                              
+      87 +                                                               
+      88 +.form-status {                                                 
+      89 +  min-height: calc(var(--font-size-base) * var(--line-height));
+      90 +}                                                              
+      91 +                                                               
+      92 +.contact-form[data-state="success"] .form-status {             
+      93 +  color: var(--color-success);                                 
+      94 +}                                                              
+      95 +                                                               
+      96 +.contact-form[data-state="error"] .form-status {               
+      97 +  color: var(--color-danger);                                  
+      98 +}                                                              
+
+● Giờ là T-03-5J, controller của form. Đọc query ?form=fail bằng regex để file
+  hoàn toàn không có URLSearchParams:
+
+● Write(Exercise_3\js\contact-form.js)
+  ⎿  Added 158 lines, removed 1 line
+        1  /* ===========================================================
+           ===============
+        2     T-03-5J – Contact Form Controller
+        3     Contract: Exercise_3/TASK_DECOMPOSITION.md §3.7
+        4 -   Placeholder from the baseline commit; filled in by task T-0
+          -3-5J.                                                         
+        4 +   - State: #contact-form[data-state] = idle | invalid | submi
+          +tting | success | error                                       
+        5 +   - Field errors: aria-invalid + #<id>-error text, messages f
+          +rom ValidityState                                             
+        6 +   - Adapter: mailto: link built with encodeURIComponent (neve
+          +r "Message sent":                                             
+        7 +     the page cannot know whether the email was actually sent)
+        8 +   - Without JS the form still works: native validation + acti
+          +on="mailto:".                                                 
+        9     ===========================================================
+           =============== */
+       10 +                                                              
+       11 +const initContactForm = () => {                               
+       12 +  const form = document.querySelector('#contact-form');       
+       13 +  const submitButton = form?.querySelector('.form-submit');   
+       14 +  const status = form?.querySelector('#contact-status');      
+       15 +                                                              
+       16 +  if (!form || !submitButton || !status) {                    
+       17 +    return;                                                   
+       18 +  }                                                           
+       19 +                                                              
+       20 +  // Mail clients may silently cut longer links; Vietnamese te
+          +xt encodes to                                                 
+       21 +  // 6–9 characters per letter, so even 500 characters can go 
+          +over.                                                         
+       22 +  const MAX_MAILTO_LENGTH = 2000;                             
+       23 +  const recipient = form.getAttribute('action').replace(/^mail
+          +to:/, '');                                                    
+       24 +  const forceFail = /[?&]form=fail(&|$)/.test(window.location.
+          +search); // demo hook                                         
+       25 +                                                              
+       26 +  const fields = [...form.querySelectorAll('input, textarea')]
+          +;                                                             
+       27 +  const nameField = form.querySelector('#contact-name');      
+       28 +  const emailField = form.querySelector('#contact-email');    
+       29 +  const messageField = form.querySelector('#contact-message');
+       30 +                                                              
+       31 +  const STATUS_TEXT = {                                       
+       32 +    success: `Your email app should open with your message. If
+          + it doesn't, email me at ${recipient}.`,                      
+       33 +    tooLong: `Your message is too long to open in an email app
+          +. Please shorten it, or email me directly at ${recipient}.`,  
+       34 +    failed: `Couldn't open your email app. Please email me dir
+          +ectly at ${recipient}.`,                                      
+       35 +  };                                                          
+       36 +                                                              
+       37 +  // JS takes over the error UI; native bubbles stay as the no
+          +-JS fallback.                                                 
+       38 +  form.noValidate = true;                                     
+       39 +                                                              
+       40 +  /* --- Field validation ------------------------------------
+          +------------- */                                              
+       41 +                                                              
+       42 +  const messageFor = (field) => {                             
+       43 +    const { validity } = field;                               
+       44 +    const label = field.labels[0]?.textContent ?? 'This field'
+          +;                                                             
+       45 +                                                              
+       46 +    if (validity.valueMissing) {                              
+       47 +      return `${label} is required.`;                         
+       48 +    }                                                         
+       49 +    if (validity.typeMismatch) {                              
+       50 +      return 'Enter a valid email address, like name@example.c
+          +om.';                                                         
+       51 +    }                                                         
+       52 +    if (validity.tooShort) {                                  
+       53 +      return `${label} needs at least ${field.minLength} chara
+          +cters (now ${field.value.length}).`;                          
+       54 +    }                                                         
+       55 +    if (validity.tooLong) {                                   
+       56 +      return `${label} can be at most ${field.maxLength} chara
+          +cters.`;                                                      
+       57 +    }                                                         
+       58 +    return `Check the ${label.toLowerCase()} field.`;         
+       59 +  };                                                          
+       60 +                                                              
+       61 +  const validateField = (field) => {                          
+       62 +    const error = document.getElementById(`${field.id}-error`)
+          +;                                                             
+       63 +    const valid = field.validity.valid;                       
+       64 +                                                              
+       65 +    if (valid) {                                              
+       66 +      field.removeAttribute('aria-invalid');                  
+       67 +    } else {                                                  
+       68 +      field.setAttribute('aria-invalid', 'true');             
+       69 +    }                                                         
+       70 +    if (error) {                                              
+       71 +      error.textContent = valid ? '' : messageFor(field);     
+       72 +    }                                                         
+       73 +    return valid;                                             
+       74 +  };                                                          
+       75 +                                                              
+       76 +  /* --- State -----------------------------------------------
+          +------------- */                                              
+       77 +                                                              
+       78 +  const setState = (next, text = '') => {                     
+       79 +    form.dataset.state = next;                                
+       80 +    submitButton.disabled = next === 'submitting'; // no doubl
+          +e submit                                                      
+       81 +                                                              
+       82 +    // Errors interrupt (alert); everything else is announced 
+          +politely.                                                     
+       83 +    status.setAttribute('role', next === 'error' ? 'alert' : '
+          +status');                                                     
+       84 +    status.textContent = text;                                
+       85 +  };                                                          
+       86 +                                                              
+       87 +  const buildMailto = () => {                                 
+       88 +    const name = nameField.value.trim();                      
+       89 +    const subject = `Portfolio contact from ${name}`;         
+       90 +    const body = `${messageField.value.trim()}\r\n\r\n— ${name
+          +} <${emailField.value.trim()}>`;                              
+       91 +                                                              
+       92 +    // encodeURIComponent turns spaces into %20; URLSearchPara
+          +ms would use "+",                                             
+       93 +    // which many mail clients show literally.                
+       94 +    return `mailto:${recipient}?subject=${encodeURIComponent(s
+          +ubject)}&body=${encodeURIComponent(body)}`;                   
+       95 +  };                                                          
+       96 +                                                              
+       97 +  /* --- Events ----------------------------------------------
+          +------------- */                                              
+       98 +                                                              
+       99 +  // Leaving a field the user has typed in marks it as touched
+          +.                                                             
+      100 +  form.addEventListener('focusout', (event) => {              
+      101 +    const field = event.target;                               
+      102 +    if (!fields.includes(field)) {                            
+      103 +      return;                                                 
+      104 +    }                                                         
+      105 +    if (field.value !== '') {                                 
+      106 +      field.dataset.touched = 'true';                         
+      107 +    }                                                         
+      108 +    if (field.dataset.touched === 'true') {                   
+      109 +      validateField(field);                                   
+      110 +    }                                                         
+      111 +  });                                                         
+      112 +                                                              
+      113 +  // Re-check only the field being edited, and only once it ha
+          +s been touched,                                               
+      114 +  // so errors clear as soon as they are fixed but never appea
+          +r mid-typing.                                                 
+      115 +  form.addEventListener('input', (event) => {                 
+      116 +    const field = event.target;                               
+      117 +    if (fields.includes(field) && field.dataset.touched === 't
+          +rue') {                                                       
+      118 +      validateField(field);                                   
+      119 +    }                                                         
+      120 +  });                                                         
+      121 +                                                              
+      122 +  form.addEventListener('submit', (event) => {                
+      123 +    event.preventDefault();                                   
+      124 +                                                              
+      125 +    if (form.dataset.state === 'submitting') {                
+      126 +      return;                                                 
+      127 +    }                                                         
+      128 +                                                              
+      129 +    fields.forEach((field) => {                               
+      130 +      field.dataset.touched = 'true';                         
+      131 +    });                                                       
+      132 +                                                              
+      133 +    const invalidFields = fields.filter((field) => !validateFi
+          +eld(field));                                                  
+      134 +    if (invalidFields.length > 0) {                           
+      135 +      setState('invalid');                                    
+      136 +      invalidFields[0].focus();                               
+      137 +      return;                                                 
+      138 +    }                                                         
+      139 +                                                              
+      140 +    setState('submitting');                                   
+      141 +    const url = buildMailto();                                
+      142 +                                                              
+      143 +    if (url.length > MAX_MAILTO_LENGTH) {                     
+      144 +      setState('error', STATUS_TEXT.tooLong);                 
+      145 +      return;                                                 
+      146 +    }                                                         
+      147 +    if (forceFail) {                                          
+      148 +      setState('error', STATUS_TEXT.failed);                  
+      149 +      return;                                                 
+      150 +    }                                                         
+      151 +                                                              
+      152 +    try {                                                     
+      153 +      window.location.href = url;                             
+      154 +      // The form is NOT reset: if no mail app opens, the text
+          + is still here.                                               
+      155 +      setState('success', STATUS_TEXT.success);               
+      156 +    } catch {                                                 
+      157 +      setState('error', STATUS_TEXT.failed);                  
+      158 +    }                                                         
+      159 +  });                                                         
+      160 +};                                                            
+      161 +                                                              
+      162 +initContactForm();                                            
+
+● Đã viết xong code cho T-03-4 và T-03-5, giờ chuyển sang audit T-03-6. Để kiểm
+  tra console, filter, form state và tràn ngang ở 375px, tôi sẽ điều khiển Edge
+  headless qua DevTools Protocol bằng Node mà không cài thêm dependency.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Heredoc bị lỗi quoting, nên mình ghi file bằng tool Write:
+
+  Made 1 scratchpad edit +98, ran 1 shell command (ctrl+o to expand)
+
+● Tôi đã có phần lớn kết quả, nhưng cần xác minh thêm: lỗi Enter không kích hoạt
+  nút/toggle, độ dài chính xác của URL mailto với tin nhắn 500 ký tự, cùng các
+  mục chưa test như thứ tự Tab, cây a11y và trường hợp tắt JS.
+
+  Made 1 scratchpad edit +52, ran 1 shell command (ctrl+o to expand)
+
+● Enter hoạt động bình thường, nên lỗi lúc nãy là do harness. Thứ tự Tab đúng và
+  luôn thấy focus ring. Giờ sửa phần truy vấn a11y tree:
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Còn lại các kiểm tra tĩnh: git history, hex, token "ma", link,
+  label/describedby, grep DoD, anchor và id trùng.
+
+  Ran 2 shell commands (ctrl+o to expand)
+● Commit fe2a9e7 gộp cả HTML, CSS và project-rules.md, nên sẽ fail tiêu chí B1.
+  Cuối cùng mình chụp phần Projects và Form để rà lại giao diện:
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● T-03-4 và T-03-5 đã viết xong, còn T-03-6 thì mình mới chỉ audit, chưa sửa gì.
+  Mình không commit. Đa số tiêu chí pass, có 2 tiêu chí fail (B1, B13) và B20
+  pass nhưng sát ngưỡng.
+
+  Phần đã làm
+  - T-03-4: 4 project card theo contract §3.6, có filter bar
+    all/backend/ai/frontend và dòng role="status".
+    - css/components/project-card.css chứa style của card và filter. Phần
+      project đã được bỏ khỏi layout.css.
+    - js/project-filter.js: state duy nhất là data-active-filter, lọc bằng
+      hidden trên <li>, dùng một listener cho cả filter bar. Danh sách filter
+      lấy từ các nút trong DOM, JS không ghi cứng category.
+  - T-03-5: form theo §3.7, css/components/contact-form.css và
+    js/contact-form.js với 5 state.
+    - Mọi biến trong 2 file JS mới nằm trong initProjectFilter() /
+      initContactForm(). Lý do: các script thường dùng chung một global scope,
+      mà theme.js đã khai báo các const như root và toggle, nên trùng tên sẽ gây
+      lỗi.
+  - Mình không sửa theme.js và không thêm dependency.
+
+  Cách mình audit: điều khiển Edge headless qua DevTools Protocol bằng Node
+  (không cài gì thêm), chạy trên python -m http.server, cộng với grep và git.
+
+  Criterion: B1 Không trộn loại file
+  Pass/Fail: FAIL
+  Evidence: fe2a9e7 chứa cả .html, .css và project-rules.md
+  Suggested Fix: Nếu chưa push: git reset --soft HEAD~1 rồi commit lại theo cách
+
+  chia đã đề xuất. Nếu đã push: ghi chú vào AI_FAILURE_AUDIT/dev log
+  ────────────────────────────────────────
+  Criterion: B2 0 hex ngoài primitive
+  Pass/Fail: Pass
+  Evidence: grep rỗng
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B3 Không có token "ma"
+  Pass/Fail: Pass
+  Evidence: comm rỗng
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B4 Ảnh không gây CLS, không lazy
+  Pass/Fail: Pass
+  Evidence: width/height=320, loading=null, fetchpriority=high; CLS = 0
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B5 Ảnh đúng định dạng
+  Pass/Fail: Pass
+  Evidence: Trình duyệt tải hero-avatar-320.avif ở cả 375px DPR 2 lẫn 1280px DPR
+
+  1
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B6 Alt đúng sự thật
+  Pass/Fail: Pass
+  Evidence: a11y tree: "Avatar: a cheetah cub…"
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B7 Icon đổi theo state
+  Pass/Fail: Pass
+  Evidence: Light: sun; sau 19 click: dark + moon; reload vẫn giữ; xoá key và OS
+
+  dark: moon; nút luôn rộng 138.2px
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B8 Accessible name
+  Pass/Fail: Pass
+  Evidence: AX: button "Dark mode", có trạng thái pressed; SVG có
+  aria-hidden/focusable=false
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B9 Filter đúng
+  Pass/Fail: Pass
+  Evidence: All 4, Backend 1, AI 2, Frontend 1; status đổi theo
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B10 State một nguồn
+  Pass/Fail: Pass
+  Evidence: activeFilter luôn khớp nút có aria-pressed="true"
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B11 Link không chết, Label in Name
+  Pass/Fail: Pass
+  Evidence: Không có href="#"; cả 5 aria-label bắt đầu bằng text hiển thị
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B12 label + describedby
+  Pass/Fail: Pass
+  Evidence: 3/3 label khớp id; mọi id được tham chiếu đều tồn tại; không có id
+  trùng
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B13 Đủ 5 state
+  Pass/Fail: FAIL (1/4 bước)
+  Evidence: Submit rỗng → invalid và focus vào Name ✓. Dữ liệu hợp lệ → success
+  ✓. ?form=fail → error + role="alert" ✓. Tin nhắn tiếng Việt 500 ký tự  → 
+  success, vì URL chỉ dài 1663 (văn bản thường) hoặc 1621 (dày dấu), dưới
+  ngưỡng 2000. Code vẫn đúng: URL dài tối đa khoảng 4500 với chữ 3 byte như
+  "ữ". Sai nằm ở giả định trong spec và dữ liệu test của B13
+  Suggested Fix: Sửa test B13 thành 'ữ'.repeat(250) (khoảng 2300) và sửa câu
+  trong spec §3.7 cho đúng
+  ────────────────────────────────────────
+  Criterion: B14 Chống double submit, giữ dữ liệu
+  Pass/Fail: Pass
+  Evidence: Có disabled khi submitting (đọc code: chuyển state đồng bộ nên không
+
+  quan sát được lúc chạy); giá trị form còn nguyên sau success/error
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B15 Chạy khi tắt JS
+  Pass/Fail: Pass
+  Evidence: noValidate=false, checkValidity()=false khi form rỗng,
+  action=mailto:
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B16 375px, 0 cuộn ngang
+  Pass/Fail: Pass
+  Evidence: scrollWidth 375 = innerWidth 375, không có phần tử nào tràn
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B17 Bàn phím
+  Pass/Fail: Pass
+  Evidence: Thứ tự Tab: skip-link → toggle → nav → 4 filter → 7 link card → 3
+  field → submit, phần tử nào cũng có focus ring; Enter và Space đều kích hoạt
+  nút
+  Suggested Fix: —
+  ────────────────────────────────────────
+  Criterion: B18 Contrast
+  Pass/Fail: Pass (tính toán)
+  Evidence: Mọi cặp màu mới đều có trong bảng §3.2. Chưa chạy Lighthouse
+  Suggested Fix: Chạy Lighthouse ở light và dark để chụp màn hình
+  ────────────────────────────────────────
+  Criterion: B19 0 lỗi console
+  Pass/Fail: Pass*
+  Evidence: Luồng thật không có lỗi. *Có 1 warning "user gesture is required"
+  khi
+  mailto bị gọi lặp lại bằng .click() giả lập
+  Suggested Fix: Bấm tay trên Live Server để xác nhận
+  ────────────────────────────────────────
+  Criterion: B20 LCP < 2s, CLS = 0
+  Pass/Fail: Pass, sát ngưỡng
+  Evidence: LCP 1932ms (phần tử LCP là <p>, không phải ảnh), CLS 0. File CSS thứ
+
+  7 (contact-form.css) xong lúc 1897ms so với khoảng 1330ms của 6 file đầu,
+  đúng rủi ro hàng đợi 6 kết nối trong §8
+  Suggested Fix: Đo lại bằng Live Server + Chrome Fast 3G. Nếu vượt 2s thì gộp
+  các CSS component theo phương án dự phòng §8
+  ────────────────────────────────────────
+  Criterion: B21 Grep DoD
+  Pass/Fail: Pass
+  Evidence: Không có var, innerHTML, onclick=, keyCode, keypress, style="", CDN.
+
+  Chỉ có 1 comment nhắc tên URLSearchParams
+  Suggested Fix: Tuỳ chọn: viết lại comment để grep sạch hoàn toàn
+
+  Lỗi phát hiện thêm, ngoài B1–B21:
+  - Giá trị toàn dấu cách vẫn qua validation: Name "   " cộng Message 16 dấu
+    cách vẫn ra success, và mailto có subject "Portfolio contact from " (trống
+    tên). Lý do là required và minlength không bỏ khoảng trắng. Cách sửa: thêm
+    pattern=".*\S.*" cho Name/Message, hoặc kiểm tra trim() rồi gọi
+    setCustomValidity.
+  - Chuyển role từ status sang alert: một số trình đọc màn hình không đọc khi
+    role của phần tử thay đổi. Cách sửa: tách thành 2 phần tử status và alert cố
+    định. Lỗi này nhỏ.
+
+  Đề xuất chia commit cho phần đang chưa commit: index.html chứa cả T-03-4H lẫn
+  T-03-5H nên cần git add -p.
+
+  git add -p Exercise_3/index.html            # hunk projects + filter bar
+  git commit -m "feat(html): project cards & filter"
+  git add Exercise_3/css/components/project-card.css Exercise_3/css/layout.css
+  git commit -m "feat(css): project cards"
+  git add Exercise_3/js/project-filter.js
+  git commit -m "feat(js): project filter state"
+  git add Exercise_3/index.html               # phần form còn lại
+  git commit -m "feat(html): contact form"
+  git add Exercise_3/css/components/contact-form.css
+  git commit -m "feat(css): contact form states"
+  git add Exercise_3/js/contact-form.js
+  git commit -m "feat(js): contact form controller"
+
+  Bạn muốn sửa những lỗi nào thì báo mình, mỗi lỗi sẽ là một commit fix(...)
+  riêng.
+
+✻ Crunched for 5m 57s · done 22:12
+
+※ recap: Exercise 3 portfolio components are built and audited; only the T-03-6 audit fixes remain, and nothing new is committed. Next, split the pending changes into the six suggested commits, then pick which audit failures (B1, B13, whitespace-only input) to fix. (disable recaps in /config)

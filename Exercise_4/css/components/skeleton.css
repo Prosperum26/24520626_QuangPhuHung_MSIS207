@@ -1,0 +1,86 @@
+/* ==========================================================================
+   T-03A-C – Loading Skeleton (pure CSS shimmer)
+   Contract: Exercise_4/TASK_DECOMPOSITION.md §3.4 (visibility), §3.5
+   Slide 18 errata fixed here:
+   - background-size / animation live INSIDE the rule (slide closed it early)
+   - colors come from --color-skeleton-* tokens, so both themes work
+   - shimmer only runs when the user has not asked for reduced motion
+   - line heights follow the card's type scale instead of a flat 48px
+   State is read from #projects[data-state]; this file never sets it.
+   ========================================================================== */
+
+/* 1. Visibility: the skeleton exists only in the loading state ------------- */
+
+#projects:not([data-state="loading"]) .skeleton-list {
+  display: none;
+}
+
+/* 2. List: same grid as .project-grid, so columns match the real cards ----- */
+
+.skeleton-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--card-min), 100%), 1fr));
+  gap: var(--space-6);
+  list-style: none;
+}
+
+/* 3. Card frame: mirrors .project-card (padding, border, gap) -------------- */
+
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+}
+
+/* 4. Placeholder bars ------------------------------------------------------ */
+
+.skeleton-item {
+  display: block;
+  height: calc(var(--font-size-base) * var(--line-height));
+  border-radius: var(--radius);
+  background: linear-gradient(
+    90deg,
+    var(--color-skeleton-base) 25%,
+    var(--color-skeleton-highlight) 50%,
+    var(--color-skeleton-base) 75%
+  );
+  background-size: 200% 100%;
+}
+
+/* h3 is 1rem at line-height 1.2 */
+.skeleton-title {
+  width: 60%;
+  height: calc(var(--font-size-base) * 1.2);
+}
+
+.skeleton-line-short {
+  width: 70%;
+}
+
+/* One row of badges: text line + vertical padding + 1px borders */
+.skeleton-badges {
+  width: 80%;
+  height: calc(var(--font-size-base) * var(--line-height) + var(--space-2) + 2px);
+}
+
+/* 5. Shimmer: opt-in to motion (WCAG 2.3.3) -------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton-item {
+    animation: shimmer var(--skeleton-duration) linear infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}

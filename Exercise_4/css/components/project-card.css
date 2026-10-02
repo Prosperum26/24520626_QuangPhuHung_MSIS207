@@ -1,0 +1,83 @@
+/* ==========================================================================
+   T-03-4C – Project Cards + Filter
+   Contract: Exercise_3/TASK_DECOMPOSITION.md §3.6
+   State is read from attributes only:
+   - .filter-button[aria-pressed="true"] → active filter
+   - <li hidden> on filtered-out cards (UA style, no custom class)
+   ========================================================================== */
+
+/* 1. Filter bar (1D flex) -------------------------------------------------- */
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.filter-button {
+  min-height: 2.75rem; /* 44px touch target, WCAG 2.5.8 */
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  background-color: var(--color-bg);
+  color: var(--color-accent);
+  cursor: pointer;
+}
+
+/* Pressed = solid accent; same box size, so switching never shifts layout */
+.filter-button[aria-pressed="true"] {
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.filter-status {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* 2. Card grid (2D) -------------------------------------------------------- */
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--card-min), 100%), 1fr));
+  gap: var(--space-6);
+  list-style: none;
+}
+
+/* 3. Card ------------------------------------------------------------------ */
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+}
+
+/* Title left, category badge right; badge wraps under a long title */
+.card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.badge-category {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+/* Links stick to the bottom so cards in one row line up */
+.card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin-top: auto;
+}

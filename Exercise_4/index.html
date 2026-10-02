@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio of Quảng Phú Hưng, Information Systems student building backend and AI-powered full-stack systems.">
+  <title>Quảng Phú Hưng | Backend &amp; AI Developer</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components/hero.css">
+  <link rel="stylesheet" href="css/components/theme-switcher.css">
+  <link rel="stylesheet" href="css/components/skills-matrix.css">
+  <link rel="stylesheet" href="css/components/project-card.css">
+  <link rel="stylesheet" href="css/components/contact-form.css">
+  <link rel="stylesheet" href="css/components/skeleton.css">
+  <noscript><link rel="stylesheet" href="css/noscript.css"></noscript>
+  <script src="js/theme.js" defer></script>
+  <script src="js/project-filter.js" defer></script>
+  <script src="js/contact-form.js" defer></script>
+  <script src="js/project-feed.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="hero">
+    <picture class="hero-portrait">
+      <source type="image/avif"
+              srcset="assets/hero-avatar-320.avif 320w, assets/hero-avatar-640.avif 640w"
+              sizes="(min-width: 48rem) 14rem, 10rem">
+      <source type="image/webp"
+              srcset="assets/hero-avatar-320.webp 320w, assets/hero-avatar-640.webp 640w"
+              sizes="(min-width: 48rem) 14rem, 10rem">
+      <img src="assets/hero-avatar-320.jpg"
+           srcset="assets/hero-avatar-320.jpg 320w, assets/hero-avatar-640.jpg 640w"
+           sizes="(min-width: 48rem) 14rem, 10rem"
+           width="320" height="320"
+           alt="Avatar: a cheetah cub looking up in golden grass"
+           fetchpriority="high" decoding="async">
+    </picture>
+    <h1 class="hero-title"><span lang="vi">Quảng Phú Hưng</span> &mdash; Backend &amp; AI Developer</h1>
+    <p class="hero-pitch">Building high-performance full-stack systems with a focus on backend and AI.</p>
+    <button type="button" id="theme-toggle" class="theme-switcher" aria-pressed="false">
+      <svg class="theme-icon theme-icon-sun" aria-hidden="true" focusable="false"
+           width="20" height="20" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+      </svg>
+      <svg class="theme-icon theme-icon-moon" aria-hidden="true" focusable="false"
+           width="20" height="20" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+      </svg>
+      <span class="theme-switcher-label">Dark mode</span>
+    </button>
+  </header>
+
+  <nav aria-label="Primary">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content">
+    <section id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <p>
+        I am an <strong>Information Systems student</strong> at the University of
+        Information Technology, VNU-HCM, ranked first in the Information Systems
+        Advanced Program in my first semester of 2025&ndash;2026.
+      </p>
+      <p>
+        I design backend services with NestJS and PostgreSQL, build retrieval and
+        reinforcement learning pipelines in Python, and have led two student teams
+        from requirements to deployment.
+      </p>
+    </section>
+
+    <section id="experience" aria-labelledby="experience-title">
+      <h2 id="experience-title">Experience</h2>
+
+      <ol class="timeline">
+        <li>
+          <article class="experience-item">
+            <header>
+              <h3>Team Leader, WebDev Adventure 2026</h3>
+              <p class="experience-meta">
+                WebDev Studios Club &amp; UIT, VNU-HCM<br>
+                <time datetime="2026-03">Mar 2026</time> &ndash; <time datetime="2026-05">May 2026</time>
+              </p>
+            </header>
+            <ul>
+              <li>Led a five-person team building GreenGrass from requirement analysis to deployment.</li>
+              <li>Ran weekly syncs, a shared project board and peer code reviews to keep the architecture consistent.</li>
+              <li>Presented the platform to a panel of industry judges and won the <strong>Encouragement Prize</strong>.</li>
+            </ul>
+          </article>
+        </li>
+
+        <li>
+          <article class="experience-item">
+            <header>
+              <h3>Team Leader, Fessior DevCamp 2026</h3>
+              <p class="experience-meta">
+                Fessior DevCamp<br>
+                <time datetime="2026-01">Jan 2026</time> &ndash; <time datetime="2026-04">Apr 2026</time>
+              </p>
+            </header>
+            <ul>
+              <li>Directed the team building Frontendly, a full-stack app with React, Tailwind CSS and Node.js.</li>
+              <li>Set shared TypeScript standards using generics and utility types across the codebase.</li>
+              <li>Coordinated a reusable component library and REST middleware for validation and error handling.</li>
+            </ul>
+          </article>
+        </li>
+      </ol>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-title"
+             data-state="loading" aria-busy="true">
+      <h2 id="projects-title" tabindex="-1">Projects</h2>
+
+      <ul class="filter-bar" aria-label="Filter projects by category">
+        <li><button type="button" class="filter-button" data-filter="all" aria-pressed="true">All</button></li>
+        <li><button type="button" class="filter-button" data-filter="backend" aria-pressed="false">Backend</button></li>
+        <li><button type="button" class="filter-button" data-filter="ai" aria-pressed="false">AI</button></li>
+        <li><button type="button" class="filter-button" data-filter="frontend" aria-pressed="false">Frontend</button></li>
+      </ul>
+      <p class="filter-status" role="status">Showing 4 of 4 projects</p>
+
+      <p class="feed-status visually-hidden" role="status">Loading projects…</p>
+
+      <ul class="skeleton-list" aria-hidden="true">
+        <li class="skeleton-card">
+          <span class="skeleton-item skeleton-title"></span>
+          <span class="skeleton-item skeleton-line"></span>
+          <span class="skeleton-item skeleton-line"></span>
+          <span class="skeleton-item skeleton-line skeleton-line-short"></span>
+          <span class="skeleton-item skeleton-badges"></span>
+        </li>
+        <li class="skeleton-card">
+          <span class="skeleton-item skeleton-title"></span>
+          <span class="skeleton-item skeleton-line"></span>
+          <span class="skeleton-item skeleton-line"></span>
+          <span class="skeleton-item skeleton-line skeleton-line-short"></span>
+          <span class="skeleton-item skeleton-badges"></span>
+        </li>
+        <li class="skeleton-card">
+          <span class="skeleton-item skeleton-title"></span>
+          <span class="skeleton-item skeleton-line"></span>
+          <span class="skeleton-item skeleton-line"></span>
+          <span class="skeleton-item skeleton-line skeleton-line-short"></span>
+          <span class="skeleton-item skeleton-badges"></span>
+        </li>
+        <li class="skeleton-card">
+          <span class="skeleton-item skeleton-title"></span>
+          <span class="skeleton-item skeleton-line"></span>
+          <span class="skeleton-item skeleton-line"></span>
+          <span class="skeleton-item skeleton-line skeleton-line-short"></span>
+          <span class="skeleton-item skeleton-badges"></span>
+        </li>
+      </ul>
+
+      <noscript>
+        <p class="feed-panel">
+          Projects load with JavaScript.
+          <a href="https://github.com/Prosperum26">Browse them on GitHub</a> instead.
+        </p>
+      </noscript>
+
+      <ul class="project-grid" data-active-filter="all">
+        <li>
+          <article class="project-card" data-category="backend" aria-labelledby="project-greengrass">
+            <header class="card-header">
+              <h3 id="project-greengrass">GreenGrass</h3>
+              <span class="badge badge-category">Backend</span>
+            </header>
+            <p>
+              A green event platform for VNU-HCM students, with JWT refresh-token
+              rotation, role-based access and a check-in that combines rotating QR
+              codes with GPS geofencing. Encouragement Prize at WebDev Adventure 2026.
+            </p>
+            <ul class="badge-list" aria-label="Tech stack">
+              <li class="badge">NestJS</li>
+              <li class="badge">React</li>
+              <li class="badge">PostgreSQL</li>
+              <li class="badge">Prisma</li>
+              <li class="badge">Docker</li>
+            </ul>
+            <footer class="card-footer">
+              <a href="https://github.com/Prosperum26/greengrass-backend"
+                 aria-label="Backend source of GreenGrass on GitHub">Backend source</a>
+              <a href="https://github.com/Prosperum26/greengrass-frontend"
+                 aria-label="Frontend source of GreenGrass on GitHub">Frontend source</a>
+            </footer>
+          </article>
+        </li>
+
+        <li>
+          <article class="project-card" data-category="ai" aria-labelledby="project-diabetes-qa">
+            <header class="card-header">
+              <h3 id="project-diabetes-qa">Diabetes Q&amp;A Assistant</h3>
+              <span class="badge badge-category">AI</span>
+            </header>
+            <p>
+              A retrieval-augmented question answering system that grounds every
+              answer in crawled medical sources, running a local LLM so sensitive
+              questions never leave the machine.
+            </p>
+            <ul class="badge-list" aria-label="Tech stack">
+              <li class="badge">Python</li>
+              <li class="badge">ChromaDB</li>
+              <li class="badge">Ollama</li>
+              <li class="badge">BeautifulSoup</li>
+            </ul>
+            <footer class="card-footer">
+              <a href="https://github.com/Prosperum26/qna-systeam-diabetes-rag"
+                 aria-label="Source code of Diabetes Q&amp;A Assistant on GitHub">Source code</a>
+            </footer>
+          </article>
+        </li>
+
+        <li>
+          <article class="project-card" data-category="ai" aria-labelledby="project-rl-pricing">
+            <header class="card-header">
+              <h3 id="project-rl-pricing">RL Dynamic Pricing</h3>
+              <span class="badge badge-category">AI</span>
+            </header>
+            <p>
+              A pricing engine that models an online store as a Markov decision
+              process and learns prices that balance short-term profit with
+              long-term customer retention.
+            </p>
+            <ul class="badge-list" aria-label="Tech stack">
+              <li class="badge">Python</li>
+              <li class="badge">Reinforcement Learning</li>
+              <li class="badge">Pandas</li>
+              <li class="badge">NumPy</li>
+            </ul>
+            <footer class="card-footer">
+              <a href="https://github.com/Prosperum26/rl-dynamic-pricing"
+                 aria-label="Source code of RL Dynamic Pricing on GitHub">Source code</a>
+            </footer>
+          </article>
+        </li>
+
+        <li>
+          <article class="project-card" data-category="frontend" aria-labelledby="project-chuck-king">
+            <header class="card-header">
+              <h3 id="project-chuck-king">Chuck King</h3>
+              <span class="badge badge-category">Frontend</span>
+            </header>
+            <p>
+              A vertical rage platformer with a hand-written physics engine and an
+              AI narrator that taunts you based on how often you fall.
+            </p>
+            <ul class="badge-list" aria-label="Tech stack">
+              <li class="badge">JavaScript</li>
+              <li class="badge">HTML5 Canvas</li>
+              <li class="badge">LLM API</li>
+            </ul>
+            <footer class="card-footer">
+              <a href="https://github.com/Prosperum26/chuck-king"
+                 aria-label="Source code of Chuck King on GitHub">Source code</a>
+            </footer>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <section id="skills" aria-labelledby="skills-title">
+      <h2 id="skills-title">Skills</h2>
+
+      <ul class="skill-grid">
+        <li class="skill-group" data-category="ai">
+          <h3>AI &amp; Machine Learning</h3>
+          <ul class="badge-list">
+            <li class="badge">Reinforcement Learning (PPO, MDP)</li>
+            <li class="badge">RAG pipelines</li>
+            <li class="badge">ChromaDB</li>
+            <li class="badge">Ollama</li>
+            <li class="badge">PyTorch</li>
+            <li class="badge">TensorFlow</li>
+            <li class="badge">NumPy</li>
+            <li class="badge">Pandas</li>
+          </ul>
+        </li>
+
+        <li class="skill-group" data-category="backend">
+          <h3>Backend</h3>
+          <ul class="badge-list">
+            <li class="badge">Node.js</li>
+            <li class="badge">NestJS</li>
+            <li class="badge">Express</li>
+            <li class="badge">PostgreSQL</li>
+            <li class="badge">MongoDB</li>
+            <li class="badge">Prisma ORM</li>
+            <li class="badge">REST</li>
+            <li class="badge">JWT &amp; RBAC</li>
+          </ul>
+        </li>
+
+        <li class="skill-group" data-category="frontend">
+          <h3>Frontend</h3>
+          <ul class="badge-list">
+            <li class="badge">React</li>
+            <li class="badge">Tailwind CSS</li>
+            <li class="badge">HTML5</li>
+            <li class="badge">CSS3</li>
+            <li class="badge">Redux</li>
+            <li class="badge">Zustand</li>
+          </ul>
+        </li>
+
+        <li class="skill-group" data-category="languages">
+          <h3>Languages</h3>
+          <ul class="badge-list">
+            <li class="badge">Python</li>
+            <li class="badge">TypeScript</li>
+            <li class="badge">JavaScript</li>
+            <li class="badge">C++</li>
+            <li class="badge">SQL</li>
+            <li class="badge">LaTeX</li>
+          </ul>
+        </li>
+
+        <li class="skill-group" data-category="tools">
+          <h3>Infrastructure &amp; Tools</h3>
+          <ul class="badge-list">
+            <li class="badge">Docker</li>
+            <li class="badge">GitHub Actions</li>
+            <li class="badge">Swagger / OpenAPI</li>
+            <li class="badge">Git</li>
+            <li class="badge">Vercel</li>
+            <li class="badge">Render</li>
+            <li class="badge">Postman</li>
+            <li class="badge">Figma</li>
+            <li class="badge">Linux / WSL</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <address>
+        Email: <a href="mailto:24520626@gm.uit.edu.vn">24520626@gm.uit.edu.vn</a><br>
+        GitHub: <a href="https://github.com/Prosperum26">github.com/Prosperum26</a><br>
+        Ho Chi Minh City, Vietnam
+      </address>
+
+      <form class="contact-form" id="contact-form" data-state="idle"
+            action="mailto:24520626@gm.uit.edu.vn" method="post" enctype="text/plain">
+        <p class="form-field">
+          <label for="contact-name">Name</label>
+          <input id="contact-name" name="name" type="text" autocomplete="name"
+                 required minlength="2" maxlength="80" aria-describedby="contact-name-error">
+          <span class="field-error" id="contact-name-error"></span>
+        </p>
+        <p class="form-field">
+          <label for="contact-email">Email</label>
+          <input id="contact-email" name="email" type="email" autocomplete="email"
+                 required maxlength="254" aria-describedby="contact-email-error">
+          <span class="field-error" id="contact-email-error"></span>
+        </p>
+        <p class="form-field">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" name="message" rows="5" required minlength="10" maxlength="500"
+                    aria-describedby="contact-message-hint contact-message-error"></textarea>
+          <span class="field-hint" id="contact-message-hint">10&ndash;500 characters.</span>
+          <span class="field-error" id="contact-message-error"></span>
+        </p>
+        <button type="submit" class="form-submit">Send message</button>
+        <p class="form-status" id="contact-status" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 <span lang="vi">Quảng Phú Hưng</span>. All rights reserved.</p>
+  </footer>
+</body>
+</html>
+

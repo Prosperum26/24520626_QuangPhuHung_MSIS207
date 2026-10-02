@@ -1,0 +1,14 @@
+/* ==========================================================================
+   T-03A-C – No-JavaScript fallback
+   Contract: Exercise_4/TASK_DECOMPOSITION.md §3.2, §3.4
+   Loaded only inside <noscript> in <head>. Without JS the feed never leaves
+   "loading", so hide everything that waits for it; the <noscript> paragraph
+   in #projects links to GitHub instead.
+   ========================================================================== */
+
+.skeleton-list,
+.filter-bar,
+.filter-status,
+.feed-status {
+  display: none;
+}
