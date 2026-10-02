@@ -1,0 +1,204 @@
+/* ==========================================================================
+   Print — Ctrl+P turns the page into a one-column A4 CV.
+   Loaded with media="print". Forces the light palette, drops everything
+   interactive, and prints the project dialogs as ordinary sections.
+   ========================================================================== */
+
+@page {
+  size: A4;
+  margin: 14mm 16mm;
+}
+
+/* Same specificity as the dark-theme selectors in tokens.css; later file wins */
+:root,
+:root.dark-theme,
+:root:not(.light-theme) {
+  --color-paper: var(--palette-paper-50);
+  --color-paper-raised: var(--palette-paper-50);
+  --color-ink: var(--palette-ink-900);
+  --color-ink-soft: var(--palette-ink-600);
+  --color-rule: var(--palette-ink-900);
+  --color-rule-soft: var(--palette-paper-300);
+  --color-link: var(--palette-ink-900);
+  --color-accent: var(--palette-red-700);
+  color-scheme: light;
+}
+
+body {
+  font-size: 10pt;
+  line-height: 1.4;
+  background: none;
+}
+
+*,
+*::before,
+*::after {
+  animation: none !important;
+  transition: none !important;
+  box-shadow: none !important;
+}
+
+.skip-link,
+.progress,
+.intro,
+.toolbar,
+.toc,
+.portrait,
+#projects .sec-lead,
+.figures,
+.fig-open,
+.copy-btn,
+.toast,
+.end-doc,
+.paper-dialog form {
+  display: none !important;
+}
+
+.title-block,
+main,
+.colophon {
+  width: auto;
+}
+
+/* Header */
+.title-block {
+  padding: 0 0 4mm;
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.title {
+  margin-block: 1mm;
+  font-size: 26pt;
+}
+
+.subtitle {
+  font-size: 11pt;
+  max-width: none;
+}
+
+.affiliation {
+  margin-top: 1mm;
+}
+
+.abstract {
+  max-width: none;
+  margin-top: 3mm;
+}
+
+.abstract-body p:last-child {
+  font-size: 10pt;
+}
+
+/* Sections */
+main {
+  padding: 0;
+}
+
+.sec {
+  padding-block: 4mm 0;
+}
+
+.sec > h2 {
+  margin-bottom: 2mm;
+  font-size: 13pt;
+  border-bottom: 0.5pt solid var(--color-rule-soft);
+  break-after: avoid;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 1fr 38mm;
+  column-gap: 5mm;
+  break-inside: avoid;
+}
+
+.entry + .entry {
+  margin-top: 3mm;
+}
+
+.entry .margin-note {
+  order: 0;
+  padding-left: 2mm;
+  border-left: 0.5pt solid var(--color-rule-soft);
+}
+
+.entry-body h3 {
+  font-size: 11pt;
+}
+
+/* Footnote prints inline under its section */
+.footnote,
+.footnote:not(:popover-open) {
+  display: block;
+  position: static;
+  inset: auto;
+  width: auto;
+  margin: 2mm 0 0;
+  padding: 1mm 0 0;
+  border: 0;
+  border-top: 0.5pt solid var(--color-rule-soft);
+  background: none;
+  font-size: 8.5pt;
+}
+
+.fn-ref {
+  color: var(--color-accent);
+}
+
+/* Project dialogs become plain sub-sections */
+.paper-dialog {
+  display: block;
+  position: static;
+  width: auto;
+  max-height: none;
+  margin: 0 0 3mm;
+  padding: 0;
+  border: 0;
+  background: none;
+  break-inside: avoid;
+}
+
+.paper-dialog h3 {
+  margin: 0;
+  font-size: 11pt;
+}
+
+.dlg-meta {
+  float: right;
+  font-size: 8.5pt;
+}
+
+.dlg-links {
+  margin-top: 1mm;
+  font-size: 8.5pt;
+}
+
+.dlg-links a::after {
+  content: " — " attr(href);
+}
+
+.margin-note time {
+  white-space: nowrap;
+}
+
+.table-wrap {
+  overflow: visible;
+  break-inside: avoid;
+}
+
+.booktabs {
+  font-size: 9pt;
+}
+
+.refs li + li {
+  margin-top: 1mm;
+}
+
+a {
+  text-decoration: none;
+}
+
+.colophon {
+  padding: 4mm 0 0;
+  border-top: 0;
+}

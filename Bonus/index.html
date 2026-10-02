@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Quảng Phú Hưng — Information Systems student at UIT, VNU-HCM, building backend and AI-powered full-stack systems." data-i18n-content="meta.description">
+  <title data-i18n="meta.title">Quảng Phú Hưng — Backend &amp; AI Developer</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/intro.css">
+  <link rel="stylesheet" href="css/figures.css">
+  <link rel="stylesheet" href="css/source-mode.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <script src="js/intro-gate.js"></script>
+  <script src="js/theme.js" defer></script>
+  <script src="js/i18n.js" type="module"></script>
+  <script src="js/compile-intro.js" type="module"></script>
+  <script src="js/source-toggle.js" type="module"></script>
+  <script src="js/figures.js" type="module"></script>
+  <script src="js/copy-email.js" type="module"></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link" data-intro-inert data-i18n="skip">Skip to main content</a>
+  <div class="progress" aria-hidden="true"></div>
+
+  <header class="masthead">
+    <!-- Compile intro: hidden unless intro-gate.js added html.intro-pending 
+     Noty: Mong thầy đọc được dòng này, em phát hiện mấy chỗ backdoor của thầy r :P-->
+    <section class="intro" aria-label="Intro animation" data-i18n-label="intro.label" data-state="idle">
+      <div class="intro-window">
+        <p class="intro-titlebar" aria-hidden="true">
+          <span class="intro-dot"></span><span class="intro-dot"></span><span class="intro-dot"></span>
+          <span class="intro-file">hung.tex</span>
+        </p>
+        <pre class="intro-source" aria-hidden="true"><code></code></pre>
+        <ol class="intro-log" aria-hidden="true"></ol>
+        <p class="intro-actions">
+          <button type="button" class="intro-compile">
+            <span data-i18n="intro.compile">Compile</span> <kbd>Enter</kbd>
+          </button>
+          <button type="button" class="intro-skip">
+            <span data-i18n="intro.skip">Skip</span> <kbd>Esc</kbd>
+          </button>
+        </p>
+      </div>
+    </section>
+
+    <div class="toolbar" data-intro-inert>
+      <div class="lang-switch" role="group" aria-label="Language" data-i18n-label="lang.label">
+        <button type="button" class="lang-btn" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang-btn" data-lang="vi" aria-pressed="false">VI</button>
+      </div>
+      <button type="button" id="theme-toggle" class="tool-btn" aria-pressed="false">
+        <svg class="tool-icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+        </svg>
+        <span data-i18n="tool.dark">Dark</span>
+      </button>
+      <button type="button" id="source-toggle" class="tool-btn" aria-pressed="false">
+        <svg class="tool-icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 6l-6 6 6 6M16 6l6 6-6 6"/>
+        </svg>
+        <span data-i18n="tool.source">Source</span>
+      </button>
+    </div>
+
+    <div class="title-block" data-intro-inert>
+      <p class="kicker" data-i18n="kicker">Portfolio · Version 2026</p>
+      <h1 class="title" data-tex="name"><span lang="vi">Quảng Phú Hưng</span></h1>
+      <p class="subtitle" data-i18n="subtitle">Backend &amp; AI-oriented student building high-performance full-stack systems</p>
+      <p class="affiliation">
+        <span data-i18n="affiliation">Information Systems, University of Information Technology — VNU-HCM</span><br>
+        <span data-i18n="location">Ho Chi Minh City, Vietnam</span> · <time datetime="2024">2024</time>–<time datetime="2028">2028</time>
+      </p>
+
+      <div class="abstract">
+        <picture class="portrait">
+          <source type="image/avif" srcset="assets/hero-avatar-320.avif 320w, assets/hero-avatar-640.avif 640w" sizes="7rem">
+          <source type="image/webp" srcset="assets/hero-avatar-320.webp 320w, assets/hero-avatar-640.webp 640w" sizes="7rem">
+          <img src="assets/hero-avatar-320.jpg" srcset="assets/hero-avatar-320.jpg 320w, assets/hero-avatar-640.jpg 640w" sizes="7rem"
+               width="320" height="320" alt="Avatar: a cheetah cub looking up in golden grass" data-i18n-alt="avatar.alt"
+               fetchpriority="high" decoding="async">
+        </picture>
+        <div class="abstract-body">
+          <p class="abstract-label" data-i18n="abstract.label">Abstract</p>
+          <p data-i18n="abstract.text">
+            I design backend services that stay correct under pressure and AI pipelines
+            that can show their sources. This document reports two team leaderships, four
+            systems and one LaTeX template, typeset for the web.
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="toc" aria-labelledby="toc-title" data-intro-inert>
+    <h2 id="toc-title" class="toc-title" data-i18n="toc.title">Contents</h2>
+    <ol>
+      <li><a href="#about"><span data-i18n="sec.about">About</span><span class="leader" aria-hidden="true"></span></a></li>
+      <li><a href="#experience"><span data-i18n="sec.experience">Experience</span><span class="leader" aria-hidden="true"></span></a></li>
+      <li><a href="#projects"><span data-i18n="sec.projects">Projects</span><span class="leader" aria-hidden="true"></span></a></li>
+      <li><a href="#community"><span data-i18n="sec.community">Community</span><span class="leader" aria-hidden="true"></span></a></li>
+      <li><a href="#skills"><span data-i18n="sec.skills">Skills</span><span class="leader" aria-hidden="true"></span></a></li>
+      <li><a href="#contact"><span data-i18n="sec.contact">References</span><span class="leader" aria-hidden="true"></span></a></li>
+    </ol>
+  </nav>
+
+  <main id="main-content" data-intro-inert>
+    <!-- §1 About -->
+    <section id="about" class="sec" aria-labelledby="about-title">
+      <h2 id="about-title" data-i18n="sec.about">About</h2>
+      <div class="entry">
+        <div class="entry-body">
+          <p>
+            <span data-i18n="about.p1a">I study Information Systems in the Advanced Program at UIT, VNU-HCM, where I was</span>
+            <strong data-i18n="about.p1b">ranked first in my cohort</strong><button type="button" class="fn-ref" popovertarget="fn-1" aria-label="Footnote 1" data-i18n-label="fn.1.label">1</button><span data-i18n="about.p1c">.</span>
+          </p>
+          <p data-i18n="about.p2">
+            Most of my work sits behind the interface: NestJS services, PostgreSQL schemas,
+            authentication that rotates its own tokens. On the AI side I build retrieval
+            pipelines that cite what they read and reinforcement learning agents that have to
+            earn their reward.
+          </p>
+          <p data-i18n="about.p3">
+            I like problems where the obvious solution is easy to cheat, such as a check-in
+            that a screenshot cannot fake or a medical answer that cannot be made up.
+          </p>
+        </div>
+        <p class="margin-note">
+          <span class="note-label" data-i18n="about.note.label">Focus</span>
+          <span data-i18n="about.note">Backend architecture · RAG · Reinforcement learning</span>
+        </p>
+      </div>
+      <div id="fn-1" class="footnote" popover>
+        <p><span class="fn-num">1</span> <span data-i18n="fn.1">Academic Excellence Scholarship, ranked 1st in Information Systems (Advanced Program), Semester 1, academic year 2025–2026.</span></p>
+      </div>
+    </section>
+
+    <!-- §2 Experience -->
+    <section id="experience" class="sec" aria-labelledby="experience-title">
+      <h2 id="experience-title" data-i18n="sec.experience">Experience</h2>
+
+      <article class="entry">
+        <div class="entry-body">
+          <h3>
+            <span data-i18n="exp.wda.role">Team Leader</span>,
+            <span data-i18n="exp.wda.event">WebDev Adventure 2026</span>
+          </h3>
+          <p class="entry-org" data-i18n="exp.wda.org">WebDev Studios Club &amp; University of Information Technology, VNU-HCM</p>
+          <ul>
+            <li data-i18n="exp.wda.b1">Led a five-person team through the full lifecycle of GreenGrass, from requirements to deployment.</li>
+            <li data-i18n="exp.wda.b2">Ran weekly syncs, a shared project board and peer code reviews to keep one consistent, modular architecture.</li>
+            <li data-i18n="exp.wda.b3">Worked on the cost and sustainability analysis, then gave the final technical demo to a panel of industry judges.</li>
+          </ul>
+        </div>
+        <p class="margin-note">
+          <time datetime="2026-03">Mar 2026</time> – <time datetime="2026-05">May 2026</time>
+          <span class="note-award" data-i18n="exp.wda.award">Consolation Prize</span>
+        </p>
+      </article>
+
+      <article class="entry">
+        <div class="entry-body">
+          <h3>
+            <span data-i18n="exp.fdc.role">Team Leader</span>,
+            <span data-i18n="exp.fdc.event">Fessior DevCamp 2026</span>
+          </h3>
+          <p class="entry-org" data-i18n="exp.fdc.org">Fessior DevCamp · Frontendly project</p>
+          <ul>
+            <li data-i18n="exp.fdc.b1">Owned the technical roadmap for Frontendly, a full-stack web application, keeping frontend and backend aligned.</li>
+            <li data-i18n="exp.fdc.b2">Set strict TypeScript standards with generics and utility types so the whole team shared one type-safe codebase.</li>
+            <li data-i18n="exp.fdc.b3">Coordinated a reusable React and Tailwind component library and a Node.js REST backend with central validation and error handling.</li>
+          </ul>
+        </div>
+        <p class="margin-note">
+          <time datetime="2026-01">Jan 2026</time> – <time datetime="2026-04">Apr 2026</time>
+        </p>
+      </article>
+    </section>
+
+    <!-- §3 Projects -->
+    <section id="projects" class="sec" aria-labelledby="projects-title">
+      <h2 id="projects-title" data-i18n="sec.projects">Projects</h2>
+      <p class="sec-lead" data-i18n="projects.lead">Four systems, one figure each. Open a figure for the full write-up.</p>
+
+      <div class="figures">
+        <!-- Figure 1: GreenGrass -->
+        <figure class="fig" id="fig-greengrass">
+          <div class="fig-art art-geo" aria-hidden="true">
+            <svg viewBox="0 0 240 150" width="240" height="150">
+              <g class="qr">
+                <rect class="qr-frame" x="16" y="25" width="100" height="100" rx="4"/>
+                <rect class="qr-eye" x="24" y="33" width="24" height="24"/>
+                <rect class="qr-eye" x="84" y="33" width="24" height="24"/>
+                <rect class="qr-eye" x="24" y="93" width="24" height="24"/>
+                <rect class="qr-cell c1" x="56" y="33" width="10" height="10"/>
+                <rect class="qr-cell c2" x="68" y="45" width="10" height="10"/>
+                <rect class="qr-cell c3" x="56" y="57" width="10" height="10"/>
+                <rect class="qr-cell c4" x="32" y="69" width="10" height="10"/>
+                <rect class="qr-cell c5" x="80" y="69" width="10" height="10"/>
+                <rect class="qr-cell c6" x="56" y="81" width="10" height="10"/>
+                <rect class="qr-cell c7" x="68" y="93" width="10" height="10"/>
+                <rect class="qr-cell c8" x="92" y="93" width="10" height="10"/>
+                <rect class="qr-cell c9" x="80" y="105" width="10" height="10"/>
+                <rect class="qr-cell c10" x="56" y="105" width="10" height="10"/>
+                <rect class="qr-cell c11" x="44" y="69" width="10" height="10"/>
+                <rect class="qr-cell c12" x="92" y="57" width="10" height="10"/>
+              </g>
+              <g class="geo">
+                <circle class="geo-zone" cx="182" cy="75" r="40"/>
+                <circle class="geo-pulse" cx="182" cy="75" r="40"/>
+                <circle class="geo-center" cx="182" cy="75" r="3"/>
+                <circle class="geo-user" cx="182" cy="75" r="6"/>
+              </g>
+            </svg>
+          </div>
+          <figcaption>
+            <h3 class="fig-title">GreenGrass</h3>
+            <p data-i18n="p.gg.cap">An event platform whose check-in combines a rotating QR code with a GPS geofence, so attendance cannot be faked from home.</p>
+            <p class="fig-stack">NestJS · React · PostgreSQL · Prisma · Docker</p>
+            <button type="button" class="fig-open" data-dialog="dlg-greengrass" aria-label="Read more about GreenGrass" data-i18n-label="p.gg.open"><span data-i18n="p.open">Read more</span> →</button>
+          </figcaption>
+        </figure>
+
+        <!-- Figure 2: Diabetes RAG -->
+        <figure class="fig" id="fig-rag">
+          <div class="fig-art art-rag" aria-hidden="true">
+            <ol class="rag-flow">
+              <li data-i18n="p.rag.s1">Crawl</li>
+              <li data-i18n="p.rag.s2">Chunk</li>
+              <li data-i18n="p.rag.s3">Embed</li>
+              <li data-i18n="p.rag.s4">Retrieve</li>
+              <li data-i18n="p.rag.s5">Answer</li>
+            </ol>
+            <p class="rag-cite">[ref 3, 7]</p>
+          </div>
+          <figcaption>
+            <h3 class="fig-title" data-i18n="p.rag.title">Diabetes Q&amp;A (RAG)</h3>
+            <p data-i18n="p.rag.cap">A retrieval-augmented assistant that grounds every answer in crawled medical sources and runs a local LLM, so sensitive questions never leave the machine.</p>
+            <p class="fig-stack">Python · ChromaDB · Ollama · BeautifulSoup</p>
+            <button type="button" class="fig-open" data-dialog="dlg-rag" aria-label="Read more about Diabetes Q&amp;A" data-i18n-label="p.rag.open"><span data-i18n="p.open">Read more</span> →</button>
+          </figcaption>
+        </figure>
+
+        <!-- Figure 3: RL Pricing -->
+        <figure class="fig" id="fig-rl">
+          <div class="fig-art art-rl" aria-hidden="true">
+            <svg viewBox="0 0 240 150" width="240" height="150">
+              <path class="rl-axis" d="M24 16 V126 H228"/>
+              <path class="rl-static" d="M24 92 H228"/>
+              <path class="rl-curve" pathLength="1" d="M24 120 L40 112 L52 116 L66 100 L78 104 L92 86 L104 90 L118 70 L130 74 L144 58 L158 52 L172 44 L186 40 L200 34 L214 32 L228 30"/>
+              <text class="rl-label" x="228" y="24" text-anchor="end">PPO agent</text>
+              <text class="rl-label rl-label-muted" x="228" y="86" text-anchor="end" data-i18n="p.rl.static">static price</text>
+              <text class="rl-label rl-label-muted" x="30" y="142" data-i18n="p.rl.ep">episodes →</text>
+            </svg>
+          </div>
+          <figcaption>
+            <h3 class="fig-title" data-i18n="p.rl.title">RL Dynamic Pricing</h3>
+            <p data-i18n="p.rl.cap">A pricing engine that treats an online store as a Markov decision process and learns prices that balance short-term profit with long-term retention.</p>
+            <p class="fig-stack">Python · Reinforcement Learning · Pandas · NumPy</p>
+            <button type="button" class="fig-open" data-dialog="dlg-rl" aria-label="Read more about RL Dynamic Pricing" data-i18n-label="p.rl.open"><span data-i18n="p.open">Read more</span> →</button>
+          </figcaption>
+        </figure>
+
+        <!-- Figure 4: Chuck King -->
+        <figure class="fig" id="fig-chuck">
+          <div class="fig-art art-chuck" aria-hidden="true">
+            <div class="tower">
+              <span class="ledge l1"></span>
+              <span class="ledge l2"></span>
+              <span class="ledge l3"></span>
+              <span class="chuck"></span>
+            </div>
+            <p class="taunt" data-i18n="p.ck.taunt">Fell again? Gravity 1, you 0.</p>
+          </div>
+          <figcaption>
+            <h3 class="fig-title">Chuck King</h3>
+            <p data-i18n="p.ck.cap">A vertical rage platformer with a hand-written physics engine and an AI narrator that taunts you based on how often you fall.</p>
+            <p class="fig-stack">JavaScript · HTML5 Canvas · OOP · LLM API</p>
+            <button type="button" class="fig-open" data-dialog="dlg-chuck" aria-label="Read more about Chuck King" data-i18n-label="p.ck.open"><span data-i18n="p.open">Read more</span> →</button>
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- Project detail dialogs -->
+      <dialog id="dlg-greengrass" class="paper-dialog" aria-labelledby="dlg-greengrass-title">
+        <p class="dlg-meta"><span data-i18n="p.fig">Figure</span> 1 · <time datetime="2026-03">Mar</time>–<time datetime="2026-05">May 2026</time></p>
+        <h3 id="dlg-greengrass-title">GreenGrass</h3>
+        <ul>
+          <li data-i18n="p.gg.d1">Modular NestJS backend and responsive React frontend for event organisers and participants.</li>
+          <li data-i18n="p.gg.d2">JWT authentication with refresh-token rotation and role-based access control.</li>
+          <li data-i18n="p.gg.d3">Anti-fraud check-in: a QR code that rotates every few seconds plus GPS geofencing to prove physical presence.</li>
+          <li data-i18n="p.gg.d4">PostgreSQL schemas with Prisma for type-safe queries and migrations; CI/CD on GitHub Actions, Cloudinary assets, Swagger docs.</li>
+        </ul>
+        <p class="dlg-links">
+          <a href="https://github.com/Prosperum26/greengrass-backend" data-i18n="p.gg.l1">Backend source on GitHub</a>
+          <a href="https://github.com/Prosperum26/greengrass-frontend" data-i18n="p.gg.l2">Frontend source on GitHub</a>
+        </p>
+        <form method="dialog"><button type="submit" class="dlg-close" data-i18n="p.close">Close</button></form>
+      </dialog>
+
+      <dialog id="dlg-rag" class="paper-dialog" aria-labelledby="dlg-rag-title">
+        <p class="dlg-meta"><span data-i18n="p.fig">Figure</span> 2 · <time datetime="2025-11">Nov 2025</time>–<time datetime="2026-02">Feb 2026</time></p>
+        <h3 id="dlg-rag-title" data-i18n="p.rag.title">Diabetes Q&amp;A (RAG)</h3>
+        <ul>
+          <li data-i18n="p.rag.d1">Retrieval-augmented generation to stop LLM hallucinations in a medical domain: answers come with the passages they rely on.</li>
+          <li data-i18n="p.rag.d2">Data pipeline: BeautifulSoup crawler, custom cleaning for medical PDF and HTML, semantic chunking.</li>
+          <li data-i18n="p.rag.d3">Vector embeddings in ChromaDB for fast similarity search over the knowledge base.</li>
+          <li data-i18n="p.rag.d4">Local inference through Ollama: no external API ever sees a patient's question.</li>
+        </ul>
+        <p class="dlg-links">
+          <a href="https://github.com/Prosperum26/qna-systeam-diabetes-rag" data-i18n="p.src">Source code on GitHub</a>
+        </p>
+        <form method="dialog"><button type="submit" class="dlg-close" data-i18n="p.close">Close</button></form>
+      </dialog>
+
+      <dialog id="dlg-rl" class="paper-dialog" aria-labelledby="dlg-rl-title">
+        <p class="dlg-meta"><span data-i18n="p.fig">Figure</span> 3 · <time datetime="2026">2026</time></p>
+        <h3 id="dlg-rl-title" data-i18n="p.rl.title">RL Dynamic Pricing</h3>
+        <ul>
+          <li data-i18n="p.rl.d1">An agent that sets product prices in real time from demand and competitor signals.</li>
+          <li data-i18n="p.rl.d2">The store is modelled as a Markov decision process with a reward that weighs today's profit against customer retention.</li>
+          <li data-i18n="p.rl.d3">Demand forecasting in NumPy and Pandas feeds the agent its state.</li>
+          <li data-i18n="p.rl.d4">Simulations show the agent converging on a better strategy than static pricing.</li>
+        </ul>
+        <p class="dlg-links">
+          <a href="https://github.com/Prosperum26/rl-dynamic-pricing" data-i18n="p.src">Source code on GitHub</a>
+        </p>
+        <form method="dialog"><button type="submit" class="dlg-close" data-i18n="p.close">Close</button></form>
+      </dialog>
+
+      <dialog id="dlg-chuck" class="paper-dialog" aria-labelledby="dlg-chuck-title">
+        <p class="dlg-meta"><span data-i18n="p.fig">Figure</span> 4 · <time datetime="2025">2025</time></p>
+        <h3 id="dlg-chuck-title">Chuck King</h3>
+        <ul>
+          <li data-i18n="p.ck.d1">A 2D vertical platformer on HTML5 Canvas with a custom physics engine for gravity and collisions.</li>
+          <li data-i18n="p.ck.d2">Object-oriented, event-driven architecture, so new levels and mechanics plug in without rewrites.</li>
+          <li data-i18n="p.ck.d3">An adaptive narrator watches how often you fall or idle and calls an LLM for a fitting taunt.</li>
+        </ul>
+        <p class="dlg-links">
+          <a href="https://github.com/Prosperum26/chuck-king" data-i18n="p.src">Source code on GitHub</a>
+        </p>
+        <form method="dialog"><button type="submit" class="dlg-close" data-i18n="p.close">Close</button></form>
+      </dialog>
+    </section>
+
+    <!-- §4 Community -->
+    <section id="community" class="sec" aria-labelledby="community-title">
+      <h2 id="community-title" data-i18n="sec.community">Community</h2>
+      <article class="entry">
+        <div class="entry-body">
+          <h3 data-i18n="com.title">UIT LaTeX Report Template</h3>
+          <p data-i18n="com.p1">A modular LaTeX template for UIT reports and theses, with documentation and a ready-to-use Overleaf setup, so students who have never touched LaTeX can still hand in a clean document.</p>
+          <p class="aside-line" data-i18n="com.p2">It is also the reason this page looks the way it does.</p>
+        </div>
+        <p class="margin-note">
+          <time datetime="2025">2025</time>
+          <span class="note-label">LaTeX · Overleaf</span>
+        </p>
+      </article>
+    </section>
+
+    <!-- §5 Skills -->
+    <section id="skills" class="sec" aria-labelledby="skills-title">
+      <h2 id="skills-title" data-i18n="sec.skills">Skills</h2>
+      <div class="table-wrap">
+        <table class="booktabs">
+          <caption><span class="tab-num" data-i18n="skills.tab">Table</span> 1: <span data-i18n="skills.caption">Technical skills by area.</span></caption>
+          <thead>
+            <tr>
+              <th scope="col" data-i18n="skills.col1">Area</th>
+              <th scope="col" data-i18n="skills.col2">Tools and techniques</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row" data-i18n="skills.ai">AI &amp; Machine Learning</th>
+              <td>Reinforcement Learning (PPO, MDP), RAG, ChromaDB, Ollama, NumPy, Pandas, PyTorch, TensorFlow</td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="skills.be">Backend</th>
+              <td>Node.js, NestJS, Express, PostgreSQL, Prisma, MongoDB, REST, RBAC, JWT</td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="skills.fe">Frontend</th>
+              <td>React, Tailwind CSS, HTML5, CSS3, Redux, Zustand</td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="skills.lang">Languages</th>
+              <td>Python, C++, TypeScript, JavaScript, SQL, LaTeX</td>
+            </tr>
+            <tr>
+              <th scope="row" data-i18n="skills.infra">Infrastructure &amp; tools</th>
+              <td>Docker, GitHub Actions, Swagger/OpenAPI, Git, Vercel, Render, Postman, Figma, Linux/WSL</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="sec-lead" data-i18n="skills.course">Coursework: data structures and algorithms, discrete mathematics, database systems, object-oriented programming, computer networking.</p>
+    </section>
+
+    <!-- References = contact -->
+    <section id="contact" class="sec" aria-labelledby="contact-title">
+      <h2 id="contact-title" data-i18n="sec.contact">References</h2>
+      <p class="sec-lead" data-i18n="contact.lead">Open to internships in backend or AI engineering. The fastest way to reach me is email.</p>
+      <ol class="refs">
+        <li>
+          <span data-i18n="ref.email">Email</span>.
+          <a href="mailto:qphunguit@gmail.com">qphunguit@gmail.com</a>
+          <button type="button" class="copy-btn" data-copy="qphunguit@gmail.com" data-i18n="ref.copy">Copy</button>
+        </li>
+        <li>
+          GitHub. <a href="https://github.com/Prosperum26">github.com/Prosperum26</a>
+        </li>
+        <li>
+          LinkedIn. <a href="https://www.linkedin.com/in/phu-hung-quang">linkedin.com/in/phu-hung-quang</a>
+        </li>
+      </ol>
+      <p class="toast" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <footer class="colophon" data-intro-inert>
+    <p class="end-doc" aria-hidden="true">\end{document}</p>
+    <p>
+      © <time datetime="2026">2026</time> <span lang="vi">Quảng Phú Hưng</span> ·
+      <span data-i18n="footer.typeset">Typeset by hand in HTML, CSS and JavaScript. Try printing this page.</span>
+    </p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,227 @@
+/* ==========================================================================
+   Source mode — html.source-mode (js/source-toggle.js) shows the page as
+   its own LaTeX source: editor palette, monospace type, and the markup
+   commands drawn around the real content with ::before / ::after.
+   ========================================================================== */
+
+/* Re-point the semantic tokens at the editor palette (screen only: printing
+   always produces the typeset CV) */
+@media screen {
+  :root.source-mode {
+    color-scheme: dark;
+    --color-paper: var(--color-editor-bg);
+    --color-paper-raised: var(--color-editor-chrome);
+    --color-ink: var(--color-editor-ink);
+    --color-ink-soft: var(--color-editor-muted);
+    --color-rule: var(--color-editor-muted);
+    --color-rule-soft: var(--color-editor-line);
+    --color-link: var(--color-tok-arg);
+    --color-accent: var(--color-tok-cmd);
+    --color-mark: var(--color-editor-line);
+    --color-focus: var(--color-tok-arg);
+    --font-serif: var(--font-mono);
+    --text-title: clamp(1.8rem, 6vw, 3.25rem);
+  }
+
+  .source-mode body {
+    font-size: 0.95rem;
+  }
+
+  .source-mode .entry-body p,
+  .source-mode .entry-body ul,
+  .source-mode .abstract-body p:last-child {
+    text-align: left;
+  }
+
+  .source-mode .portrait img,
+  .source-mode .fig-art {
+    opacity: 0.45;
+  }
+
+  /* Shared look of every injected command */
+  .source-mode :is(
+    .masthead, .title-block, .kicker, .title, .subtitle, .abstract-body, .toc,
+    .sec > h2, .entry-body h3, .fig-title, strong, .entry-body a, .dlg-links a, .refs a,
+    .entry-body ul, .paper-dialog ul, .entry-body li, .paper-dialog li,
+    .margin-note, .fig, .table-wrap, .refs, .refs li, .fn-ref, .portrait
+  )::before,
+  .source-mode :is(
+    .title, .subtitle, .abstract-body, .sec > h2, .entry-body h3, .fig-title, strong,
+    .entry-body a, .dlg-links a, .refs a, .entry-body ul, .paper-dialog ul,
+    .margin-note, .fig, .table-wrap, .refs, .fn-ref
+  )::after {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    font-weight: 400;
+    font-style: normal;
+    font-variant: normal;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-tok-cmd);
+  }
+
+  /* Preamble */
+  .source-mode .masthead::before {
+    content: "\\documentclass[11pt]{portfolio}\A\\usepackage{hyperref, booktabs, marginnote}";
+    display: block;
+    white-space: pre-wrap;
+    width: min(100% - 2 * var(--space-4), var(--measure) + var(--margin-col) + var(--space-8));
+    margin: var(--space-6) auto 0;
+  }
+
+  .source-mode .title-block::before {
+    content: "\\begin{document}";
+    display: block;
+    text-align: left;
+  }
+
+  .source-mode .kicker::before { content: "% "; }
+
+  .source-mode .title::before { content: "\\name{"; }
+  .source-mode .title::after { content: "}"; }
+
+  .source-mode .subtitle::before { content: "\\tagline{"; }
+  .source-mode .subtitle::after { content: "}"; }
+
+  .source-mode .portrait {
+    max-width: 9rem;
+  }
+
+  .source-mode .portrait::before {
+    content: "\\includegraphics[width=7rem]{avatar}";
+    display: block;
+    overflow-wrap: anywhere;
+    margin-bottom: var(--space-2);
+  }
+
+  .source-mode .abstract-body::before {
+    content: "\\begin{abstract}";
+    display: block;
+  }
+
+  .source-mode .abstract-body::after {
+    content: "\\end{abstract}";
+    display: block;
+  }
+
+  .source-mode .toc::before {
+    content: "\\tableofcontents";
+    display: block;
+    margin-bottom: var(--space-2);
+  }
+
+  /* Structure */
+  .source-mode .sec > h2::before {
+    content: "\\section{";
+    min-width: 0;
+  }
+
+  .source-mode #contact > h2::before {
+    content: "\\section*{";
+  }
+
+  .source-mode .sec > h2::after { content: "}"; }
+
+  .source-mode .entry-body h3::before { content: "\\subsection{"; }
+  .source-mode .entry-body h3::after { content: "}"; }
+
+  .source-mode .fig-title::before { content: "\\caption{"; }
+  .source-mode .fig-title::after { content: "}"; }
+
+  .source-mode .margin-note::before { content: "\\marginnote{"; }
+  .source-mode .margin-note::after { content: "}"; }
+
+  /* Inline markup */
+  .source-mode strong::before { content: "\\textbf{"; }
+  .source-mode strong::after { content: "}"; }
+
+  .source-mode :is(.entry-body, .dlg-links, .refs) a::before {
+    content: "\\href{" attr(href) "}{";
+    overflow-wrap: anywhere;
+  }
+
+  .source-mode :is(.entry-body, .dlg-links, .refs) a::after { content: "}"; }
+
+  .source-mode .fn-ref::before { content: "\\footnote{"; }
+  .source-mode .fn-ref::after { content: "}"; }
+
+  /* Environments */
+  .source-mode :is(.entry-body, .paper-dialog) ul {
+    list-style: none;
+    padding-inline-start: 0;
+  }
+
+  .source-mode :is(.entry-body, .paper-dialog) ul::before {
+    content: "\\begin{itemize}";
+    display: block;
+  }
+
+  .source-mode :is(.entry-body, .paper-dialog) ul::after {
+    content: "\\end{itemize}";
+    display: block;
+  }
+
+  .source-mode :is(.entry-body, .paper-dialog) li {
+    padding-inline-start: var(--space-6);
+  }
+
+  .source-mode :is(.entry-body, .paper-dialog) li::before {
+    content: "\\item ";
+  }
+
+  .source-mode .fig::before {
+    content: "\\begin{figure}";
+    padding: var(--space-2) var(--space-4) 0;
+  }
+
+  .source-mode .fig::after {
+    content: "\\end{figure}";
+    padding: 0 var(--space-4) var(--space-2);
+  }
+
+  .source-mode .table-wrap::before {
+    content: "\\begin{table}[h]";
+    display: block;
+  }
+
+  .source-mode .table-wrap::after {
+    content: "\\end{table}";
+    display: block;
+  }
+
+  .source-mode .refs::before {
+    content: "\\begin{thebibliography}{9}";
+    display: block;
+    margin-bottom: var(--space-2);
+  }
+
+  .source-mode .refs::after {
+    content: "\\end{thebibliography}";
+    display: block;
+    margin-top: var(--space-2);
+  }
+
+  .source-mode .refs li::before {
+    content: "\\bibitem ";
+    position: static;
+  }
+
+  .source-mode .refs li {
+    padding-left: 0;
+  }
+}
+
+/* Quick crossfade when switching mode or language (not the intro choreography) */
+html.vt-swap::view-transition-old(root) {
+  animation: 220ms ease-in both vt-fade-out;
+}
+
+html.vt-swap::view-transition-new(root) {
+  animation: 320ms var(--ease-out) both vt-swap-in;
+}
+
+@keyframes vt-swap-in {
+  from {
+    opacity: 0;
+  }
+}

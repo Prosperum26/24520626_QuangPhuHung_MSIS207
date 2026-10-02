@@ -1,0 +1,228 @@
+/* ==========================================================================
+   Compile intro — a full-screen editor that types hung.tex, prints a
+   pdflatex log, then morphs \name{...} into the page title through a
+   View Transition (shared name: doc-title).
+   Only visible while <html> has .intro-pending (set by js/intro-gate.js).
+   ========================================================================== */
+
+.intro {
+  display: none;
+}
+
+.intro-pending body {
+  overflow: hidden;
+}
+
+.intro-pending .intro {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  padding: var(--space-4);
+  background: var(--color-editor-bg);
+  color: var(--color-editor-ink);
+}
+
+/* Only one element may own the shared name at a time */
+.intro-pending .title {
+  view-transition-name: none;
+}
+
+.intro-pending .tok-name {
+  view-transition-name: doc-title;
+}
+
+.intro-window {
+  width: min(46rem, 100%);
+  border: 1px solid var(--color-editor-line);
+  border-radius: 8px;
+  background: var(--color-editor-bg);
+  overflow: hidden;
+}
+
+.intro-titlebar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-editor-chrome);
+  border-bottom: 1px solid var(--color-editor-line);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-editor-muted);
+}
+
+.intro-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--color-editor-line);
+}
+
+.intro-file {
+  margin-left: var(--space-2);
+}
+
+.intro-source {
+  min-height: 15.5em;
+  padding: var(--space-4) var(--space-6);
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 2.6vw, 0.95rem);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.intro-source code::after {
+  content: "▍";
+  color: var(--color-tok-cmd);
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+.intro[data-state="compiling"] .intro-source code::after,
+.intro[data-state="done"] .intro-source code::after {
+  content: none;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.tok-cmd {
+  color: var(--color-tok-cmd);
+}
+
+.tok-arg {
+  color: var(--color-tok-arg);
+}
+
+.tok-cmt {
+  color: var(--color-editor-muted);
+  font-style: italic;
+}
+
+.tok-name {
+  display: inline-block;
+  color: var(--color-editor-ink);
+}
+
+/* pdflatex log */
+.intro-log {
+  list-style: none;
+  min-height: 6.5em;
+  padding: var(--space-3) var(--space-6);
+  border-top: 1px solid var(--color-editor-line);
+  background: var(--color-editor-chrome);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--color-editor-muted);
+}
+
+.intro-log li {
+  animation: log-in 200ms var(--ease-out) both;
+}
+
+.intro-log .log-ok {
+  color: var(--color-tok-ok);
+}
+
+@keyframes log-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.intro-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-editor-line);
+}
+
+.intro-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.5rem;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.intro-compile {
+  background: var(--color-tok-ok);
+  color: var(--color-editor-bg);
+  border: 1px solid var(--color-tok-ok);
+}
+
+.intro-skip {
+  background: transparent;
+  color: var(--color-editor-ink);
+  border: 1px solid var(--color-editor-line);
+}
+
+.intro-actions button:focus-visible {
+  outline-color: var(--color-tok-arg);
+}
+
+.intro[data-state="ready"] .intro-compile {
+  animation: compile-pulse 1.2s ease-in-out infinite;
+}
+
+.intro[data-state="compiling"] .intro-compile {
+  opacity: 0.6;
+}
+
+@keyframes compile-pulse {
+  50% {
+    box-shadow: 0 0 0 6px transparent, 0 0 0 3px var(--color-tok-ok);
+  }
+}
+
+/* View Transition choreography */
+::view-transition-group(doc-title) {
+  animation-duration: 900ms;
+  animation-timing-function: var(--ease-out);
+}
+
+::view-transition-old(root) {
+  animation: 500ms ease-in both vt-fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 700ms var(--ease-out) 150ms both vt-paper-in;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-paper-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-source code::after,
+  .intro[data-state="ready"] .intro-compile,
+  .intro-log li {
+    animation: none;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
