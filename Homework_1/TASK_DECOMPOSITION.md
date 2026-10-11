@@ -104,6 +104,8 @@ Một màu dẫn xuất duy nhất, để có nền tối và chữ đậm:
 ```
 
 > `color-mix(in srgb, var(--sea-deep) 8%, transparent)` được phép cho nền card, vì nó chỉ đọc token. Không được viết hex mới.
+>
+> **Bổ sung khi build B1** (đã có trong `css/tokens.css`): `--surface` (nền footer/card, `color-mix` 12% `--sea-mid` vào `--sand`, dark 14% vào `--ink`), `--text-muted` (sáng `--sea-deep`, tối `--foam`), `--border` (`--sea-mid`), `--selection-bg` / `--selection-text`, `--focus-width` (độ dày outline, tách khỏi màu `--focus-ring`). Ngoài ra có token spacing, font (system font: sans cho body, serif cho heading, mono cho số log) và layout (`--header-h`, `--log-col`, `--wave-h`, `--wave-w`).
 
 ### 3.3 Kiểm tra contrast (WCAG 2.2 AA, đã tính sẵn)
 
@@ -118,6 +120,8 @@ Một màu dẫn xuất duy nhất, để có nền tối và chữ đậm:
 | `--sea-mid` trên `--ink` | 4.22 : 1 | Non-text dark (trang trí) |
 | `--foam` trên `--sea-deep` | 4.33 : 1 | **Chỉ** chữ lớn (≥ 24px hoặc ≥ 18.66px bold) |
 | `--foam` trên `--sand` | 1.36 : 1 | **Cấm** (không làm chữ, viền, focus ring) |
+| `--ink` / `--sea-deep` trên `--surface` sáng | 11.76 / 5.23 : 1 | Chữ trong footer, card |
+| `--sand` / `--foam` trên `--surface` tối | 11.02 / 8.07 : 1 | Chữ trong footer, card (dark) |
 
 Quy tắc dùng: body text luôn là `--text`. Chữ nhỏ không bao giờ đặt trên `--sea-mid` hay `--foam` khi nền sáng. Mục M1 sẽ kiểm tra lại các cặp này bằng DevTools.
 
@@ -172,9 +176,10 @@ Homework_1/
 ├── PROMPT_LOG.md                  ← T-14: log prompt, lỗi AI, cách sửa
 ├── README.md                      ← T-15: cách chạy, quyết định thiết kế
 ├── index.html
-├── assets/
-│   ├── hero-avatar-{320,640}.{avif,webp,jpg}   ← copy từ Exercise_4/assets
-│   └── wave.svg                                 ← T-03-A
+├── assets/                        ← chỉ dùng SVG, không ảnh raster
+│   ├── favicon.svg                ← T-03-A: favicon + logo trên header
+│   ├── wave.svg                   ← T-03-A: mask cho đường sóng
+│   └── hero-horizon.svg           ← T-04-A: minh họa hero (B2)
 ├── css/
 │   ├── tokens.css                 ← T-02-C (palette :root, dark overrides)
 │   ├── layout.css                 ← T-03-C
@@ -203,6 +208,8 @@ Homework_1/
 ### 4.5 Quy ước
 
 - Class: `kebab-case`. Không dùng tên trùng với tag.
+- Khung trang (B1): `.site-header`, `.brand`, `.brand-mark`, `.nav-list`, `.site-footer`, `.back-to-top`, `.skip-link`, `.visually-hidden`, `.lede`.
+- Mỗi section nội dung: `section.log-entry` > `header.log-header` (`p.log-index` + `h2`) + `div.log-body`. `div.log-body` là wrapper duy nhất, để desktop đặt nội dung vào cột phải mà không cần biết section có bao nhiêu phần tử con. Hero là `section.hero`, không phải log entry.
 - `data-*` và `id` định nghĩa tại đây và không đổi tên. Các id cố định: `main-content`, `projects`, `projects-title`, `project-card-tpl`, `theme-toggle`, `nav-toggle`, `nav-menu`, `copy-email-btn`, `copy-status`.
 - localStorage key: `theme` với giá trị `'dark' | 'light'`. Đọc/ghi trong `try/catch`.
 
@@ -253,9 +260,11 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 - Style `:focus-visible` dùng `--focus-ring`, outline 3px, offset 3px.
 - DoD: `grep -nE "#[0-9a-fA-F]{3,8}" css/tokens.css` chỉ trả về các dòng trong `:root` và khối `[data-theme]`.
 
-**T-03-A · Wave asset** — `assets/wave.svg`
-- Một đường sóng SVG một màu (`fill` dùng `currentColor`, không hex). Dùng cho divider.
-- DoD: mở trực tiếp file SVG có sóng, không lỗi console.
+**T-03-A · Vector assets** — `assets/wave.svg`, `assets/favicon.svg`
+- `wave.svg`: một chu kỳ sóng, điểm đầu và cuối cùng độ cao và độ dốc để lặp không thấy mối nối. Dùng làm CSS `mask`, nên màu lấy từ `--decor` và tự đổi theo theme. SVG nạp qua `url()` không đọc được biến CSS hay `currentColor` của trang, vì vậy dùng mask thay vì tô màu trong file.
+- `favicon.svg`: mặt trời trên hai lớp sóng, dùng 4 màu palette. Đồng thời là logo trên header (`alt=""`, vì đứng cạnh chữ tên).
+- Lưu ý: comment XML trong SVG **không được chứa `--`** (ví dụ tên token). Nếu có, cả file bị lỗi parse và ảnh không hiện.
+- DoD: mở trực tiếp file SVG trên trình duyệt thấy hình, không lỗi console.
 
 **T-03-C · Layout** — `css/layout.css`
 - Mobile-first 375px. Container max-width, gutter 16px. Section có `scroll-margin-top` để header dính không che heading khi nhảy tới.
@@ -265,12 +274,12 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 **T-04-H · Hero** — `index.html` (chỉ section hero)
 - `h1` = "Quang Phu Hung". Tagline lấy đúng từ CV: "Backend & AI-oriented student building high-performance full-stack systems".
 - Một đoạn giới thiệu 1–2 câu cho người xem (không lặp lời lab, không "zero-div").
-- `<picture>` với AVIF → WebP → JPG, `width`/`height` đầy đủ, **không** `loading="lazy"` (đây là LCP).
+- Minh họa hero là SVG vector (`assets/hero-horizon.svg`, task T-04-A), không dùng ảnh chụp. Nếu minh họa cần đổi màu theo theme, đặt SVG inline trong HTML (không chứa `style=` hay script, nên không vướng CSP) và tô bằng token. Có `width`/`height`, **không** `loading="lazy"` nếu đây là LCP.
 - Hai CTA: `#projects` và `#contact`.
-- DoD: alt có nghĩa; không `loading="lazy"` trên avatar.
+- DoD: minh họa trang trí có `alt=""` hoặc `aria-hidden="true"`; không `loading="lazy"` trên phần tử LCP.
 
 **T-04-C · Hero style** — `css/hero.css`
-- Tên lớn, đường chân trời (horizon) bằng border `var(--decor)`. Avatar bo tròn hoặc cắt theo hình sóng bằng `clip-path`.
+- Tên lớn, đường chân trời (horizon) bằng border `var(--decor)`, minh họa đặt cạnh tên ở desktop và dưới tên ở mobile.
 - DoD: tương phản tiêu đề đạt 4.5:1 (tra theo mục 3.3).
 
 **T-05-H · Journey (timeline)** — `index.html` (section `#journey`)
@@ -389,7 +398,7 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 - Ghi điểm và danh sách "Opportunities" vào PROMPT_LOG (hoặc ghi vào một đoạn trong commit message nếu cần). Không sửa.
 
 **C9 · `perf: optimize assets` — M4**
-- Ảnh: kích thước đúng với khung hiển thị (không để ảnh 640 hiện ở khung 160px), AVIF/WebP trước, `width`/`height` đầy đủ, `fetchpriority="high"` cho avatar LCP.
+- SVG: bỏ metadata, comment và độ chính xác thập phân thừa; mọi `<img>` có `width`/`height`. Nếu phần tử LCP là ảnh, thêm `fetchpriority="high"`.
 - CSS: bỏ rule không dùng, không `@import`. Không `@font-face` từ bên ngoài. Dùng system font stack.
 - JS: mọi script `defer`, trừ `theme-init.js`.
 - DoD: Lighthouse Performance = 100 ở mobile và desktop. Nếu có chỉ số dưới 100, ghi rõ nguyên nhân trong PROMPT_LOG. Không ép điểm bằng cách bỏ nội dung.
@@ -444,7 +453,7 @@ grep -rnE "https?://" Homework_1/css Homework_1/js
 
 | Rủi ro | Dấu hiệu | Cách xử lý |
 |---|---|---|
-| Lighthouse Performance không đạt 100 ở mobile | Điểm 85–99, LCP chậm | Giảm kích thước avatar, preload LCP, bỏ `theme-init.js` nếu nó chặn quá lâu (đo trước khi bỏ) |
+| Lighthouse Performance không đạt 100 ở mobile | Điểm 85–99, LCP chậm | Tối giản SVG hero, preload LCP, bỏ `theme-init.js` nếu nó chặn quá lâu (đo trước khi bỏ) |
 | CSP meta chặn `fetch` JSON | Console `Refused to connect` | `connect-src 'self'` đã cho phép. Nếu vẫn lỗi, kiểm tra đường dẫn tương đối |
 | Mất chữ trên nền `--foam` ở chế độ sáng | Contrast < 4.5 | Dùng `--sea-deep` cho chữ, `--foam` chỉ cho nền dark và decor |
 | Nav mobile bị kẹt focus | Tab không ra khỏi menu | Bỏ mọi `keydown` nuốt Tab. Chỉ xử lý Esc |

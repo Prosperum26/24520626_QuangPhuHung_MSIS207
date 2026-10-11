@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 24" preserveAspectRatio="none">
+  <!-- One period of a wave. Start and end share height and slope, so the
+       tile repeats without a seam. Used as a CSS mask: only the shape
+       matters, the colour comes from the decor token in tokens.css.
+       Note: XML comments must not contain a double hyphen. -->
+  <path d="M0 12C12 2 36 2 48 12S84 22 96 12" fill="none" stroke="black" stroke-width="3"/>
+</svg>

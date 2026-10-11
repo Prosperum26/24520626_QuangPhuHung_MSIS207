@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Brand mark: sun over two waves, in the four palette colours.
+       Also used as the header logo (decorative, alt=""). -->
+  <rect width="32" height="32" rx="8" fill="#086288"/>
+  <circle cx="21" cy="11" r="4" fill="#FFEFC4"/>
+  <path d="M4 19C7 16 10 16 13 19S19 22 22 19 25 16 28 19" fill="none" stroke="#97D7FF" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M4 25C7 22 10 22 13 25S19 28 22 25 25 22 28 25" fill="none" stroke="#4D8DBA" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
