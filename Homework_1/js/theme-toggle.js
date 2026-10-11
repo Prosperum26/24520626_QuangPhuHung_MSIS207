@@ -37,8 +37,6 @@ function apply(theme) {
   button.setAttribute('aria-pressed', String(theme === 'dark'));
 }
 
-// The switcher's list item ships [hidden]: without JS the button would do nothing.
-button.parentElement.hidden = false;
 apply(currentTheme());
 
 button.addEventListener('click', () => {

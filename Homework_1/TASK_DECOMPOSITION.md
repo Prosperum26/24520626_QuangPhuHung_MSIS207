@@ -365,17 +365,17 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 **T-09-H/C · Theme toggle markup & style** — `index.html` (trong header) + `css/theme-switcher.css`
 - Nút chữ "Dark mode" (không chỉ icon), nhãn **không đổi**, trạng thái nằm ở `aria-pressed` (true = đang dark). Nút là mục cuối của `ul#nav-menu`, nên thứ tự Tab trùng thứ tự nhìn thấy ở mọi cỡ màn hình, và trên mobile nó nằm trong menu.
 - Nằm trên dải biển nên dùng token `--band-*`: bình thường viền và chữ sand, khi nhấn đảo thành nền sand chữ sea-deep (5.91:1). Cao 44px (≥ 24px theo WCAG 2.5.8).
-- Không JS thì nút vô dụng, nên `<li hidden>` và `theme-toggle.js` bỏ `hidden` khi chạy.
+- Không JS thì nút vô dụng nên không hiện: `<li>` chứa nút mặc định `display: none` và chỉ hiện khi `<html class="js">` (xem T-10). Trạng thái "pressed" vẽ theo `:root[data-theme="dark"]` chứ không theo `aria-pressed`, để nút đúng ngay từ lần vẽ đầu (JS chỉ cập nhật `aria-pressed` cho công nghệ hỗ trợ).
 
 **T-10-H/C · Nav** — `index.html` (header) + `css/nav.css`
-- Mobile (< 48rem): `button#nav-toggle` ("Menu") có `aria-expanded` và `aria-controls="nav-menu"`, `ul#nav-menu` ẩn bằng `hidden`. Link xếp dọc, mỗi link cao ≥ 44px.
-- Desktop (≥ 48rem): link nằm ngang bằng Flexbox, nút Menu bị ẩn, và `[hidden]` bị CSS ghi đè có chủ đích (thu cửa sổ rồi nới ra thì link vẫn phải hiện). JS và CSS dùng chung mốc 48rem.
-- Không JS: nút Menu giữ `hidden`, menu luôn mở.
+- Mobile (< 48rem): `button#nav-toggle` ("Menu") có `aria-expanded` và `aria-controls="nav-menu"`; trạng thái mở nằm ở thuộc tính `data-open` trên `ul#nav-menu`. Link xếp dọc, mỗi link cao ≥ 44px.
+- Desktop (≥ 48rem): link nằm ngang bằng Flexbox, nút Menu bị ẩn. JS và CSS dùng chung mốc 48rem.
+- **Không dịch chuyển bố cục (CLS):** `theme-init.js` (script chặn duy nhất trong `<head>`) thêm class `js` lên `<html>` trước lần vẽ đầu tiên. Nút Menu, nút theme và trạng thái thu gọn của menu chỉ được CSS vẽ khi có class `js`, nên chúng ở đúng trạng thái cuối ngay từ đầu và không nhảy khi các module chạy sau. Không có class `js` (JS tắt hoặc `theme-init.js` lỗi) thì hai nút ẩn và menu là danh sách link mở sẵn. Bài học: bản đầu dùng `hidden` do JS bỏ đi, làm header cao 269px rồi co về 68px, CLS 0.224 trên mobile.
 - `css/nav.css` sở hữu toàn bộ style nav (đã chuyển khỏi `layout.css`).
 - Link trỏ tới `#hero`, `#journey`, `#projects`, `#skills`, `#contact`. Mọi `href="#x"` phải có `id="x"` tương ứng.
 
 **T-10-J · Nav toggle** — `js/nav-toggle.js`
-- Click đổi `aria-expanded` và `hidden`. Esc đóng menu và trả focus về `#nav-toggle`. Click ra ngoài, chọn một link, hoặc Tab ra khỏi header (sự kiện `focusout`) đều đóng menu.
+- Click đổi `aria-expanded` và `data-open`. Esc đóng menu và trả focus về `#nav-toggle`. Click ra ngoài, chọn một link, hoặc Tab ra khỏi header (sự kiện `focusout`) đều đóng menu.
 - Đã kiểm tra bằng Edge: Tab đi hết 17 điểm dừng trên mobile (menu mở) rồi thoát ra thanh trình duyệt, không có chỗ nào giữ focus. Ghi vào audit M2 làm số liệu đầu.
 - **Không** dùng focus trap. Menu là disclosure (không phải modal), nên Tab đi ra khỏi menu bình thường. Đây là quyết định có chủ đích và M2 sẽ kiểm tra lại.
 - DoD: dùng `keydown` và `event.key` (không `keyCode`), có `if (event.repeat) return;`.
@@ -425,10 +425,13 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 - Chuyển logic còn lại sang `addEventListener` trong file JS. Không đụng CSS.
 
 **C7 · `fix(security): strict CSP & zero inline handlers` — M3**
-- Thêm meta CSP §4.3 vào `<head>` của `index.html`.
-- Đảm bảo không còn `on*=`, `style=`, `<script>` có nội dung trong HTML.
-- Kiểm tra trang vẫn hoạt động: theme, nav, projects, copy email. Mỗi lỗi CSP xuất hiện trong console là một lỗi phải sửa, không được nới CSP.
-- DoD: console không có lỗi `Refused to …`.
+- Thêm meta CSP §4.3 vào `<head>` của `index.html`, làm phần tử **đầu tiên sau `charset`** (meta chỉ áp cho những gì đứng sau nó). Thêm `require-trusted-types-for 'script'` (đã chạy sạch ở thử nghiệm trước).
+- Đảm bảo không còn `on*=`, `style=`, `<script>` có nội dung trong HTML. (Trạng thái thực tế: bản build từ đầu đã sạch, nên không cần refactor JS.)
+- Kiểm tra trang vẫn hoạt động: theme, nav, projects, copy email, hiệu ứng. Mỗi lỗi CSP trong console là một lỗi phải sửa, không được nới CSP.
+- **Kiểm thử ngược** (chứng minh CSP có hiệu lực, không chỉ có mặt): chèn tạm vào bản sao `onclick=`, `<script>` inline, `href="javascript:…"`, `style=""`, `<script src>` và `<img>` từ domain ngoài, `eval`, `new Function`, `setTimeout("chuỗi")`, `innerHTML = "chuỗi"`. Tất cả phải bị chặn.
+- Lưu ý khi tự đo: `Runtime.evaluate` của DevTools được miễn CSP (nên `eval` gõ trong console vẫn chạy). Phải thử bằng script do chính trang nạp.
+- Lưu ý khi viết script kiểm thử: CSP cũng chặn thẻ `<style>` do script chèn vào, nên ẩn phần tử trong lúc đo phải dùng CSSOM (`el.style.setProperty`), vốn được phép.
+- DoD: console không có lỗi `Refused to …`, kiểm thử ngược chặn đủ.
 
 **C8 · `docs(perf): Lighthouse baseline`** (review mode)
 - Chạy Lighthouse (Performance, Accessibility, Best Practices, SEO) ở mobile và desktop, chế độ Incognito, qua Live Server.
@@ -438,7 +441,10 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 - SVG: bỏ metadata, comment và độ chính xác thập phân thừa; mọi `<img>` có `width`/`height`. Nếu phần tử LCP là ảnh, thêm `fetchpriority="high"`.
 - CSS: bỏ rule không dùng, không `@import`. Font Nunito host cục bộ (T-02-F), đã preload; kiểm tra có tải font thừa không (chỉ latin và vietnamese).
 - JS: mọi script là module (defer) trừ `theme-init.js`.
-- DoD: Lighthouse Performance = 100 ở mobile và desktop. Nếu có chỉ số dưới 100, ghi rõ nguyên nhân trong PROMPT_LOG. Không ép điểm bằng cách bỏ nội dung.
+- **Sửa CLS** (xem T-10): trạng thái thu gọn của header được vẽ sẵn nhờ class `js`.
+- Ảnh hero: thêm bản 1280px (AVIF 35 KB) cho màn hình cỡ đó. Giữ `sizes="(max-width: 48rem) 180vw, 100vw"`: hạ xuống `100vw` giảm được ~27 KB trên mobile nhưng ảnh bị phóng 3 lần trên điện thoại DPR 3, nên chọn chất lượng.
+- **Đã thử và bỏ** (đo bằng Lighthouse, mỗi biến thể 2 lần): *preload ảnh hero* làm tệ hơn (97 so với 98, vì tranh băng thông với CSS); *bỏ preload font* tệ hơn (97–98 và FCP 1.8–2.0 s); *gộp 11 file CSS thành 1* được 99; *gộp và minify* được 99 (FCP 1.5 s, LCP 1.8 s). Gộp CSS cần bước build, phá nguyên tắc "sửa một dòng là xong" (`project-rules.md` §2.7) mà chỉ thêm 1 điểm, nên **không đưa vào**.
+- DoD thực tế: desktop **100/100/100/100**, mobile **97–98** Performance (Accessibility, Best Practices, SEO đều 100), CLS **0** ở cả hai. Mobile không chạm 100 vì mạng giả lập 4G chậm cộng máy chủ không nén gzip (cache và nén là việc của máy chủ triển khai, không sửa được trong repo). Không ép điểm bằng cách bỏ nội dung hay thêm bước build.
 
 ### Giai đoạn D – Đóng
 

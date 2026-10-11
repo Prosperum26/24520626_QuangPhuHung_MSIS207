@@ -154,3 +154,69 @@ Lưu ý khi sửa thật: nếu chỉ đổi HTML như bản thử, **không JS 
 1. **M1 không có lỗi AA nào để sửa.** Commit `fix(a11y): contrast & landmarks` chỉ gồm A-1 đến A-4. Cần quyết định có làm hay không (xem phần giải thích milestone).
 2. **M2 tương tự**: K-1 và K-2 là củng cố, không phải lỗi.
 3. **M3 và M4 có việc thật**: thêm CSP (S-1, S-4) và sửa CLS (P-1, P-2) cùng các điểm tối ưu P-3, P-4.
+
+---
+
+# Kết quả sau khi sửa (M3 và M4)
+
+> Phần này ghi lại bản build **sau** khi làm M3 và M4. Phần trên giữ nguyên làm mốc "trước". Cùng công cụ, cùng cách đo.
+
+## M3 – CSP: đã làm, đã kiểm thử ngược
+
+Meta CSP được đặt làm phần tử đầu tiên sau `charset`, kèm `require-trusted-types-for 'script'`.
+
+**Trang thật dưới CSP:** feed 5 card, ảnh hero và font Nunito tải được, đổi theme chạy, **0 vi phạm CSP, 0 lỗi console**.
+
+**Kiểm thử ngược** (bản sao với các thứ chèn thêm, cùng chính sách):
+
+| Thứ bị chèn vào | Kết quả | Vi phạm mà trình duyệt ghi nhận |
+|---|---|---|
+| `<script>` inline | không chạy | `script-src-elem` |
+| `onclick="…"` | không chạy | `script-src-attr` |
+| `href="javascript:…"` | không chạy | `script-src-elem` |
+| `style="background:red"` | không áp dụng (nền vẫn trong suốt) | `style-src-attr` |
+| `<script src="https://example.com/…">` | không tải | `script-src-elem` |
+| `<img src="https://…">` | không tải | `img-src` |
+| `innerHTML = "<b>x</b>"` | `TypeError` | `require-trusted-types-for` |
+| `eval`, `new Function`, `setTimeout("chuỗi")` (chạy từ một file script của trang) | cả ba bị chặn | |
+
+Hai lưu ý rút ra khi đo: (1) `Runtime.evaluate` của DevTools được miễn CSP, nên lần thử `eval` đầu tiên cho kết quả sai (cho phép); phải thử từ script do chính trang nạp. (2) CSP chặn cả thẻ `<style>` do script chèn, nên script đo cũng phải đổi sang CSSOM.
+
+## M4 – Hiệu năng
+
+| | Trước | Sau |
+|---|---|---|
+| Mobile Performance | 87 | **97–98** |
+| Mobile CLS | **0.224** | **0** |
+| Desktop Performance | 100 | **100** |
+| Desktop CLS | 0.001 | **0** |
+| Accessibility / Best Practices / SEO (cả hai) | 100 / 100 / 100 | 100 / 100 / 100 |
+
+**P-1 và P-2 (CLS): đã sửa.** `theme-init.js` thêm class `js` lên `<html>` trước lần vẽ đầu. CSS chỉ vẽ nút Menu, nút theme và menu thu gọn khi có class đó, nên trạng thái cuối có sẵn từ đầu. Đo lại header ở 375px: 68px cả trước lẫn sau khi JS chạy (trước đây 269px → 68px). Không JS: danh sách link mở sẵn, hai nút ẩn (không mất chức năng).
+
+**Thử nghiệm để quyết định phần còn lại** (Lighthouse mobile, mỗi biến thể 2 lần):
+
+| Biến thể | Performance | FCP | LCP | Quyết định |
+|---|---|---|---|---|
+| Bản sửa CLS + preload ảnh hero | 97 | 1.7 s | 2.4 s | **Bỏ preload**: tranh băng thông với CSS |
+| Bỏ preload ảnh | 98 | 1.7 s | 2.3 s | Giữ |
+| Bỏ cả preload font | 97–98 | 1.8–2.0 s | 2.1 s | **Giữ preload font** (tệ hơn khi bỏ) |
+| Gộp 11 file CSS thành 1 | 99 | 1.7 s | 2.0 s | Không đưa vào (cần bước build) |
+| Gộp và minify CSS (34 KB → 16 KB) | 99 | 1.5 s | 1.8 s | Không đưa vào |
+| `sizes="100vw"` thay `180vw` (ảnh hero 25 KB thay 52 KB) | 98 | 1.7 s | 2.1 s | **Không đưa vào**: ảnh bị phóng 3 lần trên điện thoại DPR 3 |
+
+Ngay cả bản gộp và minify cũng dừng ở 99, nên **mobile 100 không đạt được nếu thiếu nén gzip và cache từ máy chủ** (P-6). Mình không đưa bước build vào repo: phá nguyên tắc "sửa một dòng là xong" (`project-rules.md` §2.7) chỉ để thêm 1 điểm.
+
+**Đã làm thêm:** bản ảnh hero 1280px (AVIF 35 KB) cho màn hình cỡ đó. Lighthouse desktop (viewport 1350px) vẫn chọn bản 1600px nên cảnh báo `image-delivery` (P-4, 13 KiB) còn nguyên; không ảnh hưởng điểm.
+
+**Còn lại, không sửa được trong repo:** P-5 (CSS chưa minify, giữ để dễ đọc và chỉnh sửa), P-6 (nén và cache thuộc máy chủ triển khai).
+
+## Kiểm tra lại không bị hỏng
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Menu mobile: mở, Esc, click ngoài, chọn link, Tab ra ngoài | giữ nguyên như trước |
+| Tab xuyên trang (mobile, menu mở) | 18 điểm dừng, thoát ra trình duyệt, không có bẫy |
+| Theme: đổi, lưu, giữ sau reload | đúng, lưu qua localStorage |
+| Tương phản chữ hero trên pixel thật (6 cấu hình) | điểm tệ nhất **5.80:1** (yêu cầu 4.5:1), phần lớn 5.9–9.0 |
+| Các lệnh grep trong TD §7 | sạch |

@@ -1,7 +1,8 @@
 /* ==========================================================================
    T-10-J – Navigation toggle (disclosure, not a modal)
    Contract: Homework_1/TASK_DECOMPOSITION.md §4.5 (#nav-toggle, #nav-menu)
-   On a phone the "Menu" button shows and hides the link list. This is a
+   On a phone the "Menu" button shows and hides the link list (nav.css reads
+   the [data-open] attribute on the list). This is a
    disclosure: the menu is part of the page, so Tab moves through it and on
    out of it like any other content. There is deliberately NO focus trap.
    Ways to close it: the button, Escape (focus returns to the button), a
@@ -18,12 +19,8 @@ function isOpen() {
 
 function setOpen(open) {
   toggle.setAttribute('aria-expanded', String(open));
-  menu.hidden = !open;
+  menu.toggleAttribute('data-open', open);
 }
-
-// JS is running, so the button becomes available and the menu starts closed.
-toggle.hidden = false;
-setOpen(false);
 
 toggle.addEventListener('click', () => {
   setOpen(!isOpen());

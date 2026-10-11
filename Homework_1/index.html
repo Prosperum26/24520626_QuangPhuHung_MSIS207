@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Strict CSP. It must come before any script, style or image: a meta policy only
+       governs what follows it. A meta tag cannot carry frame-ancestors, report-uri or
+       sandbox; those need an HTTP header on a real host. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'; require-trusted-types-for 'script'">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Portfolio of Quảng Phú Hưng, an Information Systems student at UIT building backend and AI-powered full-stack systems.">
   <title>Quảng Phú Hưng | Backend &amp; AI Developer</title>
@@ -34,8 +38,8 @@
   <header class="site-header">
     <a href="#hero" class="brand" lang="vi">Quảng Phú Hưng</a>
 
-    <!-- Shown by js/nav-toggle.js on phones; without JS the menu is just open -->
-    <button type="button" id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" hidden>Menu</button>
+    <!-- Shown on phones once JS has marked <html class="js"> (css/nav.css). Without JS the menu is just open. -->
+    <button type="button" id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
 
     <nav aria-label="Primary">
       <ul class="nav-list" id="nav-menu">
@@ -43,7 +47,7 @@
         <li><a href="#projects">Projects</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li hidden>
+        <li>
           <button type="button" id="theme-toggle" class="theme-switcher" aria-pressed="false">Dark mode</button>
         </li>
       </ul>
@@ -54,13 +58,13 @@
     <section id="hero" class="hero" aria-labelledby="hero-title">
       <picture class="hero-photo">
         <source type="image/avif"
-                srcset="assets/sea-hero-1024.avif 1024w, assets/sea-hero-1600.avif 1600w, assets/sea-hero-2400.avif 2400w"
+                srcset="assets/sea-hero-1024.avif 1024w, assets/sea-hero-1280.avif 1280w, assets/sea-hero-1600.avif 1600w, assets/sea-hero-2400.avif 2400w"
                 sizes="(max-width: 48rem) 180vw, 100vw">
         <source type="image/webp"
-                srcset="assets/sea-hero-1024.webp 1024w, assets/sea-hero-1600.webp 1600w, assets/sea-hero-2400.webp 2400w"
+                srcset="assets/sea-hero-1024.webp 1024w, assets/sea-hero-1280.webp 1280w, assets/sea-hero-1600.webp 1600w, assets/sea-hero-2400.webp 2400w"
                 sizes="(max-width: 48rem) 180vw, 100vw">
         <img src="assets/sea-hero-1600.jpg"
-             srcset="assets/sea-hero-1024.jpg 1024w, assets/sea-hero-1600.jpg 1600w, assets/sea-hero-2400.jpg 2400w"
+             srcset="assets/sea-hero-1024.jpg 1024w, assets/sea-hero-1280.jpg 1280w, assets/sea-hero-1600.jpg 1600w, assets/sea-hero-2400.jpg 2400w"
              sizes="(max-width: 48rem) 180vw, 100vw"
              width="2400" height="1350" alt="" fetchpriority="high" decoding="async">
       </picture>
