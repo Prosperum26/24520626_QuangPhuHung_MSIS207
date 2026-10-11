@@ -1,0 +1,173 @@
+/* ==========================================================================
+   T-06-C – Project feed (cards, skeleton, error panel, state visibility)
+   Contract: Homework_1/TASK_DECOMPOSITION.md §4.1, §4.5
+   #projects[data-state] decides which block is visible; JS never sets style.
+   Tokens only, no colours. .badge-list/.badge come from layout.css.
+   ========================================================================== */
+
+/* 1. State visibility -------------------------------------------------------
+   loading -> skeleton, success -> cards, error -> error panel. */
+
+.skeleton-list,
+.feed-error {
+  display: none;
+}
+
+#projects[data-state="loading"] .skeleton-list {
+  display: grid;
+}
+
+#projects[data-state="success"] .project-list {
+  display: grid;
+}
+
+#projects[data-state="error"] .feed-error {
+  display: grid;
+}
+
+#projects[data-state="loading"] .project-list,
+#projects[data-state="error"] .project-list {
+  display: none;
+}
+
+/* 2. Grid -------------------------------------------------------------------
+   Same column rule for cards and skeleton cards, so nothing jumps on load. */
+
+.project-grid {
+  gap: var(--space-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--card-min)), 1fr));
+  list-style: none;
+}
+
+/* 3. Card ------------------------------------------------------------------- */
+
+.project-card {
+  display: grid;
+}
+
+.project-card > article {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 2);
+  background-color: var(--surface);
+}
+
+.project-index {
+  color: var(--decor);
+  font-size: var(--font-size-hero);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+}
+
+.project-category {
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+}
+
+.project-link {
+  align-self: end;
+  justify-self: start;
+  padding-block: var(--space-2);
+  font-weight: 700;
+}
+
+/* 4. Skeleton (loading) -----------------------------------------------------
+   Pure CSS shimmer. Reduced motion gets a static block instead. */
+
+.skeleton-card {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 2);
+  background-color: var(--surface);
+}
+
+.skeleton-item {
+  display: block;
+  height: 1rem;
+  border-radius: var(--radius);
+  background-color: color-mix(in srgb, var(--decor) 30%, transparent);
+}
+
+.skeleton-title {
+  width: 40%;
+  height: 2.5rem;
+}
+
+.skeleton-line-short {
+  width: 60%;
+}
+
+.skeleton-badges {
+  width: 70%;
+  height: 1.75rem;
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton-item {
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--decor) 45%, transparent),
+      transparent
+    );
+    background-repeat: no-repeat;
+    background-size: 60% 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position: -100% 0;
+  }
+
+  to {
+    background-position: 200% 0;
+  }
+}
+
+/* 5. Error panel ------------------------------------------------------------ */
+
+.feed-error {
+  justify-items: start;
+  gap: var(--space-4);
+  max-width: var(--measure);
+  padding: var(--space-6);
+  border: 2px solid var(--decor);
+  border-radius: calc(var(--radius) * 2);
+  background-color: var(--surface);
+}
+
+.feed-error-message {
+  font-weight: 700;
+}
+
+/* 6. Wider screens ----------------------------------------------------------
+   Staggered columns: every second card sits lower, like a logbook page
+   where entries are not ruled onto one line. */
+
+@media (min-width: 48rem) {
+  .project-list > .project-card:nth-child(even) {
+    margin-block-start: var(--space-8);
+  }
+}

@@ -1,0 +1,18 @@
+/* ==========================================================================
+   No-JS fallback (linked inside <noscript> in index.html)
+   Without JS the project feed never leaves data-state="loading", so the
+   skeleton would shimmer forever. Hide it; the <noscript> note in the
+   section points to GitHub instead. Tokens only.
+   ========================================================================== */
+
+.skeleton-list {
+  display: none !important;
+}
+
+.feed-noscript {
+  max-width: var(--measure);
+  padding: var(--space-4);
+  border: 2px solid var(--decor);
+  border-radius: calc(var(--radius) * 2);
+  background-color: var(--surface);
+}
