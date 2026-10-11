@@ -17,7 +17,7 @@
 
   /* Semantic colours – light theme (default) */
   --bg: var(--sand);
-  --surface: color-mix(in srgb, var(--sea-mid) 12%, var(--sand));
+  --surface: color-mix(in srgb, var(--sea-mid) 4%, var(--sand));
   --text: var(--ink);
   --text-muted: var(--sea-deep);
   --heading: var(--sea-deep);
@@ -35,6 +35,11 @@
   --band-bg: var(--sea-deep);
   --band-text: var(--sand);
   --band-ring: var(--sand);
+
+  /* Hero: the photo sits behind a frosted card. The card takes --bg (so it
+     follows the theme) and the photo is dimmed in dark mode. */
+  --hero-card-bg: color-mix(in srgb, var(--bg) 88%, transparent);
+  --hero-photo-filter: none;
 
   /* Sand grain: a faint dot pattern drawn from --decor, so it follows the theme */
   --grain: color-mix(in srgb, var(--decor) 22%, transparent);
@@ -75,6 +80,7 @@
   --wave-w: 6rem;
   --swash-h: 0.75rem;
   --swash-w: 4rem;
+  --hero-min-h: clamp(30rem, 78vh, 44rem);
 }
 
 /* Dark theme from the OS, unless the user forced light (data-theme="light") */
@@ -93,6 +99,7 @@
     --btn-text: var(--ink);
     --selection-bg: var(--sea-deep);
     --selection-text: var(--sand);
+    --hero-photo-filter: brightness(0.6) saturate(0.9);
   }
 }
 
@@ -111,6 +118,7 @@
   --btn-text: var(--ink);
   --selection-bg: var(--sea-deep);
   --selection-text: var(--sand);
+  --hero-photo-filter: brightness(0.6) saturate(0.9);
 }
 
 /* Native UI (scrollbars, form controls) follows the active theme */

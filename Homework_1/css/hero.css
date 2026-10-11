@@ -1,25 +1,53 @@
 /* ==========================================================================
    T-04-C – Hero (+ .button, first used here and in the contact section)
    Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-04
-   Mobile-first: text then illustration. From 48rem the illustration moves
-   to a second column and spans the text rows. Tokens only, no colours.
+   The photo is an <img> behind the content (z-index -1, object-fit: cover),
+   not a CSS background: it can use srcset/<picture> and can be the LCP
+   candidate. Its lower part fades into the page background with a mask, so
+   the sea runs on into the sand sections below. The text sits on a frosted
+   card, so contrast never depends on what part of the sky is behind it.
+   Tokens only, no colours.
    ========================================================================== */
 
 .hero {
+  position: relative;
+  isolation: isolate;
   display: grid;
-  align-items: center;
+  align-content: center;
+  min-height: var(--hero-min-h);
+  padding-block: var(--space-12) var(--space-16);
+}
+
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* Solid for the top 55%, then fades to transparent: the page background
+     (sand + grain) shows through and takes over. */
+  mask-image: linear-gradient(to bottom, black 55%, transparent);
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  filter: var(--hero-photo-filter);
+}
+
+.hero-card {
+  display: grid;
   gap: var(--space-4);
+  max-width: 40rem;
+  padding: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 2);
+  background-color: var(--hero-card-bg);
+  backdrop-filter: blur(6px);
 }
 
 .hero-intro {
   max-width: var(--measure);
-}
-
-.hero-art {
-  width: 100%;
-  max-width: 30rem;
-  height: auto;
-  margin-block-start: var(--space-4);
 }
 
 /* Call-to-action buttons ----------------------------------------------------
@@ -43,8 +71,11 @@
   border-radius: 999px;
   background-color: var(--btn-bg);
   color: var(--btn-text);
+  font-family: inherit;
+  font-size: var(--font-size-base);
   font-weight: 700;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .button-outline {
@@ -64,19 +95,7 @@
 }
 
 @media (min-width: 48rem) {
-  .hero {
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-    column-gap: var(--space-12);
-  }
-
-  .hero > :not(.hero-art) {
-    grid-column: 1;
-  }
-
-  .hero-art {
-    grid-column: 2;
-    grid-row: 1 / span 4;
-    margin-block-start: 0;
-    justify-self: end;
+  .hero-card {
+    padding: var(--space-8);
   }
 }
