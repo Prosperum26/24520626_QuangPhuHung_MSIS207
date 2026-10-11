@@ -1,0 +1,35 @@
+/* ==========================================================================
+   T-09-C – Theme switcher button
+   Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-09
+   Sits on the sea band (header), so it uses the --band-* tokens: sand text
+   on sea-deep is 5.91:1. Pressed (dark mode on) inverts to a sand pill with
+   sea-deep text, the same 5.91:1. The label never changes; aria-pressed
+   carries the state. Hit area is 44px tall.
+   ========================================================================== */
+
+.theme-switcher {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: var(--space-4);
+  border: 2px solid var(--band-text);
+  border-radius: 999px;
+  background-color: transparent;
+  color: var(--band-text);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.theme-switcher[aria-pressed="true"],
+.theme-switcher:hover {
+  background-color: var(--band-text);
+  color: var(--band-bg);
+}
+
+/* Hover on a pressed button would look unchanged, so it flips back to the outline look */
+.theme-switcher[aria-pressed="true"]:hover {
+  background-color: transparent;
+  color: var(--band-text);
+}
