@@ -1,0 +1,104 @@
+/* ==========================================================================
+   T-10-C – Primary navigation
+   Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-10
+   Mobile-first: the links stack in a menu that the "Menu" button opens.
+   From 48rem they sit in a row and the button is not shown. The 48rem
+   breakpoint is the same one js/nav-toggle.js uses.
+   Without JS the button stays [hidden] and the menu is simply open.
+   Lives on the sea band, so it uses the --band-* tokens.
+   ========================================================================== */
+
+.site-header nav {
+  flex-basis: 100%;
+}
+
+.nav-list {
+  display: grid;
+  list-style: none;
+}
+
+.nav-list[hidden] {
+  display: none;
+}
+
+.nav-list > li + li {
+  border-top: 1px solid color-mix(in srgb, var(--band-text) 35%, transparent);
+}
+
+.nav-list a {
+  display: block;
+  padding-block: var(--space-3);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.nav-list a:hover {
+  text-decoration: underline;
+}
+
+/* The theme switcher is the last item of the list (theme-switcher.css) */
+.nav-list > li:has(.theme-switcher) {
+  padding-block: var(--space-3);
+}
+
+/* Menu button -------------------------------------------------------------- */
+
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: var(--space-4);
+  border: 2px solid var(--band-text);
+  border-radius: 999px;
+  background-color: transparent;
+  color: var(--band-text);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.nav-toggle[hidden] {
+  display: none;
+}
+
+.nav-toggle[aria-expanded="true"] {
+  background-color: var(--band-text);
+  color: var(--band-bg);
+}
+
+/* Wider screens: links in a row, no menu button ------------------------------
+   [hidden] is overridden here on purpose: if the menu was closed on a phone
+   and the window is then widened, the links must still show. */
+
+@media (min-width: 48rem) {
+  .site-header nav {
+    flex-basis: auto;
+  }
+
+  .nav-list,
+  .nav-list[hidden] {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 var(--space-4);
+  }
+
+  .nav-list > li + li {
+    border-top: 0;
+  }
+
+  .nav-list a {
+    display: inline-block;
+    padding-block: var(--space-2);
+  }
+
+  .nav-list > li:has(.theme-switcher) {
+    padding-block: 0;
+  }
+
+  .nav-toggle,
+  .nav-toggle[hidden] {
+    display: none;
+  }
+}

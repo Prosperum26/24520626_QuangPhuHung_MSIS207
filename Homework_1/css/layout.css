@@ -100,25 +100,7 @@ body {
   outline-color: var(--band-ring);
 }
 
-/* 4. Navigation (1D flex) -------------------------------------------------- */
-
-.nav-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 var(--space-4);
-  list-style: none;
-}
-
-.nav-list a {
-  display: inline-block;
-  padding-block: var(--space-2);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.nav-list a:hover {
-  text-decoration: underline;
-}
+/* 4. Navigation: css/nav.css */
 
 /* 5. Main & log entries -----------------------------------------------------
    Each section is a log entry: a small number above a heading. */

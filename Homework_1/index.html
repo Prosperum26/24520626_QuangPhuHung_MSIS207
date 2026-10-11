@@ -15,7 +15,13 @@
   <link rel="stylesheet" href="css/project-card.css">
   <link rel="stylesheet" href="css/skills.css">
   <link rel="stylesheet" href="css/contact.css">
+  <link rel="stylesheet" href="css/theme-switcher.css">
+  <link rel="stylesheet" href="css/nav.css">
   <noscript><link rel="stylesheet" href="css/noscript.css"></noscript>
+  <!-- Blocking on purpose: sets the saved theme before the first paint -->
+  <script src="js/theme-init.js"></script>
+  <script type="module" src="js/theme-toggle.js"></script>
+  <script type="module" src="js/nav-toggle.js"></script>
   <script type="module" src="js/project-feed.js"></script>
   <script type="module" src="js/copy-email.js"></script>
 </head>
@@ -25,12 +31,18 @@
   <header class="site-header">
     <a href="#hero" class="brand" lang="vi">Quảng Phú Hưng</a>
 
+    <!-- Shown by js/nav-toggle.js on phones; without JS the menu is just open -->
+    <button type="button" id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" hidden>Menu</button>
+
     <nav aria-label="Primary">
       <ul class="nav-list" id="nav-menu">
         <li><a href="#journey">Journey</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li hidden>
+          <button type="button" id="theme-toggle" class="theme-switcher" aria-pressed="false">Dark mode</button>
+        </li>
       </ul>
     </nav>
   </header>

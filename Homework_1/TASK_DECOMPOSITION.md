@@ -297,13 +297,13 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 - `h1` = "Quang Phu Hung". Tagline lấy đúng từ CV: "Backend & AI-oriented student building high-performance full-stack systems".
 - Một đoạn giới thiệu 1–2 câu cho người xem (không lặp lời lab, không "zero-div").
 - Ảnh nền hero: `assets/sea-hero-*` (task T-04-A), nguồn là ảnh biển user cung cấp (3840×2160, 2,2 MB), tạo 3 chiều rộng (1024/1600/2400) × 3 định dạng (AVIF 24–105 KB, WebP 43–192 KB, JPG 67–313 KB). Dùng `<picture>` + `<img>` (không dùng CSS `background`) để có `srcset`/`sizes`, và để ảnh có thể là LCP. `sizes="(max-width: 48rem) 180vw, 100vw"` vì `object-fit: cover` phóng ảnh lên để lấp hero cao trên mobile. `alt=""` (trang trí), `width`/`height` đầy đủ, `fetchpriority="high"`, **không** `loading="lazy"`.
-- Chữ nằm trên `div.hero-card` (nền `--hero-card-bg` = `--bg` pha 88% trong suốt, `backdrop-filter: blur`) nên độ tương phản không phụ thuộc phần nào của bầu trời nằm sau. Ở dark mode ảnh bị làm tối bằng `--hero-photo-filter`.
+- Chữ nằm **thẳng trên ảnh**, màu `--hero-text` (= `--sand`, cả hai theme), không có hộp hay viền phía sau (`div.hero-card` chỉ là wrapper bố cục). Độ tương phản được giữ bằng một lớp phủ tối `.hero-photo::after` (màu `--ink`, độ đặc `--hero-scrim` = 74%): trên mobile phủ đều, từ 48rem phủ đặc tới mép phải của cột chữ rồi mờ dần, nên biển bên phải vẫn sáng. Vùng ảnh mờ dần ở đáy (`--hero-fade`) trùng đúng padding đáy của hero để chữ không bao giờ nằm trong vùng đó. Ở dark mode ảnh còn bị làm tối bằng `--hero-photo-filter`. Hai nút giữ nguyên diện mạo cũ (nút viền và mọi trạng thái hover nằm trên `--hero-card-bg`), vòng focus trong hero là `--band-ring` (sand), vì vòng sea-deep biến mất trên ảnh tối.
 - Hai CTA: `#projects` và `#contact`.
 - DoD: ảnh nền có `alt=""`; không `loading="lazy"` trên phần tử LCP.
 
 **T-04-C · Hero style** — `css/hero.css`
-- Ảnh nền là `<img>` đặt tuyệt đối sau nội dung (`object-fit: cover`, `object-position: 50% 30%`). Nửa dưới của ảnh mờ dần vào nền trang bằng `mask-image: linear-gradient(to bottom, black 55%, transparent)`, nên biển chạy tiếp xuống các section cát phía dưới. Chiều cao hero là `--hero-min-h`.
-- DoD: tương phản tiêu đề đạt 4.5:1 (tra theo mục 3.3).
+- Ảnh nền là `<img>` đặt tuyệt đối sau nội dung (`object-fit: cover`, `object-position: 50% 30%`). Phần đáy ảnh mờ dần vào nền trang bằng `mask-image`, nên biển chạy tiếp xuống các section cát phía dưới. Chiều cao hero là `--hero-min-h`.
+- DoD: **đo trên pixel thật**, không đoán. Ẩn chữ, chụp ảnh nền, lấy điểm sáng nhất dưới từng dòng chữ, so với `--sand`. Kết quả (điểm tệ nhất, cần ≥ 4.5 cho chữ thường, ≥ 3 cho chữ lớn): 375px sáng 5.98/6.02/6.03, 375px tối 9.00, 768px sáng 5.80/5.95/6.05, 1280px sáng 5.91/5.96/6.04, 1280px tối 8.79/8.89/8.91, 1920px sáng 5.87/5.94/5.98 (h1 / lede / giới thiệu). Hai lần đầu trượt (mây trắng, và chữ rơi vào vùng ảnh mờ dần), nên có `--hero-scrim` và `--hero-fade`. Đổi `--hero-scrim` hay ảnh thì phải đo lại.
 
 **T-05-H · Journey (timeline)** — `index.html` (section `#journey`)
 - `<ol>` mục học vấn: UIT (B.Sc. Information Systems, 2024–present, Ranked 1st Advanced Program Sem 1 AY 2025–2026).
@@ -362,15 +362,20 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 - DoD: lựa chọn còn sau khi reload; `aria-pressed` đúng sau mỗi lần click.
 
 **T-09-H/C · Theme toggle markup & style** — `index.html` (trong header) + `css/theme-switcher.css`
-- Nút chữ "Dark" / "Light" (không chỉ icon). Trạng thái nhấn (`aria-pressed="true"`) dùng nền `--btn-bg`, chữ `--btn-text`. Hit area ≥ 24×24 CSS px (WCAG 2.5.8).
+- Nút chữ "Dark mode" (không chỉ icon), nhãn **không đổi**, trạng thái nằm ở `aria-pressed` (true = đang dark). Nút là mục cuối của `ul#nav-menu`, nên thứ tự Tab trùng thứ tự nhìn thấy ở mọi cỡ màn hình, và trên mobile nó nằm trong menu.
+- Nằm trên dải biển nên dùng token `--band-*`: bình thường viền và chữ sand, khi nhấn đảo thành nền sand chữ sea-deep (5.91:1). Cao 44px (≥ 24px theo WCAG 2.5.8).
+- Không JS thì nút vô dụng, nên `<li hidden>` và `theme-toggle.js` bỏ `hidden` khi chạy.
 
 **T-10-H/C · Nav** — `index.html` (header) + `css/nav.css`
-- Mobile (< 768px): `button#nav-toggle` có `aria-expanded` và `aria-controls="nav-menu"`, `ul#nav-menu` ẩn khi `hidden`.
-- Desktop: liên kết nằm ngang bằng Flexbox, không có nút.
+- Mobile (< 48rem): `button#nav-toggle` ("Menu") có `aria-expanded` và `aria-controls="nav-menu"`, `ul#nav-menu` ẩn bằng `hidden`. Link xếp dọc, mỗi link cao ≥ 44px.
+- Desktop (≥ 48rem): link nằm ngang bằng Flexbox, nút Menu bị ẩn, và `[hidden]` bị CSS ghi đè có chủ đích (thu cửa sổ rồi nới ra thì link vẫn phải hiện). JS và CSS dùng chung mốc 48rem.
+- Không JS: nút Menu giữ `hidden`, menu luôn mở.
+- `css/nav.css` sở hữu toàn bộ style nav (đã chuyển khỏi `layout.css`).
 - Link trỏ tới `#hero`, `#journey`, `#projects`, `#skills`, `#contact`. Mọi `href="#x"` phải có `id="x"` tương ứng.
 
 **T-10-J · Nav toggle** — `js/nav-toggle.js`
-- Click đổi `aria-expanded` và `hidden`. Esc đóng menu và trả focus về `#nav-toggle`. Click ra ngoài đóng menu.
+- Click đổi `aria-expanded` và `hidden`. Esc đóng menu và trả focus về `#nav-toggle`. Click ra ngoài, chọn một link, hoặc Tab ra khỏi header (sự kiện `focusout`) đều đóng menu.
+- Đã kiểm tra bằng Edge: Tab đi hết 17 điểm dừng trên mobile (menu mở) rồi thoát ra thanh trình duyệt, không có chỗ nào giữ focus. Ghi vào audit M2 làm số liệu đầu.
 - **Không** dùng focus trap. Menu là disclosure (không phải modal), nên Tab đi ra khỏi menu bình thường. Đây là quyết định có chủ đích và M2 sẽ kiểm tra lại.
 - DoD: dùng `keydown` và `event.key` (không `keyCode`), có `if (event.repeat) return;`.
 
