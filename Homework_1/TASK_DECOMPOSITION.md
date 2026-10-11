@@ -208,25 +208,28 @@ Homework_1/
 
 ---
 
-## 5. Kế hoạch commit (đường đi của cả bài)
+## 5. Kế hoạch commit (theo feature)
 
-Mỗi dòng là một commit. Tất cả đều atomic, không trộn HTML với CSS hay CSS với JS trong cùng commit.
+Commit chia theo **feature** (mỗi feature gồm HTML + CSS + JS của chính nó), không chia theo từng task nhỏ. Task ID `T-xx` vẫn dùng cho prompt AI và PROMPT_LOG, không cần một commit cho mỗi task.
 
-| Giai đoạn | Commit | Ghi chú |
-|---|---|---|
-| A | `docs(spec): HW1 task decomposition and palette contract` | T-00 (file này) |
-| B | Build v1: `feat(shell)`, `feat(theme)`, `feat(layout)`, `feat(assets)`, `feat(hero)`, `feat(timeline)`, `feat(data)`, `feat(projects)`, `feat(skills)`, `feat(contact)`, `feat(theme-toggle)`, `feat(nav)`, `feat(footer)` | Mỗi task T-xx có một commit riêng (xem mục 6) |
-| C1 | `docs(audit): WCAG 2.2 AA findings` | Review mode: chỉ liệt kê, không sửa |
-| C2 | **`fix(a11y): contrast & landmarks`** | **M1** |
-| C3 | `docs(audit): keyboard & focus-trap findings` | Review mode |
-| C4 | **`fix(nav): keyboard trap prevention`** | **M2** |
-| C5 | `docs(audit): CSP & inline handler findings` | Review mode (grep, liệt kê) |
-| C6 | `refactor(js): move remaining inline logic to addEventListener` | Chỉ nếu C5 có kết quả. Nếu không, bỏ qua và ghi rõ trong PROMPT_LOG |
-| C7 | **`fix(security): strict CSP & zero inline handlers`** | **M3** |
-| C8 | `docs(perf): Lighthouse baseline` | Ghi điểm mobile + desktop trước khi tối ưu |
-| C9 | **`perf: optimize assets`** | **M4** |
-| D | `docs(log): HW1 prompt log`, `docs(readme): HW1 run guide and design decisions` | T-14, T-15 |
+| Giai đoạn | Commit | Gồm task | Ghi chú |
+|---|---|---|---|
+| A | `docs(spec): HW1 task decomposition and palette contract` | T-00 | Spec đi trước code |
+| B1 | `feat(layout): page shell, design tokens and wave divider` | T-01, T-02, T-03, T-11 | Khung trang, palette, footer |
+| B2 | `feat(hero): intro and journey timeline` | T-04, T-05 | Hero + timeline học vấn/kinh nghiệm |
+| B3 | `feat(projects): JSON-driven project feed` | T-06 | Data, section, controller, card style |
+| B4 | `feat(skills): skills matrix and contact with copy email` | T-07, T-08 | Hai section nhỏ, không liên quan nhau nên gom theo "phần nội dung cuối trang" |
+| B5 | `feat(theme): dark mode with persisted toggle` | T-09 | theme-init + toggle |
+| B6 | `feat(nav): mobile disclosure navigation` | T-10 | Nav markup, style, JS |
+| C | `docs(audit): WCAG, keyboard, CSP and Lighthouse baseline` | Review của T-13 và các mục C1, C3, C5, C8 | Chạy audit một lần trên bản B6, ghi toàn bộ phát hiện. Không sửa code |
+| C-M1 | **`fix(a11y): contrast & landmarks`** | C1 | **M1** |
+| C-M2 | **`fix(nav): keyboard trap prevention`** | C3 | **M2** |
+| C-M3 | **`fix(security): strict CSP & zero inline handlers`** | C5, C6 (nếu có) | **M3**. Gồm cả refactor JS nếu audit có kết quả |
+| C-M4 | **`perf: optimize assets`** | C9 | **M4** |
+| D | `docs: HW1 prompt log and run guide` | T-14, T-15 | Một commit tài liệu cuối |
 
+> **Lý do gom:** teacher chỉ phạt "monolithic PR" và "one-shot AI code". Mỗi feature là một đơn vị có ý nghĩa, đủ để review. Không cần tách HTML/CSS/JS thành commit riêng.
+>
 > **Commit split đề xuất khi đưa bản build xong:** user tự chạy `git commit`. Theo memory `no-auto-commit`, AI không commit hay push.
 
 ---
