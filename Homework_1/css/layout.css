@@ -7,10 +7,12 @@
 
 /* 1. Page frame -------------------------------------------------------------
    Full-width bands; content is centred by padding instead of wrapper divs.
-   max() keeps a 16px gutter on phones and caps the line at --content-max. */
+   max() keeps a 16px gutter on phones and caps the line at --content-max.
+   The padding sits on each <section>, not on <main>, so the hero can run
+   edge to edge while the other sections keep the content width. */
 
 .site-header,
-body > main,
+body > main > section,
 .site-footer {
   padding-inline: max(var(--gutter), calc((100% - var(--content-max)) / 2));
 }
@@ -123,7 +125,7 @@ body {
 
 body > main {
   display: grid;
-  padding-block: var(--space-8) var(--space-16);
+  padding-block-end: var(--space-16);
 }
 
 body > main > section {
@@ -173,7 +175,24 @@ body > main > section + section::before {
   mask: url("../assets/wave.svg") left center / var(--wave-w) var(--wave-h) repeat-x;
 }
 
-/* 7. Footer ---------------------------------------------------------------- */
+/* 7. Badge list (shared by project stacks and skill groups) ----------------- */
+
+.badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.badge {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+/* 8. Footer ---------------------------------------------------------------- */
 
 .site-footer {
   position: relative;
@@ -207,7 +226,7 @@ body > main > section + section::before {
   padding-block: var(--space-2);
 }
 
-/* 8. Wider screens ----------------------------------------------------------
+/* 9. Wider screens ----------------------------------------------------------
    Logbook layout: the entry number and heading sit in a sticky left column,
    the content flows in the right column. The wave spans both. */
 
@@ -228,7 +247,7 @@ body > main > section + section::before {
   }
 }
 
-/* 9. Utilities --------------------------------------------------------------
+/* 10. Utilities --------------------------------------------------------------
    Text for screen readers only (live status messages). Clipped, not
    display:none, so it is still read. */
 

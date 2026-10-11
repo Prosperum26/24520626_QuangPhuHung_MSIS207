@@ -12,6 +12,12 @@
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/hero.css">
   <link rel="stylesheet" href="css/timeline.css">
+  <link rel="stylesheet" href="css/project-card.css">
+  <link rel="stylesheet" href="css/skills.css">
+  <link rel="stylesheet" href="css/contact.css">
+  <noscript><link rel="stylesheet" href="css/noscript.css"></noscript>
+  <script type="module" src="js/project-feed.js"></script>
+  <script type="module" src="js/copy-email.js"></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -31,14 +37,28 @@
 
   <main id="main-content">
     <section id="hero" class="hero" aria-labelledby="hero-title">
-      <h1 id="hero-title"><span lang="vi">Quảng Phú Hưng</span></h1>
-      <p class="lede">Backend &amp; AI-oriented student building high-performance full-stack systems.</p>
-      <p class="hero-intro">I design and build full-stack systems with a backend and AI focus: secure APIs, retrieval pipelines and reinforcement-learning agents. I study Information Systems at UIT, VNU-HCM.</p>
-      <p class="cta-row">
-        <a class="button" href="#projects">See my projects</a>
-        <a class="button button-outline" href="#contact">Get in touch</a>
-      </p>
-      <img class="hero-art" src="assets/hero-shore.svg" alt="" width="480" height="300">
+      <picture class="hero-photo">
+        <source type="image/avif"
+                srcset="assets/sea-hero-1024.avif 1024w, assets/sea-hero-1600.avif 1600w, assets/sea-hero-2400.avif 2400w"
+                sizes="(max-width: 48rem) 180vw, 100vw">
+        <source type="image/webp"
+                srcset="assets/sea-hero-1024.webp 1024w, assets/sea-hero-1600.webp 1600w, assets/sea-hero-2400.webp 2400w"
+                sizes="(max-width: 48rem) 180vw, 100vw">
+        <img src="assets/sea-hero-1600.jpg"
+             srcset="assets/sea-hero-1024.jpg 1024w, assets/sea-hero-1600.jpg 1600w, assets/sea-hero-2400.jpg 2400w"
+             sizes="(max-width: 48rem) 180vw, 100vw"
+             width="2400" height="1350" alt="" fetchpriority="high" decoding="async">
+      </picture>
+
+      <div class="hero-card">
+        <h1 id="hero-title"><span lang="vi">Quảng Phú Hưng</span></h1>
+        <p class="lede">Backend &amp; AI-oriented student building high-performance full-stack systems.</p>
+        <p class="hero-intro">I design and build full-stack systems with a backend and AI focus: secure APIs, retrieval pipelines and reinforcement-learning agents. I study Information Systems at UIT, VNU-HCM.</p>
+        <p class="cta-row">
+          <a class="button" href="#projects">See my projects</a>
+          <a class="button button-outline" href="#contact">Get in touch</a>
+        </p>
+      </div>
     </section>
 
     <section id="journey" class="log-entry" aria-labelledby="journey-title">
@@ -83,18 +103,74 @@
       </div>
     </section>
 
-    <!-- B3 (T-06): JSON-driven project feed -->
-    <section id="projects" class="log-entry" aria-labelledby="projects-title">
+    <section id="projects" class="log-entry" aria-labelledby="projects-title"
+             data-state="loading" aria-busy="true">
       <header class="log-header">
         <p class="log-index">Log 02</p>
         <h2 id="projects-title" tabindex="-1">Projects</h2>
       </header>
       <div class="log-body">
         <p class="lede">Things I have built, from event platforms to retrieval pipelines.</p>
+
+        <!-- Spoken updates for screen readers: "Loading projects…", "5 projects loaded." -->
+        <p class="feed-status visually-hidden" role="status">Loading projects…</p>
+
+        <noscript>
+          <p class="feed-noscript">The project list loads with JavaScript. You can find the same work on <a href="https://github.com/Prosperum26">my GitHub profile</a>.</p>
+        </noscript>
+
+        <!-- loading: placeholders with the same grid as the real cards -->
+        <ul class="skeleton-list project-grid" aria-hidden="true">
+          <li class="skeleton-card">
+            <span class="skeleton-item skeleton-title"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line skeleton-line-short"></span>
+            <span class="skeleton-item skeleton-badges"></span>
+          </li>
+          <li class="skeleton-card">
+            <span class="skeleton-item skeleton-title"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line skeleton-line-short"></span>
+            <span class="skeleton-item skeleton-badges"></span>
+          </li>
+          <li class="skeleton-card">
+            <span class="skeleton-item skeleton-title"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line skeleton-line-short"></span>
+            <span class="skeleton-item skeleton-badges"></span>
+          </li>
+        </ul>
+
+        <!-- error: message is filled by js/project-feed.js -->
+        <div class="feed-error">
+          <p class="feed-error-message" role="alert"></p>
+          <button type="button" class="button feed-retry">Retry</button>
+        </div>
+
+        <!-- success: cards are cloned from the template below -->
+        <ul id="project-list" class="project-list project-grid"></ul>
+
+        <template id="project-card-tpl">
+          <li class="project-card">
+            <article>
+              <p class="project-index" aria-hidden="true"></p>
+              <h3 class="project-title"></h3>
+              <p class="project-meta">
+                <span class="project-category"></span>
+                <span class="project-period"></span>
+              </p>
+              <p class="project-summary"></p>
+              <ul class="project-stack badge-list" aria-label="Tech stack"></ul>
+              <a class="project-link">View on GitHub<span class="project-link-title visually-hidden"></span></a>
+            </article>
+          </li>
+        </template>
       </div>
     </section>
 
-    <!-- B4 (T-07): skills grouped by stack layer -->
     <section id="skills" class="log-entry" aria-labelledby="skills-title">
       <header class="log-header">
         <p class="log-index">Log 03</p>
@@ -102,10 +178,72 @@
       </header>
       <div class="log-body">
         <p class="lede">The tools I reach for, grouped by where they sit in the stack.</p>
+        <ul class="skill-groups">
+          <li class="skill-group">
+            <h3>AI &amp; Machine Learning</h3>
+            <ul class="badge-list">
+              <li class="badge">Reinforcement Learning (PPO, MDP)</li>
+              <li class="badge">RAG pipelines</li>
+              <li class="badge">Vector databases (ChromaDB)</li>
+              <li class="badge">LLM integration (Ollama)</li>
+              <li class="badge">NumPy</li>
+              <li class="badge">Pandas</li>
+              <li class="badge">PyTorch / TensorFlow</li>
+            </ul>
+          </li>
+          <li class="skill-group">
+            <h3>Backend</h3>
+            <ul class="badge-list">
+              <li class="badge">Node.js</li>
+              <li class="badge">NestJS</li>
+              <li class="badge">Express</li>
+              <li class="badge">PostgreSQL</li>
+              <li class="badge">Prisma ORM</li>
+              <li class="badge">MongoDB</li>
+              <li class="badge">REST architecture</li>
+              <li class="badge">RBAC</li>
+              <li class="badge">JWT</li>
+            </ul>
+          </li>
+          <li class="skill-group">
+            <h3>Frontend</h3>
+            <ul class="badge-list">
+              <li class="badge">React</li>
+              <li class="badge">Tailwind CSS</li>
+              <li class="badge">HTML5</li>
+              <li class="badge">CSS3</li>
+              <li class="badge">State management (Redux, Zustand)</li>
+            </ul>
+          </li>
+          <li class="skill-group">
+            <h3>Languages</h3>
+            <ul class="badge-list">
+              <li class="badge">Python</li>
+              <li class="badge">C++</li>
+              <li class="badge">TypeScript</li>
+              <li class="badge">JavaScript</li>
+              <li class="badge">SQL</li>
+              <li class="badge">LaTeX</li>
+            </ul>
+          </li>
+          <li class="skill-group">
+            <h3>Infrastructure &amp; tools</h3>
+            <ul class="badge-list">
+              <li class="badge">Docker</li>
+              <li class="badge">GitHub Actions (CI/CD)</li>
+              <li class="badge">Swagger / OpenAPI</li>
+              <li class="badge">Git</li>
+              <li class="badge">Vercel</li>
+              <li class="badge">Render</li>
+              <li class="badge">Postman</li>
+              <li class="badge">Figma</li>
+              <li class="badge">Linux / WSL</li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </section>
 
-    <!-- B4 (T-08): contact links and copy email -->
     <section id="contact" class="log-entry" aria-labelledby="contact-title">
       <header class="log-header">
         <p class="log-index">Log 04</p>
@@ -113,6 +251,24 @@
       </header>
       <div class="log-body">
         <p class="lede">Have a project or a question? Write to me.</p>
+        <dl class="contact-list">
+          <div class="contact-row">
+            <dt>Email</dt>
+            <dd>
+              <a href="mailto:qphunguit@gmail.com">qphunguit@gmail.com</a>
+              <button type="button" id="copy-email-btn" class="button button-outline">Copy email</button>
+            </dd>
+          </div>
+          <div class="contact-row">
+            <dt>GitHub</dt>
+            <dd><a href="https://github.com/Prosperum26">github.com/Prosperum26</a></dd>
+          </div>
+          <div class="contact-row">
+            <dt>LinkedIn</dt>
+            <dd><a href="https://www.linkedin.com/in/phu-hung-quang">linkedin.com/in/phu-hung-quang</a></dd>
+          </div>
+        </dl>
+        <p id="copy-status" class="contact-status" role="status"></p>
       </div>
     </section>
   </main>

@@ -105,7 +105,7 @@ Một màu dẫn xuất duy nhất, để có nền tối và chữ đậm:
 
 > `color-mix(in srgb, var(--sea-deep) 8%, transparent)` được phép cho nền card, vì nó chỉ đọc token. Không được viết hex mới.
 >
-> **Bổ sung khi build B1** (đã có trong `css/tokens.css`): `--surface` (nền footer/card, `color-mix` 12% `--sea-mid` vào `--sand`, dark 14% vào `--ink`), `--text-muted` (sáng `--sea-deep`, tối `--foam`), `--border` (`--sea-mid`), `--selection-bg` / `--selection-text`, `--focus-width` (độ dày outline, tách khỏi màu `--focus-ring`). Ngoài ra có token spacing, font (`--font-sans` và `--font-display` đều là Nunito, xem T-02-F), layout (`--header-h`, `--log-col`, `--wave-h`, `--wave-w`, `--swash-h`, `--swash-w`), dải biển (`--band-bg`, `--band-text`, `--band-ring`, giống nhau ở cả hai theme) và hạt cát (`--grain`).
+> **Bổ sung khi build B1** (đã có trong `css/tokens.css`): `--surface` (nền card, `color-mix` 4% `--sea-mid` vào `--sand`, dark 14% vào `--ink`), `--text-muted` (sáng `--sea-deep`, tối `--foam`), `--border` (`--sea-mid`), `--selection-bg` / `--selection-text`, `--focus-width` (độ dày outline, tách khỏi màu `--focus-ring`). Ngoài ra có token spacing, font (`--font-sans` và `--font-display` đều là Nunito, xem T-02-F), layout (`--header-h`, `--log-col`, `--wave-h`, `--wave-w`, `--swash-h`, `--swash-w`), dải biển (`--band-bg`, `--band-text`, `--band-ring`, giống nhau ở cả hai theme) và hạt cát (`--grain`).
 >
 > **Đổi phong cách (sau B1):** trang thiên về bãi cát và sóng biển. Nền là cát có hạt (radial-gradient từ `--grain`, không tốn request ảnh). Header và footer là dải biển `--sea-deep` có mép sóng (mask `swash.svg`). Header chỉ còn tên, không icon.
 
@@ -122,8 +122,10 @@ Một màu dẫn xuất duy nhất, để có nền tối và chữ đậm:
 | `--sea-mid` trên `--ink` | 4.22 : 1 | Non-text dark (trang trí) |
 | `--foam` trên `--sea-deep` | 4.33 : 1 | **Chỉ** chữ lớn (≥ 24px hoặc ≥ 18.66px bold) |
 | `--foam` trên `--sand` | 1.36 : 1 | **Cấm** (không làm chữ, viền, focus ring) |
-| `--ink` / `--sea-deep` trên `--surface` sáng | 11.76 / 5.23 : 1 | Chữ trong footer, card |
-| `--sand` / `--foam` trên `--surface` tối | 11.02 / 8.07 : 1 | Chữ trong footer, card (dark) |
+| `--ink` / `--sea-deep` trên `--surface` sáng | 12.77 / 5.68 : 1 | Chữ trong card |
+| `--sea-mid` trên `--surface` sáng | 3.03 : 1 | Viền card và badge. `--surface` sáng chỉ pha 4% `--sea-mid`: ở 12% viền chỉ đạt 2.79 (< 3) |
+| `--sand` / `--foam` trên `--surface` tối | 11.02 / 8.07 : 1 | Chữ trong card (dark) |
+| `--sea-mid` trên `--surface` tối | 3.49 : 1 | Viền card và badge (dark) |
 
 Quy tắc dùng: body text luôn là `--text`. Chữ nhỏ không bao giờ đặt trên `--sea-mid` hay `--foam` khi nền sáng. Mục M1 sẽ kiểm tra lại các cặp này bằng DevTools.
 
@@ -182,7 +184,7 @@ Homework_1/
 │   ├── favicon.svg                ← T-03-A: favicon (tab trình duyệt)
 │   ├── wave.svg                   ← T-03-A: mask đường sóng giữa các section
 │   ├── swash.svg                  ← T-03-A: mask mép sóng của header/footer
-│   ├── hero-shore.svg             ← T-04-A: minh họa hero (biển, thuyền, bãi cát)
+│   ├── sea-hero-{1024,1600,2400}.{avif,webp,jpg}  ← T-04-A: ảnh nền hero (nguồn gốc 3840×2160 nằm ở docs/sea-hero-original.jpg)
 │   └── fonts/
 │       ├── nunito-latin.woff2     ← T-02-F: Nunito, subset latin
 │       └── nunito-vietnamese.woff2← T-02-F: Nunito, subset tiếng Việt
@@ -198,7 +200,9 @@ Homework_1/
 │   ├── theme-switcher.css         ← T-09-C
 │   ├── nav.css                    ← T-10-C
 │   ├── motion.css                 ← T-12-C (tùy chọn)
-│   └── noscript.css               ← (nếu cần, khi JS tắt)
+│   ├── project-card.css           ← T-06-C (cũng chứa skeleton, error panel)
+│   ├── skills.css, contact.css    ← T-07-C, T-08-C
+│   └── noscript.css               ← ẩn skeleton khi tắt JS
 ├── data/
 │   └── projects.json              ← T-06-D
 └── js/
@@ -210,13 +214,16 @@ Homework_1/
     └── reveal.js                  ← T-12-J (tùy chọn)
 ```
 
-**Thứ tự script trong `<head>`:** `theme-init.js` là script blocking duy nhất trong head (để tránh chớp sáng khi tải lại trang). Các script còn lại dùng `defer`.
+**Thứ tự script trong `<head>`:** `theme-init.js` là script blocking duy nhất trong head (để tránh chớp sáng khi tải lại trang). Các script còn lại là `type="module"` (tự defer và có scope riêng, nên các file không đụng tên `const` của nhau).
 
 ### 4.5 Quy ước
 
 - Class: `kebab-case`. Không dùng tên trùng với tag.
 - Khung trang (B1): `.site-header`, `.brand`, `.nav-list`, `.site-footer`, `.back-to-top`, `.skip-link`, `.visually-hidden`, `.lede`.
 - Mỗi section nội dung: `section.log-entry` > `header.log-header` (`p.log-index` + `h2`) + `div.log-body`. `div.log-body` là wrapper duy nhất, để desktop đặt nội dung vào cột phải mà không cần biết section có bao nhiêu phần tử con. Hero là `section.hero`, không phải log entry.
+- Lề ngang đặt trên từng `<section>` chứ không đặt trên `<main>`, để hero tràn hết chiều ngang còn các section khác giữ độ rộng nội dung.
+- Hero: `picture.hero-photo` (ảnh nền, `z-index: -1`) + `div.hero-card` (khung mờ chứa chữ). Dùng chung: `.button`, `.button-outline`, `.cta-row`.
+- Project: `#project-list.project-grid`, `.project-card`, `.feed-status`, `.feed-error`, `.feed-error-message`, `.feed-retry`, `.skeleton-list`. Dùng chung: `.badge-list`, `.badge` (trong `layout.css`).
 - `data-*` và `id` định nghĩa tại đây và không đổi tên. Các id cố định: `main-content`, `projects`, `projects-title`, `project-card-tpl`, `theme-toggle`, `nav-toggle`, `nav-menu`, `copy-email-btn`, `copy-status`.
 - localStorage key: `theme` với giá trị `'dark' | 'light'`. Đọc/ghi trong `try/catch`.
 
@@ -289,12 +296,13 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 **T-04-H · Hero** — `index.html` (chỉ section hero)
 - `h1` = "Quang Phu Hung". Tagline lấy đúng từ CV: "Backend & AI-oriented student building high-performance full-stack systems".
 - Một đoạn giới thiệu 1–2 câu cho người xem (không lặp lời lab, không "zero-div").
-- Minh họa hero là SVG vector (`assets/hero-shore.svg`, task T-04-A): mặt trời, thuyền buồm, hai lớp sóng, bãi cát, chỉ dùng 4 màu palette nên không cần đổi theo theme. Nạp bằng `<img>` có `width`/`height`, **không** `loading="lazy"` (nằm trên màn hình đầu). Khung có viền `--sea-mid`, vì lớp cát cùng màu nền trang sáng nên không viền thì đáy khung bị hở.
+- Ảnh nền hero: `assets/sea-hero-*` (task T-04-A), nguồn là ảnh biển user cung cấp (3840×2160, 2,2 MB), tạo 3 chiều rộng (1024/1600/2400) × 3 định dạng (AVIF 24–105 KB, WebP 43–192 KB, JPG 67–313 KB). Dùng `<picture>` + `<img>` (không dùng CSS `background`) để có `srcset`/`sizes`, và để ảnh có thể là LCP. `sizes="(max-width: 48rem) 180vw, 100vw"` vì `object-fit: cover` phóng ảnh lên để lấp hero cao trên mobile. `alt=""` (trang trí), `width`/`height` đầy đủ, `fetchpriority="high"`, **không** `loading="lazy"`.
+- Chữ nằm trên `div.hero-card` (nền `--hero-card-bg` = `--bg` pha 88% trong suốt, `backdrop-filter: blur`) nên độ tương phản không phụ thuộc phần nào của bầu trời nằm sau. Ở dark mode ảnh bị làm tối bằng `--hero-photo-filter`.
 - Hai CTA: `#projects` và `#contact`.
-- DoD: minh họa trang trí có `alt=""` hoặc `aria-hidden="true"`; không `loading="lazy"` trên phần tử LCP.
+- DoD: ảnh nền có `alt=""`; không `loading="lazy"` trên phần tử LCP.
 
 **T-04-C · Hero style** — `css/hero.css`
-- Tên lớn, đường chân trời (horizon) bằng border `var(--decor)`, minh họa đặt cạnh tên ở desktop và dưới tên ở mobile.
+- Ảnh nền là `<img>` đặt tuyệt đối sau nội dung (`object-fit: cover`, `object-position: 50% 30%`). Nửa dưới của ảnh mờ dần vào nền trang bằng `mask-image: linear-gradient(to bottom, black 55%, transparent)`, nên biển chạy tiếp xuống các section cát phía dưới. Chiều cao hero là `--hero-min-h`.
 - DoD: tương phản tiêu đề đạt 4.5:1 (tra theo mục 3.3).
 
 **T-05-H · Journey (timeline)** — `index.html` (section `#journey`)
@@ -415,7 +423,7 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 **C9 · `perf: optimize assets` — M4**
 - SVG: bỏ metadata, comment và độ chính xác thập phân thừa; mọi `<img>` có `width`/`height`. Nếu phần tử LCP là ảnh, thêm `fetchpriority="high"`.
 - CSS: bỏ rule không dùng, không `@import`. Font Nunito host cục bộ (T-02-F), đã preload; kiểm tra có tải font thừa không (chỉ latin và vietnamese).
-- JS: mọi script `defer`, trừ `theme-init.js`.
+- JS: mọi script là module (defer) trừ `theme-init.js`.
 - DoD: Lighthouse Performance = 100 ở mobile và desktop. Nếu có chỉ số dưới 100, ghi rõ nguyên nhân trong PROMPT_LOG. Không ép điểm bằng cách bỏ nội dung.
 
 ### Giai đoạn D – Đóng
