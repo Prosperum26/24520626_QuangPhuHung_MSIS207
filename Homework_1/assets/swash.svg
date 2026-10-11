@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 12" preserveAspectRatio="none">
+  <!-- Filled wave edge: solid above, wavy below. Start and end share height
+       and slope, so the tile repeats without a seam. Used as a CSS mask on
+       the header and footer bands, the colour comes from the band token.
+       Flip it vertically for the top edge of the footer. -->
+  <path d="M0 0H96V6C84 12 60 12 48 6S12 0 0 6Z" fill="black"/>
+</svg>

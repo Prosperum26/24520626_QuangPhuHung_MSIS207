@@ -1,0 +1,53 @@
+/* ==========================================================================
+   T-08-C – Contact
+   Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-08
+   A description list (label + value) so assistive tech reads the pairs.
+   .button comes from hero.css. Tokens only.
+   ========================================================================== */
+
+.contact-list {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.contact-row {
+  display: grid;
+  gap: var(--space-1);
+  padding-block-end: var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.contact-row dt {
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.contact-row dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.contact-row a {
+  padding-block: var(--space-2);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+/* Result of "Copy email". Reserved height so the page does not jump when text appears. */
+.contact-status {
+  min-height: 1.6em;
+  font-weight: 700;
+}
+
+@media (min-width: 48rem) {
+  .contact-row {
+    grid-template-columns: 8rem minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--space-6);
+  }
+}

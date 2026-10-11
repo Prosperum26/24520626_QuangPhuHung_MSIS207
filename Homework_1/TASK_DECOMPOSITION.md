@@ -1,0 +1,511 @@
+# TASK_DECOMPOSITION – Homework 1: Production Portfolio
+
+> Work Breakdown Structure (WBS) cho HW1.
+> File này được commit **trước** mọi code (`docs(spec)`), đúng quy tắc §6 của `project-rules.md`.
+> Mỗi prompt AI tham chiếu **đúng 1** task ID (ví dụ `T-06-J`) và đính kèm `project-rules.md` + phần contract liên quan.
+> Nội dung trang được lấy từ CV (`docs/QuangPhuHung_FPT_QACI_CV.pdf`), không bịa số liệu, không bịa link.
+
+---
+
+## 1. Mục tiêu và phạm vi
+
+Một trang portfolio một trang (single page) cho **Quang Phu Hung**, định hướng Backend & AI, làm **khác các bài Exercise trước** (ít khung card đồng nhất, có nhịp kể chuyện theo hành trình) nhưng **giữ đủ 4 milestone bắt buộc** của thầy:
+
+| Milestone | Commit bắt buộc | Nội dung |
+|---|---|---|
+| M1 | `fix(a11y): contrast & landmarks` | Audit WCAG 2.2 AA, sửa contrast và landmark |
+| M2 | `fix(nav): keyboard trap prevention` | Audit focus trap, đảm bảo không kẹt focus |
+| M3 | `fix(security): strict CSP & zero inline handlers` | CSP chặt, 0 `onclick=` / `style=` / inline script |
+| M4 | `perf: optimize assets` | Lighthouse 100 (cả 4 nhóm), tối ưu ảnh/font/CSS |
+
+**Ngoài phạm vi:** backend thật, gửi form qua server, đa ngôn ngữ, blog, CMS. Trang là tĩnh, chạy qua Live Server (`http://localhost:5500`), không mở bằng `file:///`.
+
+---
+
+## 2. Định hướng thiết kế: "Harbour Log"
+
+**Ý tưởng:** trang như nhật ký cảng. Mỗi phần là một "mục nhật ký" có số thứ tự, có đường chân trời (horizon) và đường sóng (wave) ngăn cách section. Mục tiêu là phá khuôn "hero + grid card + footer" của Exercise 3/4, nhưng vẫn dùng đúng HTML semantic và CSS grid/flex.
+
+**Phá cách có kiểm soát (được phép):**
+- Hero dạng "chân trời": tên lớn, tagline lấy từ CV, đường sóng SVG phía dưới.
+- Project xếp so le (`grid-template` có span khác nhau theo thứ tự), đánh số `01`–`05` như mục nhật ký.
+- Timeline học vấn / kinh nghiệm dạng `<ol>` có đường dọc bằng CSS, không dùng `<div>` làm khung.
+- Chuyển động (T-12, tham khảo kỹ thuật từ kinetics.colorion.co): hiện dần so le khi cuộn, gạch chân vẽ ra ở nav, "dock" nâng card đang hover, nút từ tính. Chỉ dùng `transform`/`opacity`, luôn tắt khi `prefers-reduced-motion: reduce`.
+
+**Không được phá (giữ nguyên ràng buộc):**
+- Vanilla HTML5 / CSS / ES6+, không framework, không CDN, không `innerHTML`, không `var`, không inline handler.
+- Mobile-first ở 375px, không scroll ngang.
+- Mọi màu nằm trong `:root` (xem mục 3). Không hex/rgb nào ngoài `:root`.
+
+---
+
+## 3. Palette contract (bộ màu xoay quanh biển)
+
+### 3.1 Bốn màu gốc
+
+| Token | Hex | Vai trò chính |
+|---|---|---|
+| `--sea-deep` | `#086288` | Màu chủ đạo: tiêu đề, link, nút chính, focus ring (sáng) |
+| `--sea-mid` | `#4D8DBA` | Màu trang trí: đường sóng, viền, icon, timeline. **Không dùng làm chữ nhỏ** |
+| `--foam` | `#97D7FF` | Điểm nhấn: tiêu đề, link, focus ring (tối). **Không dùng làm chữ nhỏ trên nền sáng** |
+| `--sand` | `#FFEFC4` | Nền sáng; chữ trên nền tối |
+
+Một màu dẫn xuất duy nhất, để có nền tối và chữ đậm:
+
+| Token | Hex | Ghi chú |
+|---|---|---|
+| `--ink` | `#04293A` | Tông tối hơn của `--sea-deep`, cùng tông xanh biển. Dùng làm chữ body (nền sáng) và nền tối |
+
+### 3.2 Khối `:root` (chốt, không đổi tên)
+
+```css
+:root {
+  --sea-deep: #086288;
+  --sea-mid: #4D8DBA;
+  --foam: #97D7FF;
+  --sand: #FFEFC4;
+  --ink: #04293A;
+
+  /* Semantic tokens: rules chỉ dùng các token này */
+  --bg: var(--sand);
+  --text: var(--ink);
+  --heading: var(--sea-deep);
+  --link: var(--sea-deep);
+  --decor: var(--sea-mid);
+  --focus-ring: var(--sea-deep);
+  --btn-bg: var(--sea-deep);
+  --btn-text: var(--sand);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--ink);
+    --text: var(--sand);
+    --heading: var(--foam);
+    --link: var(--foam);
+    --decor: var(--sea-mid);
+    --focus-ring: var(--foam);
+    --btn-bg: var(--foam);
+    --btn-text: var(--ink);
+  }
+}
+
+:root[data-theme="dark"] {
+  /* giống khối dark ở trên, đặt lại để toggle thủ công thắng OS */
+  --bg: var(--ink);
+  --text: var(--sand);
+  --heading: var(--foam);
+  --link: var(--foam);
+  --decor: var(--sea-mid);
+  --focus-ring: var(--foam);
+  --btn-bg: var(--foam);
+  --btn-text: var(--ink);
+}
+```
+
+> `color-mix(in srgb, var(--sea-deep) 8%, transparent)` được phép cho nền card, vì nó chỉ đọc token. Không được viết hex mới.
+>
+> **Bổ sung khi build B1** (đã có trong `css/tokens.css`): `--surface` (nền card, `color-mix` 4% `--sea-mid` vào `--sand`, dark 14% vào `--ink`), `--text-muted` (sáng `--sea-deep`, tối `--foam`), `--border` (`--sea-mid`), `--selection-bg` / `--selection-text`, `--focus-width` (độ dày outline, tách khỏi màu `--focus-ring`). Ngoài ra có token spacing, font (`--font-sans` và `--font-display` đều là Nunito, xem T-02-F), layout (`--header-h`, `--log-col`, `--wave-h`, `--wave-w`, `--swash-h`, `--swash-w`), dải biển (`--band-bg`, `--band-text`, `--band-ring`, giống nhau ở cả hai theme) và hạt cát (`--grain`).
+>
+> **Đổi phong cách (sau B1):** trang thiên về bãi cát và sóng biển. Nền là cát có hạt (radial-gradient từ `--grain`, không tốn request ảnh). Header và footer là dải biển `--sea-deep` có mép sóng (mask `swash.svg`). Header chỉ còn tên, không icon.
+
+### 3.3 Kiểm tra contrast (WCAG 2.2 AA, đã tính sẵn)
+
+| Cặp | Tỉ lệ | Dùng được cho |
+|---|---|---|
+| `--text` (`--ink`) trên `--bg` (`--sand`) | 12.5 : 1 | Body text, mọi cỡ |
+| `--sea-deep` trên `--sand` | 5.91 : 1 | Tiêu đề, link, nút (chữ `--sand`), focus ring |
+| `--sand` trên `--ink` (dark) | 13.3 : 1 | Body text dark |
+| `--foam` trên `--ink` (dark) | 9.74 : 1 | Tiêu đề, link, focus ring dark |
+| `--ink` trên `--foam` (nút dark) | 9.16 : 1 | Chữ trên nút dark |
+| `--sea-mid` trên `--sand` | 3.15 : 1 | **Chỉ** non-text (viền input, icon, sóng). Không dùng cho chữ < 24px |
+| `--sea-mid` trên `--ink` | 4.22 : 1 | Non-text dark (trang trí) |
+| `--foam` trên `--sea-deep` | 4.33 : 1 | **Chỉ** chữ lớn (≥ 24px hoặc ≥ 18.66px bold) |
+| `--foam` trên `--sand` | 1.36 : 1 | **Cấm** (không làm chữ, viền, focus ring) |
+| `--ink` / `--sea-deep` trên `--surface` sáng | 12.77 / 5.68 : 1 | Chữ trong card |
+| `--sea-mid` trên `--surface` sáng | 3.03 : 1 | Viền card và badge. `--surface` sáng chỉ pha 4% `--sea-mid`: ở 12% viền chỉ đạt 2.79 (< 3) |
+| `--sand` / `--foam` trên `--surface` tối | 11.02 / 8.07 : 1 | Chữ trong card (dark) |
+| `--sea-mid` trên `--surface` tối | 3.49 : 1 | Viền card và badge (dark) |
+
+Quy tắc dùng: body text luôn là `--text`. Chữ nhỏ không bao giờ đặt trên `--sea-mid` hay `--foam` khi nền sáng. Mục M1 sẽ kiểm tra lại các cặp này bằng DevTools.
+
+---
+
+## 4. Contract kỹ thuật
+
+### 4.1 Data & state
+
+- `#projects[data-state]` là nguồn sự thật duy nhất: `loading | success | error`.
+- Hàm `setState(next)` là chỗ duy nhất ghi `data-state` và `aria-busy`. Từ chối giá trị lạ.
+- Dữ liệu dự án nằm trong `data/projects.json`. JS chỉ clone `<template id="project-card-tpl">` và điền bằng `textContent`.
+- Chống race: mỗi lần `loadProjects()` tăng `requestId`; response muộn bị bỏ qua.
+
+### 4.2 Schema `data/projects.json`
+
+```json
+{
+  "projects": [
+    {
+      "id": "greengrass",
+      "index": "01",
+      "title": "GreenGrass",
+      "period": "Mar 2026 – May 2026",
+      "summary": "Full-stack event platform with JWT refresh-token rotation, RBAC, and a QR + GPS geofence check-in.",
+      "stack": ["React", "NestJS", "PostgreSQL", "Prisma", "Docker"],
+      "category": "Full-stack",
+      "repoUrl": "https://github.com/Prosperum26"
+    }
+  ]
+}
+```
+
+Các field bắt buộc: `id`, `index`, `title`, `period`, `summary`, `stack` (mảng không rỗng), `category`, `repoUrl` (https). Item thiếu field hợp lệ bị bỏ qua. Nếu sau khi lọc còn 0 item, coi như `error` với thông báo rõ.
+
+**Năm dự án lấy từ CV:** GreenGrass, Diabetes QnA System (RAG), RL Dynamic Pricing System, Chuck King (AI Rage Platformer), UIT LaTeX Report Template.
+Chưa có link repo riêng: tạm dùng `https://github.com/Prosperum26`. Khi user cung cấp URL repo thật thì sửa một dòng trong JSON.
+
+### 4.3 Thông số CSP (M3, khai báo ngay từ đầu để không phải đổi markup sau)
+
+```html
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'">
+```
+
+Meta CSP không hỗ trợ `frame-ancestors`, `report-uri`, `sandbox`. Điều này sẽ ghi vào phần oral defense (Live Server không gửi header được).
+
+### 4.4 Cấu trúc file
+
+```
+Homework_1/
+├── TASK_DECOMPOSITION.md          ← file này (T-00)
+├── PROMPT_LOG.md                  ← T-14: log prompt, lỗi AI, cách sửa
+├── README.md                      ← T-15: cách chạy, quyết định thiết kế
+├── index.html
+├── assets/                        ← ảnh chỉ dùng SVG, không ảnh raster
+│   ├── favicon.svg                ← T-03-A: favicon (tab trình duyệt)
+│   ├── wave.svg                   ← T-03-A: mask đường sóng giữa các section
+│   ├── swash.svg                  ← T-03-A: mask mép sóng của header/footer
+│   ├── sea-hero-{1024,1600,2400}.{avif,webp,jpg}  ← T-04-A: ảnh nền hero (nguồn gốc 3840×2160 nằm ở docs/sea-hero-original.jpg)
+│   └── fonts/
+│       ├── nunito-latin.woff2     ← T-02-F: Nunito, subset latin
+│       └── nunito-vietnamese.woff2← T-02-F: Nunito, subset tiếng Việt
+├── css/
+│   ├── fonts.css                  ← T-02-F (@font-face Nunito)
+│   ├── tokens.css                 ← T-02-C (palette :root, dark overrides)
+│   ├── layout.css                 ← T-03-C
+│   ├── hero.css                   ← T-04-C
+│   ├── timeline.css               ← T-05-C
+│   ├── project-card.css           ← T-06-C
+│   ├── skills.css                 ← T-07-C
+│   ├── contact.css                ← T-08-C
+│   ├── theme-switcher.css         ← T-09-C
+│   ├── nav.css                    ← T-10-C
+│   ├── motion.css                 ← T-12-C
+│   ├── project-card.css           ← T-06-C (cũng chứa skeleton, error panel)
+│   ├── skills.css, contact.css    ← T-07-C, T-08-C
+│   └── noscript.css               ← ẩn skeleton khi tắt JS
+├── data/
+│   └── projects.json              ← T-06-D
+└── js/
+    ├── theme-init.js              ← T-09-J1 (chạy đồng bộ trong <head>, KHÔNG inline)
+    ├── theme-toggle.js            ← T-09-J2
+    ├── nav-toggle.js              ← T-10-J
+    ├── project-feed.js            ← T-06-J
+    ├── copy-email.js              ← T-08-J
+    ├── reveal.js                  ← T-12-J1
+    └── magnetic.js                ← T-12-J2
+```
+
+**Thứ tự script trong `<head>`:** `theme-init.js` là script blocking duy nhất trong head (để tránh chớp sáng khi tải lại trang). Các script còn lại là `type="module"` (tự defer và có scope riêng, nên các file không đụng tên `const` của nhau).
+
+### 4.5 Quy ước
+
+- Class: `kebab-case`. Không dùng tên trùng với tag.
+- Khung trang (B1): `.site-header`, `.brand`, `.nav-list`, `.site-footer`, `.back-to-top`, `.skip-link`, `.visually-hidden`, `.lede`.
+- Mỗi section nội dung: `section.log-entry` > `header.log-header` (`p.log-index` + `h2`) + `div.log-body`. `div.log-body` là wrapper duy nhất, để desktop đặt nội dung vào cột phải mà không cần biết section có bao nhiêu phần tử con. Hero là `section.hero`, không phải log entry.
+- Lề ngang đặt trên từng `<section>` chứ không đặt trên `<main>`, để hero tràn hết chiều ngang còn các section khác giữ độ rộng nội dung.
+- Hero: `picture.hero-photo` (ảnh nền, `z-index: -1`) + `div.hero-card` (khung mờ chứa chữ). Dùng chung: `.button`, `.button-outline`, `.cta-row`.
+- Project: `#project-list.project-grid`, `.project-card`, `.feed-status`, `.feed-error`, `.feed-error-message`, `.feed-retry`, `.skeleton-list`. Dùng chung: `.badge-list`, `.badge` (trong `layout.css`).
+- `data-*` và `id` định nghĩa tại đây và không đổi tên. Các id cố định: `main-content`, `projects`, `projects-title`, `project-card-tpl`, `theme-toggle`, `nav-toggle`, `nav-menu`, `copy-email-btn`, `copy-status`.
+- localStorage key: `theme` với giá trị `'dark' | 'light'`. Đọc/ghi trong `try/catch`.
+
+---
+
+## 5. Kế hoạch commit (theo feature)
+
+Commit chia theo **feature** (mỗi feature gồm HTML + CSS + JS của chính nó), không chia theo từng task nhỏ. Task ID `T-xx` vẫn dùng cho prompt AI và PROMPT_LOG, không cần một commit cho mỗi task.
+
+| Giai đoạn | Commit | Gồm task | Ghi chú |
+|---|---|---|---|
+| A | `docs(spec): HW1 task decomposition and palette contract` | T-00 | Spec đi trước code |
+| B1 | `feat(layout): page shell, design tokens and wave divider` | T-01, T-02, T-03, T-11 | Khung trang, palette, footer |
+| B2 | `feat(hero): intro and journey timeline` | T-04, T-05 | Hero + timeline học vấn/kinh nghiệm |
+| B3 | `feat(projects): JSON-driven project feed` | T-06 | Data, section, controller, card style |
+| B4 | `feat(skills): skills matrix and contact with copy email` | T-07, T-08 | Hai section nhỏ, không liên quan nhau nên gom theo "phần nội dung cuối trang" |
+| B5 | `feat(theme): dark mode with persisted toggle` | T-09 | theme-init + toggle |
+| B6 | `feat(nav): mobile disclosure navigation` | T-10 | Nav markup, style, JS |
+| C | `docs(audit): WCAG, keyboard, CSP and Lighthouse baseline` | Review của T-13 và các mục C1, C3, C5, C8 | Chạy audit một lần trên bản B6, ghi toàn bộ phát hiện. Không sửa code |
+| C-M1 | **`fix(a11y): contrast & landmarks`** | C1 | **M1** |
+| C-M2 | **`fix(nav): keyboard trap prevention`** | C3 | **M2** |
+| C-M3 | **`fix(security): strict CSP & zero inline handlers`** | C5, C6 (nếu có) | **M3**. Gồm cả refactor JS nếu audit có kết quả |
+| C-M4 | **`perf: optimize assets`** | C9 | **M4** |
+| D | `docs: HW1 prompt log and run guide` | T-14, T-15 | Một commit tài liệu cuối |
+
+> **Lý do gom:** teacher chỉ phạt "monolithic PR" và "one-shot AI code". Mỗi feature là một đơn vị có ý nghĩa, đủ để review. Không cần tách HTML/CSS/JS thành commit riêng.
+>
+> **Commit split đề xuất khi đưa bản build xong:** user tự chạy `git commit`. Theo memory `no-auto-commit`, AI không commit hay push.
+
+---
+
+## 6. Task list chi tiết
+
+Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**. Prompt AI chỉ được sửa đúng các file đã liệt kê.
+
+### Giai đoạn B – Build v1
+
+**T-01-H · Shell HTML** — `index.html`
+- Boilerplate theo `project-rules.md` §3. Thêm `<meta name="viewport">`, `<title>`, `<meta name="description">`.
+- Skip link `href="#main-content"` là phần tử focusable đầu tiên.
+- Landmark: `header` → `nav[aria-label="Primary"]` → `main#main-content` → `section`s → `footer`.
+- Đúng một `<h1>`. Heading không nhảy cấp.
+- Chưa có CSP, chưa có nội dung thật, chỉ có khung và chữ placeholder ngắn.
+- DoD: validator HTML không lỗi. Không có `style=`, `onclick=`.
+
+**T-02-C · Tokens & reset** — `css/tokens.css`
+- Khối `:root` đúng mục 3.2. Global reset. `html { color-scheme: light dark; }`.
+- Style `:focus-visible` dùng `--focus-ring`, outline 3px, offset 3px.
+- DoD: `grep -nE "#[0-9a-fA-F]{3,8}" css/tokens.css` chỉ trả về các dòng trong `:root` và khối `[data-theme]`.
+
+**T-02-F · Font** — `css/fonts.css`, `assets/fonts/*.woff2`
+- Nunito (font sans bo tròn, giấy phép OFL), variable font trọng số 400–800. Tải về và host trong repo, không dùng Google Fonts CDN: repo cấm CDN và CSP chỉ cho `font-src 'self'`.
+- Chỉ lấy hai subset cần cho nội dung: `latin` (~39 KB) và `vietnamese` (~13 KB). Mỗi `@font-face` có `unicode-range`, nên trình duyệt chỉ tải subset đang dùng. `font-display: swap`.
+- `index.html` preload subset latin (`<link rel="preload" as="font" crossorigin>`). `crossorigin` bắt buộc dù font cùng origin, nếu thiếu thì font bị tải hai lần.
+- Chạm `fonts.css` là chạm `@font-face` cho mọi trang, nên đổi font chỉ cần sửa file này và `--font-sans`.
+- DoD: DevTools → Network thấy file `.woff2` trả 200 từ `localhost:5500`; chữ tiếng Việt (`ả`, `ư`) hiển thị đúng Nunito.
+
+**T-03-A · Vector assets** — `assets/wave.svg`, `assets/swash.svg`, `assets/favicon.svg`
+- `wave.svg`: một chu kỳ sóng, điểm đầu và cuối cùng độ cao và độ dốc để lặp không thấy mối nối. Dùng làm CSS `mask`, nên màu lấy từ `--decor` và tự đổi theo theme. SVG nạp qua `url()` không đọc được biến CSS hay `currentColor` của trang, vì vậy dùng mask thay vì tô màu trong file.
+- `swash.svg`: hình sóng đặc (trên đặc, dưới gợn sóng), cũng lặp liền mạch. Dùng làm `mask` cho `::after` của header và `::before` của footer (footer lật bằng `scaleY(-1)`). Màu lấy từ `--band-bg`.
+- `favicon.svg`: mặt trời trên hai lớp sóng, dùng 4 màu palette. Chỉ là favicon của tab, header không hiện icon.
+- Lưu ý: comment XML trong SVG **không được chứa `--`** (ví dụ tên token). Nếu có, cả file bị lỗi parse và ảnh không hiện.
+- DoD: mở trực tiếp file SVG trên trình duyệt thấy hình, không lỗi console.
+
+**T-03-C · Layout** — `css/layout.css`
+- Mobile-first 375px. Container max-width, gutter 16px. Section có `scroll-margin-top` để header dính không che heading khi nhảy tới.
+- Divider dùng `wave.svg` làm `background` (đọc `var(--decor)` để tô).
+- DoD: không scroll ngang ở 375px; không hex.
+
+**T-04-H · Hero** — `index.html` (chỉ section hero)
+- `h1` = "Quang Phu Hung". Tagline lấy đúng từ CV: "Backend & AI-oriented student building high-performance full-stack systems".
+- Một đoạn giới thiệu 1–2 câu cho người xem (không lặp lời lab, không "zero-div").
+- Ảnh nền hero: `assets/sea-hero-*` (task T-04-A), nguồn là ảnh biển user cung cấp (3840×2160, 2,2 MB), tạo 3 chiều rộng (1024/1600/2400) × 3 định dạng (AVIF 24–105 KB, WebP 43–192 KB, JPG 67–313 KB). Dùng `<picture>` + `<img>` (không dùng CSS `background`) để có `srcset`/`sizes`, và để ảnh có thể là LCP. `sizes="(max-width: 48rem) 180vw, 100vw"` vì `object-fit: cover` phóng ảnh lên để lấp hero cao trên mobile. `alt=""` (trang trí), `width`/`height` đầy đủ, `fetchpriority="high"`, **không** `loading="lazy"`.
+- Chữ nằm **thẳng trên ảnh**, màu `--hero-text` (= `--sand`, cả hai theme), không có hộp hay viền phía sau (`div.hero-card` chỉ là wrapper bố cục). Độ tương phản được giữ bằng một lớp phủ tối `.hero-photo::after` (màu `--ink`, độ đặc `--hero-scrim` = 74%): trên mobile phủ đều, từ 48rem phủ đặc tới mép phải của cột chữ rồi mờ dần, nên biển bên phải vẫn sáng. Vùng ảnh mờ dần ở đáy (`--hero-fade`) trùng đúng padding đáy của hero để chữ không bao giờ nằm trong vùng đó. Ở dark mode ảnh còn bị làm tối bằng `--hero-photo-filter`. Hai nút giữ nguyên diện mạo cũ (nút viền và mọi trạng thái hover nằm trên `--hero-card-bg`), vòng focus trong hero là `--band-ring` (sand), vì vòng sea-deep biến mất trên ảnh tối.
+- Hai CTA: `#projects` và `#contact`.
+- DoD: ảnh nền có `alt=""`; không `loading="lazy"` trên phần tử LCP.
+
+**T-04-C · Hero style** — `css/hero.css`
+- Ảnh nền là `<img>` đặt tuyệt đối sau nội dung (`object-fit: cover`, `object-position: 50% 30%`). Phần đáy ảnh mờ dần vào nền trang bằng `mask-image`, nên biển chạy tiếp xuống các section cát phía dưới. Chiều cao hero là `--hero-min-h`.
+- DoD: **đo trên pixel thật**, không đoán. Ẩn chữ, chụp ảnh nền, lấy điểm sáng nhất dưới từng dòng chữ, so với `--sand`. Kết quả (điểm tệ nhất, cần ≥ 4.5 cho chữ thường, ≥ 3 cho chữ lớn): 375px sáng 5.98/6.02/6.03, 375px tối 9.00, 768px sáng 5.80/5.95/6.05, 1280px sáng 5.91/5.96/6.04, 1280px tối 8.79/8.89/8.91, 1920px sáng 5.87/5.94/5.98 (h1 / lede / giới thiệu). Hai lần đầu trượt (mây trắng, và chữ rơi vào vùng ảnh mờ dần), nên có `--hero-scrim` và `--hero-fade`. Đổi `--hero-scrim` hay ảnh thì phải đo lại.
+
+**T-05-H · Journey (timeline)** — `index.html` (section `#journey`)
+- `<ol>` mục học vấn: UIT (B.Sc. Information Systems, 2024–present, Ranked 1st Advanced Program Sem 1 AY 2025–2026).
+- `<ol>` kinh nghiệm: Team Leader WebDev Adventure 2026 (Consolation Prize), Team Leader Fessior DevCamp 2026 (Frontendly).
+- Mỗi mục là `<li>` với `<time>` và `<h3>`.
+- DoD: heading bắt đầu từ `h2` `Journey`, rồi `h3`.
+
+**T-05-C · Timeline style** — `css/timeline.css`
+- Đường dọc bằng `border-inline-start` trên `ol`, chấm tròn bằng `::before`. Dùng `var(--decor)`.
+
+**T-06-D · Project data** — `data/projects.json`
+- 5 mục theo schema §4.2. Nội dung tóm tắt viết lại theo văn phong người xem, bám đúng ý trong CV. Không thêm số liệu (sao, lượt tải) không có trong CV.
+- DoD: JSON hợp lệ (`python -m json.tool` hoặc DevTools không lỗi). Mọi `repoUrl` là https.
+
+**T-06-H · Project section markup** — `index.html` (section `#projects`)
+- `<section id="projects" aria-labelledby="projects-title" data-state="loading" aria-busy="true">`.
+- Khối `loading` (skeleton có `aria-hidden="true"`), khối `error` (`role="alert"` và nút `Retry` là `<button>` thật), `<ul id="project-list">` rỗng.
+- `<template id="project-card-tpl">` chứa khung `<article>` với `<h3>`, `<p>`, danh sách stack `<ul>`, link GitHub.
+- DoD: HTML không có `innerHTML` hay `style=`.
+
+**T-06-J · Project feed controller** — `js/project-feed.js`
+- `fetch('data/projects.json')` + `async/await` + `try/catch`. Timeout 8s bằng `AbortController`.
+- Lỗi mạng, HTTP ≠ 2xx, JSON hỏng, không item hợp lệ đều chuyển sang `error`.
+- Render bằng `template.content.cloneNode(true)` và `textContent`. Không `innerHTML`.
+- Nút Retry gọi lại `loadProjects()`, đưa focus về `#projects-title`.
+- DoD: tắt mạng trong DevTools → thấy `error`; click Retry → quay về `loading`.
+
+**T-06-C · Project card style** — `css/project-card.css`
+- Grid `repeat(auto-fit, minmax(280px, 1fr))`. Mỗi card có số `index` lớn (`01`–`05`) bằng `--decor`.
+- Stack là badge bằng Flexbox, `gap`, không margin hack.
+- Trạng thái ẩn/hiện theo `#projects[data-state="…"]`. JS không đặt `style`.
+- DoD: 375px không scroll ngang; trạng thái `error` và `loading` không chồng nhau.
+
+**T-07-H/C · Skills** — `index.html` (section `#skills`) + `css/skills.css`
+- Nhóm theo CV: AI & Machine Learning · Backend · Frontend · Languages · Infrastructure & Tools.
+- Mỗi nhóm là `<section>` trong `<ul>` với `<h3>`. Badge bằng Flexbox.
+- Không JS.
+- DoD: không có chữ nhỏ trên `--sea-mid`.
+
+**T-08-H/C · Contact** — `index.html` (section `#contact`) + `css/contact.css`
+- Email `qphunguit@gmail.com` dạng `<a href="mailto:…">`. Liên kết GitHub `https://github.com/Prosperum26` và LinkedIn `https://linkedin.com/in/phu-hung-quang`.
+- Không đưa số điện thoại lên trang (quyết định riêng tư, ghi trong README).
+- Nút `Copy email` có `id="copy-email-btn"`, và vùng `<p id="copy-status" role="status">`.
+- DoD: link có text nhìn thấy khớp `aria-label` (WCAG 2.5.3).
+
+**T-08-J · Copy email** — `js/copy-email.js`
+- `navigator.clipboard.writeText` trong `try/catch`. Thành công thì ghi "Copied" vào `#copy-status`; thất bại thì báo "Copy failed. Select the address and copy it manually." Không dùng `alert()`.
+- DoD: không lỗi console khi clipboard bị chặn.
+
+**T-09-J1 · Theme init (chặn chớp sáng)** — `js/theme-init.js`
+- Chạy **đồng bộ** trong `<head>` (không `defer`, không inline). Đọc `localStorage.theme` trong `try/catch`; không có thì dùng `matchMedia('(prefers-color-scheme: dark)')`. Đặt `document.documentElement.dataset.theme`.
+- DoD: reload trang dark không thấy nền sáng nháy.
+
+**T-09-J2 · Theme toggle** — `js/theme-toggle.js`
+- Nút `#theme-toggle` có `aria-pressed` đồng bộ với theme hiện tại. Click thì đổi `data-theme` và ghi localStorage.
+- DoD: lựa chọn còn sau khi reload; `aria-pressed` đúng sau mỗi lần click.
+
+**T-09-H/C · Theme toggle markup & style** — `index.html` (trong header) + `css/theme-switcher.css`
+- Nút chữ "Dark mode" (không chỉ icon), nhãn **không đổi**, trạng thái nằm ở `aria-pressed` (true = đang dark). Nút là mục cuối của `ul#nav-menu`, nên thứ tự Tab trùng thứ tự nhìn thấy ở mọi cỡ màn hình, và trên mobile nó nằm trong menu.
+- Nằm trên dải biển nên dùng token `--band-*`: bình thường viền và chữ sand, khi nhấn đảo thành nền sand chữ sea-deep (5.91:1). Cao 44px (≥ 24px theo WCAG 2.5.8).
+- Không JS thì nút vô dụng nên không hiện: `<li>` chứa nút mặc định `display: none` và chỉ hiện khi `<html class="js">` (xem T-10). Trạng thái "pressed" vẽ theo `:root[data-theme="dark"]` chứ không theo `aria-pressed`, để nút đúng ngay từ lần vẽ đầu (JS chỉ cập nhật `aria-pressed` cho công nghệ hỗ trợ).
+
+**T-10-H/C · Nav** — `index.html` (header) + `css/nav.css`
+- Mobile (< 48rem): `button#nav-toggle` ("Menu") có `aria-expanded` và `aria-controls="nav-menu"`; trạng thái mở nằm ở thuộc tính `data-open` trên `ul#nav-menu`. Link xếp dọc, mỗi link cao ≥ 44px.
+- Desktop (≥ 48rem): link nằm ngang bằng Flexbox, nút Menu bị ẩn. JS và CSS dùng chung mốc 48rem.
+- **Không dịch chuyển bố cục (CLS):** `theme-init.js` (script chặn duy nhất trong `<head>`) thêm class `js` lên `<html>` trước lần vẽ đầu tiên. Nút Menu, nút theme và trạng thái thu gọn của menu chỉ được CSS vẽ khi có class `js`, nên chúng ở đúng trạng thái cuối ngay từ đầu và không nhảy khi các module chạy sau. Không có class `js` (JS tắt hoặc `theme-init.js` lỗi) thì hai nút ẩn và menu là danh sách link mở sẵn. Bài học: bản đầu dùng `hidden` do JS bỏ đi, làm header cao 269px rồi co về 68px, CLS 0.224 trên mobile.
+- `css/nav.css` sở hữu toàn bộ style nav (đã chuyển khỏi `layout.css`).
+- Link trỏ tới `#hero`, `#journey`, `#projects`, `#skills`, `#contact`. Mọi `href="#x"` phải có `id="x"` tương ứng.
+
+**T-10-J · Nav toggle** — `js/nav-toggle.js`
+- Click đổi `aria-expanded` và `data-open`. Esc đóng menu và trả focus về `#nav-toggle`. Click ra ngoài, chọn một link, hoặc Tab ra khỏi header (sự kiện `focusout`) đều đóng menu.
+- Đã kiểm tra bằng Edge: Tab đi hết 17 điểm dừng trên mobile (menu mở) rồi thoát ra thanh trình duyệt, không có chỗ nào giữ focus. Ghi vào audit M2 làm số liệu đầu.
+- **Không** dùng focus trap. Menu là disclosure (không phải modal), nên Tab đi ra khỏi menu bình thường. Đây là quyết định có chủ đích và M2 sẽ kiểm tra lại.
+- DoD: dùng `keydown` và `event.key` (không `keyCode`), có `if (event.repeat) return;`.
+
+**T-11 · Footer** — `index.html` (`footer`) + `css/layout.css` (phần footer)
+- `footer` (contentinfo) chứa dòng bản quyền và link quay lại đầu trang.
+- DoD: chỉ có một `footer` trực tiếp trong `body`.
+
+**T-12 · Motion** — `css/motion.css`, `js/reveal.js`, `js/magnetic.js`, `js/project-feed.js` (thêm 1 dòng phát sự kiện)
+- Nguồn tham khảo: kinetics.colorion.co. Trang đó dùng CSS thuần, `IntersectionObserver`, `requestAnimationFrame`, không dùng thư viện, nên khớp ràng buộc "vanilla" của repo.
+- **Làm 4 hiệu ứng, mỗi cái có lý do UX:**
+  1. *Hiện dần so le khi cuộn* (`reveal.js` + `[data-reveal]`): nội dung vào theo nhịp, nhất là danh sách card/timeline. Độ trễ so le lấy từ vị trí `nth-child` trong CSS, JS không ghi style. Phần tử đã nằm trong màn hình lúc tải thì bỏ qua (không nháy). Card của project xuất hiện sau `fetch`, nên `project-feed.js` phát sự kiện `projects:rendered` để `reveal.js` theo dõi tiếp.
+  2. *Gạch chân vẽ ra* ở link nav: thay `text-decoration` bằng gradient 2px đổi `background-size`; `:focus-visible` cũng có.
+  3. *Dock hover* ở lưới card/skills: card đang hover nhích lên và có bóng, các card còn lại thu nhẹ `scale(0.985)`. **Không làm mờ** (giảm opacity sẽ hạ tương phản chữ khi hover).
+  4. *Nút từ tính* (`magnetic.js`): nút lệch 30% về phía con trỏ, ghi qua hai custom property `--mag-x/--mag-y` (CSSOM, không bị CSP chặn, đã kiểm chứng).
+- **Cố ý bỏ**, kèm lý do để trả lời vấn đáp: *marquee tự chạy* (WCAG 2.2.2: chuyển động tự động quá 5 giây phải có nút tạm dừng), *cursor trail* (chỉ có ích với chuột, gây xao nhãng, tốn `requestAnimationFrame`), *scramble/typewriter trên tên* (làm trễ LCP, trình đọc màn hình đọc lặp từng ký tự, và phá phép đo tương phản của hero), *đếm số lên* (CV không có số liệu thật đáng đếm; thêm sẽ là nội dung giả, vi phạm `project-rules.md` §2.8).
+- Mọi hiệu ứng nằm trong `@media (prefers-reduced-motion: no-preference)`; hai hiệu ứng hover còn cần `(hover: hover) and (pointer: fine)` nên không chạy trên màn cảm ứng. Không có JS thì không có gì bị ẩn (`data-reveal` do JS thêm vào).
+- Token chỉnh cảm giác chuyển động nằm một chỗ trong `tokens.css`: `--ease-out`, `--motion-fast`, `--motion-slow`, `--stagger`, `--reveal-shift`, `--lift`.
+- DoD đã đo trong Edge: 17 phần tử ban đầu `pending`, cuộn hết thì còn 0 `data-reveal` và 0 phần tử mờ; **CLS = 0**; bật reduced motion thì 0 `data-reveal` và nav không có gạch chân hoạt hình; 375px không scroll ngang; dock thật sự áp `translateY(-6.4px)` / `scale(0.985)`; nút từ tính đặt `--mag-x` khi hover và xóa khi rời.
+
+**T-13 · Responsive QA (kiểm tra, không commit code)**
+- Mở `http://localhost:5500` và kiểm tra ở 375, 768, 1280 px. Ghi lỗi nếu có.
+- Kết quả đưa vào T-14.
+
+### Giai đoạn C – Audit và fix (4 milestone bắt buộc)
+
+**C1 · `docs(audit): WCAG 2.2 AA findings`** (review mode, chỉ liệt kê)
+- Kiểm tra từng mục: contrast mọi cặp chữ/nền (đối chiếu mục 3.3), landmark (đúng một `main`, `header`, `footer`), heading order, `alt`, `label`, focus visible, hit area ≥ 24px (2.5.8), `Focus Not Obscured` (2.4.11, header dính có che heading không), reflow 320px (1.4.10), `prefers-reduced-motion`.
+- Công cụ: DevTools → Lighthouse (Accessibility) và Elements → Accessibility pane. Ghi lại số liệu, không sửa.
+
+**C2 · `fix(a11y): contrast & landmarks` — M1**
+- Sửa đúng các lỗi đã liệt kê ở C1. Không sửa thứ không có trong danh sách.
+- DoD: Lighthouse Accessibility = 100 ở 375px và 1280px. Không còn lỗi contrast nào trong C1.
+
+**C3 · `docs(audit): keyboard & focus-trap findings`** (review mode)
+- Tab/Shift+Tab từ đầu đến cuối trang, mở và đóng nav mobile, mở và đóng theme toggle, Retry trên trạng thái `error`. Ghi mọi chỗ focus bị kẹt hoặc bị mất.
+- Riêng nav: kiểm tra Esc có trả focus về nút, và Tab có đi ra khỏi menu không.
+
+**C4 · `fix(nav): keyboard trap prevention` — M2**
+- Sửa đúng các điểm đã liệt kê ở C3. Nếu C3 không có lỗi, commit này chỉ thêm test thủ công vào PROMPT_LOG, không tạo commit rỗng.
+- DoD: Tab đi vòng đủ một lần qua toàn trang rồi trở về trình duyệt; không có chỗ nào giữ focus.
+
+**C5 · `docs(audit): CSP & inline handler findings`** (review mode)
+- Chạy các lệnh grep ở mục 7 và liệt kê kết quả. Không sửa.
+
+**C6 · `refactor(js): ...`** (chỉ khi C5 có kết quả)
+- Chuyển logic còn lại sang `addEventListener` trong file JS. Không đụng CSS.
+
+**C7 · `fix(security): strict CSP & zero inline handlers` — M3**
+- Thêm meta CSP §4.3 vào `<head>` của `index.html`, làm phần tử **đầu tiên sau `charset`** (meta chỉ áp cho những gì đứng sau nó). Thêm `require-trusted-types-for 'script'` (đã chạy sạch ở thử nghiệm trước).
+- Đảm bảo không còn `on*=`, `style=`, `<script>` có nội dung trong HTML. (Trạng thái thực tế: bản build từ đầu đã sạch, nên không cần refactor JS.)
+- Kiểm tra trang vẫn hoạt động: theme, nav, projects, copy email, hiệu ứng. Mỗi lỗi CSP trong console là một lỗi phải sửa, không được nới CSP.
+- **Kiểm thử ngược** (chứng minh CSP có hiệu lực, không chỉ có mặt): chèn tạm vào bản sao `onclick=`, `<script>` inline, `href="javascript:…"`, `style=""`, `<script src>` và `<img>` từ domain ngoài, `eval`, `new Function`, `setTimeout("chuỗi")`, `innerHTML = "chuỗi"`. Tất cả phải bị chặn.
+- Lưu ý khi tự đo: `Runtime.evaluate` của DevTools được miễn CSP (nên `eval` gõ trong console vẫn chạy). Phải thử bằng script do chính trang nạp.
+- Lưu ý khi viết script kiểm thử: CSP cũng chặn thẻ `<style>` do script chèn vào, nên ẩn phần tử trong lúc đo phải dùng CSSOM (`el.style.setProperty`), vốn được phép.
+- DoD: console không có lỗi `Refused to …`, kiểm thử ngược chặn đủ.
+
+**C8 · `docs(perf): Lighthouse baseline`** (review mode)
+- Chạy Lighthouse (Performance, Accessibility, Best Practices, SEO) ở mobile và desktop, chế độ Incognito, qua Live Server.
+- Ghi điểm và danh sách "Opportunities" vào PROMPT_LOG (hoặc ghi vào một đoạn trong commit message nếu cần). Không sửa.
+
+**C9 · `perf: optimize assets` — M4**
+- SVG: bỏ metadata, comment và độ chính xác thập phân thừa; mọi `<img>` có `width`/`height`. Nếu phần tử LCP là ảnh, thêm `fetchpriority="high"`.
+- CSS: bỏ rule không dùng, không `@import`. Font Nunito host cục bộ (T-02-F), đã preload; kiểm tra có tải font thừa không (chỉ latin và vietnamese).
+- JS: mọi script là module (defer) trừ `theme-init.js`.
+- **Sửa CLS** (xem T-10): trạng thái thu gọn của header được vẽ sẵn nhờ class `js`.
+- Ảnh hero: thêm bản 1280px (AVIF 35 KB) cho màn hình cỡ đó. Giữ `sizes="(max-width: 48rem) 180vw, 100vw"`: hạ xuống `100vw` giảm được ~27 KB trên mobile nhưng ảnh bị phóng 3 lần trên điện thoại DPR 3, nên chọn chất lượng.
+- **Đã thử và bỏ** (đo bằng Lighthouse, mỗi biến thể 2 lần): *preload ảnh hero* làm tệ hơn (97 so với 98, vì tranh băng thông với CSS); *bỏ preload font* tệ hơn (97–98 và FCP 1.8–2.0 s); *gộp 11 file CSS thành 1* được 99; *gộp và minify* được 99 (FCP 1.5 s, LCP 1.8 s). Gộp CSS cần bước build, phá nguyên tắc "sửa một dòng là xong" (`project-rules.md` §2.7) mà chỉ thêm 1 điểm, nên **không đưa vào**.
+- DoD thực tế: desktop **100/100/100/100**, mobile **97–98** Performance (Accessibility, Best Practices, SEO đều 100), CLS **0** ở cả hai. Mobile không chạm 100 vì mạng giả lập 4G chậm cộng máy chủ không nén gzip (cache và nén là việc của máy chủ triển khai, không sửa được trong repo). Không ép điểm bằng cách bỏ nội dung hay thêm bước build.
+
+### Giai đoạn D – Đóng
+
+**T-14 · PROMPT_LOG** — `PROMPT_LOG.md` (`docs(log)`)
+- Mỗi task: prompt đã dùng, lỗi AI đã mắc, cách sửa, ảnh chụp kết quả nếu có. Yêu cầu của `project-rules.md` §8.
+
+**T-15 · README** — `README.md` (`docs(readme)`)
+- Cách chạy (Live Server, `localhost:5500`), cách kiểm tra (các lệnh grep ở mục 7), quyết định thiết kế (palette, CSP meta, nav không dùng focus trap, không đưa số điện thoại lên trang).
+
+---
+
+## 7. Cổng kiểm tra (chạy từ thư mục gốc repo, Git Bash)
+
+```bash
+# 0 inline handler (onclick=, onload=, …)
+grep -rnE "\son[a-z]+\s*=" Homework_1 --include=*.html --include=*.js
+
+# 0 style="" trong markup
+grep -rn 'style=' Homework_1 --include=*.html
+
+# 0 <script> có nội dung trong HTML (chỉ được có <script src=…>)
+grep -rnE "<script>[^<]" Homework_1 --include=*.html
+
+# 0 innerHTML, var, keyCode, keypress
+grep -rnE "innerHTML|\bvar |keyCode|keypress" Homework_1 --include=*.js
+
+# Hex/rgb chỉ nằm trong :root (kết quả chỉ được là tokens.css)
+grep -rnE "#[0-9a-fA-F]{3,8}\b|rgb\(" Homework_1/css
+
+# Không có URL ngoài trong CSS/JS (href trong HTML thì được)
+grep -rnE "https?://" Homework_1/css Homework_1/js
+```
+
+---
+
+## 8. Definition of Done (áp dụng cho mọi task)
+
+- [ ] Đúng contract trong mục 3 và 4 (token, id, data-attribute, localStorage key).
+- [ ] Đúng 375px không scroll ngang.
+- [ ] Dùng bàn phím đủ được (Tab, Shift+Tab, Enter, Space, Esc).
+- [ ] Không lỗi console.
+- [ ] Các lệnh ở mục 7 không trả về dòng vi phạm.
+- [ ] Prompt đã ghi vào PROMPT_LOG. Lỗi AI đã ghi lại.
+- [ ] Commit đúng một sub-task, đúng message đã định.
+
+---
+
+## 9. Rủi ro và cách xử lý
+
+| Rủi ro | Dấu hiệu | Cách xử lý |
+|---|---|---|
+| Lighthouse Performance không đạt 100 ở mobile | Điểm 85–99, LCP chậm | Tối giản SVG hero, preload LCP, bỏ `theme-init.js` nếu nó chặn quá lâu (đo trước khi bỏ) |
+| CSP meta chặn `fetch` JSON | Console `Refused to connect` | `connect-src 'self'` đã cho phép. Nếu vẫn lỗi, kiểm tra đường dẫn tương đối |
+| Mất chữ trên nền `--foam` ở chế độ sáng | Contrast < 4.5 | Dùng `--sea-deep` cho chữ, `--foam` chỉ cho nền dark và decor |
+| Nav mobile bị kẹt focus | Tab không ra khỏi menu | Bỏ mọi `keydown` nuốt Tab. Chỉ xử lý Esc |
+| Quá phá cách, mất semantic | Heading nhảy cấp, `div` làm khung chính | Kiểm tra lại T-01-H, dùng `section`/`article`/`ol`/`ul` |
+
+---
+
+## 10. Câu hỏi mở (không chặn việc, mặc định đã chọn)
+
+1. **Link repo thật từng dự án:** mặc định dùng trang GitHub `Prosperum26`. Cần URL repo khi user có.
+2. **Số điện thoại trên trang:** mặc định **không** đưa lên (vì trang công khai). Đổi được ở T-08-H.
+3. **T-12 (chuyển động):** đã làm trước audit. Nếu audit M4 cho thấy hiệu ứng nào làm tụt điểm hiệu năng, gỡ riêng hiệu ứng đó.

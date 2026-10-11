@@ -1,0 +1,54 @@
+{
+  "projects": [
+    {
+      "id": "greengrass",
+      "index": "01",
+      "title": "GreenGrass",
+      "period": "Mar 2026 – May 2026",
+      "category": "Full-stack",
+      "summary": "A sustainable event management platform for organisers and participants. It secures access with JWT refresh-token rotation and role-based permissions, and stops fake attendance with a check-in that combines rotating QR codes and GPS geofencing.",
+      "stack": ["React", "NestJS", "PostgreSQL", "Prisma", "Docker"],
+      "repoUrl": "https://github.com/Prosperum26"
+    },
+    {
+      "id": "diabetes-qna",
+      "index": "02",
+      "title": "Diabetes QnA System (RAG)",
+      "period": "Nov 2025 – Feb 2026",
+      "category": "AI / ML",
+      "summary": "A question answering pipeline for the medical domain that answers from verifiable sources instead of guessing. It crawls and cleans medical documents, indexes them as vector embeddings in ChromaDB, and runs the language model locally through Ollama so sensitive data stays private.",
+      "stack": ["Python", "ChromaDB", "Ollama", "BeautifulSoup"],
+      "repoUrl": "https://github.com/Prosperum26"
+    },
+    {
+      "id": "rl-dynamic-pricing",
+      "index": "03",
+      "title": "RL Dynamic Pricing System",
+      "period": "2026",
+      "category": "AI / ML",
+      "summary": "A reinforcement-learning engine that adjusts product prices as demand and competitor prices change. The store is modelled as a Markov Decision Process with a reward that balances short-term profit against customer retention, and simulations compare it with static pricing.",
+      "stack": ["Python", "Reinforcement Learning", "Pandas", "NumPy"],
+      "repoUrl": "https://github.com/Prosperum26"
+    },
+    {
+      "id": "chuck-king",
+      "index": "04",
+      "title": "Chuck King (AI Rage Platformer)",
+      "period": "2025",
+      "category": "Game",
+      "summary": "A 2D vertical platformer built from scratch on HTML5 Canvas, with a custom physics engine for collisions and gravity. A taunting system watches how the player behaves, such as how often they fall or sit idle, and asks an LLM for dialogue that fits the moment.",
+      "stack": ["JavaScript", "HTML5 Canvas", "OOP"],
+      "repoUrl": "https://github.com/Prosperum26"
+    },
+    {
+      "id": "uit-latex-template",
+      "index": "05",
+      "title": "UIT LaTeX Report Template",
+      "period": "2025",
+      "category": "Community",
+      "summary": "A modular LaTeX template that standardises the structure of academic reports and theses for UIT students. It ships with documentation and a ready-to-use Overleaf setup for people who have never used LaTeX.",
+      "stack": ["LaTeX", "Overleaf"],
+      "repoUrl": "https://github.com/Prosperum26"
+    }
+  ]
+}

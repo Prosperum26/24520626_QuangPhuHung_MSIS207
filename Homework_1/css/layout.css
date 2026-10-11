@@ -1,0 +1,243 @@
+/* ==========================================================================
+   T-03-C – Layout (page frame, log entries, wave divider, footer)
+   Contract: Homework_1/TASK_DECOMPOSITION.md §2 (Harbour Log), §4.4
+   Mobile-first (375px). Uses only tokens from tokens.css: no colour values.
+   Section content styles live in their own files (hero.css, timeline.css…).
+   ========================================================================== */
+
+/* 1. Page frame -------------------------------------------------------------
+   Full-width bands; content is centred by padding instead of wrapper divs.
+   max() keeps a 16px gutter on phones and caps the line at --content-max.
+   The padding sits on each <section>, not on <main>, so the hero can run
+   edge to edge while the other sections keep the content width. */
+
+.site-header,
+body > main > section,
+.site-footer {
+  padding-inline: max(var(--gutter), calc((100% - var(--content-max)) / 2));
+}
+
+/* Sand: the page is a beach. A faint dot grain on the body reads as sand
+   without an image request. The dots come from --grain (theme-aware). */
+
+body {
+  background-image: radial-gradient(var(--grain) 1px, transparent 1.5px);
+  background-size: 18px 18px;
+}
+
+/* 2. Skip link --------------------------------------------------------------
+   Moved off-screen, not display:none, so it stays focusable. */
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 20;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius);
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* 3. Header (1D flex) -------------------------------------------------------
+   A sea band across the top with a wavy lower edge (::after, masked by
+   assets/swash.svg). Sticky, so html { scroll-padding-top } in tokens.css
+   keeps focused elements and anchor targets out from under it. The wave
+   edge is 0.75rem and decorative: it never takes pointer events. */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-6);
+  min-height: var(--header-h);
+  padding-block: var(--space-2);
+  background-color: var(--band-bg);
+  color: var(--band-text);
+}
+
+.site-header::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  height: var(--swash-h);
+  background-color: var(--band-bg);
+  mask: url("../assets/swash.svg") left top / var(--swash-w) var(--swash-h) repeat-x;
+  pointer-events: none;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--band-text);
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-heading);
+  text-decoration: none;
+}
+
+/* Links on the sea band: the page-wide focus ring (--focus-ring) would be
+   sea-deep on sea-deep here, so the band has its own. */
+.site-header a,
+.site-footer a {
+  color: var(--band-text);
+}
+
+.site-header :focus-visible,
+.site-footer :focus-visible {
+  outline-color: var(--band-ring);
+}
+
+/* 4. Navigation: css/nav.css */
+
+/* 5. Main & log entries -----------------------------------------------------
+   Each section is a log entry: a small number above a heading. */
+
+body > main {
+  display: grid;
+  padding-block-end: var(--space-16);
+}
+
+body > main > section {
+  padding-block: var(--space-12);
+}
+
+.log-entry {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.log-header {
+  display: grid;
+  gap: var(--space-1);
+}
+
+/* The one wrapper per entry: lets the content sit in its own column on
+   desktop without counting how many children each section has. */
+.log-body {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.log-index {
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.lede {
+  max-width: var(--measure);
+  font-size: var(--font-size-lg);
+}
+
+/* 6. Wave divider -----------------------------------------------------------
+   Decorative, so no markup: a pseudo-element masked by assets/wave.svg.
+   The mask takes only the SVG's shape; the colour comes from --decor,
+   so the wave follows the theme without a second SVG. */
+
+body > main > section + section::before {
+  content: "";
+  display: block;
+  height: var(--wave-h);
+  background-color: var(--decor);
+  mask: url("../assets/wave.svg") left center / var(--wave-w) var(--wave-h) repeat-x;
+}
+
+/* 7. Badge list (shared by project stacks and skill groups) ----------------- */
+
+.badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+}
+
+.badge {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+/* 8. Footer ---------------------------------------------------------------- */
+
+.site-footer {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-6);
+  padding-block: var(--space-6);
+  background-color: var(--band-bg);
+  color: var(--band-text);
+  font-size: var(--font-size-sm);
+}
+
+/* Wavy upper edge: the same swash shape, flipped */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: var(--swash-h);
+  background-color: var(--band-bg);
+  mask: url("../assets/swash.svg") left top / var(--swash-w) var(--swash-h) repeat-x;
+  transform: scaleY(-1);
+  pointer-events: none;
+}
+
+.back-to-top {
+  display: inline-block;
+  padding-block: var(--space-2);
+}
+
+/* 9. Wider screens ----------------------------------------------------------
+   Logbook layout: the entry number and heading sit in a sticky left column,
+   the content flows in the right column. The wave spans both. */
+
+@media (min-width: 64rem) {
+  .log-entry {
+    grid-template-columns: var(--log-col) minmax(0, 1fr);
+    column-gap: var(--space-12);
+  }
+
+  .log-entry::before {
+    grid-column: 1 / -1;
+  }
+
+  .log-header {
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-6));
+    align-self: start;
+  }
+}
+
+/* 10. Utilities --------------------------------------------------------------
+   Text for screen readers only (live status messages). Clipped, not
+   display:none, so it is still read. */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Strict CSP. It must come before any script, style or image: a meta policy only
+       governs what follows it. A meta tag cannot carry frame-ancestors, report-uri or
+       sandbox; those need an HTTP header on a real host. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'; require-trusted-types-for 'script'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Portfolio of Quảng Phú Hưng, an Information Systems student at UIT building backend and AI-powered full-stack systems.">
+  <title>Quảng Phú Hưng | Backend &amp; AI Developer</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/timeline.css">
+  <link rel="stylesheet" href="css/project-card.css">
+  <link rel="stylesheet" href="css/skills.css">
+  <link rel="stylesheet" href="css/contact.css">
+  <link rel="stylesheet" href="css/theme-switcher.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/motion.css">
+  <noscript><link rel="stylesheet" href="css/noscript.css"></noscript>
+  <!-- Blocking on purpose: sets the saved theme before the first paint -->
+  <script src="js/theme-init.js"></script>
+  <script type="module" src="js/theme-toggle.js"></script>
+  <script type="module" src="js/nav-toggle.js"></script>
+  <script type="module" src="js/reveal.js"></script>
+  <script type="module" src="js/magnetic.js"></script>
+  <script type="module" src="js/project-feed.js"></script>
+  <script type="module" src="js/copy-email.js"></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <a href="#hero" class="brand" lang="vi">Quảng Phú Hưng</a>
+
+    <!-- Shown on phones once JS has marked <html class="js"> (css/nav.css). Without JS the menu is just open. -->
+    <button type="button" id="nav-toggle" class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+
+    <nav aria-label="Primary">
+      <ul class="nav-list" id="nav-menu">
+        <li><a href="#journey">Journey</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li>
+          <button type="button" id="theme-toggle" class="theme-switcher" aria-pressed="false">Dark mode</button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section id="hero" class="hero" aria-labelledby="hero-title">
+      <picture class="hero-photo">
+        <source type="image/avif"
+                srcset="assets/sea-hero-1024.avif 1024w, assets/sea-hero-1280.avif 1280w, assets/sea-hero-1600.avif 1600w, assets/sea-hero-2400.avif 2400w"
+                sizes="(max-width: 48rem) 180vw, 100vw">
+        <source type="image/webp"
+                srcset="assets/sea-hero-1024.webp 1024w, assets/sea-hero-1280.webp 1280w, assets/sea-hero-1600.webp 1600w, assets/sea-hero-2400.webp 2400w"
+                sizes="(max-width: 48rem) 180vw, 100vw">
+        <img src="assets/sea-hero-1600.jpg"
+             srcset="assets/sea-hero-1024.jpg 1024w, assets/sea-hero-1280.jpg 1280w, assets/sea-hero-1600.jpg 1600w, assets/sea-hero-2400.jpg 2400w"
+             sizes="(max-width: 48rem) 180vw, 100vw"
+             width="2400" height="1350" alt="" fetchpriority="high" decoding="async">
+      </picture>
+
+      <div class="hero-card">
+        <h1 id="hero-title"><span lang="vi">Quảng Phú Hưng</span></h1>
+        <p class="lede">Backend &amp; AI-oriented student building high-performance full-stack systems.</p>
+        <p class="hero-intro">I design and build full-stack systems with a backend and AI focus: secure APIs, retrieval pipelines and reinforcement-learning agents. I study Information Systems at UIT, VNU-HCM.</p>
+        <p class="cta-row">
+          <a class="button" href="#projects">See my projects</a>
+          <a class="button button-outline" href="#contact">Get in touch</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="journey" class="log-entry" aria-labelledby="journey-title">
+      <header class="log-header">
+        <p class="log-index">Log 01</p>
+        <h2 id="journey-title">Journey</h2>
+      </header>
+      <div class="log-body">
+        <p class="lede">Where I study, and the teams I have led.</p>
+        <ol class="timeline">
+          <li class="timeline-item">
+            <p class="timeline-meta"><time datetime="2026-03">Mar 2026</time> &ndash; <time datetime="2026-05">May 2026</time></p>
+            <h3>Team Leader, WebDev Adventure 2026</h3>
+            <p class="timeline-org">WebDev Studios Club &amp; UIT, VNU-HCM</p>
+            <ul class="timeline-points">
+              <li>Led a team of five that built and deployed GreenGrass, an event management platform, from requirements to release.</li>
+              <li>Ran weekly sync-ups on a shared project board and kept the codebase consistent through peer reviews.</li>
+              <li>Presented the platform to a panel of industry experts and won a Consolation Prize.</li>
+            </ul>
+          </li>
+          <li class="timeline-item">
+            <p class="timeline-meta"><time datetime="2026-01">Jan 2026</time> &ndash; <time datetime="2026-04">Apr 2026</time></p>
+            <h3>Team Leader, Fessior DevCamp 2026</h3>
+            <p class="timeline-org">Frontendly project</p>
+            <ul class="timeline-points">
+              <li>Led the team building Frontendly, a full-stack application, and kept the frontend and backend architecture aligned.</li>
+              <li>Set TypeScript standards using generics and utility types, and a reusable React and Tailwind CSS component library.</li>
+              <li>Guided a Node.js REST backend with request-validation middleware and centralised error handling.</li>
+            </ul>
+          </li>
+          <li class="timeline-item">
+            <p class="timeline-meta"><time datetime="2024">2024</time> &ndash; Present</p>
+            <h3>B.Sc. in Information Systems</h3>
+            <p class="timeline-org">University of Information Technology (UIT), VNU-HCM</p>
+            <ul class="timeline-points">
+              <li>Expected graduation in 2028.</li>
+              <li>Ranked 1st in the Information Systems Advanced Program in Semester 1 of AY 2025&ndash;2026, with an Academic Excellence Scholarship.</li>
+              <li>Coursework: Data Structures &amp; Algorithms, Discrete Mathematics, Database Management Systems, Object-Oriented Programming, Computer Networking.</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="projects" class="log-entry" aria-labelledby="projects-title"
+             data-state="loading" aria-busy="true">
+      <header class="log-header">
+        <p class="log-index">Log 02</p>
+        <h2 id="projects-title" tabindex="-1">Projects</h2>
+      </header>
+      <div class="log-body">
+        <p class="lede">Things I have built, from event platforms to retrieval pipelines.</p>
+
+        <!-- Spoken updates for screen readers: "Loading projects…", "5 projects loaded." -->
+        <p class="feed-status visually-hidden" role="status">Loading projects…</p>
+
+        <noscript>
+          <p class="feed-noscript">The project list loads with JavaScript. You can find the same work on <a href="https://github.com/Prosperum26">my GitHub profile</a>.</p>
+        </noscript>
+
+        <!-- loading: placeholders with the same grid as the real cards -->
+        <ul class="skeleton-list project-grid" aria-hidden="true">
+          <li class="skeleton-card">
+            <span class="skeleton-item skeleton-title"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line skeleton-line-short"></span>
+            <span class="skeleton-item skeleton-badges"></span>
+          </li>
+          <li class="skeleton-card">
+            <span class="skeleton-item skeleton-title"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line skeleton-line-short"></span>
+            <span class="skeleton-item skeleton-badges"></span>
+          </li>
+          <li class="skeleton-card">
+            <span class="skeleton-item skeleton-title"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line"></span>
+            <span class="skeleton-item skeleton-line skeleton-line-short"></span>
+            <span class="skeleton-item skeleton-badges"></span>
+          </li>
+        </ul>
+
+        <!-- error: message is filled by js/project-feed.js -->
+        <div class="feed-error">
+          <p class="feed-error-message" role="alert"></p>
+          <button type="button" class="button feed-retry">Retry</button>
+        </div>
+
+        <!-- success: cards are cloned from the template below -->
+        <ul id="project-list" class="project-list project-grid"></ul>
+
+        <template id="project-card-tpl">
+          <li class="project-card">
+            <article>
+              <p class="project-index" aria-hidden="true"></p>
+              <h3 class="project-title"></h3>
+              <p class="project-meta">
+                <span class="project-category"></span>
+                <span class="project-period"></span>
+              </p>
+              <p class="project-summary"></p>
+              <ul class="project-stack badge-list" aria-label="Tech stack"></ul>
+              <a class="project-link">View on GitHub<span class="project-link-title visually-hidden"></span></a>
+            </article>
+          </li>
+        </template>
+      </div>
+    </section>
+
+    <section id="skills" class="log-entry" aria-labelledby="skills-title">
+      <header class="log-header">
+        <p class="log-index">Log 03</p>
+        <h2 id="skills-title">Skills</h2>
+      </header>
+      <div class="log-body">
+        <p class="lede">The tools I reach for, grouped by where they sit in the stack.</p>
+        <ul class="skill-groups">
+          <li class="skill-group">
+            <h3>AI &amp; Machine Learning</h3>
+            <ul class="badge-list">
+              <li class="badge">Reinforcement Learning (PPO, MDP)</li>
+              <li class="badge">RAG pipelines</li>
+              <li class="badge">Vector databases (ChromaDB)</li>
+              <li class="badge">LLM integration (Ollama)</li>
+              <li class="badge">NumPy</li>
+              <li class="badge">Pandas</li>
+              <li class="badge">PyTorch / TensorFlow</li>
+            </ul>
+          </li>
+          <li class="skill-group">
+            <h3>Backend</h3>
+            <ul class="badge-list">
+              <li class="badge">Node.js</li>
+              <li class="badge">NestJS</li>
+              <li class="badge">Express</li>
+              <li class="badge">PostgreSQL</li>
+              <li class="badge">Prisma ORM</li>
+              <li class="badge">MongoDB</li>
+              <li class="badge">REST architecture</li>
+              <li class="badge">RBAC</li>
+              <li class="badge">JWT</li>
+            </ul>
+          </li>
+          <li class="skill-group">
+            <h3>Frontend</h3>
+            <ul class="badge-list">
+              <li class="badge">React</li>
+              <li class="badge">Tailwind CSS</li>
+              <li class="badge">HTML5</li>
+              <li class="badge">CSS3</li>
+              <li class="badge">State management (Redux, Zustand)</li>
+            </ul>
+          </li>
+          <li class="skill-group">
+            <h3>Languages</h3>
+            <ul class="badge-list">
+              <li class="badge">Python</li>
+              <li class="badge">C++</li>
+              <li class="badge">TypeScript</li>
+              <li class="badge">JavaScript</li>
+              <li class="badge">SQL</li>
+              <li class="badge">LaTeX</li>
+            </ul>
+          </li>
+          <li class="skill-group">
+            <h3>Infrastructure &amp; tools</h3>
+            <ul class="badge-list">
+              <li class="badge">Docker</li>
+              <li class="badge">GitHub Actions (CI/CD)</li>
+              <li class="badge">Swagger / OpenAPI</li>
+              <li class="badge">Git</li>
+              <li class="badge">Vercel</li>
+              <li class="badge">Render</li>
+              <li class="badge">Postman</li>
+              <li class="badge">Figma</li>
+              <li class="badge">Linux / WSL</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="contact" class="log-entry" aria-labelledby="contact-title">
+      <header class="log-header">
+        <p class="log-index">Log 04</p>
+        <h2 id="contact-title">Contact</h2>
+      </header>
+      <div class="log-body">
+        <p class="lede">Have a project or a question? Write to me.</p>
+        <dl class="contact-list">
+          <div class="contact-row">
+            <dt>Email</dt>
+            <dd>
+              <a href="mailto:qphunguit@gmail.com">qphunguit@gmail.com</a>
+              <button type="button" id="copy-email-btn" class="button button-outline">Copy email</button>
+            </dd>
+          </div>
+          <div class="contact-row">
+            <dt>GitHub</dt>
+            <dd><a href="https://github.com/Prosperum26">github.com/Prosperum26</a></dd>
+          </div>
+          <div class="contact-row">
+            <dt>LinkedIn</dt>
+            <dd><a href="https://www.linkedin.com/in/phu-hung-quang">linkedin.com/in/phu-hung-quang</a></dd>
+          </div>
+        </dl>
+        <p id="copy-status" class="contact-status" role="status"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 <span lang="vi">Quảng Phú Hưng</span></p>
+    <a href="#hero" class="back-to-top">Back to top</a>
+  </footer>
+</body>
+</html>

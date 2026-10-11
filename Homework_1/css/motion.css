@@ -1,0 +1,111 @@
+/* ==========================================================================
+   T-12-C – Motion
+   Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-12
+   Four effects, all vanilla (no animation library), all on transform and
+   opacity only so nothing reflows (CLS stays 0) and the main thread stays idle:
+     1. Scroll reveal, staggered      (js/reveal.js sets [data-reveal])
+     2. Underline that draws in       (nav links)
+     3. "Dock" hover on card grids    (lift one card, press its neighbours in)
+     4. Magnetic buttons              (js/magnetic.js sets --mag-x / --mag-y)
+   Every effect sits inside prefers-reduced-motion: no-preference, so for
+   visitors who asked for less motion the page is exactly the static page.
+   Hover effects also require a real pointer, not a touch screen.
+   Tokens only, no colours. The timing lives in tokens.css (--ease-out, ...).
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* 1. Scroll reveal ---------------------------------------------------------
+     js/reveal.js marks elements that start below the fold as "pending" and
+     flips them to "shown" when they scroll into view, then removes the
+     attribute. Nothing is hidden unless that script ran, so without JS the
+     content is simply visible. The stagger comes from the element's position
+     among its siblings (nth-child), so JS never has to write a delay. */
+
+  [data-reveal] {
+    --i: 0;
+    transition:
+      opacity var(--motion-slow) var(--ease-out),
+      transform var(--motion-slow) var(--ease-out);
+  }
+
+  [data-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(var(--reveal-shift));
+  }
+
+  [data-reveal="shown"] {
+    transition-delay: calc(var(--i) * var(--stagger));
+  }
+
+  [data-reveal]:nth-child(2) { --i: 1; }
+  [data-reveal]:nth-child(3) { --i: 2; }
+  [data-reveal]:nth-child(4) { --i: 3; }
+  [data-reveal]:nth-child(5) { --i: 4; }
+  [data-reveal]:nth-child(n + 6) { --i: 5; }
+
+  /* 2. Underline that draws in -----------------------------------------------
+     The native underline is replaced by a 2px line whose width animates.
+     :focus-visible gets it too, so keyboard users see the same cue. */
+
+  .nav-list a {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 calc(50% + 0.7em);
+    background-size: 0 2px;
+    transition: background-size var(--motion-fast) var(--ease-out);
+  }
+
+  .nav-list a:hover,
+  .nav-list a:focus-visible {
+    background-size: 100% 2px;
+    text-decoration: none;
+  }
+}
+
+/* 3. Dock hover and 4. magnetic buttons need a mouse-like pointer ------------ */
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+
+  /* Dock: the hovered card rises and gets a soft shadow; the others in the
+     same grid press in a little. Nothing is dimmed, so text contrast does not
+     change while hovering. :has() is Baseline widely available. */
+
+  .project-card > article,
+  .skill-group {
+    transition:
+      transform var(--motion-fast) var(--ease-out),
+      box-shadow var(--motion-fast) var(--ease-out);
+  }
+
+  .project-card:hover > article,
+  .skill-group:hover {
+    transform: translateY(calc(-1 * var(--lift)));
+    box-shadow: 0 1rem 2rem -0.75rem color-mix(in srgb, var(--ink) 35%, transparent);
+  }
+
+  .project-list:has(.project-card:hover) .project-card:not(:hover) > article,
+  .skill-groups:has(.skill-group:hover) .skill-group:not(:hover) {
+    transform: scale(0.985);
+  }
+
+  /* Magnetic: js/magnetic.js writes the pull as two custom properties while
+     the pointer is over the button, and clears them on leave. */
+
+  .button {
+    transform: translate(var(--mag-x, 0), var(--mag-y, 0));
+    transition:
+      transform var(--motion-fast) var(--ease-out),
+      background-color var(--motion-fast) var(--ease-out),
+      color var(--motion-fast) var(--ease-out);
+  }
+}
+
+/* Printing: show everything, no leftover hidden state */
+
+@media print {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

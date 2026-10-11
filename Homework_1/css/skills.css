@@ -1,0 +1,28 @@
+/* ==========================================================================
+   T-07-C – Skills
+   Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-07
+   One panel per stack layer, laid out by Grid; the tools inside each panel
+   are Flexbox badges (.badge-list from layout.css). Tokens only.
+   ========================================================================== */
+
+.skill-groups {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  list-style: none;
+}
+
+.skill-group {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6) var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 2);
+  background-color: var(--surface);
+}
+
+/* The panel heading is an h3, but visually it is a label for the badges */
+.skill-group h3 {
+  font-size: var(--font-size-base);
+}

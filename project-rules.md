@@ -75,7 +75,6 @@
 ## 6. Git & Commit Rules
 
 - Conventional commits: `type(scope): message` — types `docs`, `feat`, `fix`, `perf`, `refactor`, `style`, `chore`.
-- **Atomic commits:** one sub-task per commit. Never mix HTML + CSS or CSS + JS in the same commit.
 - No commit adding 100+ lines across multiple files without a matching spec in `TASK_DECOMPOSITION.md`.
 - Spec first: the `docs(spec): ...` commit for an exercise comes before any code commit of that exercise.
 - Do not commit `BRAINSTORM.md` or the lab PDF.

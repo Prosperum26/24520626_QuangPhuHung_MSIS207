@@ -1,0 +1,147 @@
+/* ==========================================================================
+   T-04-C – Hero (+ .button, first used here and in the contact section)
+   Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-04
+   The photo is an <img> behind the content (z-index -1, object-fit: cover),
+   not a CSS background: it can use srcset/<picture> and can be the LCP
+   candidate. Its lower part fades into the page background with a mask, so
+   the sea runs on into the sand sections below. The text sits straight on
+   the photo, in sand. A dark gradient laid over the photo (not a box behind
+   the text) keeps the sky under the text dark enough for 4.5:1, whatever
+   the clouds do. Tokens only, no colours.
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: center;
+  min-height: var(--hero-min-h);
+  padding-block: var(--space-12) var(--hero-fade);
+}
+
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* Solid down to the hero's bottom padding, then fades to transparent: the
+     page background (sand + grain) shows through and takes over. The fade
+     zone is exactly the bottom padding, so no text ever sits in it (sand
+     text on the faded, sand-coloured area would be unreadable). */
+  mask-image: linear-gradient(to bottom, black calc(100% - var(--hero-fade)), transparent);
+}
+
+/* Scrim: on a phone the text covers the full width, so the whole photo is
+   darkened evenly. From 48rem the scrim stays solid as far as the text
+   column reaches, then fades out, so the sea on the right stays bright.
+   Strength: --hero-scrim in tokens.css, tuned against white clouds. */
+.hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: color-mix(in srgb, var(--ink) var(--hero-scrim), transparent);
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  filter: var(--hero-photo-filter);
+}
+
+.hero-card {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 40rem;
+  color: var(--hero-text);
+  text-shadow: 0 1px 14px color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+.hero h1 {
+  color: var(--hero-text);
+}
+
+/* The page-wide focus ring is sea-deep (light theme), which vanishes on the
+   dark photo. In the hero it uses the same sand ring as the header. */
+.hero :focus-visible {
+  outline-color: var(--band-ring);
+}
+
+.hero-intro {
+  max-width: var(--measure);
+}
+
+/* Call-to-action buttons ----------------------------------------------------
+   Filled by default, outlined for the secondary action. Hover swaps the two.
+   Both pairs use the --btn-* / --heading tokens, so contrast holds in both
+   themes (sand on sea-deep 5.91:1, ink on foam 9.16:1). */
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block-start: var(--space-2);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: var(--space-6);
+  border: 2px solid var(--btn-bg);
+  border-radius: 999px;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button-outline {
+  border-color: var(--heading);
+  background-color: transparent;
+  color: var(--heading);
+}
+
+.button:hover {
+  background-color: transparent;
+  color: var(--heading);
+}
+
+.button-outline:hover {
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+}
+
+/* Buttons in the hero keep the look they had on the frosted card: the
+   outlined one and every hover state sit on --hero-card-bg, so their text
+   keeps its normal contrast on top of the photo. */
+
+.hero .button {
+  text-shadow: none;
+}
+
+.hero .button-outline,
+.hero .button:hover {
+  background-color: var(--hero-card-bg);
+}
+
+.hero .button-outline:hover {
+  background-color: var(--btn-bg);
+}
+
+@media (min-width: 48rem) {
+  .hero-photo::after {
+    background-color: transparent;
+    /* Right edge of the text column = the section's side padding + the
+       card's max-width (40rem, see .hero-card). Same formula as the padding
+       in layout.css. */
+    background-image: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--ink) var(--hero-scrim), transparent) calc(max(var(--gutter), (100% - var(--content-max)) / 2) + 40rem),
+      transparent calc(max(var(--gutter), (100% - var(--content-max)) / 2) + 60rem)
+    );
+  }
+}
