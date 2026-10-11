@@ -36,8 +36,13 @@
   --band-text: var(--sand);
   --band-ring: var(--sand);
 
-  /* Hero: the photo sits behind a frosted card. The card takes --bg (so it
-     follows the theme) and the photo is dimmed in dark mode. */
+  /* Hero: text sits straight on the photo, in sand, in both themes (the
+     photo is darkened by a scrim, see hero.css). --hero-card-bg is only the
+     fill behind the outlined button; it takes --bg so it follows the theme.
+     The photo is dimmed further in dark mode. */
+  --hero-text: var(--sand);
+  --hero-scrim: 74%;
+  --hero-fade: 6rem;
   --hero-card-bg: color-mix(in srgb, var(--bg) 88%, transparent);
   --hero-photo-filter: none;
 
