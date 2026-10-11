@@ -117,6 +117,8 @@ function renderProjects(projects) {
     return card;
   });
   list.replaceChildren(...cards);
+  // js/reveal.js listens for this: the cards did not exist when the page loaded.
+  document.dispatchEvent(new CustomEvent('projects:rendered'));
 }
 
 async function load() {

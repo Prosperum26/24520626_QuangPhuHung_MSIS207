@@ -30,7 +30,7 @@ Một trang portfolio một trang (single page) cho **Quang Phu Hung**, định 
 - Hero dạng "chân trời": tên lớn, tagline lấy từ CV, đường sóng SVG phía dưới.
 - Project xếp so le (`grid-template` có span khác nhau theo thứ tự), đánh số `01`–`05` như mục nhật ký.
 - Timeline học vấn / kinh nghiệm dạng `<ol>` có đường dọc bằng CSS, không dùng `<div>` làm khung.
-- Hiệu ứng reveal khi cuộn là tùy chọn (T-12), luôn tắt khi `prefers-reduced-motion: reduce`.
+- Chuyển động (T-12, tham khảo kỹ thuật từ kinetics.colorion.co): hiện dần so le khi cuộn, gạch chân vẽ ra ở nav, "dock" nâng card đang hover, nút từ tính. Chỉ dùng `transform`/`opacity`, luôn tắt khi `prefers-reduced-motion: reduce`.
 
 **Không được phá (giữ nguyên ràng buộc):**
 - Vanilla HTML5 / CSS / ES6+, không framework, không CDN, không `innerHTML`, không `var`, không inline handler.
@@ -199,7 +199,7 @@ Homework_1/
 │   ├── contact.css                ← T-08-C
 │   ├── theme-switcher.css         ← T-09-C
 │   ├── nav.css                    ← T-10-C
-│   ├── motion.css                 ← T-12-C (tùy chọn)
+│   ├── motion.css                 ← T-12-C
 │   ├── project-card.css           ← T-06-C (cũng chứa skeleton, error panel)
 │   ├── skills.css, contact.css    ← T-07-C, T-08-C
 │   └── noscript.css               ← ẩn skeleton khi tắt JS
@@ -211,7 +211,8 @@ Homework_1/
     ├── nav-toggle.js              ← T-10-J
     ├── project-feed.js            ← T-06-J
     ├── copy-email.js              ← T-08-J
-    └── reveal.js                  ← T-12-J (tùy chọn)
+    ├── reveal.js                  ← T-12-J1
+    └── magnetic.js                ← T-12-J2
 ```
 
 **Thứ tự script trong `<head>`:** `theme-init.js` là script blocking duy nhất trong head (để tránh chớp sáng khi tải lại trang). Các script còn lại là `type="module"` (tự defer và có scope riêng, nên các file không đụng tên `const` của nhau).
@@ -383,9 +384,17 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 - `footer` (contentinfo) chứa dòng bản quyền và link quay lại đầu trang.
 - DoD: chỉ có một `footer` trực tiếp trong `body`.
 
-**T-12-C/J · Reveal (tùy chọn, làm sau cùng)** — `css/motion.css` + `js/reveal.js`
-- IntersectionObserver thêm class khi phần tử vào khung. Có `@media (prefers-reduced-motion: reduce)` tắt hoàn toàn chuyển động.
-- Nếu bỏ qua task này: ghi rõ trong PROMPT_LOG. Không ảnh hưởng milestone.
+**T-12 · Motion** — `css/motion.css`, `js/reveal.js`, `js/magnetic.js`, `js/project-feed.js` (thêm 1 dòng phát sự kiện)
+- Nguồn tham khảo: kinetics.colorion.co. Trang đó dùng CSS thuần, `IntersectionObserver`, `requestAnimationFrame`, không dùng thư viện, nên khớp ràng buộc "vanilla" của repo.
+- **Làm 4 hiệu ứng, mỗi cái có lý do UX:**
+  1. *Hiện dần so le khi cuộn* (`reveal.js` + `[data-reveal]`): nội dung vào theo nhịp, nhất là danh sách card/timeline. Độ trễ so le lấy từ vị trí `nth-child` trong CSS, JS không ghi style. Phần tử đã nằm trong màn hình lúc tải thì bỏ qua (không nháy). Card của project xuất hiện sau `fetch`, nên `project-feed.js` phát sự kiện `projects:rendered` để `reveal.js` theo dõi tiếp.
+  2. *Gạch chân vẽ ra* ở link nav: thay `text-decoration` bằng gradient 2px đổi `background-size`; `:focus-visible` cũng có.
+  3. *Dock hover* ở lưới card/skills: card đang hover nhích lên và có bóng, các card còn lại thu nhẹ `scale(0.985)`. **Không làm mờ** (giảm opacity sẽ hạ tương phản chữ khi hover).
+  4. *Nút từ tính* (`magnetic.js`): nút lệch 30% về phía con trỏ, ghi qua hai custom property `--mag-x/--mag-y` (CSSOM, không bị CSP chặn, đã kiểm chứng).
+- **Cố ý bỏ**, kèm lý do để trả lời vấn đáp: *marquee tự chạy* (WCAG 2.2.2: chuyển động tự động quá 5 giây phải có nút tạm dừng), *cursor trail* (chỉ có ích với chuột, gây xao nhãng, tốn `requestAnimationFrame`), *scramble/typewriter trên tên* (làm trễ LCP, trình đọc màn hình đọc lặp từng ký tự, và phá phép đo tương phản của hero), *đếm số lên* (CV không có số liệu thật đáng đếm; thêm sẽ là nội dung giả, vi phạm `project-rules.md` §2.8).
+- Mọi hiệu ứng nằm trong `@media (prefers-reduced-motion: no-preference)`; hai hiệu ứng hover còn cần `(hover: hover) and (pointer: fine)` nên không chạy trên màn cảm ứng. Không có JS thì không có gì bị ẩn (`data-reveal` do JS thêm vào).
+- Token chỉnh cảm giác chuyển động nằm một chỗ trong `tokens.css`: `--ease-out`, `--motion-fast`, `--motion-slow`, `--stagger`, `--reveal-shift`, `--lift`.
+- DoD đã đo trong Edge: 17 phần tử ban đầu `pending`, cuộn hết thì còn 0 `data-reveal` và 0 phần tử mờ; **CLS = 0**; bật reduced motion thì 0 `data-reveal` và nav không có gạch chân hoạt hình; 375px không scroll ngang; dock thật sự áp `translateY(-6.4px)` / `scale(0.985)`; nút từ tính đặt `--mag-x` khi hover và xóa khi rời.
 
 **T-13 · Responsive QA (kiểm tra, không commit code)**
 - Mở `http://localhost:5500` và kiểm tra ở 375, 768, 1280 px. Ghi lỗi nếu có.
@@ -493,4 +502,4 @@ grep -rnE "https?://" Homework_1/css Homework_1/js
 
 1. **Link repo thật từng dự án:** mặc định dùng trang GitHub `Prosperum26`. Cần URL repo khi user có.
 2. **Số điện thoại trên trang:** mặc định **không** đưa lên (vì trang công khai). Đổi được ở T-08-H.
-3. **Làm T-12 (reveal) không:** mặc định làm sau khi M4 xong, nếu còn thời gian. Không ảnh hưởng điểm milestone.
+3. **T-12 (chuyển động):** đã làm trước audit. Nếu audit M4 cho thấy hiệu ứng nào làm tụt điểm hiệu năng, gỡ riêng hiệu ứng đó.

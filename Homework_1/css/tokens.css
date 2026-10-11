@@ -86,6 +86,14 @@
   --swash-h: 0.75rem;
   --swash-w: 4rem;
   --hero-min-h: clamp(30rem, 78vh, 44rem);
+
+  /* Motion (css/motion.css): one place to tune every effect's feel */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --motion-fast: 0.25s;
+  --motion-slow: 0.6s;
+  --stagger: 90ms;
+  --reveal-shift: 1.25rem;
+  --lift: 0.4rem;
 }
 
 /* Dark theme from the OS, unless the user forced light (data-theme="light") */
