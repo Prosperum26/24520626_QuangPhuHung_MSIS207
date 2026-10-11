@@ -1,0 +1,82 @@
+/* ==========================================================================
+   T-04-C – Hero (+ .button, first used here and in the contact section)
+   Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-04
+   Mobile-first: text then illustration. From 48rem the illustration moves
+   to a second column and spans the text rows. Tokens only, no colours.
+   ========================================================================== */
+
+.hero {
+  display: grid;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.hero-intro {
+  max-width: var(--measure);
+}
+
+.hero-art {
+  width: 100%;
+  max-width: 30rem;
+  height: auto;
+  margin-block-start: var(--space-4);
+}
+
+/* Call-to-action buttons ----------------------------------------------------
+   Filled by default, outlined for the secondary action. Hover swaps the two.
+   Both pairs use the --btn-* / --heading tokens, so contrast holds in both
+   themes (sand on sea-deep 5.91:1, ink on foam 9.16:1). */
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block-start: var(--space-2);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: var(--space-6);
+  border: 2px solid var(--btn-bg);
+  border-radius: 999px;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.button-outline {
+  border-color: var(--heading);
+  background-color: transparent;
+  color: var(--heading);
+}
+
+.button:hover {
+  background-color: transparent;
+  color: var(--heading);
+}
+
+.button-outline:hover {
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+}
+
+@media (min-width: 48rem) {
+  .hero {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    column-gap: var(--space-12);
+  }
+
+  .hero > :not(.hero-art) {
+    grid-column: 1;
+  }
+
+  .hero-art {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    margin-block-start: 0;
+    justify-self: end;
+  }
+}

@@ -15,6 +15,14 @@ body > main,
   padding-inline: max(var(--gutter), calc((100% - var(--content-max)) / 2));
 }
 
+/* Sand: the page is a beach. A faint dot grain on the body reads as sand
+   without an image request. The dots come from --grain (theme-aware). */
+
+body {
+  background-image: radial-gradient(var(--grain) 1px, transparent 1.5px);
+  background-size: 18px 18px;
+}
+
 /* 2. Skip link --------------------------------------------------------------
    Moved off-screen, not display:none, so it stays focusable. */
 
@@ -35,8 +43,10 @@ body > main,
 }
 
 /* 3. Header (1D flex) -------------------------------------------------------
-   Sticky, so html { scroll-padding-top } in tokens.css keeps focused
-   elements and anchor targets out from under it. */
+   A sea band across the top with a wavy lower edge (::after, masked by
+   assets/swash.svg). Sticky, so html { scroll-padding-top } in tokens.css
+   keeps focused elements and anchor targets out from under it. The wave
+   edge is 0.75rem and decorative: it never takes pointer events. */
 
 .site-header {
   position: sticky;
@@ -49,25 +59,43 @@ body > main,
   gap: var(--space-2) var(--space-6);
   min-height: var(--header-h);
   padding-block: var(--space-2);
-  border-bottom: 1px solid var(--border);
-  background-color: var(--bg);
+  background-color: var(--band-bg);
+  color: var(--band-text);
+}
+
+.site-header::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  height: var(--swash-h);
+  background-color: var(--band-bg);
+  mask: url("../assets/swash.svg") left top / var(--swash-w) var(--swash-h) repeat-x;
+  pointer-events: none;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
   min-height: 2.75rem;
-  color: var(--heading);
+  color: var(--band-text);
   font-family: var(--font-display);
   font-size: var(--font-size-lg);
-  font-weight: 700;
+  font-weight: var(--font-weight-heading);
   text-decoration: none;
 }
 
-.brand-mark {
-  width: 1.75rem;
-  height: 1.75rem;
+/* Links on the sea band: the page-wide focus ring (--focus-ring) would be
+   sea-deep on sea-deep here, so the band has its own. */
+.site-header a,
+.site-footer a {
+  color: var(--band-text);
+}
+
+.site-header :focus-visible,
+.site-footer :focus-visible {
+  outline-color: var(--band-ring);
 }
 
 /* 4. Navigation (1D flex) -------------------------------------------------- */
@@ -91,7 +119,7 @@ body > main,
 }
 
 /* 5. Main & log entries -----------------------------------------------------
-   Each section is a log entry: a small mono number above a serif heading. */
+   Each section is a log entry: a small number above a heading. */
 
 body > main {
   display: grid;
@@ -121,9 +149,9 @@ body > main > section {
 
 .log-index {
   color: var(--text-muted);
-  font-family: var(--font-mono);
   font-size: var(--font-size-sm);
-  letter-spacing: 0.12em;
+  font-weight: 800;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -148,15 +176,30 @@ body > main > section + section::before {
 /* 7. Footer ---------------------------------------------------------------- */
 
 .site-footer {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2) var(--space-6);
   padding-block: var(--space-6);
-  border-top: 1px solid var(--border);
-  background-color: var(--surface);
+  background-color: var(--band-bg);
+  color: var(--band-text);
   font-size: var(--font-size-sm);
+}
+
+/* Wavy upper edge: the same swash shape, flipped */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: var(--swash-h);
+  background-color: var(--band-bg);
+  mask: url("../assets/swash.svg") left top / var(--swash-w) var(--swash-h) repeat-x;
+  transform: scaleY(-1);
+  pointer-events: none;
 }
 
 .back-to-top {

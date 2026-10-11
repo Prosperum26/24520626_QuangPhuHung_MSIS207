@@ -6,17 +6,18 @@
   <meta name="description" content="Portfolio of Quảng Phú Hưng, an Information Systems student at UIT building backend and AI-powered full-stack systems.">
   <title>Quảng Phú Hưng | Backend &amp; AI Developer</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/timeline.css">
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <header class="site-header">
-    <a href="#hero" class="brand">
-      <img src="assets/favicon.svg" alt="" width="28" height="28" class="brand-mark">
-      <span lang="vi">Phú Hưng</span>
-    </a>
+    <a href="#hero" class="brand" lang="vi">Quảng Phú Hưng</a>
 
     <nav aria-label="Primary">
       <ul class="nav-list" id="nav-menu">
@@ -29,13 +30,17 @@
   </header>
 
   <main id="main-content">
-    <!-- B2 (T-04): hero layout and illustration -->
     <section id="hero" class="hero" aria-labelledby="hero-title">
       <h1 id="hero-title"><span lang="vi">Quảng Phú Hưng</span></h1>
       <p class="lede">Backend &amp; AI-oriented student building high-performance full-stack systems.</p>
+      <p class="hero-intro">I design and build full-stack systems with a backend and AI focus: secure APIs, retrieval pipelines and reinforcement-learning agents. I study Information Systems at UIT, VNU-HCM.</p>
+      <p class="cta-row">
+        <a class="button" href="#projects">See my projects</a>
+        <a class="button button-outline" href="#contact">Get in touch</a>
+      </p>
+      <img class="hero-art" src="assets/hero-shore.svg" alt="" width="480" height="300">
     </section>
 
-    <!-- B2 (T-05): education and leadership timeline -->
     <section id="journey" class="log-entry" aria-labelledby="journey-title">
       <header class="log-header">
         <p class="log-index">Log 01</p>
@@ -43,6 +48,38 @@
       </header>
       <div class="log-body">
         <p class="lede">Where I study, and the teams I have led.</p>
+        <ol class="timeline">
+          <li class="timeline-item">
+            <p class="timeline-meta"><time datetime="2026-03">Mar 2026</time> &ndash; <time datetime="2026-05">May 2026</time></p>
+            <h3>Team Leader, WebDev Adventure 2026</h3>
+            <p class="timeline-org">WebDev Studios Club &amp; UIT, VNU-HCM</p>
+            <ul class="timeline-points">
+              <li>Led a team of five that built and deployed GreenGrass, an event management platform, from requirements to release.</li>
+              <li>Ran weekly sync-ups on a shared project board and kept the codebase consistent through peer reviews.</li>
+              <li>Presented the platform to a panel of industry experts and won a Consolation Prize.</li>
+            </ul>
+          </li>
+          <li class="timeline-item">
+            <p class="timeline-meta"><time datetime="2026-01">Jan 2026</time> &ndash; <time datetime="2026-04">Apr 2026</time></p>
+            <h3>Team Leader, Fessior DevCamp 2026</h3>
+            <p class="timeline-org">Frontendly project</p>
+            <ul class="timeline-points">
+              <li>Led the team building Frontendly, a full-stack application, and kept the frontend and backend architecture aligned.</li>
+              <li>Set TypeScript standards using generics and utility types, and a reusable React and Tailwind CSS component library.</li>
+              <li>Guided a Node.js REST backend with request-validation middleware and centralised error handling.</li>
+            </ul>
+          </li>
+          <li class="timeline-item">
+            <p class="timeline-meta"><time datetime="2024">2024</time> &ndash; Present</p>
+            <h3>B.Sc. in Information Systems</h3>
+            <p class="timeline-org">University of Information Technology (UIT), VNU-HCM</p>
+            <ul class="timeline-points">
+              <li>Expected graduation in 2028.</li>
+              <li>Ranked 1st in the Information Systems Advanced Program in Semester 1 of AY 2025&ndash;2026, with an Academic Excellence Scholarship.</li>
+              <li>Coursework: Data Structures &amp; Algorithms, Discrete Mathematics, Database Management Systems, Object-Oriented Programming, Computer Networking.</li>
+            </ul>
+          </li>
+        </ol>
       </div>
     </section>
 

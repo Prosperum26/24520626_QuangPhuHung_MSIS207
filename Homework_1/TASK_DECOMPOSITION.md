@@ -105,7 +105,9 @@ Một màu dẫn xuất duy nhất, để có nền tối và chữ đậm:
 
 > `color-mix(in srgb, var(--sea-deep) 8%, transparent)` được phép cho nền card, vì nó chỉ đọc token. Không được viết hex mới.
 >
-> **Bổ sung khi build B1** (đã có trong `css/tokens.css`): `--surface` (nền footer/card, `color-mix` 12% `--sea-mid` vào `--sand`, dark 14% vào `--ink`), `--text-muted` (sáng `--sea-deep`, tối `--foam`), `--border` (`--sea-mid`), `--selection-bg` / `--selection-text`, `--focus-width` (độ dày outline, tách khỏi màu `--focus-ring`). Ngoài ra có token spacing, font (system font: sans cho body, serif cho heading, mono cho số log) và layout (`--header-h`, `--log-col`, `--wave-h`, `--wave-w`).
+> **Bổ sung khi build B1** (đã có trong `css/tokens.css`): `--surface` (nền footer/card, `color-mix` 12% `--sea-mid` vào `--sand`, dark 14% vào `--ink`), `--text-muted` (sáng `--sea-deep`, tối `--foam`), `--border` (`--sea-mid`), `--selection-bg` / `--selection-text`, `--focus-width` (độ dày outline, tách khỏi màu `--focus-ring`). Ngoài ra có token spacing, font (`--font-sans` và `--font-display` đều là Nunito, xem T-02-F), layout (`--header-h`, `--log-col`, `--wave-h`, `--wave-w`, `--swash-h`, `--swash-w`), dải biển (`--band-bg`, `--band-text`, `--band-ring`, giống nhau ở cả hai theme) và hạt cát (`--grain`).
+>
+> **Đổi phong cách (sau B1):** trang thiên về bãi cát và sóng biển. Nền là cát có hạt (radial-gradient từ `--grain`, không tốn request ảnh). Header và footer là dải biển `--sea-deep` có mép sóng (mask `swash.svg`). Header chỉ còn tên, không icon.
 
 ### 3.3 Kiểm tra contrast (WCAG 2.2 AA, đã tính sẵn)
 
@@ -176,11 +178,16 @@ Homework_1/
 ├── PROMPT_LOG.md                  ← T-14: log prompt, lỗi AI, cách sửa
 ├── README.md                      ← T-15: cách chạy, quyết định thiết kế
 ├── index.html
-├── assets/                        ← chỉ dùng SVG, không ảnh raster
-│   ├── favicon.svg                ← T-03-A: favicon + logo trên header
-│   ├── wave.svg                   ← T-03-A: mask cho đường sóng
-│   └── hero-horizon.svg           ← T-04-A: minh họa hero (B2)
+├── assets/                        ← ảnh chỉ dùng SVG, không ảnh raster
+│   ├── favicon.svg                ← T-03-A: favicon (tab trình duyệt)
+│   ├── wave.svg                   ← T-03-A: mask đường sóng giữa các section
+│   ├── swash.svg                  ← T-03-A: mask mép sóng của header/footer
+│   ├── hero-shore.svg             ← T-04-A: minh họa hero (biển, thuyền, bãi cát)
+│   └── fonts/
+│       ├── nunito-latin.woff2     ← T-02-F: Nunito, subset latin
+│       └── nunito-vietnamese.woff2← T-02-F: Nunito, subset tiếng Việt
 ├── css/
+│   ├── fonts.css                  ← T-02-F (@font-face Nunito)
 │   ├── tokens.css                 ← T-02-C (palette :root, dark overrides)
 │   ├── layout.css                 ← T-03-C
 │   ├── hero.css                   ← T-04-C
@@ -208,7 +215,7 @@ Homework_1/
 ### 4.5 Quy ước
 
 - Class: `kebab-case`. Không dùng tên trùng với tag.
-- Khung trang (B1): `.site-header`, `.brand`, `.brand-mark`, `.nav-list`, `.site-footer`, `.back-to-top`, `.skip-link`, `.visually-hidden`, `.lede`.
+- Khung trang (B1): `.site-header`, `.brand`, `.nav-list`, `.site-footer`, `.back-to-top`, `.skip-link`, `.visually-hidden`, `.lede`.
 - Mỗi section nội dung: `section.log-entry` > `header.log-header` (`p.log-index` + `h2`) + `div.log-body`. `div.log-body` là wrapper duy nhất, để desktop đặt nội dung vào cột phải mà không cần biết section có bao nhiêu phần tử con. Hero là `section.hero`, không phải log entry.
 - `data-*` và `id` định nghĩa tại đây và không đổi tên. Các id cố định: `main-content`, `projects`, `projects-title`, `project-card-tpl`, `theme-toggle`, `nav-toggle`, `nav-menu`, `copy-email-btn`, `copy-status`.
 - localStorage key: `theme` với giá trị `'dark' | 'light'`. Đọc/ghi trong `try/catch`.
@@ -260,9 +267,17 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 - Style `:focus-visible` dùng `--focus-ring`, outline 3px, offset 3px.
 - DoD: `grep -nE "#[0-9a-fA-F]{3,8}" css/tokens.css` chỉ trả về các dòng trong `:root` và khối `[data-theme]`.
 
-**T-03-A · Vector assets** — `assets/wave.svg`, `assets/favicon.svg`
+**T-02-F · Font** — `css/fonts.css`, `assets/fonts/*.woff2`
+- Nunito (font sans bo tròn, giấy phép OFL), variable font trọng số 400–800. Tải về và host trong repo, không dùng Google Fonts CDN: repo cấm CDN và CSP chỉ cho `font-src 'self'`.
+- Chỉ lấy hai subset cần cho nội dung: `latin` (~39 KB) và `vietnamese` (~13 KB). Mỗi `@font-face` có `unicode-range`, nên trình duyệt chỉ tải subset đang dùng. `font-display: swap`.
+- `index.html` preload subset latin (`<link rel="preload" as="font" crossorigin>`). `crossorigin` bắt buộc dù font cùng origin, nếu thiếu thì font bị tải hai lần.
+- Chạm `fonts.css` là chạm `@font-face` cho mọi trang, nên đổi font chỉ cần sửa file này và `--font-sans`.
+- DoD: DevTools → Network thấy file `.woff2` trả 200 từ `localhost:5500`; chữ tiếng Việt (`ả`, `ư`) hiển thị đúng Nunito.
+
+**T-03-A · Vector assets** — `assets/wave.svg`, `assets/swash.svg`, `assets/favicon.svg`
 - `wave.svg`: một chu kỳ sóng, điểm đầu và cuối cùng độ cao và độ dốc để lặp không thấy mối nối. Dùng làm CSS `mask`, nên màu lấy từ `--decor` và tự đổi theo theme. SVG nạp qua `url()` không đọc được biến CSS hay `currentColor` của trang, vì vậy dùng mask thay vì tô màu trong file.
-- `favicon.svg`: mặt trời trên hai lớp sóng, dùng 4 màu palette. Đồng thời là logo trên header (`alt=""`, vì đứng cạnh chữ tên).
+- `swash.svg`: hình sóng đặc (trên đặc, dưới gợn sóng), cũng lặp liền mạch. Dùng làm `mask` cho `::after` của header và `::before` của footer (footer lật bằng `scaleY(-1)`). Màu lấy từ `--band-bg`.
+- `favicon.svg`: mặt trời trên hai lớp sóng, dùng 4 màu palette. Chỉ là favicon của tab, header không hiện icon.
 - Lưu ý: comment XML trong SVG **không được chứa `--`** (ví dụ tên token). Nếu có, cả file bị lỗi parse và ảnh không hiện.
 - DoD: mở trực tiếp file SVG trên trình duyệt thấy hình, không lỗi console.
 
@@ -274,7 +289,7 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 **T-04-H · Hero** — `index.html` (chỉ section hero)
 - `h1` = "Quang Phu Hung". Tagline lấy đúng từ CV: "Backend & AI-oriented student building high-performance full-stack systems".
 - Một đoạn giới thiệu 1–2 câu cho người xem (không lặp lời lab, không "zero-div").
-- Minh họa hero là SVG vector (`assets/hero-horizon.svg`, task T-04-A), không dùng ảnh chụp. Nếu minh họa cần đổi màu theo theme, đặt SVG inline trong HTML (không chứa `style=` hay script, nên không vướng CSP) và tô bằng token. Có `width`/`height`, **không** `loading="lazy"` nếu đây là LCP.
+- Minh họa hero là SVG vector (`assets/hero-shore.svg`, task T-04-A): mặt trời, thuyền buồm, hai lớp sóng, bãi cát, chỉ dùng 4 màu palette nên không cần đổi theo theme. Nạp bằng `<img>` có `width`/`height`, **không** `loading="lazy"` (nằm trên màn hình đầu). Khung có viền `--sea-mid`, vì lớp cát cùng màu nền trang sáng nên không viền thì đáy khung bị hở.
 - Hai CTA: `#projects` và `#contact`.
 - DoD: minh họa trang trí có `alt=""` hoặc `aria-hidden="true"`; không `loading="lazy"` trên phần tử LCP.
 
@@ -399,7 +414,7 @@ Mỗi task gồm: file được phép chạm · mô tả · **kiểm tra (DoD)**
 
 **C9 · `perf: optimize assets` — M4**
 - SVG: bỏ metadata, comment và độ chính xác thập phân thừa; mọi `<img>` có `width`/`height`. Nếu phần tử LCP là ảnh, thêm `fetchpriority="high"`.
-- CSS: bỏ rule không dùng, không `@import`. Không `@font-face` từ bên ngoài. Dùng system font stack.
+- CSS: bỏ rule không dùng, không `@import`. Font Nunito host cục bộ (T-02-F), đã preload; kiểm tra có tải font thừa không (chỉ latin và vietnamese).
 - JS: mọi script `defer`, trừ `theme-init.js`.
 - DoD: Lighthouse Performance = 100 ở mobile và desktop. Nếu có chỉ số dưới 100, ghi rõ nguyên nhân trong PROMPT_LOG. Không ép điểm bằng cách bỏ nội dung.
 
