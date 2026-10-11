@@ -1,0 +1,2732 @@
+  ⎿  SessionStart:startup hook error
+  ⎿  [bash C:\Users\Phu Hung\.claude\plugins\cache\anthropic-plugin-directory\cl
+     aude-memory\1.0.0-0afb7b2da7cc/hooks/scripts/memory-context.sh]:
+     C:/Users/Phu: line 1: syntax error near unexpected token `('
+
+> ❯ OK mình bắt đầu homework 1: HW1: Production Portfolio (Min 4 Commits)•
+  MANDATORY ATOMIC MILESTONES (In TASK_DECOMPOSITION.md):• • M1: WCAG 2.2 AA
+  audit -> Commit
+    'fix(a11y): contrast & landmarks'• • M2: Focus trap audit -> Commit
+  'fix(nav): keyboard trap prevention'• • M3: Strict CSP & zero inline handlers
+  (onclick=... is strictly
+    banned)• • M4: Lighthouse 100 audit score -> Commit 'perf: optimize
+  assets'• PENALTY: Monolithic PRs or one-shot AI code = 0 pts for
+  architecture.
+    Mình muốn portfolio này làm khác mấy cái cũ tí, đừng gò bó quá phá cách tí
+  nhưng vẫn giữ các contraints của thầy, lập task decompistion torng md đi , bộ
+  màu xoay qunah bộ
+    này
+  #086288
+  #4D8DBA
+  #97D7FF
+  #FFEFC4
+  rgb(8, 98, 136)
+  rgb(77, 141, 186)
+  rgb(151, 215, 255)
+  rgb(255, 239, 196)
+  chủ đề liên tới biển 1 tí. CV của mình nằm trong docs
+
+● Mình sẽ xem cấu trúc repo và CV trước, rồi viết file task decomposition.
+
+  Listed 1 directory, ran 1 shell command, recalled 2 memories (ctrl+o to expand)
+
+● CV đang nằm ở docs/ (memory cũ ghi ở root, mình sẽ cập nhật). Đọc CV và kiểm
+  tra vị trí file trong .git/info/exclude, đồng thời tính contrast của bảng màu.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● CV nằm trong docs/ và đã được exclude khỏi git, git status sạch. Mình kiểm tra
+  thêm contrast cho các biến thể dark mode trước khi chốt bảng token.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Đã có đủ dữ liệu: CV, quy tắc repo, và contrast của bảng màu. Mình viết file
+  task decomposition vào Homework_1/, theo đúng format của Exercise 4.
+
+● Write(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Wrote 456 lines to Homework_1\TASK_DECOMPOSITION.md
+       1 # TASK_DECOMPOSITION – Homework 1: Production Portfolio
+       2
+       4 > File này được commit **trước** mọi code (`docs(spec)`), đúng q
+         uy tắc §6 của `project-rules.md`.
+       5 > Mỗi prompt AI tham chiếu **đúng 1** task ID (ví dụ `T-06-J`) v
+       6 > Nội dung trang được lấy từ CV (`docs/QuangPhuHung_FPT_QACI_CV.
+         pdf`), không bịa số liệu, không bịa link.
+       7
+       9
+      10 ## 1. Mục tiêu và phạm vi
+     … +625 lines (ctrl+o to expand)
+
+● File đã tạo. Mình sửa hai câu chưa chính xác (tỉ lệ "làm tối 60%" và mô tả nền
+  nút toggle), rồi cập nhật memory về vị trí CV.
+
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Added 1 line, removed 1 line
+      54  
+      55  | Token | Hex | Ghi chú |
+      56  |---|---|---|
+      57 -| `--ink` | `#04293A` | Tông tối của `--sea-deep` (làm tối khoả
+         -ng 60%). Dùng làm chữ body sáng và nền tối |                   
+      57 +| `--ink` | `#04293A` | Tông tối hơn của `--sea-deep`, cùng tôn
+         +g xanh biển. Dùng làm chữ body (nền sáng) và nền tối |         
+      58  
+      59  ### 3.2 Khối `:root` (chốt, không đổi tên)
+      60  
+
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Added 1 line, removed 1 line
+      327  - DoD: lựa chọn còn sau khi reload; `aria-pressed` đúng sau mỗ
+           i lần click.
+      328  
+      329  **T-09-H/C · Theme toggle markup & style** — `index.html` (tro
+           ng header) + `css/theme-switcher.css`
+      330 -- Nút chữ "Dark" / "Light" (không chỉ icon). Trạng thái nhấn c
+          -ó viền và nền `--focus-ring`-ish. Hit area ≥ 24×24 CSS px (WCA
+          -G 2.5.8).                                                     
+      330 +- Nút chữ "Dark" / "Light" (không chỉ icon). Trạng thái nhấn (
+          +`aria-pressed="true"`) dùng nền `--btn-bg`, chữ `--btn-text`. 
+          +Hit area ≥ 24×24 CSS px (WCAG 2.5.8).                         
+      331  
+      332  **T-10-H/C · Nav** — `index.html` (header) + `css/nav.css`
+      333  - Mobile (< 768px): `button#nav-toggle` có `aria-expanded` và 
+           `aria-controls="nav-menu"`, `ul#nav-menu` ẩn khi `hidden`.
+
+  Wrote 1 memory (ctrl+o to expand)
+
+● Mình đã viết xong Homework_1/TASK_DECOMPOSITION.md. Chưa có code nào, và chưa
+  commit gì.
+
+  Bảng màu "Harbour Log": bốn màu của bạn là gốc, thêm một màu tối --ink:
+  #04293A (cùng tông với #086288) cho nền tối và chữ body. Mình đã tính
+  contrast:
+
+  - #086288 trên #FFEFC4 đạt 5.91:1, dùng được cho tiêu đề, link và nút.
+  - #4D8DBA trên nền sáng chỉ đạt 3.15:1. Chỉ dùng cho đường sóng, viền, icon,
+    không dùng cho chữ nhỏ.
+  - #97D7FF trên nền sáng chỉ đạt 1.36:1, nên bị cấm dùng trên nền sáng. Trên
+    nền tối nó đạt 9.74:1 và là màu chủ đạo của dark mode.
+
+  Phá cách nhưng giữ ràng buộc: trang là một nhật ký cảng, mỗi section là một
+  mục có số, có đường chân trời và sóng SVG. Vẫn là HTML semantic, CSS
+  grid/flex, không framework, không CDN, không inline handler. Có một điểm cần
+  lưu ý: nav mobile dùng disclosure (aria-expanded), không dùng focus trap, để
+  M2 có lý do rõ ràng.
+
+  Cấu trúc bài làm: 4 milestone của thầy được đặt đúng message. Mỗi audit (M1,
+  M2, M3, M4) có một commit docs(audit) hoặc docs(perf) đi trước để ghi lại phát
+  hiện, rồi mới đến commit fix. Phần build chia thành các task T-xx theo từng
+  file (H/C/J/D), mỗi task một commit.
+
+  Nội dung từ CV: đã đọc CV trong docs/. Năm dự án là GreenGrass, Diabetes QnA,
+  RL Dynamic Pricing, Chuck King và UIT LaTeX Template. Không bịa số liệu.
+
+  Các quyết định mình đã chọn mặc định, bạn có thể đổi:
+  1. Link repo từng dự án tạm trỏ về github.com/Prosperum26. Khi bạn có URL repo
+     thật, mình sửa một dòng trong JSON.
+  2. Không đưa số điện thoại lên trang công khai.
+  3. Hiệu ứng reveal khi cuộn (T-12) là tùy chọn, làm sau cùng.
+
+  Mình cũng đã sửa memory: CV giờ nằm ở docs/, không còn ở root.
+
+  Khi bạn duyệt file này, commit đề xuất là docs(spec): HW1 task decomposition
+  and palette contract. Bạn tự chạy git commit. Khi nào bạn muốn bắt đầu T-01-H
+  (shell HTML), nói mình biết.
+
+> <ide_opened_file>The user opened the file
+  c:\Dev\Project\MSIS207_Lab1\Homework_1\TASK_DECOMPOSITION.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+> đừng chia quá nhỏ commit như vậy, hình như nếu thầy ko yêu cầu thì mình thấy
+  tốt nhất chia theo feature
+
+● Mình sẽ gom commit theo feature và giữ nguyên 4 milestone bắt buộc. Trước khi
+  sửa, mình kiểm tra xung đột với project-rules.md §6.
+
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Added 21 lines, removed 16 lines
+      208  
+      209  ---
+      210  
+      211 -## 5. Kế hoạch commit (đường đi của cả bài)                   
+      211 +## 5. Kế hoạch commit (theo feature)                          
+      212  
+      213 -Mỗi dòng là một commit. Tất cả đều atomic, không trộn HTML với
+          - CSS hay CSS với JS trong cùng commit.                        
+      213 +Commit chia theo **feature** (mỗi feature gồm HTML + CSS + JS 
+          +của chính nó), không chia theo từng task nhỏ. Task ID `T-xx` v
+          +ẫn dùng cho prompt AI và PROMPT_LOG, không cần một commit cho 
+          +mỗi task.                                                     
+      214  
+      215 -| Giai đoạn | Commit | Ghi chú |                              
+      216 -|---|---|---|                                                 
+      217 -| A | `docs(spec): HW1 task decomposition and palette contract
+          -` | T-00 (file này) |                                         
+      218 -| B | Build v1: `feat(shell)`, `feat(theme)`, `feat(layout)`, 
+          -`feat(assets)`, `feat(hero)`, `feat(timeline)`, `feat(data)`, 
+          -`feat(projects)`, `feat(skills)`, `feat(contact)`, `feat(theme
+          --toggle)`, `feat(nav)`, `feat(footer)` | Mỗi task T-xx có một 
+          -commit riêng (xem mục 6) |                                    
+      219 -| C1 | `docs(audit): WCAG 2.2 AA findings` | Review mode: chỉ 
+          -liệt kê, không sửa |                                          
+      220 -| C2 | **`fix(a11y): contrast & landmarks`** | **M1** |       
+      221 -| C3 | `docs(audit): keyboard & focus-trap findings` | Review 
+          -mode |                                                        
+      222 -| C4 | **`fix(nav): keyboard trap prevention`** | **M2** |    
+      223 -| C5 | `docs(audit): CSP & inline handler findings` | Review m
+          -ode (grep, liệt kê) |                                         
+      224 -| C6 | `refactor(js): move remaining inline logic to addEventL
+          -istener` | Chỉ nếu C5 có kết quả. Nếu không, bỏ qua và ghi rõ 
+          -trong PROMPT_LOG |                                            
+      225 -| C7 | **`fix(security): strict CSP & zero inline handlers`** 
+          -| **M3** |                                                    
+      226 -| C8 | `docs(perf): Lighthouse baseline` | Ghi điểm mobile + d
+          -esktop trước khi tối ưu |                                     
+      227 -| C9 | **`perf: optimize assets`** | **M4** |                 
+      228 -| D | `docs(log): HW1 prompt log`, `docs(readme): HW1 run guid
+          -e and design decisions` | T-14, T-15 |                        
+      215 +| Giai đoạn | Commit | Gồm task | Ghi chú |                   
+      216 +|---|---|---|---|                                             
+      217 +| A | `docs(spec): HW1 task decomposition and palette contract
+          +` | T-00 | Spec đi trước code |                               
+      218 +| B1 | `feat(layout): page shell, design tokens and wave divid
+          +er` | T-01, T-02, T-03, T-11 | Khung trang, palette, footer | 
+      219 +| B2 | `feat(hero): intro and journey timeline` | T-04, T-05 |
+          + Hero + timeline học vấn/kinh nghiệm |                        
+      220 +| B3 | `feat(projects): JSON-driven project feed` | T-06 | Dat
+          +a, section, controller, card style |                          
+      221 +| B4 | `feat(skills): skills matrix and contact with copy emai
+          +l` | T-07, T-08 | Hai section nhỏ, không liên quan nhau nên go
+          +m theo "phần nội dung cuối trang" |                           
+      222 +| B5 | `feat(theme): dark mode with persisted toggle` | T-09 |
+          + theme-init + toggle |                                        
+      223 +| B6 | `feat(nav): mobile disclosure navigation` | T-10 | Nav 
+          +markup, style, JS |                                           
+      224 +| C | `docs(audit): WCAG, keyboard, CSP and Lighthouse baselin
+          +e` | Review của T-13 và các mục C1, C3, C5, C8 | Chạy audit mộ
+          +t lần trên bản B6, ghi toàn bộ phát hiện. Không sửa code |    
+      225 +| C-M1 | **`fix(a11y): contrast & landmarks`** | C1 | **M1** |
+      226 +| C-M2 | **`fix(nav): keyboard trap prevention`** | C3 | **M2*
+          +* |                                                           
+      227 +| C-M3 | **`fix(security): strict CSP & zero inline handlers`*
+          +* | C5, C6 (nếu có) | **M3**. Gồm cả refactor JS nếu audit có 
+          +kết quả |                                                     
+      228 +| C-M4 | **`perf: optimize assets`** | C9 | **M4** |          
+      229 +| D | `docs: HW1 prompt log and run guide` | T-14, T-15 | Một 
+          +commit tài liệu cuối |                                        
+      230  
+      231 +> **Lý do gom:** teacher chỉ phạt "monolithic PR" và "one-shot
+          + AI code". Mỗi feature là một đơn vị có ý nghĩa, đủ để review.
+          + Không cần tách HTML/CSS/JS thành commit riêng.               
+      232 +>                                                             
+      233 +> **Xung đột với `project-rules.md` §6:** rule hiện viết "one 
+          +sub-task per commit" và "never mix HTML + CSS or CSS + JS in t
+          +he same commit". Cách chia trên vi phạm hai câu đó. Cần sửa ru
+          +le (ví dụ: "one feature per commit") hoặc giữ rule và chia lại
+          +. Trước khi sửa, file này vẫn theo cách gom feature.          
+      234 +>                                                             
+      235  > **Commit split đề xuất khi đưa bản build xong:** user tự chạ
+           y `git commit`. Theo memory `no-auto-commit`, AI không commit 
+           hay push.
+      236  
+      237  ---
+
+● Mình đã đổi cách commit trong Homework_1/TASK_DECOMPOSITION.md sang chia theo
+  feature. Có một điểm xung đột với rule của repo, cần bạn quyết định.
+
+  Cách chia mới (mục 5 của file):
+
+  - docs(spec): file task decomposition.
+  - feat(layout): khung trang, palette, wave divider, footer.
+  - feat(hero): hero và timeline.
+  - feat(projects): danh sách project lấy từ JSON.
+  - feat(skills): skills và contact.
+  - feat(theme): dark mode.
+  - feat(nav): menu mobile.
+  - docs(audit): chạy audit một lần trên bản build, ghi toàn bộ phát hiện (WCAG,
+    keyboard, CSP, Lighthouse) vào một commit.
+  - Bốn milestone bắt buộc, giữ đúng message của thầy: fix(a11y): contrast &
+    landmarks, fix(nav): keyboard trap prevention, fix(security): strict CSP &
+    zero inline handlers, perf: optimize assets.
+  - docs: HW1 prompt log and run guide.
+
+  Tổng cộng khoảng 13 commit, thay vì hơn 20 như trước.
+
+  Xung đột cần bạn quyết định: project-rules.md §6 đang ghi "one sub-task per
+  commit" và "never mix HTML + CSS or CSS + JS in the same commit". Cách chia
+  feature vi phạm hai điều này. Mình không sửa rule, chỉ ghi xung đột vào file
+  TD. Bạn chọn một trong hai:
+  1. Sửa rule thành "one feature per commit", và mình giữ cách chia mới.
+  2. Giữ rule, và mình chia lại theo cách cũ.
+
+  Mình chưa commit gì. Khi bạn chọn xong, mình có thể bắt đầu build B1
+  (feat(layout)).
+
+> ko có rule nào mà ko đực mix ấy, bỏ rule đó đi, AI tự chế r
+
+● Update(project-rules.md)
+  ⎿  Removed 1 line
+      75  ## 6. Git & Commit Rules
+      76  
+      77  - Conventional commits: `type(scope): message` — types `docs`, 
+          `feat`, `fix`, `perf`, `refactor`, `style`, `chore`.
+      78 -- **Atomic commits:** one sub-task per commit. Never mix HTML +
+         - CSS or CSS + JS in the same commit.                           
+      78  - No commit adding 100+ lines across multiple files without a m
+          atching spec in `TASK_DECOMPOSITION.md`.
+      79  - Spec first: the `docs(spec): ...` commit for an exercise come
+          s before any code commit of that exercise.
+      80  - Do not commit `BRAINSTORM.md` or the lab PDF.
+
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Removed 2 lines
+      230  
+      231  > **Lý do gom:** teacher chỉ phạt "monolithic PR" và "one-shot
+            AI code". Mỗi feature là một đơn vị có ý nghĩa, đủ để review.
+            Không cần tách HTML/CSS/JS thành commit riêng.
+      232  >
+      233 -> **Xung đột với `project-rules.md` §6:** rule hiện viết "one 
+          -sub-task per commit" và "never mix HTML + CSS or CSS + JS in t
+          -he same commit". Cách chia trên vi phạm hai câu đó. Cần sửa ru
+          -le (ví dụ: "one feature per commit") hoặc giữ rule và chia lại
+          -. Trước khi sửa, file này vẫn theo cách gom feature.          
+      234 ->                                                             
+      233  > **Commit split đề xuất khi đưa bản build xong:** user tự chạ
+           y `git commit`. Theo memory `no-auto-commit`, AI không commit 
+           hay push.
+      234  
+      235  ---
+
+● Đã bỏ rule đó trong project-rules.md §6. Đó là dòng "Atomic commits: one
+  sub-task per commit. Never mix HTML + CSS or CSS + JS in the same commit".
+  Mình cũng xóa đoạn cảnh báo xung đột trong Homework_1/TASK_DECOMPOSITION.md.
+
+  Các rule còn lại trong §6 vẫn giữ nguyên, gồm conventional commit, "không
+  commit 100+ dòng nếu không có spec", "spec trước code", và "AI không commit
+  hay push".
+
+  Kế hoạch commit theo feature trong TD giữ nguyên, không cần đổi gì thêm. Khi
+  bạn sẵn sàng, mình bắt đầu build feat(layout).
+
+> /model opus
+  ⎿  Set model to claude-opus-5-5
+
+> OK bắt đầu với build layout cơ bản, dựng architecture đầy đủ theo plan đã
+  lập, về các assets sẽ sử dụng bạn nên tạo ảnh vector cho tiện.
+
+● Mình xem lại cấu trúc HTML/CSS của Exercise 4 để giữ cùng quy ước, sau đó dựng
+  B1.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mình dựng B1 (feat(layout)): khung trang, tokens, layout, footer và hai asset
+  SVG (wave divider, favicon). Bắt đầu với tokens.
+
+● Write(Homework_1\css\tokens.css)
+  ⎿  Wrote 204 lines to Homework_1\css\tokens.css
+       1 /* =============================================================
+       2    T-02-C – Tokens & Reset
+       3    Contract: Homework_1/TASK_DECOMPOSITION.md §3 (palette, contr
+       4    Hex values live ONLY in the primitive block below. Every rule
+          uses
+       6    =============================================================
+         ============= */
+       8 /* 1. Tokens ---------------------------------------------------
+         ------------- */
+      10 :root {
+     … +211 lines (ctrl+o to expand)
+● Write(Homework_1\css\layout.css)
+  ⎿  Wrote 204 lines to Homework_1\css\layout.css
+       1 /* =============================================================
+       2    T-03-C – Layout (page frame, log entries, wave divider, foote
+       3    Contract: Homework_1/TASK_DECOMPOSITION.md §2 (Harbour Log),
+       4    Mobile-first (375px). Uses only tokens from tokens.css: no co
+       5    Section content styles live in their own files (hero.css, tim
+       6    =============================================================
+       7
+         --------------
+         apper divs.
+         ntent-max. */
+     … +217 lines (ctrl+o to expand)
+
+● Dùng grid-row: span 10 sẽ tạo hàng rỗng nhưng vẫn bị cộng gap, nên mình sẽ đổi
+  sang cấu trúc log-header + log-body để lưới hai cột không phụ thuộc vào số
+  phần tử con.
+
+● Update(Homework_1\css\layout.css)
+  ⎿  Added 12 lines, removed 2 lines
+       98    padding-block: var(--space-8) var(--space-16);
+       99  }
+      100  
+      101 +body > main > section {                                       
+      102 +  padding-block: var(--space-12);                             
+      103 +}                                                             
+      104 +                                                              
+      105  .log-entry {
+      106    display: grid;
+      103 -  gap: var(--space-4);                                        
+      104 -  padding-block: var(--space-12);                             
+      107 +  gap: var(--space-6);                                        
+      108  }
+      109  
+      110  .log-header {
+     ...
+      112    gap: var(--space-1);
+      113  }
+      114  
+      115 +/* The one wrapper per entry: lets the content sit in its own 
+          +column on                                                     
+      116 +   desktop without counting how many children each section has
+          +. */                                                          
+      117 +.log-body {                                                   
+      118 +  display: grid;                                              
+      119 +  gap: var(--space-4);                                        
+      120 +}                                                             
+      121 +                                                              
+      122  .log-index {
+      123    color: var(--text-muted);
+      124    font-family: var(--font-mono);
+
+● Update(Homework_1\css\layout.css)
+  ⎿  Added 1 line, removed 1 line
+      137     The mask takes only the SVG's shape; the colour comes from 
+           --decor,
+      138     so the wave follows the theme without a second SVG. */
+      139  
+      140 -.log-entry + .log-entry::before {                             
+      140 +body > main > section + section::before {                     
+      141    content: "";
+      142    display: block;
+      143    height: var(--wave-h);
+
+● Update(Homework_1\css\layout.css)
+  ⎿  Added 1 line, removed 15 lines
+      179      grid-column: 1 / -1;
+      180    }
+      181  
+      182 -  .log-entry > .log-header {                                  
+      182 +  .log-header {                                               
+      183      position: sticky;
+      184      top: calc(var(--header-h) + var(--space-6));
+      185 -    grid-row: span 10;                                        
+      185      align-self: start;
+      186    }
+      188 -                                                              
+      189 -  .log-entry > :not(.log-header) {                            
+      190 -    grid-column: 2;                                           
+      191 -  }                                                           
+      192 -                                                              
+      193 -  /* The hero is not a log entry with a side column: it uses t
+          -he full width */                                              
+      194 -  .log-entry.hero {                                           
+      195 -    grid-template-columns: minmax(0, 1fr);                    
+      196 -  }                                                           
+      197 -                                                              
+      198 -  .log-entry.hero > * {                                       
+      199 -    grid-column: 1;                                           
+      200 -  }                                                           
+      187  }
+      188  
+      189  /* 9. Utilities ----------------------------------------------
+           ----------------
+
+● Update(Homework_1\css\layout.css)
+  ⎿  Removed 1 line
+      141    content: "";
+      142    display: block;
+      143    height: var(--wave-h);
+      144 -  margin-block-end: var(--space-8);                           
+      144    background-color: var(--decor);
+      145    mask: url("../assets/wave.svg") left center / var(--wave-w) 
+           var(--wave-h) repeat-x;
+      146  }
+
+● Write(Homework_1\assets\wave.svg)
+  ⎿  Wrote 6 lines to Homework_1\assets\wave.svg
+      1 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 24" prese
+        rveAspectRatio="none">
+      2   <!-- One period of a wave. Start and end share height and slope
+        , so the
+      3        tile repeats without a seam. Used as a CSS mask: only the
+        shape
+      4        matters, the colour comes from the --decor token. -->
+      5   <path d="M0 12C12 2 36 2 48 12S84 22 96 12" fill="none" stroke=
+        "black" stroke-width="3"/>
+      6 </svg>
+
+● Write(Homework_1\assets\favicon.svg)
+  ⎿  Wrote 8 lines to Homework_1\assets\favicon.svg
+      1 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+      2   <!-- Brand mark: sun over two waves, in the four palette colour
+      3        Also used as the header logo (decorative, alt=""). -->
+      4   <rect width="32" height="32" rx="8" fill="#086288"/>
+      5   <circle cx="21" cy="11" r="4" fill="#FFEFC4"/>
+        none" stroke="#97D7FF" stroke-width="2.5" stroke-linecap="round"/
+        >
+      7   <path d="M4 25C7 22 10 22 13 25S19 28 22 25 25 22 28 25" fill="
+        >
+      8 </svg>
+
+● Giờ đến index.html: khung đầy đủ cho tất cả section để các feature sau chỉ cần
+  điền nội dung vào.
+
+● Write(Homework_1\index.html)
+  ⎿  Wrote 88 lines to Homework_1\index.html
+       1 <!DOCTYPE html>
+       3 <head>
+       4   <meta charset="UTF-8">
+       5   <meta name="viewport" content="width=device-width, initial-sca
+       6   <meta name="description" content="Portfolio of Quảng Phú Hưng,
+          an Information Systems student at UIT building backend and AI-p
+       7   <title>Quảng Phú Hưng | Backend &amp; AI Developer</title>
+       8   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml
+         ">
+      10   <link rel="stylesheet" href="css/layout.css">
+     … +90 lines (ctrl+o to expand)
+
+● Kiểm tra: chạy các cổng grep trong TD, tính contrast của --surface vừa thêm,
+  và chụp màn hình trang ở 375px và 1280px.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Tất cả cổng grep đều sạch, anchor nào cũng có id tương ứng, và mọi cặp màu mới
+  đều đạt AA. Giờ mình chụp màn hình để xem bố cục thật.
+
+  Read 3 files, listed 1 directory, ran 1 shell command (ctrl+o to expand)
+
+● Bố cục desktop khớp dự kiến, nhưng đường sóng chưa hiện và ảnh 375px bị cắt do
+  giới hạn chiều rộng cửa sổ của Edge headless. Mình sẽ chụp lại qua iframe
+  rộng 375px, chờ tải xong, kèm thêm bản theme sáng.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Ở 375px không còn tràn ngang, và theme sáng hiển thị đúng. Đường sóng thì vẫn
+  không thấy. Mình kiểm tra cách server trả file SVG.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● MIME đúng. Mình dựng một trang test riêng trong scratchpad để tách lỗi: mask
+  của layout, background-image dùng cùng file SVG, và mask có tiền tố -webkit-.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Ngay cả background-image cũng không hiển thị, vậy lỗi nằm ở chính file SVG
+  hoặc ở cách chụp, không phải ở mask. Mình chụp trực tiếp file SVG để phân
+  biệt.
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Tìm ra nguyên nhân: wave.svg lỗi vì comment XML chứa chuỗi --decor, mà --
+  không được phép xuất hiện trong comment XML nên cả file parse lỗi. Mình sẽ sửa
+  lại comment này.
+
+● Write(Homework_1\assets\wave.svg)
+  ⎿  Added 2 lines, removed 1 line
+      1  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 24" pres
+         erveAspectRatio="none">
+      2    <!-- One period of a wave. Start and end share height and slop
+         e, so the
+      3         tile repeats without a seam. Used as a CSS mask: only the
+          shape
+      4 -       matters, the colour comes from the --decor token. -->    
+      4 +       matters, the colour comes from the decor token in tokens.
+        +css.                                                            
+      5 +       Note: XML comments must not contain a double hyphen. --> 
+      6    <path d="M0 12C12 2 36 2 48 12S84 22 96 12" fill="none" stroke
+         ="black" stroke-width="3"/>
+      7  </svg>
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Đường sóng giờ hiển thị đúng ở cả theme sáng và tối, nối liền giữa các ô lặp.
+  Mình tắt hai server test và cập nhật TD theo các quyết định mới.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Added 2 lines
+      104  ```
+      105  
+      106  > `color-mix(in srgb, var(--sea-deep) 8%, transparent)` được p
+           hép cho nền card, vì nó chỉ đọc token. Không được viết hex mới
+           .
+      107 +>                                                             
+      108 +> **Bổ sung khi build B1** (đã có trong `css/tokens.css`): `--
+          +surface` (nền footer/card, `color-mix` 12% `--sea-mid` vào `--
+          +sand`, dark 14% vào `--ink`), `--text-muted` (sáng `--sea-deep
+          +`, tối `--foam`), `--border` (`--sea-mid`), `--selection-bg` /
+          + `--selection-text`, `--focus-width` (độ dày outline, tách khỏ
+          +i màu `--focus-ring`). Ngoài ra có token spacing, font (system
+          + font: sans cho body, serif cho heading, mono cho số log) và l
+          +ayout (`--header-h`, `--log-col`, `--wave-h`, `--wave-w`).    
+      109  
+      110  ### 3.3 Kiểm tra contrast (WCAG 2.2 AA, đã tính sẵn)
+      111  
+
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Added 2 lines
+      120  | `--sea-mid` trên `--ink` | 4.22 : 1 | Non-text dark (trang t
+           rí) |
+      121  | `--foam` trên `--sea-deep` | 4.33 : 1 | **Chỉ** chữ lớn (≥ 2
+           4px hoặc ≥ 18.66px bold) |
+      122  | `--foam` trên `--sand` | 1.36 : 1 | **Cấm** (không làm chữ, 
+           viền, focus ring) |
+      123 +| `--ink` / `--sea-deep` trên `--surface` sáng | 11.76 / 5.23 
+          +: 1 | Chữ trong footer, card |                                
+      124 +| `--sand` / `--foam` trên `--surface` tối | 11.02 / 8.07 : 1 
+          +| Chữ trong footer, card (dark) |                             
+      125  
+      126  Quy tắc dùng: body text luôn là `--text`. Chữ nhỏ không bao gi
+           ờ đặt trên `--sea-mid` hay `--foam` khi nền sáng. Mục M1 sẽ ki
+           ểm tra lại các cặp này bằng DevTools.
+      127  
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Added 4 lines, removed 3 lines
+      176  ├── PROMPT_LOG.md                  ← T-14: log prompt, lỗi AI,
+            cách sửa
+      177  ├── README.md                      ← T-15: cách chạy, quyết đị
+           nh thiết kế
+      178  ├── index.html
+      179 -├── assets/                                                   
+      180 -│   ├── hero-avatar-{320,640}.{avif,webp,jpg}   ← copy từ Exer
+          -cise_4/assets                                                 
+      181 -│   └── wave.svg                                 ← T-03-A     
+      179 +├── assets/                        ← chỉ dùng SVG, không ảnh r
+          +aster                                                         
+      180 +│   ├── favicon.svg                ← T-03-A: favicon + logo tr
+          +ên header                                                     
+      181 +│   ├── wave.svg                   ← T-03-A: mask cho đường só
+          +ng                                                            
+      182 +│   └── hero-horizon.svg           ← T-04-A: minh họa hero (B2
+          +)                                                             
+      183  ├── css/
+      184  │   ├── tokens.css                 ← T-02-C (palette :root, da
+           rk overrides)
+      185  │   ├── layout.css                 ← T-03-C
+
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Added 5 lines, removed 3 lines
+      258  - Style `:focus-visible` dùng `--focus-ring`, outline 3px, off
+           set 3px.
+      259  - DoD: `grep -nE "#[0-9a-fA-F]{3,8}" css/tokens.css` chỉ trả v
+           ề các dòng trong `:root` và khối `[data-theme]`.
+      260  
+      261 -**T-03-A · Wave asset** — `assets/wave.svg`                   
+      262 -- Một đường sóng SVG một màu (`fill` dùng `currentColor`, khôn
+          -g hex). Dùng cho divider.                                     
+      263 -- DoD: mở trực tiếp file SVG có sóng, không lỗi console.      
+      261 +**T-03-A · Vector assets** — `assets/wave.svg`, `assets/favico
+          +n.svg`                                                        
+      262 +- `wave.svg`: một chu kỳ sóng, điểm đầu và cuối cùng độ cao và
+          + độ dốc để lặp không thấy mối nối. Dùng làm CSS `mask`, nên mà
+          +u lấy từ `--decor` và tự đổi theo theme. SVG nạp qua `url()` k
+          +hông đọc được biến CSS hay `currentColor` của trang, vì vậy dù
+          +ng mask thay vì tô màu trong file.                            
+      263 +- `favicon.svg`: mặt trời trên hai lớp sóng, dùng 4 màu palett
+          +e. Đồng thời là logo trên header (`alt=""`, vì đứng cạnh chữ t
+          +ên).                                                          
+      264 +- Lưu ý: comment XML trong SVG **không được chứa `--`** (ví dụ
+          + tên token). Nếu có, cả file bị lỗi parse và ảnh không hiện.  
+      265 +- DoD: mở trực tiếp file SVG trên trình duyệt thấy hình, không
+          + lỗi console.                                                 
+      266  
+      267  **T-03-C · Layout** — `css/layout.css`
+      268  - Mobile-first 375px. Container max-width, gutter 16px. Sectio
+           n có `scroll-margin-top` để header dính không che heading khi 
+           nhảy tới.
+
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Added 3 lines, removed 3 lines
+      272  **T-04-H · Hero** — `index.html` (chỉ section hero)
+      273  - `h1` = "Quang Phu Hung". Tagline lấy đúng từ CV: "Backend & 
+           AI-oriented student building high-performance full-stack syste
+           ms".
+      274  - Một đoạn giới thiệu 1–2 câu cho người xem (không lặp lời lab
+           , không "zero-div").
+      275 -- `<picture>` với AVIF → WebP → JPG, `width`/`height` đầy đủ, 
+          -**không** `loading="lazy"` (đây là LCP).                      
+      275 +- Minh họa hero là SVG vector (`assets/hero-horizon.svg`, task
+          + T-04-A), không dùng ảnh chụp. Nếu minh họa cần đổi màu theo t
+          +heme, đặt SVG inline trong HTML (không chứa `style=` hay scrip
+          +t, nên không vướng CSP) và tô bằng token. Có `width`/`height`,
+          + **không** `loading="lazy"` nếu đây là LCP.                   
+      276  - Hai CTA: `#projects` và `#contact`.
+      277 -- DoD: alt có nghĩa; không `loading="lazy"` trên avatar.      
+      277 +- DoD: minh họa trang trí có `alt=""` hoặc `aria-hidden="true"
+          +`; không `loading="lazy"` trên phần tử LCP.                   
+      278  
+      279  **T-04-C · Hero style** — `css/hero.css`
+      280 -- Tên lớn, đường chân trời (horizon) bằng border `var(--decor)
+          -`. Avatar bo tròn hoặc cắt theo hình sóng bằng `clip-path`.   
+      280 +- Tên lớn, đường chân trời (horizon) bằng border `var(--decor)
+          +`, minh họa đặt cạnh tên ở desktop và dưới tên ở mobile.      
+      281  - DoD: tương phản tiêu đề đạt 4.5:1 (tra theo mục 3.3).
+      282  
+      283  **T-05-H · Journey (timeline)** — `index.html` (section `#jour
+           ney`)
+
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Added 1 line, removed 1 line
+      396  - Ghi điểm và danh sách "Opportunities" vào PROMPT_LOG (hoặc g
+           hi vào một đoạn trong commit message nếu cần). Không sửa.
+      397  
+      398  **C9 · `perf: optimize assets` — M4**
+      399 -- Ảnh: kích thước đúng với khung hiển thị (không để ảnh 640 hi
+          -ện ở khung 160px), AVIF/WebP trước, `width`/`height` đầy đủ, `
+          -fetchpriority="high"` cho avatar LCP.                         
+      399 +- SVG: bỏ metadata, comment và độ chính xác thập phân thừa; mọ
+          +i `<img>` có `width`/`height`. Nếu phần tử LCP là ảnh, thêm `f
+          +etchpriority="high"`.                                         
+      400  - CSS: bỏ rule không dùng, không `@import`. Không `@font-face`
+            từ bên ngoài. Dùng system font stack.
+      401  - JS: mọi script `defer`, trừ `theme-init.js`.
+      402  - DoD: Lighthouse Performance = 100 ở mobile và desktop. Nếu c
+           ó chỉ số dưới 100, ghi rõ nguyên nhân trong PROMPT_LOG. Không 
+           ép điểm bằng cách bỏ nội dung.
+
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Added 2 lines
+      208  ### 4.5 Quy ước
+      209  
+      210  - Class: `kebab-case`. Không dùng tên trùng với tag.
+      211 +- Khung trang (B1): `.site-header`, `.brand`, `.brand-mark`, `
+          +.nav-list`, `.site-footer`, `.back-to-top`, `.skip-link`, `.vi
+          +sually-hidden`, `.lede`.                                      
+      212 +- Mỗi section nội dung: `section.log-entry` > `header.log-head
+          +er` (`p.log-index` + `h2`) + `div.log-body`. `div.log-body` là
+          + wrapper duy nhất, để desktop đặt nội dung vào cột phải mà khô
+          +ng cần biết section có bao nhiêu phần tử con. Hero là `section
+          +.hero`, không phải log entry.                                 
+      213  - `data-*` và `id` định nghĩa tại đây và không đổi tên. Các id
+            cố định: `main-content`, `projects`, `projects-title`, `proje
+           ct-card-tpl`, `theme-toggle`, `nav-toggle`, `nav-menu`, `copy-
+           email-btn`, `copy-status`.
+      214  - localStorage key: `theme` với giá trị `'dark' | 'light'`. Đọ
+           c/ghi trong `try/catch`.
+      215  
+
+● Update(Homework_1\TASK_DECOMPOSITION.md)
+  ⎿  Added 1 line, removed 1 line
+      453  
+      454  | Rủi ro | Dấu hiệu | Cách xử lý |
+      455  |---|---|---|
+      456 -| Lighthouse Performance không đạt 100 ở mobile | Điểm 85–99, 
+          -LCP chậm | Giảm kích thước avatar, preload LCP, bỏ `theme-init
+          -.js` nếu nó chặn quá lâu (đo trước khi bỏ) |                  
+      456 +| Lighthouse Performance không đạt 100 ở mobile | Điểm 85–99, 
+          +LCP chậm | Tối giản SVG hero, preload LCP, bỏ `theme-init.js` 
+          +nếu nó chặn quá lâu (đo trước khi bỏ) |                       
+      457  | CSP meta chặn `fetch` JSON | Console `Refused to connect` | 
+           `connect-src 'self'` đã cho phép. Nếu vẫn lỗi, kiểm tra đường 
+           dẫn tương đối |
+      458  | Mất chữ trên nền `--foam` ở chế độ sáng | Contrast < 4.5 | D
+           ùng `--sea-deep` cho chữ, `--foam` chỉ cho nền dark và decor |
+      459  | Nav mobile bị kẹt focus | Tab không ra khỏi menu | Bỏ mọi `k
+           eydown` nuốt Tab. Chỉ xử lý Esc |
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● B1 (feat(layout)) đã xong, chưa commit.
+
+  Đã tạo trong Homework_1/:
+  - index.html: skip link, header dính (sticky) có logo và nav,
+    main#main-content với đủ 5 section (hero, journey, projects, skills,
+    contact), footer có link "Back to top". Mỗi section chỉ có tiêu đề và một
+    câu mở đầu, các feature sau sẽ điền nội dung vào.
+  - css/tokens.css: bảng màu biển, theme sáng và tối (theo OS và theo
+    data-theme), reset, focus ring. Font là system font: serif cho tiêu đề, mono
+    cho số "Log 01".
+  - css/layout.css: bố cục mobile-first. Từ 1024px trở lên, số log và tiêu đề
+    nằm ở cột trái và dính khi cuộn, nội dung nằm ở cột phải. Giữa các section
+    có đường sóng.
+  - assets/wave.svg và assets/favicon.svg: ảnh vector. Favicon cũng là logo trên
+    header. Đường sóng được tô bằng CSS mask nên tự đổi màu theo theme.
+
+  Đã kiểm tra:
+  - Chụp màn hình bằng Edge headless ở 375px và 1280px, cả theme sáng lẫn tối. Ở
+    375px không có scroll ngang.
+  - Các lệnh grep ở mục 7 của TD đều sạch: không có inline handler, không có
+    style=, mã màu chỉ nằm trong :root.
+  - Mọi href="#…" đều có id tương ứng.
+  - Các màu mới thêm (--surface ở cả hai theme) đều đạt AA.
+
+  Lúc đầu đường sóng không hiện. Nguyên nhân là comment trong file SVG có chuỗi
+  --, mà XML không cho phép chuỗi này trong comment, nên cả file bị lỗi. Mình đã
+  sửa và ghi chú vào TD để tránh lặp lại.
+
+  Thay đổi so với plan, đã cập nhật vào TD:
+  - Không dùng ảnh avatar raster nữa. Hero sẽ dùng minh họa SVG ở B2, và mục tối
+    ưu ảnh của M4 cũng đã đổi theo.
+  - Thêm vài token: --surface, --text-muted, --border, màu khi bôi đen chữ
+    (--selection-*), và --focus-width.
+  - Mỗi section có thêm một div.log-body bọc nội dung, để chia hai cột trên
+    desktop. Đây là div duy nhất trong mỗi section.
+
+  Mình thấy TASK_DECOMPOSITION.md đã được bạn commit. Phần chỉnh sửa TD lần này
+  nên gộp chung vào commit B1:
+
+  git add Homework_1/index.html Homework_1/css Homework_1/assets
+  Homework_1/TASK_DECOMPOSITION.md
+  git commit -m "feat(layout): page shell, design tokens and wave divider"
+
+  Bước tiếp theo là B2 (feat(hero)): minh họa SVG cho hero và timeline học vấn,
+  kinh nghiệm.
+
+> Ok thực hiện B2 nhưng trước đó đổi phong cách giao diện 1 tí, mình đang muốn
+  trang web thiên về bãi cát và sóng biển 1 tí,  loại bỏ icon trên header giữ
+  mỗi tên mình thôi, và front chữ bạn có thể đổi sang front nào tròn hơn 1 chút
+  không.
+
+● Mình sẽ làm theo ba ý: giao diện thiên về bãi cát và sóng, bỏ icon trên
+  header, và đổi sang font tròn hơn. Về font: rule của repo cấm CDN, còn CSP chỉ
+  cho font-src 'self'. Vì vậy mình sẽ tải font về và host trong repo. Mình chọn
+  Nunito: chữ tròn, hỗ trợ đầy đủ tiếng Việt, giấy phép OFL. Trước tiên mình
+  lấy danh sách file font từ Google Fonts.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Google Fonts trả về các subset theo unicode-range. Mình chỉ lấy latin và
+  vietnamese (đủ cho nội dung của trang), lưu vào repo.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Hai file woff2 đều hợp lệ (khoảng 52 KB). Tiếp theo mình sẽ viết fonts.css và
+  thêm shape sóng cho mép dải biển ở header/footer, với phần cát hạt nhẹ ở giữa.
+  · summary
+
+● Write(Homework_1\assets\swash.svg)
+  ⎿  Wrote 7 lines to Homework_1\assets\swash.svg
+      1 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 12" prese
+        rveAspectRatio="none">
+      2   <!-- Filled wave edge: solid above, wavy below. Start and end s
+        hare height
+      3        and slope, so the tile repeats without a seam. Used as a C
+      4        the header and footer bands, the colour comes from the ban
+        d token.
+      5        Flip it vertically for the top edge of the footer. -->
+      6   <path d="M0 0H96V6C84 12 60 12 48 6S12 0 0 6Z" fill="black"/>
+      7 </svg>
+     … +1 line (ctrl+o to expand)
+
+● Write(Homework_1\css\fonts.css)
+  ⎿  Wrote 26 lines to Homework_1\css\fonts.css
+       1 /* =============================================================
+       2    Fonts – Nunito (rounded sans, SIL Open Font License 1.1)
+       3    Self-hosted: no third-party request, CSP font-src stays 'self
+         '.
+         owser only
+       5    downloads the subset a page actually uses (unicode-range).
+         ============= */
+       7
+       8 /* Vietnamese diacritics */
+      10   font-family: "Nunito";
+     … +24 lines (ctrl+o to expand)
+
+● Update(Homework_1\css\tokens.css)
+  ⎿  Added 9 lines
+      30    --selection-bg: var(--foam);
+      31    --selection-text: var(--ink);
+      32  
+      33 +  /* Sea band (header, footer): the same in both themes, so it 
+         +is not                                                         
+      34 +     overridden for dark. Sand on --sea-deep is 5.91:1. */     
+      35 +  --band-bg: var(--sea-deep);                                  
+      36 +  --band-text: var(--sand);                                    
+      37 +  --band-ring: var(--sand);                                    
+      38 +                                                               
+      39 +  /* Sand grain: a faint dot pattern drawn from --decor, so it 
+         +follows the theme */                                           
+      40 +  --grain: color-mix(in srgb, var(--decor) 22%, transparent);  
+      41 +                                                               
+      42    /* Spacing */
+      43    --space-1: 0.25rem;
+      44    --space-2: 0.5rem;
+
+● Update(Homework_1\css\tokens.css)
+  ⎿  Added 7 lines, removed 6 lines
+      49    --space-12: 3rem;
+      50    --space-16: 4rem;
+      51  
+      52 -  /* Typography: system fonts only (no font request, CSP font-s
+         -rc stays empty).                                               
+      53 -     Serif for headings gives the logbook feel; mono for log nu
+         -mbers. */                                                      
+      54 -  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "H
+         -elvetica Neue", Arial, sans-serif;                             
+      55 -  --font-display: "Iowan Old Style", "Palatino Linotype", Palat
+         -ino, "Book Antiqua", Georgia, serif;                           
+      56 -  --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Consol
+         -as, "Liberation Mono", monospace;                              
+      52 +  /* Typography: Nunito, a rounded sans, self-hosted (css/fonts
+         +.css).                                                         
+      53 +     The system stack is the fallback while the font loads. Bod
+         +y and                                                          
+      54 +     headings share one family: change --font-display to split 
+         +them. */                                                       
+      55 +  --font-sans: "Nunito", ui-rounded, system-ui, -apple-system, 
+         +"Segoe UI", Roboto, Arial, sans-serif;                         
+      56 +  --font-display: var(--font-sans);                            
+      57    --font-size-sm: 0.875rem;
+      58    --font-size-base: 1rem;
+      59    --font-size-lg: 1.25rem;
+      60    --font-size-xl: clamp(1.75rem, 4vw + 0.5rem, 2.5rem);
+      61 -  --font-size-hero: clamp(2.5rem, 9vw, 5rem);                  
+      61 +  --font-size-hero: clamp(2.25rem, 9vw, 5rem);                 
+      62 +  --font-weight-heading: 800;                                  
+      63    --line-height: 1.6;
+      64    --measure: 62ch;
+      65  
+
+● Update(Homework_1\css\tokens.css)
+  ⎿  Added 2 lines
+      73    --focus-width: 3px;
+      74    --wave-h: 1.5rem;
+      75    --wave-w: 6rem;
+      76 +  --swash-h: 0.75rem;                                          
+      77 +  --swash-w: 4rem;                                             
+      78  }
+      79  
+      80  /* Dark theme from the OS, unless the user forced light (data-t
+          heme="light") */
+
+● Update(Homework_1\css\tokens.css)
+  ⎿  Added 1 line
+      171  h3 {
+      172    color: var(--heading);
+      173    font-family: var(--font-display);
+      174 +  font-weight: var(--font-weight-heading);                    
+      175    line-height: 1.15;
+      176  }
+      177  
+
+● Giờ sửa layout.css: header thành dải biển, bỏ phần logo, footer có mép sóng,
+  nền cát có hạt.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Phần thay đổi trên layout.css là của chính script mình vừa chạy. Giờ sửa HTML:
+  bỏ icon header, hiện tên đầy đủ, nạp font.
+
+● Update(Homework_1\index.html)
+  ⎿  Added 1 line, removed 4 lines
+      13    <a href="#main-content" class="skip-link">Skip to main conten
+          t</a>
+      14  
+      15    <header class="site-header">
+      16 -    <a href="#hero" class="brand">                             
+      17 -      <img src="assets/favicon.svg" alt="" width="28" height="2
+         -8" class="brand-mark">                                         
+      18 -      <span lang="vi">Phú Hưng</span>                          
+      19 -    </a>                                                       
+      16 +    <a href="#hero" class="brand" lang="vi">Quảng Phú Hưng</a> 
+      17  
+      18      <nav aria-label="Primary">
+      19        <ul class="nav-list" id="nav-menu">
+
+● Update(Homework_1\index.html)
+  ⎿  Added 2 lines
+       6    <meta name="description" content="Portfolio of Quảng Phú Hưng
+          , an Information Systems student at UIT building backend and AI
+          -powered full-stack systems.">
+       7    <title>Quảng Phú Hưng | Backend &amp; AI Developer</title>
+       8    <link rel="icon" href="assets/favicon.svg" type="image/svg+xm
+          l">
+       9 +  <link rel="preload" href="assets/fonts/nunito-latin.woff2" as
+         +="font" type="font/woff2" crossorigin>                         
+      10 +  <link rel="stylesheet" href="css/fonts.css">                 
+      11    <link rel="stylesheet" href="css/tokens.css">
+      12    <link rel="stylesheet" href="css/layout.css">
+      13  </head>
+
+● Chụp lại để kiểm tra giao diện mới ở theme sáng và tối, 375px và 1280px.
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Font tròn, dải biển có mép sóng, nền cát có hạt đều ổn. Mình chưa thấy footer
+  nên chụp thêm phần cuối trang.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Footer với mép sóng ngược đã ổn. Giờ mình chuyển sang B2, bắt đầu với minh họa
+  hero bằng cảnh biển vector dựng từ 4 màu palette (mặt trời, thuyền buồm, hai
+  lớp sóng, bãi cát), không cần đổi theo theme. · summary
+
+● Write(Homework_1\assets\hero-shore.svg)
+  ⎿  Wrote 13 lines to Homework_1\assets\hero-shore.svg
+       1 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" wi
+       2   <clipPath id="frame"><rect width="480" height="300" rx="28"/><
+         /clipPath>
+       4     <rect width="480" height="300" fill="#086288"/>
+       5     <circle cx="352" cy="92" r="58" fill="#97D7FF" opacity=".22"
+       6     <circle cx="352" cy="92" r="38" fill="#FFEFC4"/>
+       7     <path d="M170 162V104L214 162Z" fill="#FFEFC4"/>
+       9     <path d="M0 164C40 148 80 148 120 164S200 180 240 164S320 14
+         8 360 164S440 180 480 164V300H0Z" fill="#4D8DBA"/>
+         84 480 200V300H0Z" fill="#97D7FF"/>
+     … +8 lines (ctrl+o to expand)
+
+● Write(Homework_1\css\hero.css)
+  ⎿  Wrote 82 lines to Homework_1\css\hero.css
+       1 /* =============================================================
+       2    T-04-C – Hero (+ .button, first used here and in the contact
+         section)
+       4    Mobile-first: text then illustration. From 48rem the illustra
+         tion moves
+         olours.
+       6    =============================================================
+       7
+       8 .hero {
+      10   align-items: center;
+     … +80 lines (ctrl+o to expand)
+
+● Write(Homework_1\css\timeline.css)
+  ⎿  Wrote 49 lines to Homework_1\css\timeline.css
+       1 /* =============================================================
+         =============
+       3    Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-05
+       4    A vertical line (border on the <ol>) with a dot per item. The
+          dot is a
+       6    =============================================================
+         ============= */
+       7
+       9   display: grid;
+      10   gap: var(--space-8);
+     … +43 lines (ctrl+o to expand)
+
+● Giờ là nội dung trong index.html: hero và timeline, lấy từ CV, viết lại cho
+  người xem.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Các thay đổi trên index.html đúng là phần mình vừa chèn. Xem kết quả.
+
+  Read 2 files (ctrl+o to expand)
+
+● Mình phát hiện hai lỗi qua ảnh chụp: viền khung bị hở do trùng màu nền, và tên
+  hero bị ngắt dòng trên desktop. Mình sẽ thêm viền cho khung, đồng thời giảm
+  cỡ chữ và nới cột chữ để tên hiển thị trên một dòng. · summary
+
+● Update(Homework_1\assets\hero-shore.svg)
+  ⎿  Added 1 line
+      10      <path d="M0 200C50 184 100 184 150 200S250 216 300 200S400 
+          184 480 200V300H0Z" fill="#97D7FF"/>
+      11      <path d="M0 238C60 224 110 224 170 238S290 252 350 238S430 
+          226 480 236V300H0Z" fill="#FFEFC4"/>
+      12    </g>
+      13 +  <rect x="1.5" y="1.5" width="477" height="297" rx="26.5" fill
+         +="none" stroke="#4D8DBA" stroke-width="3"/>                    
+      14  </svg>
+
+● Update(Homework_1\css\tokens.css)
+  ⎿  Added 1 line, removed 1 line
+      58    --font-size-base: 1rem;
+      59    --font-size-lg: 1.25rem;
+      60    --font-size-xl: clamp(1.75rem, 4vw + 0.5rem, 2.5rem);
+      61 -  --font-size-hero: clamp(2.25rem, 9vw, 5rem);                 
+      61 +  --font-size-hero: clamp(2.25rem, 8vw, 4rem);                 
+      62    --font-weight-heading: 800;
+      63    --line-height: 1.6;
+      64    --measure: 62ch;
+
+● Update(Homework_1\css\hero.css)
+  ⎿  Added 1 line, removed 1 line
+      65  
+      66  @media (min-width: 48rem) {
+      67    .hero {
+      68 -    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);    
+      68 +    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);    
+      69      column-gap: var(--space-12);
+      70    }
+      71  
+
+● Chụp lại và chạy các cổng kiểm tra của TD, thêm kiểm tra heading, scroll ngang
+  và console.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Hero đã ổn. Cuối cùng là đồng bộ TD với các quyết định mới (font Nunito, dải
+  biển, bỏ logo, minh họa hero). Mình tìm các chỗ cần sửa.
+
+  Searched for 1 pattern, ran 2 shell commands (ctrl+o to expand)
+
+● B2 đã xong, kèm phần đổi giao diện bạn yêu cầu. Chưa commit gì.
+
+  Đổi phong cách trước B2:
+  - Giao diện bãi cát và sóng biển: nền là cát có hạt, header và footer là dải
+    biển xanh có mép sóng. Đường sóng giữa các section vẫn giữ.
+  - Header chỉ còn tên "Quảng Phú Hưng", không còn icon. favicon.svg vẫn dùng
+    cho tab trình duyệt.
+  - Font Nunito (chữ tròn, đủ dấu tiếng Việt, giấy phép OFL). Repo cấm CDN và
+    CSP chỉ cho font-src 'self', nên mình tải về assets/fonts/ (latin 39 KB,
+    vietnamese 13 KB), không dùng link Google Fonts. Font đã được preload.
+
+  B2:
+  - Hero: tên, tagline lấy từ CV, đoạn giới thiệu ngắn (chỉ nêu những gì có
+    trong CV), hai nút "See my projects" và "Get in touch". Bên phải là minh họa
+    SVG tự vẽ: mặt trời, thuyền buồm, sóng, bãi cát, dùng đúng 4 màu palette.
+    Trên mobile minh họa nằm dưới chữ.
+  - Journey: timeline dọc, mới nhất lên đầu: WebDev Adventure, Fessior DevCamp,
+    UIT. Nội dung lấy từ CV.
+
+  Đã kiểm tra:
+  - Chụp màn hình 375px và 1280px, cả sáng lẫn tối. Hai lỗi nhỏ đã sửa: khung
+    minh họa bị hở đáy trên nền sáng (thêm viền), và tên hero bị ngắt hai dòng
+    (giảm cỡ chữ).
+  - Các lệnh grep trong TD đều sạch: không inline handler, không style=, mã màu
+    chỉ nằm trong tokens.css.
+  - Chỉ có một h1, thứ tự heading đúng, không có anchor hỏng, các file SVG đều
+    hợp lệ.
+
+  TASK_DECOMPOSITION.md đã được cập nhật theo các thay đổi này.
+
+  Commit đề xuất. Phần đổi giao diện và B2 cùng sửa index.html, nên bạn chọn gộp
+  một commit hoặc tách hai:
+
+  # Một commit, gọn nhất
+  git add Homework_1
+  git commit -m "feat(hero): sandy shore theme, hero scene and journey timeline"
+
+  # Hoặc hai commit (cần git add -p để tách phần index.html)
+  #  1. style(theme): sandy beach look, Nunito font and sea bands
+  #     fonts/, fonts.css, swash.svg, tokens.css, layout.css, phần header + link
+  font của index.html
+  #  2. feat(hero): intro and journey timeline
+  #     hero-shore.svg, hero.css, timeline.css, phần hero + journey của
+  index.html, TD
+
+  Bước tiếp theo là B3 (feat(projects)): projects.json với 5 dự án từ CV,
+  section có skeleton/error/retry, và project-feed.js. Bạn nói nếu muốn mình làm
+  luôn.
+
+> /model sonnet
+  ⎿  Set model to claude-sonnet-5-5
+
+> Ok bỏ cái ảnh hero shore đi, sau đó thực hiện B3 B4, về hero section bạn có
+  thể dùng ảnh sea-hero mình mới tải về để làm nền hero và blend dần xuống các
+  phần dưới không
+
+● Mình tìm ảnh sea-hero bạn vừa tải về.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● Ảnh gốc 3840×2160, nặng 2,2 MB nên không thể dùng trực tiếp. Mình kiểm tra
+  công cụ encode AVIF/WebP rồi tạo các bản responsive.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Pillow đã hỗ trợ AVIF và WebP, mình sẽ tạo 3 kích thước × 3 định dạng ảnh,
+  chuyển ảnh gốc 2,2 MB sang docs/ để tránh bị phục vụ hoặc commit nhầm, và xóa
+  hero-shore.svg theo yêu cầu. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● AVIF đã giảm xuống 24–105 KB so với 2,2 MB ban đầu. Giờ mình sẽ bỏ padding
+  ngang khỏi main để hero tràn hết chiều ngang (mỗi section tự giữ lề riêng), và
+  thêm primitive .badge-list dùng chung cho project và skills. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Chỉ cần thêm token mới: --hero-card-bg (đọc --bg nên tự đổi theo theme) và
+  --hero-photo-filter (làm tối ảnh ở dark mode).
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(Homework_1\css\hero.css)  ⎿  Added 43 lines, removed 24 lines
+       1  /* ============================================================
+          ==============
+       2     T-04-C – Hero (+ .button, first used here and in the contact
+           section)
+       3     Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-04
+       4 -   Mobile-first: text then illustration. From 48rem the illustr
+         -ation moves                                                    
+       5 -   to a second column and spans the text rows. Tokens only, no 
+         -colours.                                                       
+       4 +   The photo is an <img> behind the content (z-index -1, object
+         +-fit: cover),                                                  
+       5 +   not a CSS background: it can use srcset/<picture> and can be
+         + the LCP                                                       
+       6 +   candidate. Its lower part fades into the page background wit
+         +h a mask, so                                                   
+       7 +   the sea runs on into the sand sections below. The text sits 
+         +on a frosted                                                   
+       8 +   card, so contrast never depends on what part of the sky is b
+         +ehind it.                                                      
+       9 +   Tokens only, no colours.                                    
+      10     ============================================================
+          ============== */
+      11  
+      12  .hero {
+      13 +  position: relative;                                          
+      14 +  isolation: isolate;                                          
+      15    display: grid;
+      10 -  align-items: center;                                         
+      11 -  gap: var(--space-4);                                         
+      16 +  align-content: center;                                       
+      17 +  min-height: var(--hero-min-h);                               
+      18 +  padding-block: var(--space-12) var(--space-16);              
+      19  }
+      20  
+      14 -.hero-intro {                                                  
+      15 -  max-width: var(--measure);                                   
+      21 +.hero-photo {                                                  
+      22 +  position: absolute;                                          
+      23 +  inset: 0;                                                    
+      24 +  z-index: -1;                                                 
+      25 +  /* Solid for the top 55%, then fades to transparent: the page
+         + background                                                    
+      26 +     (sand + grain) shows through and takes over. */           
+      27 +  mask-image: linear-gradient(to bottom, black 55%, transparent
+         +);                                                             
+      28  }
+      29  
+      18 -.hero-art {                                                    
+      30 +.hero-photo img {                                              
+      31    width: 100%;
+      20 -  max-width: 30rem;                                            
+      21 -  height: auto;                                                
+      22 -  margin-block-start: var(--space-4);                          
+      32 +  height: 100%;                                                
+      33 +  object-fit: cover;                                           
+      34 +  object-position: 50% 30%;                                    
+      35 +  filter: var(--hero-photo-filter);                            
+      36  }
+      37  
+      38 +.hero-card {                                                   
+      39 +  display: grid;                                               
+      40 +  gap: var(--space-4);                                         
+      41 +  max-width: 40rem;                                            
+      42 +  padding: var(--space-6);                                     
+      43 +  border: 1px solid var(--border);                             
+      44 +  border-radius: calc(var(--radius) * 2);                      
+      45 +  background-color: var(--hero-card-bg);                       
+      46 +  backdrop-filter: blur(6px);                                  
+      47 +}                                                              
+      48 +                                                               
+      49 +.hero-intro {                                                  
+      50 +  max-width: var(--measure);                                   
+      51 +}                                                              
+      52 +                                                               
+      53  /* Call-to-action buttons -------------------------------------
+          ---------------
+      54     Filled by default, outlined for the secondary action. Hover 
+          swaps the two.
+      55     Both pairs use the --btn-* / --heading tokens, so contrast h
+          olds in both
+     ...
+      71    border-radius: 999px;
+      72    background-color: var(--btn-bg);
+      73    color: var(--btn-text);
+      74 +  font-family: inherit;                                        
+      75 +  font-size: var(--font-size-base);                            
+      76    font-weight: 700;
+      77    text-decoration: none;
+      78 +  cursor: pointer;                                             
+      79  }
+      80  
+      81  .button-outline {
+     ...
+       95  }
+       96  
+       97  @media (min-width: 48rem) {
+       67 -  .hero {                                                     
+       68 -    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);   
+       69 -    column-gap: var(--space-12);                              
+       98 +  .hero-card {                                                
+       99 +    padding: var(--space-8);                                  
+      100    }
+       71 -                                                              
+       72 -  .hero > :not(.hero-art) {                                   
+       73 -    grid-column: 1;                                           
+       74 -  }                                                           
+       75 -                                                              
+       76 -  .hero-art {                                                 
+       77 -    grid-column: 2;                                           
+       78 -    grid-row: 1 / span 4;                                     
+       79 -    margin-block-start: 0;                                    
+       80 -    justify-self: end;                                        
+       81 -  }                                                           
+      101  }
+
+● Hero đã xong phần CSS. Giờ sang B3: dữ liệu project từ CV, CSS card, và
+  controller.
+
+● Write(Homework_1\data\projects.json)
+  ⎿  Wrote 54 lines to Homework_1\data\projects.json
+       1 {
+       3     {
+       4       "id": "greengrass",
+       6       "title": "GreenGrass",
+       7       "period": "Mar 2026 – May 2026",
+       9       "summary": "A sustainable event management platform for or
+         ganisers and participants. It secures access with JWT refresh-to
+         ce with a check-in that combines rotating QR codes and GPS geofe
+         ncing.",
+         er"],
+     … +64 lines (ctrl+o to expand)
+
+● Write(Homework_1\js\project-feed.js)
+  ⎿  Wrote 152 lines to Homework_1\js\project-feed.js
+       1 /* =============================================================
+       2    T-06-J – Project feed controller
+       3    Contract: Homework_1/TASK_DECOMPOSITION.md §4.1, §4.2
+         | success | error.
+       5    JS only writes the attribute; CSS (project-card.css) shows an
+       6    Loaded as a module (type="module"): deferred, and top-level n
+         ames stay
+       8    =============================================================
+         ============= */
+      10 const DATA_URL = 'data/projects.json';
+     … +165 lines (ctrl+o to expand)
+
+● Mình phát hiện thông báo lỗi bị đọc hai lần vì cả role="alert" và
+  role="status" cùng chứa nó. Mình sẽ để vùng status trống khi ở trạng thái lỗi
+  để khắc phục. · summary
+
+● Update(Homework_1\js\project-feed.js)
+  ⎿  Added 2 lines, removed 1 line
+      136    } catch (error) {
+      137      if (current !== requestId) return;
+      138      const message = error instanceof FeedError ? error.message
+            : 'Something went wrong while loading the projects.';
+      139 +    // The alert already announces the message; an empty statu
+          +s avoids reading it twice.                                    
+      140      errorMessage.textContent = message;
+      140 -    setState('error', message);                               
+      141 +    setState('error', '');                                    
+      142    } finally {
+      143      clearTimeout(timer);
+      144    }
+
+● Write(Homework_1\css\project-card.css)
+  ⎿  Wrote 173 lines to Homework_1\css\project-card.css
+      1 /* ==============================================================
+      2    T-06-C – Project feed (cards, skeleton, error panel, state vis
+        ibility)
+      4    #projects[data-state] decides which block is visible; JS never
+      5    Tokens only, no colours. .badge-list/.badge come from layout.c
+        ss.
+        ============ */
+      7
+        -------------
+        /
+     … +177 lines (ctrl+o to expand)
+
+● Write(Homework_1\css\noscript.css)
+  ⎿  Wrote 18 lines to Homework_1\css\noscript.css
+       1 /* =============================================================
+       2    No-JS fallback (linked inside <noscript> in index.html)
+       3    Without JS the project feed never leaves data-state="loading"
+         , so the
+         in the
+       5    section points to GitHub instead. Tokens only.
+         ============= */
+       7
+       8 .skeleton-list {
+      10 }
+     … +12 lines (ctrl+o to expand)
+
+● Giờ B4: CSS cho skills và contact, cùng copy-email.js.
+
+● Write(Homework_1\css\skills.css)
+  ⎿  Wrote 28 lines to Homework_1\css\skills.css
+       1 /* =============================================================
+       2    T-07-C – Skills
+       3    Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-07
+       4    One panel per stack layer, laid out by Grid; the tools inside
+       5    are Flexbox badges (.badge-list from layout.css). Tokens only
+         .
+         ============= */
+       7
+       8 .skill-groups {
+      10   gap: var(--space-4);
+     … +23 lines (ctrl+o to expand)
+
+● Write(Homework_1\css\contact.css)
+  ⎿  Wrote 53 lines to Homework_1\css\contact.css
+       1 /* =============================================================
+         =============
+       3    Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-08
+       4    A description list (label + value) so assistive tech reads th
+         e pairs.
+       6    =============================================================
+         ============= */
+       7
+       9   display: grid;
+      10   gap: var(--space-4);
+     … +47 lines (ctrl+o to expand)
+
+● Write(Homework_1\js\copy-email.js)
+  ⎿  Wrote 32 lines to Homework_1\js\copy-email.js
+       1 /* =============================================================
+       2    T-08-J – Copy email
+       3    Contract: Homework_1/TASK_DECOMPOSITION.md §4.5 (ids), §6 T-0
+       4    The address lives in one place: the mailto: link in index.htm
+         l. This file
+       6    =============================================================
+         ============= */
+       8 const button = document.querySelector('#copy-email-btn');
+       9 const status = document.querySelector('#copy-status');
+         o:"]');
+     … +29 lines (ctrl+o to expand)
+
+● Giờ ghép tất cả vào index.html: hero có ảnh nền, section projects đủ 3 trạng
+  thái, skills và contact.
+
+● Write(Homework_1\index.html)
+  ⎿  Added 168 lines, removed 12 lines
+      12    <link rel="stylesheet" href="css/layout.css">
+      13    <link rel="stylesheet" href="css/hero.css">
+      14    <link rel="stylesheet" href="css/timeline.css">
+      15 +  <link rel="stylesheet" href="css/project-card.css">          
+      16 +  <link rel="stylesheet" href="css/skills.css">                
+      17 +  <link rel="stylesheet" href="css/contact.css">               
+      18 +  <noscript><link rel="stylesheet" href="css/noscript.css"></no
+         +script>                                                        
+      19 +  <script type="module" src="js/project-feed.js"></script>     
+      20 +  <script type="module" src="js/copy-email.js"></script>       
+      21  </head>
+      22  <body>
+      23    <a href="#main-content" class="skip-link">Skip to main conten
+          t</a>
+     ...
+      37  
+      38    <main id="main-content">
+      39      <section id="hero" class="hero" aria-labelledby="hero-title
+          ">
+      34 -      <h1 id="hero-title"><span lang="vi">Quảng Phú Hưng</span>
+         -</h1>                                                          
+      35 -      <p class="lede">Backend &amp; AI-oriented student buildin
+         -g high-performance full-stack systems.</p>                     
+      36 -      <p class="hero-intro">I design and build full-stack syste
+         -ms with a backend and AI focus: secure APIs, retrieval pipeline
+         -s and reinforcement-learning agents. I study Information System
+         -s at UIT, VNU-HCM.</p>                                         
+      37 -      <p class="cta-row">                                      
+      38 -        <a class="button" href="#projects">See my projects</a> 
+      39 -        <a class="button button-outline" href="#contact">Get in
+         - touch</a>                                                     
+      40 -      </p>                                                     
+      41 -      <img class="hero-art" src="assets/hero-shore.svg" alt="" 
+         -width="480" height="300">                                      
+      40 +      <picture class="hero-photo">                             
+      41 +        <source type="image/avif"                              
+      42 +                srcset="assets/sea-hero-1024.avif 1024w, assets
+         +/sea-hero-1600.avif 1600w, assets/sea-hero-2400.avif 2400w"    
+      43 +                sizes="(max-width: 48rem) 180vw, 100vw">       
+      44 +        <source type="image/webp"                              
+      45 +                srcset="assets/sea-hero-1024.webp 1024w, assets
+         +/sea-hero-1600.webp 1600w, assets/sea-hero-2400.webp 2400w"    
+      46 +                sizes="(max-width: 48rem) 180vw, 100vw">       
+      47 +        <img src="assets/sea-hero-1600.jpg"                    
+      48 +             srcset="assets/sea-hero-1024.jpg 1024w, assets/sea
+         +-hero-1600.jpg 1600w, assets/sea-hero-2400.jpg 2400w"          
+      49 +             sizes="(max-width: 48rem) 180vw, 100vw"           
+      50 +             width="2400" height="1350" alt="" fetchpriority="h
+         +igh" decoding="async">                                         
+      51 +      </picture>                                               
+      52 +                                                               
+      53 +      <div class="hero-card">                                  
+      54 +        <h1 id="hero-title"><span lang="vi">Quảng Phú Hưng</spa
+         +n></h1>                                                        
+      55 +        <p class="lede">Backend &amp; AI-oriented student build
+         +ing high-performance full-stack systems.</p>                   
+      56 +        <p class="hero-intro">I design and build full-stack sys
+         +tems with a backend and AI focus: secure APIs, retrieval pipeli
+         +nes and reinforcement-learning agents. I study Information Syst
+         +ems at UIT, VNU-HCM.</p>                                       
+      57 +        <p class="cta-row">                                    
+      58 +          <a class="button" href="#projects">See my projects</a
+         +>                                                              
+      59 +          <a class="button button-outline" href="#contact">Get 
+         +in touch</a>                                                   
+      60 +        </p>                                                   
+      61 +      </div>                                                   
+      62      </section>
+      63  
+      64      <section id="journey" class="log-entry" aria-labelledby="jo
+          urney-title">
+     ...
+      103        </div>
+      104      </section>
+      105  
+       86 -    <!-- B3 (T-06): JSON-driven project feed -->              
+       87 -    <section id="projects" class="log-entry" aria-labelledby="
+          -projects-title">                                              
+      106 +    <section id="projects" class="log-entry" aria-labelledby="
+          +projects-title"                                               
+      107 +             data-state="loading" aria-busy="true">           
+      108        <header class="log-header">
+      109          <p class="log-index">Log 02</p>
+      110          <h2 id="projects-title" tabindex="-1">Projects</h2>
+      111        </header>
+      112        <div class="log-body">
+      113          <p class="lede">Things I have built, from event platfo
+           rms to retrieval pipelines.</p>
+      114 +                                                              
+      115 +        <!-- Spoken updates for screen readers: "Loading proje
+          +cts…", "5 projects loaded." -->                               
+      116 +        <p class="feed-status visually-hidden" role="status">L
+          +oading projects…</p>                                          
+      117 +                                                              
+      118 +        <noscript>                                            
+      119 +          <p class="feed-noscript">The project list loads with
+          + JavaScript. You can find the same work on <a href="https://gi
+          +thub.com/Prosperum26">my GitHub profile</a>.</p>              
+      120 +        </noscript>                                           
+      121 +                                                              
+      122 +        <!-- loading: placeholders with the same grid as the r
+          +eal cards -->                                                 
+      123 +        <ul class="skeleton-list project-grid" aria-hidden="tr
+          +ue">                                                          
+      124 +          <li class="skeleton-card">                          
+      125 +            <span class="skeleton-item skeleton-title"></span>
+      126 +            <span class="skeleton-item skeleton-line"></span> 
+      127 +            <span class="skeleton-item skeleton-line"></span> 
+      128 +            <span class="skeleton-item skeleton-line skeleton-
+          +line-short"></span>                                           
+      129 +            <span class="skeleton-item skeleton-badges"></span
+          +>                                                             
+      130 +          </li>                                               
+      131 +          <li class="skeleton-card">                          
+      132 +            <span class="skeleton-item skeleton-title"></span>
+      133 +            <span class="skeleton-item skeleton-line"></span> 
+      134 +            <span class="skeleton-item skeleton-line"></span> 
+      135 +            <span class="skeleton-item skeleton-line skeleton-
+          +line-short"></span>                                           
+      136 +            <span class="skeleton-item skeleton-badges"></span
+          +>                                                             
+      137 +          </li>                                               
+      138 +          <li class="skeleton-card">                          
+      139 +            <span class="skeleton-item skeleton-title"></span>
+      140 +            <span class="skeleton-item skeleton-line"></span> 
+      141 +            <span class="skeleton-item skeleton-line"></span> 
+      142 +            <span class="skeleton-item skeleton-line skeleton-
+          +line-short"></span>                                           
+      143 +            <span class="skeleton-item skeleton-badges"></span
+          +>                                                             
+      144 +          </li>                                               
+      145 +        </ul>                                                 
+      146 +                                                              
+      147 +        <!-- error: message is filled by js/project-feed.js --
+          +>                                                             
+      148 +        <div class="feed-error">                              
+      149 +          <p class="feed-error-message" role="alert"></p>     
+      150 +          <button type="button" class="button feed-retry">Retr
+          +y</button>                                                    
+      151 +        </div>                                                
+      152 +                                                              
+      153 +        <!-- success: cards are cloned from the template below
+          + -->                                                          
+      154 +        <ul id="project-list" class="project-list project-grid
+          +"></ul>                                                       
+      155 +                                                              
+      156 +        <template id="project-card-tpl">                      
+      157 +          <li class="project-card">                           
+      158 +            <article>                                         
+      159 +              <p class="project-index" aria-hidden="true"></p>
+      160 +              <h3 class="project-title"></h3>                 
+      161 +              <p class="project-meta">                        
+      162 +                <span class="project-category"></span>        
+      163 +                <span class="project-period"></span>          
+      164 +              </p>                                            
+      165 +              <p class="project-summary"></p>                 
+      166 +              <ul class="project-stack badge-list" aria-label=
+          +"Tech stack"></ul>                                            
+      167 +              <a class="project-link">View on GitHub<span clas
+          +s="project-link-title visually-hidden"></span></a>            
+      168 +            </article>                                        
+      169 +          </li>                                               
+      170 +        </template>                                           
+      171        </div>
+      172      </section>
+      173  
+       97 -    <!-- B4 (T-07): skills grouped by stack layer -->         
+      174      <section id="skills" class="log-entry" aria-labelledby="sk
+           ills-title">
+      175        <header class="log-header">
+      176          <p class="log-index">Log 03</p>
+     ...
+      178        </header>
+      179        <div class="log-body">
+      180          <p class="lede">The tools I reach for, grouped by wher
+           e they sit in the stack.</p>
+      181 +        <ul class="skill-groups">                             
+      182 +          <li class="skill-group">                            
+      183 +            <h3>AI &amp; Machine Learning</h3>                
+      184 +            <ul class="badge-list">                           
+      185 +              <li class="badge">Reinforcement Learning (PPO, M
+          +DP)</li>                                                      
+      186 +              <li class="badge">RAG pipelines</li>            
+      187 +              <li class="badge">Vector databases (ChromaDB)</l
+          +i>                                                            
+      188 +              <li class="badge">LLM integration (Ollama)</li> 
+      189 +              <li class="badge">NumPy</li>                    
+      190 +              <li class="badge">Pandas</li>                   
+      191 +              <li class="badge">PyTorch / TensorFlow</li>     
+      192 +            </ul>                                             
+      193 +          </li>                                               
+      194 +          <li class="skill-group">                            
+      195 +            <h3>Backend</h3>                                  
+      196 +            <ul class="badge-list">                           
+      197 +              <li class="badge">Node.js</li>                  
+      198 +              <li class="badge">NestJS</li>                   
+      199 +              <li class="badge">Express</li>                  
+      200 +              <li class="badge">PostgreSQL</li>               
+      201 +              <li class="badge">Prisma ORM</li>               
+      202 +              <li class="badge">MongoDB</li>                  
+      203 +              <li class="badge">REST architecture</li>        
+      204 +              <li class="badge">RBAC</li>                     
+      205 +              <li class="badge">JWT</li>                      
+      206 +            </ul>                                             
+      207 +          </li>                                               
+      208 +          <li class="skill-group">                            
+      209 +            <h3>Frontend</h3>                                 
+      210 +            <ul class="badge-list">                           
+      211 +              <li class="badge">React</li>                    
+      212 +              <li class="badge">Tailwind CSS</li>             
+      213 +              <li class="badge">HTML5</li>                    
+      214 +              <li class="badge">CSS3</li>                     
+      215 +              <li class="badge">State management (Redux, Zusta
+          +nd)</li>                                                      
+      216 +            </ul>                                             
+      217 +          </li>                                               
+      218 +          <li class="skill-group">                            
+      219 +            <h3>Languages</h3>                                
+      220 +            <ul class="badge-list">                           
+      221 +              <li class="badge">Python</li>                   
+      222 +              <li class="badge">C++</li>                      
+      223 +              <li class="badge">TypeScript</li>               
+      224 +              <li class="badge">JavaScript</li>               
+      225 +              <li class="badge">SQL</li>                      
+      226 +              <li class="badge">LaTeX</li>                    
+      227 +            </ul>                                             
+      228 +          </li>                                               
+      229 +          <li class="skill-group">                            
+      230 +            <h3>Infrastructure &amp; tools</h3>               
+      231 +            <ul class="badge-list">                           
+      232 +              <li class="badge">Docker</li>                   
+      233 +              <li class="badge">GitHub Actions (CI/CD)</li>   
+      234 +              <li class="badge">Swagger / OpenAPI</li>        
+      235 +              <li class="badge">Git</li>                      
+      236 +              <li class="badge">Vercel</li>                   
+      237 +              <li class="badge">Render</li>                   
+      238 +              <li class="badge">Postman</li>                  
+      239 +              <li class="badge">Figma</li>                    
+      240 +              <li class="badge">Linux / WSL</li>              
+      241 +            </ul>                                             
+      242 +          </li>                                               
+      243 +        </ul>                                                 
+      244        </div>
+      245      </section>
+      246  
+      108 -    <!-- B4 (T-08): contact links and copy email -->          
+      247      <section id="contact" class="log-entry" aria-labelledby="c
+           ontact-title">
+      248        <header class="log-header">
+      249          <p class="log-index">Log 04</p>
+     ...
+      251        </header>
+      252        <div class="log-body">
+      253          <p class="lede">Have a project or a question? Write to
+            me.</p>
+      254 +        <dl class="contact-list">                             
+      255 +          <div class="contact-row">                           
+      256 +            <dt>Email</dt>                                    
+      257 +            <dd>                                              
+      258 +              <a href="mailto:qphunguit@gmail.com">qphunguit@g
+          +mail.com</a>                                                  
+      259 +              <button type="button" id="copy-email-btn" class=
+          +"button button-outline">Copy email</button>                   
+      260 +            </dd>                                             
+      261 +          </div>                                              
+      262 +          <div class="contact-row">                           
+      263 +            <dt>GitHub</dt>                                   
+      264 +            <dd><a href="https://github.com/Prosperum26">githu
+          +b.com/Prosperum26</a></dd>                                    
+      265 +          </div>                                              
+      266 +          <div class="contact-row">                           
+      267 +            <dt>LinkedIn</dt>                                 
+      268 +            <dd><a href="https://www.linkedin.com/in/phu-hung-
+          +quang">linkedin.com/in/phu-hung-quang</a></dd>                
+      269 +          </div>                                              
+      270 +        </dl>                                                 
+      271 +        <p id="copy-status" class="contact-status" role="statu
+          +s"></p>                                                       
+      272        </div>
+      273      </section>
+      274    </main>
+
+● Giờ kiểm thử thật: dựng server, chụp màn hình, và dùng --dump-dom để xác nhận
+  feed chuyển sang success với 5 card.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Trạng thái success, thông báo "5 projects loaded." đúng. Con số 6 là 5 card
+  thật cộng 1 bản mẫu trong <template>. Xem giao diện.
+
+  Read 2 files (ctrl+o to expand)
+
+● Ảnh nền biển hiển thị mượt và card dark mode đọc tốt, nhưng phần
+  skills/contact bị cắt mất nên mình sẽ chụp tiếp phần cuối, đồng thời kiểm tra
+  mobile, trạng thái lỗi, no-JS và độ contrast của số 01. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Số 01 và viền card dùng --sea-mid trên --surface sáng chỉ đạt 2.79:1, dưới
+  ngưỡng 3:1 cho thành phần UI. Mình tìm tỉ lệ pha màu --surface cho đạt ngưỡng.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mình chọn 4% (đạt 3.03:1), card vẫn phân biệt được nhờ viền. Sửa token rồi xem
+  các ảnh chụp phần cuối trang.
+
+● Update(Homework_1\css\tokens.css)
+  ⎿  Added 1 line, removed 1 line
+      17  
+      18    /* Semantic colours – light theme (default) */
+      19    --bg: var(--sand);
+      20 -  --surface: color-mix(in srgb, var(--sea-mid) 12%, var(--sand)
+         -);                                                             
+      20 +  --surface: color-mix(in srgb, var(--sea-mid) 4%, var(--sand))
+         +;                                                              
+      21    --text: var(--ink);
+      22    --text-muted: var(--sea-deep);
+      23    --heading: var(--sea-deep);
+
+  Read 1 file (ctrl+o to expand)
+
+● Mobile ổn, không tràn ngang. Xem phần skills, contact và footer ở desktop.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Skills, contact và footer đã đúng thiết kế. Giờ tôi sẽ kiểm tra các nhánh lỗi
+  (JSON hỏng, danh sách rỗng, HTTP 404, no-JS) bằng bản sao trong scratchpad với
+  dữ liệu bị phá có chủ đích. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Cả bốn nhánh lỗi đều hiển thị đúng thông báo. Còn hai thứ cần tương tác thật:
+  nút Retry và Copy email. Mình thử điều khiển Edge qua giao thức DevTools.
+  Ran 1 shell command (ctrl+o to expand)
+
+● Retry hoạt động đúng (loading → error, focus vào tiêu đề), và copy báo lỗi vì
+  headless thiếu quyền clipboard - đúng như nhánh thất bại dự kiến. Giờ mình cấp
+  quyền clipboard để thử lại nhánh thành công. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Cả hai nhánh của tính năng Copy hoạt động đúng: clipboard nhận đúng địa chỉ và
+  thông báo tự xóa sau 4 giây. Tiếp theo mình sẽ thử trường hợp no-JS, chạy
+  grep kiểm tra các cổng, rồi dọn các tiến trình test còn sót. · summary
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Cổng grep sạch, trừ một dòng comment nhắc đến từ innerHTML. Mình đổi lời
+  comment để repo không dính cờ giả, và thử lại ảnh no-JS.
+
+● Update(Homework_1\js\project-feed.js)
+  ⎿  Added 2 lines, removed 1 line
+       93    return valid;
+       94  }
+       95  
+       96 -/* Cards are cloned from the <template> and filled with textCo
+          -ntent, never innerHTML. */                                    
+       96 +/* Cards are cloned from the <template> and filled with textCo
+          +ntent, so no                                                  
+       97 +   project text is ever parsed as HTML. */                    
+       98  function renderProjects(projects) {
+       99    const cards = projects.map((project) => {
+      100      const card = template.content.cloneNode(true);
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Chụp ảnh với scriptEnabled=false bị lỗi của headless. Mình tắt JS qua giao
+  thức DevTools của Edge đang chạy.
+
+  Read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● No-JS đúng ý: skeleton ẩn, hiện lời nhắn và link GitHub. Mình dọn các tiến
+  trình test rồi đồng bộ TD.
+
+  Searched for 1 pattern, ran 3 shell commands (ctrl+o to expand)
+
+● Mình đã bỏ ảnh hero-shore, làm xong hero dùng ảnh biển của bạn, rồi B3 và B4.
+  Chưa commit gì.
+
+  Hero dùng ảnh sea-hero:
+  - Ảnh gốc 3840×2160 nặng 2,2 MB, nên mình tạo 3 kích thước × 3 định dạng. Bản
+    AVIF chỉ nặng 24–105 KB.
+  - Ảnh làm nền cả hero, nửa dưới mờ dần vào nền cát nên biển chạy tiếp xuống
+    các section dưới.
+  - Chữ nằm trên một khung mờ, nên dễ đọc dù bầu trời có mây hay không. Ở dark
+    mode ảnh được làm tối.
+  - Ảnh gốc mình chuyển sang docs/sea-hero-original.jpg để không bị phục vụ hay
+    commit cùng trang. Bạn có thể xóa hoặc thêm vào .git/info/exclude.
+
+  B3, danh sách project:
+  - data/projects.json có 5 dự án từ CV, js/project-feed.js nạp bằng fetch,
+    css/project-card.css định kiểu.
+  - Section có đủ trạng thái loading (skeleton), success (card xếp so le) và
+    error (có nút Retry).
+
+  B4, skills và contact:
+  - Skills chia 5 nhóm theo CV.
+  - Contact có email, GitHub, LinkedIn và nút Copy email. Mình không đưa số điện
+    thoại lên trang.
+
+  Đã kiểm tra bằng Edge thật:
+  - Feed ra đúng 5 card, thông báo "5 projects loaded."
+  - Bốn tình huống lỗi (JSON hỏng, danh sách rỗng, 404, mọi mục sai) đều ra đúng
+    thông báo.
+  - Nút Retry chuyển loading rồi error, focus về tiêu đề. Copy email ghi đúng
+    địa chỉ vào clipboard, thông báo tự xóa sau 4 giây.
+  - Khi tắt JS, skeleton ẩn đi và hiện lời nhắn kèm link GitHub.
+  - Các lệnh grep trong TD đều sạch, 375px không tràn ngang.
+
+  Chưa kiểm tra tình huống timeout 8 giây và mất mạng hẳn, vì không dễ giả lập ở
+  đây.
+
+  Một lỗi mình tự bắt được: viền card bằng --sea-mid trên nền card chỉ đạt
+  2.79:1, dưới ngưỡng 3:1. Mình giảm độ pha của --surface sáng xuống 4%, giờ đạt
+  3.03:1.
+
+  Cần bạn biết:
+  - Link "View on GitHub" của cả 5 dự án đang trỏ về trang
+    github.com/Prosperum26, vì CV không có URL repo riêng. Khi bạn có URL repo
+    thật, mình chỉ sửa trong projects.json.
+  - Script nay dùng type="module" thay vì defer, vì các file có const cùng tên ở
+    mức top-level sẽ xung đột nếu nạp bằng defer. TD đã được cập nhật.
+
+  Commit đề xuất, mỗi feature một commit:
+  git add Homework_1/assets Homework_1/css/hero.css Homework_1/css/tokens.css
+  git commit -m "feat(hero): sea photo hero blending into the page"
+
+  git add Homework_1/data Homework_1/js/project-feed.js
+  Homework_1/css/project-card.css Homework_1/css/noscript.css
+  git commit -m "feat(projects): JSON-driven project feed with loading, error
+  and retry"
+
+  git add Homework_1/css/skills.css Homework_1/css/contact.css
+  Homework_1/js/copy-email.js
+  git commit -m "feat(skills): skills panels and contact with copy email"
+
+  git add Homework_1/index.html Homework_1/css/layout.css
+  Homework_1/TASK_DECOMPOSITION.md
+  git commit -m "docs: sync spec, wire sections into the page"
+  Vì index.html và layout.css dùng chung cho cả ba feature nên mình gom vào
+  commit cuối. Nếu bạn muốn tách theo từng feature, dùng git add -p.
+
+  Bước tiếp theo là B5 (dark mode toggle) và B6 (menu mobile), sau đó chuyển
+  sang các milestone M1–M4.
+
+> Ok về cái hero card, bạn loại bỏ màu nền và viền đi, mình muốn nó cảm giác
+  nằm trên ảnh nền, đổi màu chữ sao cho đảm bảo tính constraint là được, còn 2
+  cái nút ok r, sau đó thực hiện B5 và B6
+
+● Mình sẽ bỏ nền và viền của hero card, để chữ nằm thẳng trên ảnh. Muốn chữ vẫn
+  đạt tương phản khi nằm trên mây và trời sáng, mình thêm một lớp phủ tối dần
+  trên chính ảnh (không phải hộp), rồi đo thực tế trên ảnh chụp. Trước hết là
+  phần hero.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mình đo tương phản thực tế: ẩn chữ, chụp ảnh nền phía sau, rồi lấy điểm sáng
+  nhất dưới từng dòng chữ so với màu chữ sand.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Tôi phát hiện ở 768px, theme sáng không đạt tương phản do lớp phủ tối kết thúc
+  sớm và độ tối 62–66% chưa đủ che mây trắng dưới chữ. Tôi sẽ giữ lớp phủ đặc
+  suốt chiều rộng khối chữ trước khi mờ đi, và gom độ tối vào một token để dễ
+  chỉnh. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Vẫn còn một lỗi ở mobile theme sáng: chữ sand mất tương phản vì rơi vào vùng
+  ảnh mờ dần ở đáy hero. Mình sẽ chỉnh để vùng mờ dần nằm hoàn toàn dưới chữ,
+  khớp với khoảng đệm đáy hero. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Cả sáu cấu hình đều đạt, điểm tệ nhất 5.8:1 (yêu cầu 4.5:1 cho chữ thường, 3:1
+  cho chữ lớn). Giờ làm B5: dark mode.
+
+● Write(Homework_1\js\theme-init.js)
+  ⎿  Wrote 27 lines to Homework_1\js\theme-init.js
+       1 /* =============================================================
+       2    T-09-J1 – Theme init (stops the flash of the wrong theme)
+       3    Contract: Homework_1/TASK_DECOMPOSITION.md §4.5 (localStorage
+       4    Loaded as a plain, blocking <script src> in <head>: it must r
+       5    first paint. It is a file, not an inline script, so the CSP s
+         tays strict.
+         S setting
+       7    through prefers-color-scheme (tokens.css).
+         ============= */
+      10 (function applyStoredTheme() {
+     … +25 lines (ctrl+o to expand)
+
+● Write(Homework_1\js\theme-toggle.js)
+  ⎿  Wrote 53 lines to Homework_1\js\theme-toggle.js
+       1 /* =============================================================
+       2    T-09-J2 – Theme toggle
+       3    Contract: Homework_1/TASK_DECOMPOSITION.md §4.5 (#theme-toggl
+       4    js/theme-init.js has already set <html data-theme> before pai
+         nt. This file
+         nd saves the
+       6    choice. aria-pressed="true" means dark mode is on.
+         ============= */
+       8
+      10 const root = document.documentElement;
+     … +49 lines (ctrl+o to expand)
+
+● Write(Homework_1\css\theme-switcher.css)
+  ⎿  Wrote 35 lines to Homework_1\css\theme-switcher.css
+       1 /* =============================================================
+       2    T-09-C – Theme switcher button
+       3    Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-09
+         : sand text
+       5    on sea-deep is 5.91:1. Pressed (dark mode on) inverts to a sa
+       6    sea-deep text, the same 5.91:1. The label never changes; aria
+         -pressed
+       8    =============================================================
+         ============= */
+      10 .theme-switcher {
+     … +31 lines (ctrl+o to expand)
+
+● Mình sửa một dòng comment chưa chính xác, rồi làm B6: menu mobile kiểu
+  disclosure, không dùng focus trap.
+
+● Update(Homework_1\css\theme-switcher.css)
+  ⎿  Added 1 line, removed 1 line
+      28    color: var(--band-bg);
+      29  }
+      30  
+      31 -/* Hover on a pressed button would look unchanged; dim it sligh
+         -tly instead */                                                 
+      31 +/* Hover on a pressed button would look unchanged, so it flips 
+         +back to the outline look */                                    
+      32  .theme-switcher[aria-pressed="true"]:hover {
+      33    background-color: transparent;
+      34    color: var(--band-text);
+
+● Write(Homework_1\css\nav.css)
+  ⎿  Wrote 104 lines to Homework_1\css\nav.css
+      1 /* ==============================================================
+      2    T-10-C – Primary navigation
+      3    Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-10
+      4    Mobile-first: the links stack in a menu that the "Menu" button
+      5    From 48rem they sit in a row and the button is not shown. The
+        48rem
+      7    Without JS the button stays [hidden] and the menu is simply op
+        en.
+      8    Lives on the sea band, so it uses the --band-* tokens.
+        ============ */
+     … +103 lines (ctrl+o to expand)
+
+● Write(Homework_1\js\nav-toggle.js)
+  ⎿  Wrote 56 lines to Homework_1\js\nav-toggle.js
+      1 /* ==============================================================
+      2    T-10-J – Navigation toggle (disclosure, not a modal)
+        #nav-menu)
+      4    On a phone the "Menu" button shows and hides the link list. Th
+      5    disclosure: the menu is part of the page, so Tab moves through
+      6    out of it like any other content. There is deliberately NO foc
+      7    Ways to close it: the button, Escape (focus returns to the but
+        ton), a
+        e header.
+        ============ */
+     … +58 lines (ctrl+o to expand)
+
+● Update(Homework_1\js\theme-toggle.js)
+  ⎿  Added 2 lines
+      37    button.setAttribute('aria-pressed', String(theme === 'dark'))
+          ;
+      38  }
+      39  
+      40 +// The switcher's list item ships [hidden]: without JS the butt
+         +on would do nothing.                                           
+      41 +button.parentElement.hidden = false;                           
+      42  apply(currentTheme());
+      43  
+      44  button.addEventListener('click', () => {
+
+  Ran 1 shell command (ctrl+o to expand)
+● B5 và B6 đã nối vào header. Giờ tôi sẽ kiểm thử bằng Edge thật: theme có lưu
+  qua reload, menu mobile mở/đóng bằng Escape/click ngoài/Tab ra ngoài, và Tab
+  xuyên trang có bị kẹt không. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mọi thứ hoạt động đúng, không có lỗi console: menu mobile đóng/mở chuẩn,
+  desktop hiện link đầy đủ, tab walk không bị kẹt, và theme được lưu bền sau
+  reload. Giờ mình chụp ảnh giao diện hero mới và trạng thái menu mở để kiểm tra
+  trực quan. · summary
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Hero đã đạt đúng yêu cầu: chữ sand thẳng hàng, ảnh sáng tốt, đáy hero hòa vào
+  cát, menu mobile mở gọn. Giờ mình dọn tiến trình test, chạy lại grep kiểm tra
+  và đồng bộ TD. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Cổng grep đều sạch. Cuối cùng cập nhật TD cho khớp với những gì đã làm.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Mình đã bỏ nền và viền của hero card, rồi làm xong B5 (dark mode) và B6 (menu
+  mobile). Chưa commit gì.
+
+  Hero:
+  - Chữ giờ nằm thẳng trên ảnh, màu sand ở cả hai theme. Hai nút giữ nguyên diện
+    mạo cũ.
+  - Muốn chữ đọc được trên mây trắng mà không cần hộp, mình thêm một lớp phủ tối
+    dần trên chính ảnh. Bên phải ảnh vẫn sáng.
+  - Mình đo trên pixel thật: ẩn chữ, chụp ảnh nền, lấy điểm sáng nhất dưới từng
+    dòng chữ. Hai lần đo đầu bị trượt, theme sáng ở 768px chỉ đạt 1.05:1.
+    - Lần một: lớp phủ kết thúc trước hết vùng chữ, và độ tối chưa đủ cho mây
+      trắng. Mình giữ lớp phủ đặc suốt chiều rộng khối chữ và tăng lên 74%.
+    - Lần hai: ở mobile, một đoạn chữ rơi vào vùng ảnh đang mờ dần ở đáy. Mình
+      đặt vùng mờ này nằm hẳn dưới chữ.
+  - Kết quả cuối ở 375, 768, 1280 và 1920px, cả sáng lẫn tối: điểm tệ nhất là
+    4.98:1 (một ca ở 1920px, yêu cầu 4.5), còn lại từ 5.4 đến 9.0.
+  - Hai chỉnh nhỏ nữa: số đo nằm trong TD, và vòng focus trong hero là màu sand
+    vì vòng xanh đậm biến mất trên ảnh tối.
+
+  B5, dark mode:
+  - Nút "Dark mode" nằm cuối menu, nhãn không đổi, trạng thái nằm ở
+    aria-pressed.
+  - Lựa chọn lưu vào localStorage và giữ nguyên sau reload.
+  - Script đặt theme chạy trước khi trang hiện nên không bị chớp. Nó là một file
+    riêng, không inline, để CSP vẫn chặt được.
+
+  B6, menu mobile:
+  - Nút Menu chỉ hiện trên màn hình hẹp. Đóng bằng Escape (focus về nút), chọn
+    link, click ra ngoài, hoặc Tab ra khỏi header.
+  - Không có focus trap, đó là chủ đích.
+  - Khi tắt JS, menu luôn mở.
+
+  Đã kiểm tra bằng Edge thật:
+  - Tab đi hết 17 điểm dừng trên mobile (menu mở) rồi thoát ra trình duyệt,
+    không bị kẹt.
+  - Theme chuyển đúng, lưu đúng, console không có lỗi.
+  - Các lệnh grep trong TD đều sạch.
+
+  Mình đã đặt nút theme vào trong nav. Nếu để nó ở ngoài thì thứ tự Tab sẽ lệch
+  với thứ tự nhìn thấy trên mobile.
+
+  Commit đề xuất:
+  git add Homework_1/css/hero.css Homework_1/css/tokens.css Homework_1/docs
+  2>/dev/null
+  git commit -m "style(hero): text straight on the photo with a scrim, measured
+  for contrast"
+
+  git add Homework_1/js/theme-init.js Homework_1/js/theme-toggle.js
+  Homework_1/css/theme-switcher.css
+  git commit -m "feat(theme): dark mode with persisted toggle"
+
+  git add Homework_1/js/nav-toggle.js Homework_1/css/nav.css
+  Homework_1/css/layout.css Homework_1/index.html
+  Homework_1/TASK_DECOMPOSITION.md
+  git commit -m "feat(nav): mobile disclosure navigation"
+  Lệnh git add đầu có một đường dẫn Homework_1/docs chưa tồn tại. Bạn có thể bỏ
+  nó đi, vì docs/sea-hero-original.jpg nằm ở thư mục docs/ của repo. index.html
+  có thay đổi của cả B5 lẫn B6, mình để vào commit cuối. Nếu bạn muốn tách
+  riêng, dùng git add -p.
+
+  Phần build v1 đã xong. Bước tiếp theo là giai đoạn audit: chạy WCAG, keyboard,
+  CSP và Lighthouse một lần trên bản này, ghi vào commit docs(audit), rồi đến
+  bốn milestone M1–M4. Bạn muốn mình bắt đầu luôn không?
+
+> <ide_opened_file>The user opened the file
+  c:\Dev\Project\MSIS207_Lab1\Homework_1\css\tokens.css in the IDE. This may or
+  may not be related to the current task.</ide_opened_file>
+
+> ok trước khi audit bạn có thể research và áp dụng các hiệu ứng trên trang này
+  về porfolio để tăng ux không https://kinetics.colorion.co/ sau đó thì audit,
+  cuối cùng giải thích mình bốn milestone M1 tới M4 cần tập trung gì và nên
+  làm ra sao
+
+● Mình sẽ xem trang tham khảo trước. Công cụ tải trang đang ở dạng deferred nên
+  cần nạp trước.
+
+● Fetch(https://kinetics.colorion.co/)
+  ⎿  Received 382.3KB (200 OK)
+
+● Mình sẽ giữ lại các hiệu ứng có lợi (hiện dần so le, gạch chân hover, dock
+  card, nút từ tính) và loại bỏ những cái gây hại (marquee, cursor trail,
+  scramble/typewriter) do vấn đề accessibility và hiệu năng. Giờ mình bắt đầu
+  với token chuyển động và motion.css. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(Homework_1\css\motion.css)
+  ⎿  Wrote 111 lines to Homework_1\css\motion.css
+       1 /* =============================================================
+       2    T-12-C – Motion
+       4    Four effects, all vanilla (no animation library), all on tran
+         sform and
+         read stays idle:
+         eveal])
+       8      3. "Dock" hover on card grids    (lift one card, press its
+         neighbours in)
+         -x / --mag-y)
+         e, so for
+     … +127 lines (ctrl+o to expand)
+
+● Write(Homework_1\js\reveal.js)
+  ⎿  Wrote 48 lines to Homework_1\js\reveal.js
+       1 /* =============================================================
+       2    T-12-J1 – Scroll reveal
+       3    Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-12
+         ing", flips
+         attribute so
+       6    later styles (hover transforms) are not held back by the reve
+       7    The stagger itself is CSS (nth-child, see motion.css): this f
+         ile never
+       9    Does nothing when the visitor prefers reduced motion or the b
+      10    IntersectionObserver: the content is then just visible.
+     … +53 lines (ctrl+o to expand)
+
+● Write(Homework_1\js\magnetic.js)
+  ⎿  Wrote 35 lines to Homework_1\js\magnetic.js
+      1 /* ==============================================================
+      2    T-12-J2 – Magnetic buttons
+      3    Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-12
+        y toward the
+        ustom
+      6    properties (--mag-x, --mag-y); motion.css turns them into a tr
+      7    Only for a real pointer (hover: hover + pointer: fine) and onl
+        y when the
+        ver affected.
+        ============ */
+     … +36 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Kiểm thử các hiệu ứng trên Edge thật: số phần tử chờ hiện, hiện hết sau khi
+  cuộn, tắt hoàn toàn khi bật reduced motion, hiệu ứng hover, nút từ tính và
+  CLS.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Hiệu ứng hoạt động tốt, nhưng hai phần tử vẫn bị kẹt thuộc tính shown, có thể
+  do sự kiện transitionend của con bị bọt lên làm mất listener. Mình sẽ thay
+  bằng bộ hẹn giờ đơn giản, chắc chắn hơn. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Phần hiệu ứng đã ổn định. Giờ sang audit: mình cài Lighthouse và axe-core vào
+  thư mục tạm của mình (ngoài repo, để không vi phạm rule "không npm
+  dependency").
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Mobile cho Accessibility, Best Practices và SEO đều 100, nhưng Performance chỉ
+  87 và CLS = 0.224, vượt hẳn ngưỡng tốt (0.1). Mình xem chi tiết nguyên nhân.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Lighthouse đã phát hiện hai lỗi tự gây ra mà các bài test hành vi chưa bắt
+  được. Mình sẽ đào sâu nguyên nhân CLS, tổng hợp dữ liệu network, rồi chạy
+  axe-core cùng các kiểm tra WCAG 2.2 thủ công. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● CLS là do main bị đẩy xuống khi phần tử phía trên thay đổi chiều cao. Mình sẽ
+  kiểm chứng giả thuyết menu mobile co lại sau khi JS chạy, đồng thời chạy
+  axe-core, kiểm tra WCAG 2.2 thủ công và thử CSP trên bản sao. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Lỗi nằm ở cách shell xử lý heredoc dài có nhiều dấu nháy. Mình ghi script ra
+  file bằng công cụ Write rồi chạy.
+
+  Made 1 scratchpad edit +67, ran 1 shell command (ctrl+o to expand)
+
+● Mình đã xác nhận nguyên nhân CLS (header co 201px khi JS đóng menu, nav
+  desktop giãn 123px) và axe-core sạch lỗi nhưng còn 49–54 điểm tương phản cần
+  xem lại thủ công do nền ảnh/hạt cát. Vì kiểm tra focus headless không đáng
+  tin, mình sẽ làm lại bằng Tab thật và tự đo tương phản các cặp mà axe bỏ qua.
+  · summary
+
+  Made 1 scratchpad edit +74, ran 1 shell command (ctrl+o to expand)
+● Kết quả kiểm tra bàn phím và độ tương phản đều ổn: 19–20 điểm dừng có viền rõ,
+  đạt tỷ lệ tương phản, không bị header che, chỉ riêng chữ 01 ở mức sát ngưỡng
+  3.03:1. Giờ mình sẽ kiểm tra thêm skip link bằng bàn phím, chế độ
+  forced-colors của Windows, và header ở các cỡ màn hình trung bình. · summary
+
+  Made 1 scratchpad edit +48, read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Forced-colors của Windows vẫn đọc được vì trình duyệt tự đặt nền đen sau chữ.
+  Giờ tôi sẽ thử CSP chặt trên một bản sao để xem trước những gì sẽ vỡ khi làm
+  M3, bao gồm cả việc kiểm tra style.setProperty của nút từ tính có bị chặn
+  không. · summary
+
+  Made 1 scratchpad edit +49, ran 1 shell command (ctrl+o to expand)
+
+● Trang đã tuân thủ CSP chặt kể cả Trusted Types mà không lỗi gì, nên M3 chỉ cần
+  thêm meta CSP và ghi lại bằng chứng. Tiếp theo tôi sẽ thử vá lỗi CLS trên bản
+  sao trong scratchpad rồi chạy lại Lighthouse mobile để xác nhận có đạt 100
+  điểm không. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Prototype vá CLS giúp Performance mobile lên 99 (CLS về 0). Mình ghi lại phát
+  hiện vào AUDIT.md, dọn tiến trình test và cập nhật TD cho phần hiệu ứng.
+  · summary
+
+● Write(Homework_1\AUDIT.md)
+  ⎿  Wrote 156 lines to Homework_1\AUDIT.md
+      1 # AUDIT – Homework 1 (bản build v1, trước các milestone M1–M4)
+      3 > Audit ở chế độ **review**: chỉ liệt kê phát hiện, **không sửa c
+        ode**. Mỗi phát hiện gắn với milestone sẽ xử lý nó.
+        tact, theme, nav) và hiệu ứng chuyển động (T-12), qua `http://127
+      5 > Trình duyệt: Edge (Chromium) headless. Công cụ: Lighthouse 13.5
+        .0, axe-core 4.14.0 (tag `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21a
+         thức DevTools. Các công cụ cài trong thư mục tạm, **không** nằm
+        trong repo.
+      7 ## Tóm tắt
+      9 | Milestone | Số phát hiện cần sửa
+     … +245 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Còn sót 6 tiến trình test (các tiến trình con của Edge). Mình dọn lại.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Mình đã áp dụng hiệu ứng, chạy audit và ghi kết quả vào Homework_1/AUDIT.md.
+  Chưa commit gì. Một lưu ý về nguồn tham khảo: mình chỉ đọc được khoảng 100
+  nghìn ký tự đầu của trang kinetics.colorion.co (trang dài 181 nghìn).
+
+  Hiệu ứng đã thêm (motion.css, reveal.js, magnetic.js):
+  - Hiện dần so le khi cuộn: nội dung vào theo nhịp, độ trễ lấy từ vị trí phần
+    tử trong CSS.
+  - Gạch chân vẽ ra ở link nav.
+  - Dock hover: card đang hover nhích lên và có bóng, các card khác thu nhẹ.
+    Mình không làm mờ chúng, vì giảm độ mờ sẽ hạ tương phản chữ.
+  - Nút từ tính cho các nút.
+
+  Mình bỏ bốn thứ: marquee tự chạy (vi phạm WCAG 2.2.2), cursor trail,
+  scramble/typewriter trên tên (hại LCP, trình đọc màn hình đọc lặp, phá phép đo
+  tương phản hero), và đếm số lên (CV không có số liệu thật). Lý do đã ghi
+  trong TD để bạn trả lời vấn đáp.
+
+  Đã kiểm tra bằng Edge: CLS bằng 0, bật reduced motion thì mọi hiệu ứng tắt
+  hẳn, không có gì bị ẩn khi tắt JS.
+
+  Kết quả audit
+
+  ┌────────────────────────────┬────────────────────────────────────────────┐
+  │                            │                  Kết quả                   │
+  ├────────────────────────────┼────────────────────────────────────────────┤
+  │ Accessibility (Lighthouse  │ 100, 0 vi phạm ở 4 cấu hình                │
+  │ + axe-core)                │                                            │
+  ├────────────────────────────┼────────────────────────────────────────────┤
+  │ Tương phản mọi chữ, đo     │ 0 chữ dưới AA, kể cả chữ trên ảnh hero (tệ │
+  │ bằng script riêng          │  nhất 4.98:1)                              │
+  ├────────────────────────────┼────────────────────────────────────────────┤
+  │ Tab xuyên trang            │ 19–20 điểm dừng, không có bẫy focus, focus │
+  │                            │  luôn thấy rõ và không bị header che       │
+  ├────────────────────────────┼────────────────────────────────────────────┤
+  │ CSP chặt, kể cả Trusted    │ Trang chạy sạch, 0 lỗi                     │
+  │ Types                      │                                            │
+  ├────────────────────────────┼────────────────────────────────────────────┤
+  │ Performance mobile         │ 87, do CLS 0.224                           │
+  └────────────────────────────┴────────────────────────────────────────────┘
+
+  Lỗi thật duy nhất là CLS: khi JS đóng menu, header co từ 269px xuống 68px nên
+  cả trang bị đẩy 201px. Đây là bug do mình tạo ở B6, các bài test hành vi trước
+  đó không bắt được. Mình thử vá trên một bản sao: CLS về 0, Performance mobile
+  lên 99.
+
+  Bốn milestone: tập trung vào gì, làm ra sao
+
+  M1: fix(a11y): contrast & landmarks. Trọng tâm là chứng minh WCAG 2.2 AA bằng
+  số đo, không chỉ báo "Lighthouse 100". Audit chưa tìm ra lỗi AA nào, nên
+  commit này chỉ gồm các điểm củng cố (mục A-1 đến A-4 trong AUDIT.md): số 01
+  hiện ở 3.03:1 nên đổi màu để có biên an toàn, thêm <meta name="color-scheme">,
+  và tính lại scroll-padding-top theo chiều cao header thật. Khi vấn đáp, điểm
+  mạnh là phép đo pixel cho chữ trên ảnh hero, vì axe-core không tính được chỗ
+  đó.
+
+  M2: fix(nav): keyboard trap prevention. Trọng tâm là không có bẫy bàn phím và
+  thứ tự Tab đúng. Audit cũng không tìm ra bẫy nào, vì menu là disclosure chứ
+  không phải modal. Việc cần làm là hai điểm củng cố (K-1, K-2): thêm
+  tabindex="-1" cho main để skip link chuyển focus thật sự vào trong, và đưa
+  focus về tiêu đề section sau khi chọn link trong menu. Câu cần nói được: tại
+  sao không dùng focus trap, và Esc, click ngoài, Tab ra ngoài đều đóng được
+  menu.
+
+  M3: fix(security): strict CSP & zero inline handlers. Trọng tâm là CSP phải có
+  hiệu lực thật. Việc bắt buộc là thêm meta CSP làm phần tử đầu tiên trong
+  <head>. Trang đã tương thích sẵn, nên khó khăn không nằm ở sửa code. Cách
+  chứng minh là kiểm thử ngược: thêm tạm một onclick= hoặc <script> inline, xác
+  nhận trình duyệt báo Refused to ..., rồi gỡ ra. Cần biết giới hạn: meta CSP
+  không hỗ trợ frame-ancestors hay report-uri, và máy chủ tĩnh không gửi được
+  header. Bạn nên cân nhắc thêm require-trusted-types-for 'script', vì trang đã
+  chạy sạch với nó.
+
+  M4: perf: optimize assets. Đây là milestone có việc thật nhiều nhất. Thứ tự
+  nên làm:
+  1. Sửa CLS. Không chỉ đổi HTML như bản thử, vì làm vậy mất menu khi tắt JS.
+     Cách đúng: theme-init.js thêm class js vào <html> từ sớm, rồi CSS chỉ thu
+     gọn menu khi có class đó.
+  2. Giảm 12 tài nguyên chặn render và chỉnh kích thước ảnh hero. Hai việc này
+     quyết định LCP (2.1 s), tức điểm 1 còn thiếu để từ 99 lên 100.
+  3. Ghi vào README những thứ không sửa được trong repo: không nén văn bản và
+     không có header cache (do máy chủ phát triển).
+
+  Có một điểm bạn nên biết: "Lighthouse 100" chỉ là mục tiêu, và điểm mobile có
+  dao động giữa các lần chạy. Mình khuyên báo cáo điểm kèm cách đo thay vì hứa
+  chắc con số.
+
+  Lưu ý về commit: M1 và M2 không có lỗi thật. Theo quy tắc
+  TASK_DECOMPOSITION.md, mình không tạo commit rỗng. Bạn có thể giữ hai commit
+  đó với các điểm củng cố như trên, hoặc gộp ghi chú audit vào commit khác. Bạn
+  quyết định, vì thầy yêu cầu đúng message của bốn commit này.
+
+  Commit đề xuất:
+  git add Homework_1/css/motion.css Homework_1/css/tokens.css
+  Homework_1/js/reveal.js Homework_1/js/magnetic.js
+  Homework_1/js/project-feed.js Homework_1/index.html
+  Homework_1/TASK_DECOMPOSITION.md
+  git commit -m "feat(motion): scroll reveal, nav underline, card dock and
+  magnetic buttons"
+
+  git add Homework_1/AUDIT.md
+  git commit -m "docs(audit): baseline findings before milestones M1-M4"
+
+  Bạn muốn mình bắt đầu M1 (với các điểm củng cố), hay nhảy sang M3 và M4 là hai
+  milestone có việc thật trước?
+
+> Sao mình thấy đã đủ cho 4 cái M r mà hỉ
+
+● Bạn đúng một nửa.
+
+  M1 và M2: đã đủ, đúng như bạn thấy. Audit không tìm ra lỗi WCAG AA hay bẫy bàn
+  phím nào. Những điểm mình liệt kê (A-1 đến A-4, K-1, K-2) là củng cố thêm chứ
+  không phải lỗi. Nếu bạn thấy không cần thì có thể bỏ. Việc còn lại với hai
+  milestone này chỉ là có bằng chứng audit (đã nằm trong AUDIT.md) và chốt
+  commit.
+
+  M3 và M4: chưa đủ.
+  - M3: trang chưa có CSP. Nó đã tương thích sẵn nên việc chỉ là thêm một thẻ
+    meta vào <head>, nhưng thẻ đó chưa có, và đề bài yêu cầu "strict CSP".
+  - M4: Lighthouse mobile đang là 87, không phải 100, vì CLS 0.224. Desktop thì
+    đã 100. Đề yêu cầu 100.
+
+  Nên tối thiểu còn hai việc:
+  1. Thêm meta CSP (khoảng 1 dòng, kèm kiểm thử ngược để chứng minh nó có hiệu
+     lực).
+  2. Sửa CLS để Performance mobile lên 99–100.
+
+  Hai việc này nhỏ, mình làm luôn được nếu bạn muốn. Bạn chốt M1 và M2 theo
+  hướng nào: giữ commit với các điểm củng cố, hay bỏ qua vì đã đạt?
+
+> OK hoàn thiện M3 và M4 đi
+
+● Mình làm M3 trước, rồi đến M4, mỗi cái một commit riêng. Với M3, mình thêm
+  meta CSP rồi chứng minh nó có hiệu lực bằng kiểm thử ngược trên bản sao.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Giờ tôi sẽ thử chèn các thứ CSP phải chặn (inline handler, inline script,
+  style=, tài nguyên domain ngoài, javascript:, innerHTML chuỗi, eval) vào bản
+  sao để xác nhận trình duyệt chặn được, đồng thời kiểm tra các tính năng trên
+  bản thật vẫn hoạt động bình thường. · summary
+
+  Made 1 scratchpad edit +64, ran 1 shell command (ctrl+o to expand)
+
+● Hầu hết bị chặn đúng, nhưng kết quả eval qua Runtime.evaluate không đáng tin
+  do DevTools được miễn CSP. Tôi sẽ kiểm tra lại bằng một file script cùng
+  origin do trang tự nạp để phản ánh điều kiện thực tế. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Cả hai tầng CSP đã hoạt động đúng, chặn được mọi vector như inline
+  handler/script, javascript:, eval, innerHTML bằng chuỗi... trong khi trang
+  thật vẫn chạy bình thường — M3 hoàn tất. Giờ chuyển sang M4: sửa CLS theo cách
+  giữ progressive enhancement, không chỉ đơn giản đổi HTML như lần thử trước.
+  · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(Homework_1\css\nav.css)
+  ⎿  Added 28 lines, removed 21 lines
+       3     Contract: Homework_1/TASK_DECOMPOSITION.md §6 T-10
+       4     Mobile-first: the links stack in a menu that the "Menu" butt
+          on opens.
+       5     From 48rem they sit in a row and the button is not shown. Th
+          e 48rem
+       6 -   breakpoint is the same one js/nav-toggle.js uses.           
+       7 -   Without JS the button stays [hidden] and the menu is simply 
+         -open.                                                          
+       6 +   breakpoint is the same one js/nav-toggle.js relies on.      
+       7     Lives on the sea band, so it uses the --band-* tokens.
+       8 +                                                               
+       9 +   Progressive enhancement without layout shift: js/theme-init.
+         +js adds class                                                  
+      10 +   "js" to <html> before the first paint. Everything JS-only (M
+         +enu button,                                                    
+      11 +   theme switcher, the collapsed menu) is therefore drawn in it
+         +s final state                                                  
+      12 +   from the start, so nothing moves when the module scripts run
+         + later.                                                        
+      13 +   Without JS there is no "js" class: the menu is a plain open 
+         +list of links                                                  
+      14 +   and the two buttons, which would do nothing, are not shown. 
+      15     ============================================================
+          ============== */
+      16  
+      17  .site-header nav {
+     ...
+      23    list-style: none;
+      24  }
+      25  
+      20 -.nav-list[hidden] {                                            
+      21 -  display: none;                                               
+      22 -}                                                              
+      23 -                                                               
+      26  .nav-list > li + li {
+      27    border-top: 1px solid color-mix(in srgb, var(--band-text) 35%
+          , transparent);
+      28  }
+     ...
+      40  
+      41  /* The theme switcher is the last item of the list (theme-switc
+          her.css) */
+      42  .nav-list > li:has(.theme-switcher) {
+      43 +  display: none;                                               
+      44    padding-block: var(--space-3);
+      45  }
+      46  
+      47 +.js .nav-list > li:has(.theme-switcher) {                      
+      48 +  display: list-item;                                          
+      49 +}                                                              
+      50 +                                                               
+      51  /* Menu button ------------------------------------------------
+          -------------- */
+      52  
+      53  .nav-toggle {
+      47 -  display: inline-flex;                                        
+      54 +  display: none;                                               
+      55    align-items: center;
+      56    min-height: 2.75rem;
+      57    padding-inline: var(--space-4);
+     ...
+      65    cursor: pointer;
+      66  }
+      67  
+      61 -.nav-toggle[hidden] {                                          
+      62 -  display: none;                                               
+      63 -}                                                              
+      64 -                                                               
+      68  .nav-toggle[aria-expanded="true"] {
+      69    background-color: var(--band-text);
+      70    color: var(--band-bg);
+      71  }
+      72  
+      70 -/* Wider screens: links in a row, no menu button --------------
+         -----------------                                               
+      71 -   [hidden] is overridden here on purpose: if the menu was clos
+         -ed on a phone                                                  
+      72 -   and the window is then widened, the links must still show. *
+         -/                                                              
+      73 +/* Phones, JS available: button shown, menu closed until it is 
+         +opened */                                                      
+      74  
+      75 +@media (max-width: 47.99rem) {                                 
+      76 +  .js .nav-toggle {                                            
+      77 +    display: inline-flex;                                      
+      78 +  }                                                            
+      79 +                                                               
+      80 +  .js .nav-list:not([data-open]) {                             
+      81 +    display: none;                                             
+      82 +  }                                                            
+      83 +}                                                              
+      84 +                                                               
+      85 +/* Wider screens: links in a row, no menu button --------------
+         +---------------- */                                            
+      86 +                                                               
+      87  @media (min-width: 48rem) {
+      88    .site-header nav {
+      89      flex-basis: auto;
+      90    }
+      91  
+      79 -  .nav-list,                                                   
+      80 -  .nav-list[hidden] {                                          
+      92 +  .nav-list {                                                  
+      93      display: flex;
+      94      flex-wrap: wrap;
+      95      align-items: center;
+     ...
+      108    .nav-list > li:has(.theme-switcher) {
+      109      padding-block: 0;
+      110    }
+       99 -                                                              
+      100 -  .nav-toggle,                                                
+      101 -  .nav-toggle[hidden] {                                       
+      102 -    display: none;                                            
+      103 -  }                                                           
+      111  }
+
+● Các thay đổi đã áp dụng đúng. Tiếp theo tôi sẽ làm trạng thái "pressed" của
+  nút theme dựa trên data-theme (set sẵn trước lần vẽ đầu) để tránh nháy, và tối
+  ưu ảnh hero. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Giờ đo lại: Lighthouse mobile (hai lần để thấy độ dao động) và desktop, cùng
+  kiểm tra không có chức năng nào bị hỏng.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● CLS đã về 0 trên cả mobile và desktop, Performance mobile tăng từ 87 lên 97,
+  nhưng LCP mobile lại xấu hơn (2.4s so với 2.1s) — có thể do preload ảnh hero
+  tranh băng thông với CSS khi mạng chậm. Tôi sẽ thử nghiệm hai biến thể trên
+  bản sao để kiểm chứng bằng số đo thực tế. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Lệnh bị chặn vì rm -rf với biến shell. Mình viết lại không cần xóa: thư mục v1
+  và v2 chưa tồn tại nên chỉ cần tạo mới.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Bỏ preload ảnh tăng lên 98, gộp CSS tăng tiếp lên 99 nhưng mobile vẫn chưa đạt
+  100 - có thể do sizes="180vw" khiến mobile tải ảnh 1600px (52 KB) không cần
+  thiết cho ảnh đã phủ tối 74%. Mình sẽ thử hạ xuống 100vw để kiểm tra.
+  · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Ảnh hero đã giảm một nửa dung lượng nhưng LCP không đổi — nghẽn thực sự nằm ở
+  CSS chặn FCP, không phải ảnh. Giờ tôi thử bỏ preload font và minify CSS để
+  kiểm tra giới hạn cải thiện tối đa. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Kết quả cho thấy bỏ preload font và preload ảnh hero đều làm điểm tệ hơn nên
+  mình giữ preload font nhưng bỏ preload ảnh, còn gộp/minify CSS chỉ tăng được 1
+  điểm (99) vì thiếu gzip từ server. Mình sẽ không đưa bước build vào repo để
+  giữ đơn giản, chỉ bỏ preload ảnh trên trang thật rồi kiểm tra lại không hỏng
+  gì. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+● Nav, bàn phím và theme vẫn hoạt động bình thường. Mình sẽ chạy đo lường cuối
+  trên bản thật: Lighthouse, chiều cao header trước/sau JS, no-JS, và kiểm tra
+  lại tương phản hero với ảnh 1280px mới thêm. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mobile đạt 97–98, desktop 100, CLS về 0 ở cả hai, và header đã hết nhảy nhờ vẽ
+  sẵn trạng thái thu gọn. Giờ tôi sẽ đo lại tương phản hero với ảnh 1280px mới
+  thêm. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Mọi phép đo đều ra 1.00, cho thấy chữ không bị ẩn vì CSP mới chặn đúng thẻ
+  <style> mà script đo chèn vào (tức CSP đang hoạt động đúng). Tôi sẽ chuyển
+  sang ẩn chữ bằng CSSOM, cách mà CSP cho phép. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Dấu backtick trong heredoc bị shell hiểu nhầm. Mình sửa file bằng công cụ
+  Edit.
+
+  Made 2 scratchpad edits +41 -1, ran 1 shell command (ctrl+o to expand)
+
+● Edit bị từ chối vì chưa đọc file trong phiên này. Mình đọc rồi sửa.
+
+  Made 1 scratchpad edit +2 -1, read 1 file, ran 1 shell command (ctrl+o to expand)
+
+● Tương phản hero giữ nguyên, tệ nhất 5.80:1. Giờ ghi kết quả vào AUDIT.md, đồng
+  bộ TD với cách làm mới của header, rồi dọn tiến trình.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Dọn các tiến trình test và kiểm tra lần cuối trạng thái repo.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● M3 xong hoàn toàn. M4 xong phần lớn: desktop đạt 100 cả 4 nhóm, nhưng
+  Performance mobile dừng ở 97–98, chưa chạm 100. Chưa commit gì.
+
+  M3, CSP:
+  - Meta CSP nằm ngay sau charset, kèm require-trusted-types-for 'script'.
+  - Trang thật chạy sạch dưới CSP: feed, ảnh, font, theme và hiệu ứng đều hoạt
+    động, 0 lỗi console.
+  - Mình kiểm thử ngược trên bản sao, chèn các thứ CSP phải chặn: onclick,
+    script inline, javascript:, style=, script và ảnh từ domain ngoài, eval, new
+    Function, setTimeout dạng chuỗi và innerHTML bằng chuỗi. Tất cả đều bị
+    chặn.
+  - Một lưu ý khi đo: lệnh eval gõ từ DevTools được miễn CSP, nên lần thử đầu
+    cho kết quả sai. Mình thử lại từ script do chính trang nạp.
+
+  M4, hiệu năng:
+
+  ┌─────────────────────────────────────────────┬───────┬───────┐
+  │                                             │ Trước │  Sau  │
+  ├─────────────────────────────────────────────┼───────┼───────┤
+  │ Mobile Performance                          │ 87    │ 97–98 │
+  ├─────────────────────────────────────────────┼───────┼───────┤
+  │ Mobile CLS                                  │ 0.224 │ 0     │
+  ├─────────────────────────────────────────────┼───────┼───────┤
+  │ Desktop Performance                         │ 100   │ 100   │
+  ├─────────────────────────────────────────────┼───────┼───────┤
+  │ Accessibility, Best Practices, SEO (cả hai) │ 100   │ 100   │
+  └─────────────────────────────────────────────┴───────┴───────┘
+
+  - Lỗi CLS đã sửa. Class js được gắn vào <html> trước lần vẽ đầu, nên header ở
+    trạng thái thu gọn ngay từ đầu và không còn nhảy. Header mobile giữ 68px cả
+    trước lẫn sau khi JS chạy. Khi tắt JS, menu vẫn mở sẵn và dùng được.
+  - Ảnh hero: mình thêm bản 1280px (35 KB).
+
+  Vì sao mobile chưa 100: mình thử từng đòn bẩy và đo bằng Lighthouse, mỗi biến
+  thể hai lần:
+  - Preload ảnh hero: làm tệ hơn (97), nên mình bỏ.
+  - Bỏ preload font: tệ hơn, nên giữ preload.
+  - Gộp 11 file CSS thành 1: đạt 99.
+  - Gộp rồi minify CSS: cũng chỉ đạt 99.
+
+  Kết quả cho thấy mobile 100 trên mạng giả lập chậm không đạt được nếu server
+  không nén gzip. Mình không đưa bước build vào repo, vì nó phá nguyên tắc "sửa
+  một dòng là xong" của bạn mà chỉ thêm 1 điểm. Nếu thầy chạy Lighthouse ở chế
+  độ desktop thì đạt 100. Nếu chạy mobile thì bạn nên giải thích bằng số đo
+  trong AUDIT.md thay vì hứa con số.
+
+  Hero vẫn đạt tương phản sau các thay đổi (tệ nhất 5.80:1). Menu, bàn phím và
+  theme không bị hỏng. AUDIT.md và TASK_DECOMPOSITION.md đã cập nhật theo kết
+  quả này.
+
+  Commit đề xuất. Hai commit này cùng sửa index.html, nên bạn dùng git add -p để
+  tách đúng hunk. Nếu thấy phiền, gộp index.html vào M4:
+  # M3: chỉ hunk meta CSP trong index.html
+  git add -p Homework_1/index.html
+  git commit -m "fix(security): strict CSP & zero inline handlers"
+
+  # M4
+  git add Homework_1/css/nav.css Homework_1/css/theme-switcher.css
+  Homework_1/index.html Homework_1/js/nav-toggle.js Homework_1/js/theme-init.js
+  Homework_1/js/theme-toggle.js Homework_1/assets/sea-hero-1280.*
+  Homework_1/AUDIT.md Homework_1/TASK_DECOMPOSITION.md
+  git commit -m "perf: optimize assets"
+
+  Hai commit M1 và M2 vẫn chưa làm, vì audit không tìm ra lỗi thật. Bạn muốn
+  mình làm các điểm củng cố đó (A-1 đến A-4, K-1, K-2) để có commit với đúng
+  message của thầy, hay bỏ qua?
+
+> <ide_opened_file>The user opened the file
+  c:\Dev\Project\MSIS207_Lab1\Homework_1\AUDIT.md in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+> PS C:\Dev\Project\MSIS207_Lab1> # M3: chỉ hunk meta CSP trong index.html
+  PS C:\Dev\Project\MSIS207_Lab1> git add -p Homework_1/index.html
+  diff --git a/Homework_1/index.html b/Homework_1/index.html
+  index a779e67..824046c 100644
+  --- a/Homework_1/index.html
+  +++ b/Homework_1/index.html
+  @@ -2,6 +2,10 @@
+   <html lang="en">
+   <head>
+     <meta charset="UTF-8">
+  - <!-- Strict CSP. It must come before any script, style or image: a meta
+  policy only
+  -
+    governs what follows it. A meta tag cannot carry frame-ancestors,
+  report-uri or
+  -
+    sandbox; those need an HTTP header on a real host. -->
+  - <meta http-equiv="Content-Security-Policy" content="default-src 'none';
+  script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self';
+  connect-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none';
+  require-trusted-types-for 'script'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Portfolio of Quảng Phú Hưng, an
+  Information Systems student at UIT building backend and AI-powered full-stack
+  systems.">
+    <title>Quảng Phú Hưng | Backend &amp; AI Developer</title>
+    (1/4) Stage this hunk [y,n,q,a,d,k,K,j,J,g,/,e,p,P,?]?
+    (1/4) Stage this hunk [y,n,q,a,d,k,K,j,J,g,/,e,p,P,?]?
+    (1/4) Stage this hunk [y,n,q,a,d,k,K,j,J,g,/,e,p,P,?]?
+    PS C:\Dev\Project\MSIS207_Lab1> git commit -m "fix(security): strict CSP &
+  zero inline handlers"
+    On branch dev
+    Your branch is ahead of 'origin/dev' by 12 commits.
+      (use "git push" to publish your local commits)
+
+  Changes not staged for commit:
+    (use "git add <file>..." to update what will be committed)
+    (use "git restore <file>..." to discard changes in working directory)
+          modified:   Homework_1/AUDIT.md
+          modified:   Homework_1/TASK_DECOMPOSITION.md
+          modified:   Homework_1/css/nav.css
+          modified:   Homework_1/css/theme-switcher.css
+          modified:   Homework_1/index.html
+          modified:   Homework_1/js/nav-toggle.js
+          modified:   Homework_1/js/theme-init.js
+          modified:   Homework_1/js/theme-toggle.js
+
+  Untracked files:
+    (use "git add <file>..." to include in what will be committed)
+          Homework_1/assets/sea-hero-1280.avif
+          Homework_1/assets/sea-hero-1280.jpg
+          Homework_1/assets/sea-hero-1280.webp
+
+  no changes added to commit (use "git add" and/or "git commit -a")
+  PS C:\Dev\Project\MSIS207_Lab1>
+  PS C:\Dev\Project\MSIS207_Lab1> # M4
+  PS C:\Dev\Project\MSIS207_Lab1> git add Homework_1/css/nav.css
+  Homework_1/css/theme-switcher.css Homework_1/index.html
+  Homework_1/js/nav-toggle.js Homework_1/js/theme-init.js
+  Homework_1/js/theme-toggle.js Homework_1/assets/sea-hero-1280.*
+  Homework_1/AUDIT.md Homework_1/TASK_DECOMPOSITION.md
+  warning: in the working copy of 'Homework_1/AUDIT.md', LF will be replaced by
+  CRLF the next time Git touches it
+  warning: in the working copy of 'Homework_1/css/nav.css', LF will be replaced
+  by CRLF the next time Git touches it
+  PS C:\Dev\Project\MSIS207_Lab1> git commit -m "perf: optimize assets"
+  [dev 751af7f] perf: optimize assets
+   11 files changed, 138 insertions(+), 50 deletions(-)
+   create mode 100644 Homework_1/assets/sea-hero-1280.avif
+   create mode 100644 Homework_1/assets/sea-hero-1280.jpg
+   create mode 100644 Homework_1/assets/sea-hero-1280.webp
+  PS C:\Dev\Project\MSIS207_Lab1>
+  Lỗi gì vậy
+
+● Không có lỗi trong code. Đây là lỗi thao tác với git add -p, và hậu quả là
+  commit M3 chưa được tạo.
+
+  Chuyện đã xảy ra:
+  1. git add -p hỏi Stage this hunk [y,n,q,...]? và chờ bạn gõ một chữ cái rồi
+     Enter. Trong log, dòng đó lặp lại 3 lần mà không có câu trả lời, nên không
+     có hunk nào được stage.
+  2. Vì vậy git commit -m "fix(security)..." báo no changes added to commit và
+     không tạo commit nào.
+  3. Sau đó lệnh git add Homework_1/index.html ... của M4 stage cả file
+     index.html, kéo theo meta CSP. Commit 751af7f perf: optimize assets hiện
+     chứa luôn phần CSP của M3.
+
+  Kết quả: lịch sử của bạn đang thiếu commit fix(security): strict CSP & zero
+  inline handlers, trong khi thầy yêu cầu commit này. Các cảnh báo LF will be
+  replaced by CRLF chỉ là cảnh báo về ký tự xuống dòng, không sao.
+
+  Cách sửa. Commit 751af7f chưa push (branch dev đang "ahead by 12 commits"),
+  nên làm lại an toàn được. Bạn chạy từng lệnh:
+
+  git reset --soft HEAD~1
+  git restore --staged Homework_1/index.html
+  git add -p Homework_1/index.html
+  Tới câu hỏi (1/4) Stage this hunk, gõ y rồi Enter. Hunk 1/4 chính là meta CSP.
+  Với 3 hunk còn lại gõ n rồi Enter cho từng hunk. Sau đó:
+
+  git commit -m "fix(security): strict CSP & zero inline handlers"
+  git add Homework_1
+  git commit -m "perf: optimize assets"
+
+  Lệnh git reset --soft chỉ gỡ commit M4 và giữ nguyên toàn bộ thay đổi, không
+  mất gì. Nếu bạn đã push 751af7f lên remote thì đừng làm theo cách này, cho
+  mình biết để đổi cách xử lý.
+
+  Nếu thấy phiền, bạn cũng có thể giữ nguyên lịch sử hiện tại và chấp nhận CSP
+  nằm trong commit M4. Nhưng khi đó sẽ không có commit nào mang đúng message M3.
