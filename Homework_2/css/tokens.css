@@ -1,0 +1,35 @@
+/* All colors live here. Every other stylesheet uses var(--token) only. */
+:root {
+  color-scheme: light dark;
+
+  --bg: #f6f4ef;
+  --surface: #ffffff;
+  --text: #1c1b1f;
+  --text-muted: #55525c;
+  --border: #6b6860;
+  --accent: #5b2bd1;
+  --on-accent: #ffffff;
+  --focus-ring: #1c1b1f;
+  --disabled-text: #6b6860;
+  --disabled-bg: #e6e3dc;
+
+  --radius: 0.75rem;
+  --space: 1rem;
+  --pad-min: 7rem;
+  --press-ms: 120ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121118;
+    --surface: #1d1b25;
+    --text: #ece9f2;
+    --text-muted: #b3afbd;
+    --border: #8a8696;
+    --accent: #b69cff;
+    --on-accent: #121118;
+    --focus-ring: #ece9f2;
+    --disabled-text: #8a8696;
+    --disabled-bg: #25232d;
+  }
+}
