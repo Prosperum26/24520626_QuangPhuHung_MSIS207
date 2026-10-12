@@ -1,9 +1,8 @@
 // Polyphonic audio engine. Reads <audio data-sound> sources, knows nothing about
-// keyboards, recorders or main.js. Public API: AudioEngine.init(root), AudioEngine.play(soundId).
+// keyboards, recorders or main.js. Public API: AudioEngine.init(root, { soundAttr }), AudioEngine.play(soundId).
 (function () {
   'use strict';
 
-  const SOUND_ATTR = 'data-sound';
   const sources = new Map();
 
   // Release the clone's media resource; safe to call more than once.
@@ -12,10 +11,12 @@
     clone.load();
   }
 
-  function init(root = document) {
+  function init(root, options) {
+    const { soundAttr } = options || {};
+    if (!soundAttr) throw new TypeError('AudioEngine.init: options { soundAttr } is required');
     sources.clear();
-    root.querySelectorAll(`audio[${SOUND_ATTR}]`).forEach((audio) => {
-      const id = audio.getAttribute(SOUND_ATTR);
+    root.querySelectorAll(`audio[${soundAttr}]`).forEach((audio) => {
+      const id = audio.getAttribute(soundAttr);
       if (!id || sources.has(id)) return;
       sources.set(id, audio);
     });

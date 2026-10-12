@@ -1,28 +1,25 @@
 // Turns key presses and pad clicks into hits. Knows only the HTML contract
 // (data-key / data-sound), not what a hit does: it reports each one to the
-// callback. Public API: KeyboardInput.init(root, onHit, options?).
+// callback. Public API: KeyboardInput.init(root, onHit, { keyAttr, soundAttr, playingAttr, playingMs }).
+// Names and timing come from the caller (main.js CONFIG); there are no defaults to keep in sync.
 (function () {
   'use strict';
-
-  const DEFAULTS = {
-    keyAttr: 'data-key',
-    soundAttr: 'data-sound',
-    playingAttr: 'data-playing',
-    playingMs: 120,
-  };
 
   // Typing targets: never steal their keystrokes.
   const EDITABLE = 'input, textarea, select, [contenteditable]';
 
   let teardown = null;
 
-  function init(root, onHit, options = {}) {
+  function init(root, onHit, options) {
     if (typeof onHit !== 'function') {
       throw new TypeError('KeyboardInput.init(root, onHit): onHit must be a function');
     }
+    const { keyAttr, soundAttr, playingAttr, playingMs } = options || {};
+    if (!keyAttr || !soundAttr || !playingAttr || !(playingMs >= 0)) {
+      throw new TypeError('KeyboardInput.init: options { keyAttr, soundAttr, playingAttr, playingMs } are required');
+    }
     if (teardown) teardown();
 
-    const { keyAttr, soundAttr, playingAttr, playingMs } = { ...DEFAULTS, ...options };
     const pads = new Map();
     const timers = new WeakMap();
 

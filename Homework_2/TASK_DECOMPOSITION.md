@@ -92,9 +92,9 @@ Mọi thứ khác (tên class, id nút recorder) cũng khoá cứng ở đây; k
 
 | Module | API | Ghi chú |
 |---|---|---|
-| `audio-engine.js` | `init(root)`, `play(soundId)` | `init` quét `audio[data-sound]` một lần. `play` clone node hoặc tạo source mới mỗi lần gọi để chồng tiếng. Bắt `play().catch(...)`; `soundId` lạ thì bỏ qua êm |
-| `keyboard-input.js` | `init(root, onHit)` | Gọi `onHit(soundId, el)` khi có hit hợp lệ. Không biết engine/recorder là gì |
-| `beat-recorder.js` | `start()`, `stop()`, `record(soundId)`, `getQueue()`, `playback(onHit)`, `isRecording()` | Không phát âm thanh trực tiếp; phát lại bằng cách gọi `onHit` do `main.js` đưa vào |
+| `audio-engine.js` | `init(root, { soundAttr })`, `play(soundId)` | `init` quét `audio[data-sound]` một lần; tên attribute do `main.js` (`CONFIG`) truyền vào, module không giữ giá trị mặc định. `play` clone node hoặc tạo source mới mỗi lần gọi để chồng tiếng. Bắt `play().catch(...)`; `soundId` lạ thì bỏ qua êm |
+| `keyboard-input.js` | `init(root, onHit, { keyAttr, soundAttr, playingAttr, playingMs })` | Gọi `onHit(soundId, el)` khi có hit hợp lệ; tên attribute và thời gian highlight do `main.js` (`CONFIG`) truyền vào. Không biết engine/recorder là gì |
+| `beat-recorder.js` | `start()`, `stop()`, `record(soundId)`, `getQueue()`, `playback(onHit, { speed, onEnd }?)`, `isRecording()` | Không phát âm thanh trực tiếp; phát lại bằng cách gọi `onHit` do `main.js` đưa vào |
 
 ### 3.3 Dạng event trong queue (bước 4)
 
@@ -190,7 +190,7 @@ Commit 1 **không chứa JS**, đúng yêu cầu "commit contract trước khi c
 
 ### T-05-J – Wiring (commit 5)
 
-- `main.js`: `engine.init()`, `input.init(root, onHit)`, nút Record/Stop/Play.
+- `main.js`: `engine.init(root, { soundAttr })`, `input.init(root, onHit, config)`, nút Record/Stop/Play.
 - `onHit(soundId, el)` = `engine.play(soundId)`, rồi nếu `recorder.isRecording()` thì `recorder.record(soundId)`.
 - Phát lại = `recorder.playback(soundId => engine.play(soundId))`. Hit lúc phát lại **không** được ghi ngược vào queue.
 - Cập nhật `disabled` của nút và `.recorder-status` theo trạng thái (`idle | recording | playing`), một hàm `setMode` duy nhất.

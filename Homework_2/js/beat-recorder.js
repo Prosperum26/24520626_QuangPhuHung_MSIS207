@@ -1,6 +1,6 @@
 // FIFO beat recorder: a timestamped event queue. It stores and replays hits but
 // never produces sound itself; playback reports each hit to a callback.
-// Public API: BeatRecorder.start / stop / record / getQueue / playback / isRecording / isPlaying.
+// Public API: BeatRecorder.start / stop / record / getQueue / playback / isRecording.
 (function () {
   'use strict';
 
@@ -73,9 +73,5 @@
     return recording;
   }
 
-  function isPlaying() {
-    return playing;
-  }
-
-  window.BeatRecorder = { start, stop, record, getQueue, playback, isRecording, isPlaying };
+  window.BeatRecorder = { start, stop, record, getQueue, playback, isRecording };
 })();

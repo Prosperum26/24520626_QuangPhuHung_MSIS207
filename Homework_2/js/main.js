@@ -71,7 +71,13 @@
     if (started) setMode('playing');
   });
 
-  AudioEngine.init(document);
+  // data-key is the single source of truth: keep each visible <kbd> label in step with it.
+  document.querySelectorAll(`[${CONFIG.keyAttr}][${CONFIG.soundAttr}]`).forEach((pad) => {
+    const label = pad.querySelector('kbd');
+    if (label) label.textContent = pad.getAttribute(CONFIG.keyAttr).toUpperCase();
+  });
+
+  AudioEngine.init(document, { soundAttr: CONFIG.soundAttr });
   KeyboardInput.init(document, onHit, {
     keyAttr: CONFIG.keyAttr,
     soundAttr: CONFIG.soundAttr,
