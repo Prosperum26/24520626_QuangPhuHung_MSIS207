@@ -21,6 +21,7 @@
 
   /* Semantic colours – light theme */
   --bg: var(--sand);
+  --bg-end: color-mix(in srgb, var(--foam) 50%, var(--pearl)); /* page fades to pale water; deep on it is 5.25:1 */
   --surface: var(--pearl);
   --text: var(--ink);
   --text-muted: var(--sea-deep);
@@ -55,6 +56,11 @@
   --tile: color-mix(in srgb, var(--tide-text) 8%, transparent);
   --tile-line: color-mix(in srgb, var(--tide-text) 30%, transparent);
   --hover-tint: color-mix(in srgb, var(--sea-mid) 14%, transparent);
+
+  /* Bubbles (css/art.css): translucent, so text over them keeps its contrast */
+  --bubble-glint: color-mix(in srgb, var(--pearl) 85%, transparent);
+  --bubble-fill: color-mix(in srgb, var(--foam) 14%, transparent);
+  --bubble-rim: color-mix(in srgb, var(--sea-mid) 38%, transparent);
 
   /* Dotted rule between list rows */
   --rule: color-mix(in srgb, var(--sea-mid) 70%, transparent);
@@ -103,6 +109,10 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: var(--ink);
+    --bg-end: color-mix(in srgb, var(--sea-deep) 35%, var(--ink));
+    --bubble-glint: color-mix(in srgb, var(--foam) 45%, transparent);
+    --bubble-fill: color-mix(in srgb, var(--foam) 8%, transparent);
+    --bubble-rim: color-mix(in srgb, var(--foam) 30%, transparent);
     --surface: color-mix(in srgb, var(--sea-mid) 14%, var(--ink));
     --text: var(--sand);
     --text-muted: var(--foam);
@@ -159,6 +169,8 @@ ol {
 body {
   min-height: 100vh;
   background-color: var(--bg);
+  /* Flat for the first quarter (the hero, already contrast-checked), then a slow fade down the page */
+  background-image: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 25%, var(--bg-end) 100%);
   color: var(--text);
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
