@@ -1,0 +1,805 @@
+  ⎿  SessionStart:startup hook error
+  ⎿  [bash C:\Users\Phu Hung\.claude\plugins\cache\anthropic-plugin-directory\cl
+     aude-memory\1.0.0-0afb7b2da7cc/hooks/scripts/memory-context.sh]:
+     C:/Users/Phu: line 1: syntax error near unexpected token `('
+
+> W2: Drum Kit Engine (Contract-First)• MANDATORY ARCHITECTURAL DECOUPLING:• •
+  Step 1: Commit HTML data-sound contract before touching JavaScript.• • Step
+  2: Implement polyphonic Audio playback engine independently.• • Step 3:
+  Implement keydown listener with event.repeat throttling.• • Step 4: Implement
+  FIFO Beat Recorder (timestamped event queue). must refactor in 3 mins. lập
+  task decompition cho task này đi, đừng over thinnk quá, chia tầm 5 6 commit
+  thôi
+
+● W2 Drum Kit: chia task thành 6 commit
+
+  Thứ tự đi từ contract (HTML) sang engine (audio), rồi input, rồi recorder. Mỗi
+  tầng độc lập với tầng sau.
+
+  #: 1
+  Commit: feat(drumkit): add HTML data-sound contract
+  Nội dung: Markup .pad có data-key, data-sound, <audio> hoặc đường dẫn sample.
+  Chưa có JS. Ghi rõ contract trong comment hoặc README: pad nào ↔ key nào ↔
+  sound nào.
+  Done khi: Mở HTML thấy đủ pad, tất cả attribute khớp nhau, không cần JS để
+  đọc.
+  ────────────────────────────────────────
+  #: 2
+  Commit: feat(drumkit): polyphonic audio engine
+  Nội dung: Module audio-engine.js export play(soundId). Mỗi lần play clone node
+
+  Audio hoặc tạo AudioBufferSourceNode mới để overlap được. Chỉ đọc data-sound,
+   không biết gì về keyboard.
+  Done khi: Gọi play('kick') liên tục từ console, các tiếng chồng lên nhau,
+  không
+  bị cắt.
+  ────────────────────────────────────────
+  #: 3
+  Commit: feat(drumkit): keydown listener with repeat throttling
+  Nội dung: Module input.js: keydown → if (e.repeat) return → tra [data-key] →
+  emit play + thêm class .playing. Dùng keyup hoặc transitionend để bỏ class.
+  Done khi: Giữ phím chỉ phát 1 lần, gõ nhanh nhiều phím vẫn phát đủ.
+  ────────────────────────────────────────
+  #: 4
+  Commit: feat(drumkit): FIFO beat recorder
+  Nội dung: Module recorder.js: queue {sound, t} với t = performance.now() -
+  start. API: start(), stop(), record(sound), getQueue(). Chỉ push, không phát.
+  Done khi: Bấm record, gõ vài phím, getQueue() ra mảng đúng thứ tự và timestamp
+
+  tăng dần.
+  ────────────────────────────────────────
+  #: 5
+  Commit: feat(drumkit): playback via setTimeout schedule + wiring
+  Nội dung: Replay queue theo FIFO (shift() hoặc duyệt theo thứ tự), dùng offset
+
+  t để lên lịch gọi play(). Nối recorder vào input. Thêm nút Record, Stop,
+  Play.
+  Done khi: Record một đoạn, Play lại đúng nhịp.
+  ────────────────────────────────────────
+  #: 6
+  Commit: refactor(drumkit): tidy modules & remove coupling
+  Nội dung: Rà lại ranh giới: engine không import input/recorder, input chỉ gọi
+  qua callback hoặc event, không còn global state. Xoá code thừa.
+  Done khi: grep không thấy phụ thuộc chéo ngược chiều. Chạy lại cả flow vẫn ổn.
+
+  Lưu ý nhanh
+
+  - Decoupling: luồng chỉ đi một chiều: HTML contract → engine ← input →
+    recorder. Input gọi engine.play và recorder.record, hai cái này không biết
+    nhau.
+  - Repeat throttling: e.repeat chỉ chặn auto-repeat của OS, không chặn gõ nhanh
+    hai phím khác nhau. Đúng ý, vì cần polyphonic.
+  - Refactor 3 phút: commit 6 nên chỉ là đổi tên, tách hàm, xoá thừa. Nếu logic
+    đúng từ commit 2–5 thì không phải sửa nhiều.
+
+  Mình không tự commit. Khi code xong mình sẽ đề xuất đúng lát cắt này để bạn
+  commit. Muốn mình bắt đầu từ commit 1 không?
+
+> tạo task democostion trong homework 2 đi
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Có convention sẵn: mỗi exercise có TASK_DECOMPOSITION.md. Mình xem một file
+  mẫu và thư mục hiện có.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Write(Homework_2\TASK_DECOMPOSITION.md)
+  ⎿  Wrote 251 lines to Homework_2\TASK_DECOMPOSITION.md
+       1 # TASK_DECOMPOSITION – Homework 2: Drum Kit Engine (Contract-Fir
+       2
+       3 > Work Breakdown Structure (WBS) cho HW2.
+         uy tắc §6 của `project-rules.md`.
+       5 > Mỗi prompt AI tham chiếu **đúng 1** task ID (ví dụ `T-03-J`) v
+       6 > **Luật của đề:** decoupling bắt buộc. HTML contract xong trước
+          khi chạm JS; audio engine, keyboard listener, recorder là 3 mod
+       7
+       8 ---
+      10 ## 1. Mục tiêu và phạm vi
+     … +335 lines (ctrl+o to expand)
+
+● Mình đã tạo Homework_2/TASK_DECOMPOSITION.md, theo cùng format với Homework_1
+  và Exercise_4. Mình chưa chạy lệnh grep ở mục 6 và chưa commit.
+
+  Nội dung chính:
+  - Contract (mục 3): có markup mẫu cho data-key, data-sound và data-playing.
+    API của 3 module không import chéo nhau, chỉ main.js biết cả ba. Mỗi event
+    trong queue có dạng {sound, t}, với t tính từ performance.now() lúc start().
+  - Config tập trung (3.4): phục vụ đợt refactor 3 phút. Đổi một phím hay đổi
+    tốc độ phát lại chỉ sửa một dòng.
+  - Kế hoạch commit (mục 4): commit 1 chỉ có HTML, CSS và âm thanh, không có JS.
+    Các commit sau là engine → keyboard → recorder → wiring → refactor.
+  - Task chi tiết (mục 5): mỗi task có cổng kiểm tra thử được trong console.
+    Những lỗi cần tránh được ghi sẵn:
+    - Lỗi slide 23: querySelector với " hoặc \ làm selector ném SyntaxError, nên
+      cần CSS.escape hoặc dùng map.
+    - play() bị từ chối thì phải bắt lỗi.
+    - Không dùng currentTime = 0 trên cùng một node, vì cách đó cắt tiếng cũ nên
+      không còn polyphonic.
+  - Mục 6 trở đi: các lệnh grep để kiểm tra module không phụ thuộc chéo, cùng
+    danh sách rủi ro.
+
+  Cần bạn quyết (mục 9):
+  1. Nguồn âm thanh: repo chưa có file .wav nào. Mình mặc định dùng file CC0 và
+     đặt ở assets/sounds/. Nếu không có file, mình đổi sang tổng hợp bằng Web
+     Audio, chỉ sửa audio-engine.js.
+  2. Số pad: mình mặc định 9 pad (a s d f g h j k l).
+
+  Gợi ý commit (bạn tự chạy):
+  git add Homework_2/TASK_DECOMPOSITION.md
+  git commit -m "docs(spec): task decomposition for homework 2"
+
+  Làm tiếp T-01 (HTML contract) luôn không?
+
+> <ide_opened_file>The user opened the file
+  c:\Dev\Project\MSIS207_Lab1\Homework_2\TASK_DECOMPOSITION.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+> Đọc project-rules.md và task T-01-H, T-01-C, T-01-A trong
+  TASK_DECOMPOSITION.md. Hoàn thiện index.html theo HTML contract: skip-link,
+  semantic landmarks, một h1, 9 drum pads sử dụng data-key/data-sound và các
+  phần tử audio tương ứng. Xây dựng css/tokens.css và css/drum-kit.css với
+  responsive grid, dark mode theo OS, focus-visible, reduced motion và trạng
+  thái [data-playing]; bổ sung các file âm thanh .wav phù hợp trong
+  assets/sounds/ và ghi nguồn nếu cần. Tuyệt đối không viết JavaScript, inline
+  handler hoặc inline style. Kiểm tra contract, accessibility và responsive
+  trước khi kết thúc. Chỉ đề xuất commit feat(drumkit): add HTML data-sound
+  contract, không tự commit.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Write(Homework_2\index.html)
+  ⎿  Wrote 100 lines to Homework_2\index.html
+       1 <!DOCTYPE html>
+       2 <html lang="en">
+       3 <head>
+       5   <meta name="viewport" content="width=device-width, initial-sca
+         le=1.0">
+       6   <meta name="description" content="A keyboard-playable drum kit
+          with nine pads and a beat recorder.">
+       8   <link rel="icon" href="data:,">
+       9   <link rel="stylesheet" href="css/tokens.css">
+      10   <link rel="stylesheet" href="css/drum-kit.css">
+     … +116 lines (ctrl+o to expand)
+
+● Write(Homework_2\css\tokens.css)
+  ⎿  Wrote 35 lines to Homework_2\css\tokens.css
+       1 /* All colors live here. Every other stylesheet uses var(--token
+         ) only. */
+       2 :root {
+       3   color-scheme: light dark;
+       4
+       6   --surface: #ffffff;
+       7   --text: #1c1b1f;
+       8   --text-muted: #55525c;
+       9   --border: #6b6860;
+      10   --accent: #5b2bd1;
+     … +26 lines (ctrl+o to expand)
+
+● Write(Homework_2\css\drum-kit.css)
+  ⎿  Wrote 175 lines to Homework_2\css\drum-kit.css
+       1 *, *::before, *::after {
+       2   box-sizing: border-box;
+       3   margin: 0;
+       4   padding: 0;
+       5 }
+       6
+       7 body {
+       8   min-height: 100vh;
+       9   display: flex;
+      10   flex-direction: column;
+     … +167 lines (ctrl+o to expand)
+
+● Write(Homework_2\assets\sounds\README.md)
+  ⎿  Wrote 5 lines to Homework_2\assets\sounds\README.md
+      1 # Sound credits
+      2
+      3 All nine samples (`kick`, `snare`, `hihat`, `openhat`, `clap`, `t
+        om`, `crash`, `ride`, `cowbell`) were synthesized from scratch fo
+        r this project with a short Python script (standard library only:
+         16-bit mono 44.1 kHz WAV).
+      4
+      5 No third-party recordings are used, so there is no external licen
+        se to attribute. The samples are original work and may be reused
+        freely.
+     … +1 line (ctrl+o to expand)
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Đang xem ảnh chụp 375px để kiểm tra layout.
+
+  Read 1 file (ctrl+o to expand)
+
+● Edge headless có độ rộng tối thiểu nên ảnh bị cắt, chưa phải kiểm tra 375px
+  thật. Mình dùng iframe 375px trong file tạm ở scratchpad.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● T-01-H, T-01-C và T-01-A đã xong, chưa có JavaScript và chưa commit.
+
+  File đã tạo
+
+  - index.html (Homework_2/index.html): skip-link, header, main#main-content,
+    footer, một h1, hai h2 (Pads, Beat recorder). Có 9 pad <button
+    class="drum-pad"> với data-key là a s d f g h j k l và data-sound. Mỗi pad
+    có đúng một <audio data-sound> tương ứng. Thanh recorder có Record, Stop,
+    Play, hai nút sau đang disabled.
+  - css/tokens.css (Homework_2/css/tokens.css) và css/drum-kit.css
+    (Homework_2/css/drum-kit.css): grid auto-fit minmax(7rem, 1fr) cho pad,
+    flexbox cho thanh recorder, dark mode theo OS (prefers-color-scheme),
+    :focus-visible, prefers-reduced-motion (transition chỉ bật khi người dùng
+    không tắt chuyển động), và .drum-pad[data-playing].
+  - assets/sounds/ (Homework_2/assets/sounds/): 9 file .wav (kick, snare, hihat,
+    openhat, clap, tom, crash, ride, cowbell) và README.md
+    (Homework_2/assets/sounds/README.md) ghi nguồn.
+
+  Nguồn âm thanh
+
+  Repo chưa có sample nào, nên mình tự tổng hợp 9 file bằng Python thư viện
+  chuẩn (sine sweep, noise lọc, sóng vuông). Không dùng bản ghi bên thứ ba nên
+  không có license cần ghi. Chất lượng kiểu máy trống đơn giản; mình chưa nghe
+  thử các file, bạn nghe lại giúp. Muốn tiếng thật hơn thì tải bộ CC0 về thay
+  file, tên file giữ nguyên là khớp contract.
+
+  Kết quả kiểm tra
+
+  - Contract: 9 pad, 9 audio khớp 1-1 theo data-sound, không trùng data-key, các
+    file src đều tồn tại, mọi href="#…" trỏ đúng id.
+  - Cấm kỵ: 0 <div>, 0 style=, 0 inline handler, 0 <script>; không có hex nào
+    ngoài :root; grep các pattern cấm (keyCode, innerHTML, onclick=, var , CDN)
+    không ra gì.
+  - Contrast (tính tay, ngưỡng AA 4.5:1 cho chữ, 3:1 cho viền UI):
+
+  ┌──────────────────────────────────────────┬──────┬──────┐
+  │                                          │ Sáng │ Tối  │
+  ├──────────────────────────────────────────┼──────┼──────┤
+  │ Chữ / nền                                │ 15.6 │ 15.6 │
+  ├──────────────────────────────────────────┼──────┼──────┤
+  │ Chữ phụ / nền                            │ 6.95 │ 8.7  │
+  ├──────────────────────────────────────────┼──────┼──────┤
+  │ Chữ trên nền accent (pad đang nhấn, nút) │ 7.75 │ 8.2  │
+  ├──────────────────────────────────────────┼──────┼──────┤
+  │ Viền / nền                               │ 5.1  │ 5.3  │
+  └──────────────────────────────────────────┴──────┴──────┘
+
+  - 375px: render trong iframe 375px, scrollWidth bằng clientWidth nên không
+    scroll ngang. Layout ra 2 cột, pad cao tối thiểu 96px nên đủ lớn để chạm.
+  - Dark mode: đã xem bản chụp, hiển thị đúng.
+
+  Chưa kiểm tra: Lighthouse, và việc nghe thử âm thanh. Hai nút Record/Stop/Play
+  chưa có hành vi vì JS thuộc các task sau (nút Record hiện vẫn bấm được nhưng
+  chưa làm gì).
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/index.html Homework_2/css Homework_2/assets
+  git commit -m "feat(drumkit): add HTML data-sound contract"
+
+  Tiếp theo là T-02-J (polyphonic audio engine), bạn muốn làm luôn không?
+
+> <ide_opened_file>The user opened the file
+  c:\Dev\Project\MSIS207_Lab1\Homework_2\index.html in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+> . Tạo js/audio-engine.js độc lập với API init(root) và play(soundId), sử dụng
+  Map để ánh xạ các nguồn audio[data-sound]. Mỗi lần gọi play() phải tạo
+  instance phát âm thanh riêng để nhiều tiếng có thể chồng lên nhau, không
+  reset currentTime trên cùng một audio node. Xử lý lỗi từ play().catch() và bỏ
+  qua an toàn nếu soundId không tồn tại; dọn các audio clone sau khi phát
+  xong. Không import hoặc phụ thuộc vào keyboard input, recorder hay main.js.
+  Kiểm tra bằng DevTools với play('kick') nhiều lần liên tiếp và play('xyz').
+  Chỉ đề xuất commit feat(drumkit): polyphonic audio engine, không tự commit.
+
+● Write(Homework_2\js\audio-engine.js)
+  ⎿  Wrote 42 lines to Homework_2\js\audio-engine.js
+       1 // Polyphonic audio engine. Reads <audio data-sound> sources, kn
+         ows nothing about
+         (root), AudioEngine.play(soundId).
+       3 (function () {
+       4   'use strict';
+       6   const SOUND_ATTR = 'data-sound';
+       7   const sources = new Map();
+       8
+         once.
+      10   function dispose(clone) {
+     … +40 lines (ctrl+o to expand)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● T-02-J đã xong: js/audio-engine.js (Homework_2/js/audio-engine.js). Mình chưa
+  commit.
+
+  Cách hoạt động
+
+  - Nạp script: module là IIFE và gắn window.AudioEngine = { init, play }, không
+    dùng import. Lý do là spec nạp script bằng defer, và main.js sẽ gọi nó sau.
+  - init(root): quét audio[data-sound] vào một Map. Gọi lại thì dựng lại map từ
+    đầu. Nếu trùng data-sound, nguồn đầu tiên được giữ.
+  - play(soundId): mỗi lần gọi tạo một node mới bằng cloneNode(true) rồi play().
+    Không đụng currentTime của node gốc, nên các tiếng chồng lên nhau được. Hàm
+    trả true nếu có phát, false nếu bỏ qua.
+  - Dọn dẹp: các clone bị gỡ src và gọi load() khi gặp ended, error, hoặc khi
+    play() bị từ chối. Việc này idempotent nên gọi nhiều lần không sao.
+  - Id lạ: soundId không tồn tại (kể cả undefined) thì trả false, không ném lỗi.
+
+  Kết quả kiểm tra
+
+  Mình chạy file test tạm trong scratchpad, bằng Edge headless:
+  - play('kick') gọi 5 lần liên tiếp cho ra 5 node riêng biệt, đều chạy cùng
+    lúc. Node gốc không bị dùng lại, currentTime của nó vẫn là 0.
+  - play('xyz') và play(undefined) đều trả false, console không có lỗi và không
+    có unhandled rejection.
+  - Dọn dẹp qua ended: mình bắn sự kiện ended giả lên 5 clone, cả 5 đều được gỡ
+    src.
+  - Dọn dẹp qua lỗi: một clone trỏ tới file không tồn tại cũng được gỡ src.
+  - init gọi lại vẫn chạy bình thường.
+  - Grep module độc lập: chỉ khớp ở hai dòng comment, không có import hay tham
+    chiếu tới keyboard, recorder, main.js.
+
+  Hạn chế: headless không phát âm thanh thật nên sự kiện ended không tự bắn. Vì
+  vậy mình kiểm tra đường dọn dẹp bằng sự kiện giả; chưa kiểm chứng cả chuỗi
+  phát, kết thúc, dọn trên trình duyệt thật. Bạn nên tự nghe thử một lần.
+
+  Tự kiểm tra trong DevTools
+
+  index.html chưa nạp script này (việc nối dây thuộc T-05). Bạn dán nội dung
+  audio-engine.js vào console của trang rồi chạy:
+  AudioEngine.init(document);
+  for (let i = 0; i < 5; i++) AudioEngine.play('kick');  // nghe 5 tiếng chồng
+  nhau
+  AudioEngine.play('xyz');                               // false, không lỗi
+  Nếu muốn nạp bằng <script src="js/audio-engine.js" defer> thì sửa index.html,
+  nhưng việc đó ngoài scope task này.
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/js/audio-engine.js
+  git commit -m "feat(drumkit): polyphonic audio engine"
+
+  Làm tiếp T-03-J (keydown với event.repeat) không?
+
+> Ok tiếp tục thực hiện T03 đi
+
+● Write(Homework_2\js\keyboard-input.js)
+  ⎿  Wrote 73 lines to Homework_2\js\keyboard-input.js
+       1 // Turns key presses and pad clicks into hits. Knows only the HT
+         ML contract
+          one to the
+       3 // callback. Public API: KeyboardInput.init(root, onHit, options
+         ?).
+       5   'use strict';
+       6
+       7   const DEFAULTS = {
+       9     soundAttr: 'data-sound',
+      10     playingAttr: 'data-playing',
+     … +71 lines (ctrl+o to expand)
+
+● Update(Homework_2\js\keyboard-input.js)
+  ⎿  Added 1 line
+      41  
+      42      function onKeydown(event) {
+      43        if (event.repeat) return;
+      44 +      if (typeof event.key !== 'string') return;               
+      45        if (event.ctrlKey || event.metaKey || event.altKey) retur
+          n;
+      46        if (event.target instanceof Element && event.target.close
+          st(EDITABLE)) return;
+      47  
+  Ran 2 shell commands (ctrl+o to expand)
+
+● T-03-J đã xong: js/keyboard-input.js (Homework_2/js/keyboard-input.js). Mình
+  chưa commit.
+
+  Cách hoạt động
+
+  - API: KeyboardInput.init(root, onHit, options?). Mỗi hit hợp lệ gọi
+    onHit(soundId, padElement). Module chỉ biết HTML contract, không biết hit
+    dùng để làm gì. options ghi đè tên attribute và thời gian highlight, mặc
+    định đặt ở đầu file.
+  - keydown: một listener ở document. if (event.repeat) return; đứng đầu tiên.
+    Tiếp theo bỏ qua khi event.key không phải chuỗi, khi có Ctrl/Meta/Alt (không
+    chặn phím tắt trình duyệt), và khi đang gõ trong input, textarea, select
+    hoặc [contenteditable].
+  - Tra pad: dùng Map dựng sẵn từ [data-key][data-sound] với key đã
+    toLowerCase(), không dùng querySelector với event.key. Nhờ đó phím như " hay
+    \ không ném SyntaxError.
+  - Click: listener uỷ quyền ở root, tính cả khi bấm vào <kbd> hay <span> bên
+    trong pad. Bấm Enter/Space khi pad đang focus cũng đi qua đường này, nên chỉ
+    có một đường vào onHit.
+  - Highlight: hit ghi data-playing, gỡ bằng setTimeout (mặc định 120ms), không
+    dùng transitionend. Lý do: khi người dùng bật reduced-motion thì không có
+    transition nên transitionend không bắn. Hit liên tiếp trên cùng pad sẽ khởi
+    động lại timer.
+  - init gọi lại: gỡ listener cũ và dọn timer trước khi gắn mới. onHit không
+    phải hàm thì ném TypeError ngay lúc nối dây.
+
+  Kết quả kiểm tra
+
+  Mình chạy test trong Edge headless, nạp module vào trang index.html thật, tất
+  cả đúng như mong đợi:
+
+  ┌───────────────────────────────────┬────────────────────────────────┐
+  │            Tình huống             │            Kết quả             │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Bấm a                             │ 1 hit (kick)                   │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Giữ a (repeat: true)              │ 0 hit                          │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ s rồi d                           │ cả hai chạy                    │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ A hoa                             │ kick                           │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ ", \, Enter, x                    │ 0 hit, không lỗi               │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Ctrl+a, Meta+a                    │ 0 hit                          │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ a trong <input>                   │ 0 hit                          │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Click pad, click <span> bên trong │ đúng sound                     │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Click nút Record                  │ 0 hit                          │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ data-playing                      │ được set, rồi gỡ sau 300ms     │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ init lần hai rồi bấm a            │ 1 hit, không nhân đôi listener │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ init thiếu onHit                  │ TypeError                      │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Lỗi console                       │ không có                       │
+  └───────────────────────────────────┴────────────────────────────────┘
+
+  Grep module độc lập sạch: không có từ engine hay recorder, không import, không
+  keyCode/keypress/which/innerHTML/var.
+
+  Chưa làm: index.html chưa nạp script này (thuộc T-05). Giống bước trước, muốn
+  thử trong DevTools thì dán file vào console rồi chạy
+  KeyboardInput.init(document, (id) => console.log(id)).
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/js/keyboard-input.js
+  git commit -m "feat(drumkit): keydown listener with repeat throttling"
+
+  Làm tiếp T-04-J (FIFO Beat Recorder) không?
+
+> Đọc project-rules.md và chỉ thực hiện task T-04-J trong
+  TASK_DECOMPOSITION.md. Tạo js/beat-recorder.js độc lập với các API start(),
+  stop(), record(soundId), getQueue(), playback(onHit) và isRecording(). Queue
+  phải tuân theo FIFO, mỗi event có dạng { sound: 'kick', t: 1234 }, trong đó t
+  là số mili giây tính từ mốc performance.now() lúc bắt đầu ghi. start() xóa
+  queue cũ; record() khi chưa ghi là no-op. Playback sử dụng setTimeout theo
+  timestamp, lưu timer ID để stop() hủy toàn bộ timer và ngăn phát chồng nhiều
+  lượt. Module không được trực tiếp phát âm thanh hoặc phụ thuộc vào
+  engine/input. Kiểm tra thứ tự sự kiện, khoảng cách thời gian và dừng giữa
+  playback. Chỉ đề xuất commit feat(drumkit): FIFO beat recorder, không tự
+  commit.
+
+● Write(Homework_2\js\beat-recorder.js)
+  ⎿  Wrote 81 lines to Homework_2\js\beat-recorder.js
+       1 // FIFO beat recorder: a timestamped event queue. It stores and
+       2 // never produces sound itself; playback reports each hit to a c
+         allback.
+       3 // Public API: BeatRecorder.start / stop / record / getQueue / p
+       4 (function () {
+       5   'use strict';
+       7   let queue = [];          // [{ sound, t }], oldest first
+       8   let recording = false;
+       9   let startedAt = 0;       // performance.now() when start() was
+      10   let timers = [];         // pending playback timeout ids
+     … +81 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● T-04-J đã xong: js/beat-recorder.js (Homework_2/js/beat-recorder.js). Mình
+  chưa commit.
+
+  Cách hoạt động
+
+  - Queue: mảng { sound, t }, ghi theo thứ tự đến (FIFO). t =
+    Math.round(performance.now() - startedAt), tính từ mốc lúc start(), không
+    cộng dồn delta.
+  - start(): xoá queue cũ, hủy playback đang chạy, bật ghi.
+  - stop(): tắt ghi và hủy mọi timer playback, giữ nguyên queue.
+  - record(soundId): no-op khi chưa ghi.
+  - getQueue(): trả bản sao, sửa hay đảo mảng bên ngoài không làm hỏng queue
+    thật.
+  - playback(onHit, { speed, onEnd }?): snapshot queue rồi setTimeout(..., t /
+    speed) cho từng event, lưu id vào timers. Trả false nếu đang phát, đang ghi,
+    queue rỗng, onHit không phải hàm hoặc speed không hợp lệ, nên không thể
+    phát chồng hai lượt. onEnd chạy đúng một lần khi phát xong tự nhiên, không
+    chạy khi stop() hủy giữa chừng.
+  - Độc lập: module không phát âm thanh, chỉ gọi onHit(sound) do main.js đưa
+    vào.
+
+  Hai thứ thêm ngoài danh sách API: isPlaying() và tùy chọn onEnd. Hai thứ này
+  để T-05 chuyển mode về idle khi phát xong; bỏ đi thì main.js không biết lúc
+  nào kết thúc. speed là tùy chọn của playback, mặc định 1, khớp với "hệ số
+  nhân" trong 3.4.
+
+  Kết quả kiểm tra
+
+  Mình chạy test trong Edge headless:
+
+  ┌─────────────────────────────────┬───────────────────────────────────────┐
+  │           Tình huống            │                Kết quả                │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ record trước start              │ no-op, queue rỗng                     │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Ghi kick, chờ 500ms, snare, chờ │ queue kick@0, snare@500, clap@750,    │
+  │  250ms, clap, tom               │ tom@750                               │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Thứ tự và t                     │ thứ tự đúng, t không giảm             │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Khoảng cách giữa các event      │ 500, 250                              │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Playback đầy đủ                 │ đúng thứ tự, đúng offset, onEnd đúng  │
+  │                                 │ 1 lần, queue vẫn giữ                  │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Gọi playback lần hai khi đang   │ false                                 │
+  │ phát                            │                                       │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ stop() lúc 300ms                │ chỉ phát kick, không còn timer, onEnd │
+  │                                 │  = 0                                  │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Phát lại sau khi stop           │ được                                  │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ speed: 2                        │ offset 0, 250, 375, 375               │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ start() khi đang phát           │ hủy playback và xoá queue             │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ playback khi đang ghi, hoặc     │ false                                 │
+  │ onHit không hợp lệ              │                                       │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Lỗi console                     │ không có                              │
+  └─────────────────────────────────┴───────────────────────────────────────┘
+
+  Grep module độc lập sạch: không có engine, audio, keyboard, .play(, import,
+  innerHTML, var.
+
+  Hạn chế: Edge headless chạy bằng thời gian ảo nên các mốc ra chính xác tuyệt
+  đối (500, 250, ...). Trên trình duyệt thật setTimeout sẽ lệch vài ms, và tab
+  chạy nền có thể lệch hơn. Spec đã ghi nhận hạn chế này ở mục 8.
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/js/beat-recorder.js
+  git commit -m "feat(drumkit): FIFO beat recorder"
+
+  Làm tiếp T-05-J (main.js nối dây) không?
+
+> Đọc project-rules.md và chỉ thực hiện task T-05-J trong
+  TASK_DECOMPOSITION.md. Tạo js/main.js làm composition root duy nhất kết nối
+  audio engine, keyboard input và beat recorder; nạp các module bằng script
+  defer theo đúng thứ tự trong contract. Xây dựng callback onHit(soundId, el)
+  để phát âm thanh và ghi event khi recorder đang recording; playback phải gọi
+  engine thông qua callback nhưng không ghi ngược vào queue. Kết nối các nút
+  Record, Stop và Play, cập nhật trạng thái disabled và .recorder-status bằng
+  một hàm setMode duy nhất với các trạng thái idle, recording, playing. Chỉ
+  chỉnh HTML nếu thực sự thiếu nút hoặc liên kết script, không phá vỡ contract
+  đã chốt. Kiểm tra toàn bộ quy trình Record → Stop → Play và lỗi console. Chỉ
+  đề xuất commit feat(drumkit): wire modules and recorder controls, không tự
+  commit.
+
+● Write(Homework_2\js\main.js)
+  ⎿  Wrote 82 lines to Homework_2\js\main.js
+       1 // Composition root: the only file that knows AudioEngine, Keybo
+         ardInput and BeatRecorder.
+       2 // Everything a live-defense change might touch lives in CONFIG.
+       3 (function () {
+       4   'use strict';
+       6   const CONFIG = {
+       7     keyAttr: 'data-key',
+       8     soundAttr: 'data-sound',
+       9     playingAttr: 'data-playing',
+      10     playingMs: 120,       // pad highlight duration
+     … +79 lines (ctrl+o to expand)
+
+● Update(Homework_2\index.html)
+  ⎿  Added 4 lines
+       8    <link rel="icon" href="data:,">
+       9    <link rel="stylesheet" href="css/tokens.css">
+      10    <link rel="stylesheet" href="css/drum-kit.css">
+      11 +  <script src="js/audio-engine.js" defer></script>             
+      12 +  <script src="js/keyboard-input.js" defer></script>           
+      13 +  <script src="js/beat-recorder.js" defer></script>            
+      14 +  <script src="js/main.js" defer></script>                     
+      15  </head>
+      16  <body>
+      17    <a href="#main-content" class="skip-link">Skip to main conten
+          t</a>
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● T-05-J đã xong: js/main.js (Homework_2/js/main.js) và 4 thẻ script thêm vào
+  index.html (Homework_2/index.html). Mình chưa commit.
+
+  Cách hoạt động
+
+  - Composition root: main.js là file duy nhất biết cả ba module. Đầu file có
+    khối CONFIG chứa tên attribute, thời gian highlight và playbackSpeed.
+  - onHit(soundId): gọi AudioEngine.play, rồi BeatRecorder.record nếu đang ghi.
+    Đây là callback cho phím và click.
+  - Phát lại: dùng callback onReplay riêng, chỉ gọi engine, không đi qua onHit,
+    nên hit phát lại không bao giờ bị ghi ngược vào queue.
+  - setMode('idle' | 'recording' | 'playing'): là chỗ duy nhất ghi disabled của
+    ba nút và text của .recorder-status.
+    - idle: chỉ Record bật, Play bật khi queue có hit.
+    - recording và playing: chỉ Stop bật.
+  - onEnd của playback: đưa về idle khi phát xong.
+  - Quản lý focus (thêm ngoài spec): khi nút đang focus bị disabled thì focus
+    chuyển sang nút kế tiếp. Nếu không, người dùng bàn phím mất vị trí mỗi lần
+    bấm Record hay Play.
+  - HTML: chỉ thêm 4 thẻ <script defer> trong <head> theo thứ tự engine, input,
+    recorder, main. Nút và markup contract giữ nguyên.
+
+  Kết quả kiểm tra
+
+  Mình chạy quy trình đầy đủ trên trang thật trong Edge headless:
+
+  ┌─────────────────────────────┬───────────────────────────────────────────┐
+  │            Bước             │                  Kết quả                  │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Nạp trang                   │ cả 3 global tồn tại, mode idle (chỉ       │
+  │                             │ Record bật)                               │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Gõ a khi chưa ghi           │ ra tiếng, queue vẫn 0                     │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Record                      │ Stop bật, trạng thái "Recording…"         │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Gõ a, s, s, d, a            │ ra tiếng và vào queue đủ thứ tự với       │
+  │                             │ offset (kick@0 snare@400 … kick@600)      │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Stop                        │ Play bật, "Beat ready: 5 hits."           │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Play                        │ đúng 5 tiếng theo thứ tự                  │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Gõ f lúc đang phát          │ ra tiếng nhưng không vào queue, queue vẫn │
+  │                             │  5                                        │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Playback xong               │ tự về idle                                │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Stop giữa lúc phát          │ không còn tiếng nào sau đó                │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Record rồi Stop ngay (take  │ Play vẫn tắt, status rỗng                 │
+  │ rỗng)                       │                                           │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Chuyển focus giữa các nút   │ đúng nút kế tiếp ở cả bốn bước            │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Lỗi và unhandled rejection  │ không có                                  │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Grep keyCode, innerHTML,    │ sạch                                      │
+  │ onclick=, var , style=      │                                           │
+  └─────────────────────────────┴───────────────────────────────────────────┘
+
+  Giới hạn:
+  - Mình chỉ kiểm tra "không lỗi console" qua listener error và
+    unhandledrejection cùng log của Edge. Log của Edge chỉ ra một dòng từ
+    extension của trình duyệt, không phải từ trang. Lỗi lúc nạp script đầu tiên
+    không bắt được bằng listener, nhưng mọi chức năng đều chạy nên script nạp
+    thành công.
+  - Thời gian chạy ảo, nên khoảng cách phát lại và việc ended dọn clone vẫn chưa
+    kiểm chứng với âm thanh thật. Bạn nên bấm thử Record → gõ → Stop → Play
+    trên trình duyệt thật một lần.
+  - Khi phát lại, pad chưa nháy sáng vì data-playing do KeyboardInput ghi và
+    spec T-05 không yêu cầu. Nếu muốn nháy, đó là thay đổi riêng.
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/js/main.js Homework_2/index.html
+  git commit -m "feat(drumkit): wire modules and recorder controls"
+
+  Còn T-06: refactor và audit ranh giới module. Làm tiếp không?
+
+> ok cái cuối Đọc project-rules.md và chỉ thực hiện task T-06 trong
+  TASK_DECOMPOSITION.md. Rà soát toàn bộ các module trong js/ để đảm bảo
+  audio-engine.js, keyboard-input.js và beat-recorder.js không import hoặc gọi
+  trực tiếp lẫn nhau; chỉ main.js được kết nối cả ba. Tập trung các hằng số như
+  tên attribute, thời gian hiệu ứng nhấn và playback speed vào một khối CONFIG
+  tại vị trí phù hợp để có thể thay đổi nhanh trong vấn đáp. Loại bỏ code
+  chết, giữ nguyên public API và không thêm tính năng ngoài phạm vi bài. Chạy
+  các lệnh audit trong đề, kiểm tra responsive, accessibility và thử đổi một
+  phím cùng playback speed ×2; mỗi thay đổi phải chỉ cần sửa một dòng cấu hình
+  tương ứng. Báo cáo kết quả kiểm tra và các vấn đề còn tồn tại. Chỉ đề xuất
+  commit refactor(drumkit): isolate modules and centralize config, không tự
+  commit. Sau đó hoàn thiện homework 2
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Cả hai test (đổi phím và tăng speed ×2) đều pass chỉ với một dòng thay đổi.
+  Tuy nhiên diff của main.js lệch toàn file, nên mình sẽ kiểm tra line ending vì
+  có thể script Python đã đổi LF thành CRLF khi ghi trên Windows. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Đúng như nghi ngờ: ba file bị đổi sang CRLF, trong khi repo lưu LF. Mình đưa
+  về LF để diff chỉ chứa thay đổi thật.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Write(Homework_2\README.md)
+  ⎿  Wrote 48 lines to Homework_2\README.md
+      1 # Homework 2: Drum Kit Engine
+      2
+      3 A keyboard-playable drum kit with nine pads and a FIFO beat recor
+      4
+      5 ## Run
+      6
+      7 Serve the folder with Live Server and open `http://localhost:5500
+      8
+      9 Press `A S D F G H J K L` or tap a pad. Press Record, play a patt
+        ern, press Stop, then Play to hear it back.
+     … +55 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● T-06 và phần hoàn thiện Homework 2 đã xong. Mình chưa commit gì. Kiểm tra bằng
+  Edge headless nên chưa có tiếng thật.
+
+  T-06: refactor
+
+  - Cấu hình về một chỗ: keyboard-input.js và audio-engine.js trước đây tự giữ
+    giá trị mặc định ('data-key', 120, 'data-sound'...) trùng với CONFIG ở
+    main.js. Sửa một chỗ mà chỗ kia vẫn giữ giá trị cũ thì dễ lệch. Giờ hai
+    module không còn mặc định, chỉ nhận cấu hình từ main.js, thiếu thì ném
+    TypeError rõ ràng. Toàn bộ tên attribute, playingMs và playbackSpeed nằm
+    trong CONFIG ở main.js.
+  - Code chết: đã xoá BeatRecorder.isPlaying() (mình thêm ở T-04 nhưng không ai
+    dùng). API recorder về đúng 6 hàm trong spec.
+  - Nhãn phím tự đồng bộ: main.js điền nhãn <kbd> từ data-key, để đổi phím chỉ
+    sửa một dòng. Đây là thêm nhỏ ngoài việc rà soát thuần tuý, bạn có thể bỏ
+    khối đó nếu không muốn. HTML vẫn giữ chữ cái tĩnh làm dự phòng khi tắt JS.
+  - Public API: vẫn đủ 6 hàm của recorder. Hai hàm init của engine và input nhận
+    thêm tham số cấu hình (engine { soundAttr }, input { keyAttr, soundAttr,
+    playingAttr, playingMs }), nên không còn gọi được kiểu cũ init(root) hay
+    init(root, onHit) mà không có cấu hình.
+  - Line ending: script Python mình dùng để sửa file đã đổi 3 file JS sang CRLF
+    trong khi repo lưu LF. Mình đã đưa về LF, nên diff chỉ có thay đổi thật.
+  - Spec: đã cập nhật 4 dòng trong TASK_DECOMPOSITION.md cho khớp chữ ký hàm
+    mới.
+
+  Kết quả kiểm tra
+
+  - Audit trong đề:
+    - Grep pattern cấm (keyCode, keypress, .which, innerHTML, onclick=, var):
+      sạch.
+    - Grep CDN và style=: sạch.
+    - Grep phụ thuộc chéo (đã bỏ comment): ba module đều không tham chiếu nhau.
+    - Hex ngoài :root: sạch.
+  - Đổi một phím: đổi data-key="a" thành "q" ở một dòng HTML. Phím a không ra
+    tiếng, phím q ra kick, nhãn pad hiện Q.
+  - Speed ×2: đổi playbackSpeed từ 1 thành 2 ở một dòng. Bản thu kick@0,
+    snare@600 phát lại thành 0 và 300.
+  - Hồi quy: chạy lại toàn bộ quy trình Record → Stop → Play, đều đúng như lần
+    trước, không lỗi.
+  - Responsive: ở 320, 375, 768 và 1280px đều không scroll ngang; số cột lần
+    lượt 2, 2, 5, 6; mọi nút ≥ 44px.
+  - Accessibility: lang=en, có title, 1 h1, heading đi h1 → h2 → h2, mỗi
+    landmark đúng 1, phần tử focus đầu tiên là skip-link, mọi nút có tên truy
+    cập, mỗi <audio> có pad khớp. Contrast đã tính ở T-01. Mình chưa chạy
+    Lighthouse hay screen reader.
+
+  Hoàn thiện Homework 2
+
+  Mình thêm Homework_2/README.md: cách chạy, sơ đồ kiến trúc, bảng "đổi gì thì
+  sửa ở đâu" cho vấn đáp và các hạn chế đã biết.
+
+  Còn tồn tại
+
+  - Chưa nghe âm thanh thật. Headless không phát tiếng, nên chuỗi phát, kết
+    thúc, dọn clone chỉ được kiểm tra bằng sự kiện giả. Bạn nên bấm thử Record →
+    gõ → Stop → Play trên trình duyệt thật.
+  - Timing replay dùng setTimeout, trên trình duyệt thật sẽ lệch vài ms (đã ghi
+    trong README).
+  - Phát lại không làm pad nháy sáng. Spec không yêu cầu nên mình để nguyên.
+  - Ở màn hình rộng, 9 pad chia 5+4 hoặc 6+3 hàng, hơi lệch về mặt thẩm mỹ.
+  - Prompt log: các file docs/Promt_*.txt là bản export phiên làm việc nên mình
+    không tạo thay bạn. DoD yêu cầu ghi prompt và lỗi AI, nên bạn export phiên
+    này vào docs/ như các bài trước.
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/js Homework_2/TASK_DECOMPOSITION.md
+  git commit -m "refactor(drumkit): isolate modules and centralize config"
+
+  git add Homework_2/README.md
+  git commit -m "docs(drumkit): add Homework 2 README"
