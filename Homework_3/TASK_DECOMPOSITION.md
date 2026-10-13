@@ -20,7 +20,9 @@ Một landing page một trang cho một sự kiện, chịu lỗi tốt ("resil
 
 **Ngoài phạm vi:** backend thật, lưu dữ liệu, gửi email, đa ngôn ngữ, thanh toán, CAPTCHA, đa sự kiện, nút đổi theme.
 
-**Nội dung trang** (nội dung mẫu, xem câu hỏi mở 1): một sự kiện demo của lớp. Chỉ có mô tả ngắn, mốc thời gian, form đăng ký. Không bịa diễn giả, địa điểm hay số liệu.
+**Chủ đề trang:** workshop bảo vệ biển, "Ocean Guardians Workshop". Trang có hero kèm đồng hồ đếm ngược, phần giới thiệu 3 chủ đề chung chung, form đăng ký. Không bịa diễn giả, địa điểm hay số liệu.
+
+**Phong cách:** giữ bộ màu biển của HW1 (`--sea-deep`, `--sea-mid`, `--foam`, `--sand`, `--ink`), mở rộng thêm `--pearl` (nền mềm), `--kelp` (thành công), `--coral` (lỗi / nhấn ấm) kèm bản sáng cho dark mode. Hình khối bo tròn (token `--radius-s/m/l/pill`), font Nunito tự host (copy từ HW1).
 
 ---
 
@@ -44,9 +46,12 @@ Homework_3/
 ├── TASK_DECOMPOSITION.md
 ├── AI_FAILURE_AUDIT.md          ← T-A2 (và nhật ký ứng viên từ đầu)
 ├── index.html                   ← T-01-H
+├── assets/fonts/                ← Nunito (copy từ HW1)
 ├── css/
+│   ├── fonts.css                ← T-01-C (copy từ HW1)
 │   ├── tokens.css               ← T-01-C
-│   └── hub.css                  ← T-01-C (+ trạng thái form ở T-04-C)
+│   ├── hub.css                  ← T-01-C (+ trạng thái form ở T-04-C)
+│   └── noscript.css             ← T-01-C: ẩn lưới số khi tắt JS
 └── js/
     ├── config.js                ← T-01-J  CONFIG duy nhất
     ├── countdown.js             ← T-02-J  lõi thuần, không chạm DOM
@@ -62,8 +67,8 @@ Thứ tự `<script defer>`: `config` → `countdown` → `sanitize` → `form-m
 
 ```js
 const CONFIG = {
-  eventStartUtc: '2026-12-20T09:00:00Z',   // UTC ISO 8601, luôn có hậu tố Z
-  eventName: 'Web Foundations Demo Day',
+  eventStartUtc: '2026-12-20T02:00:00Z',   // UTC ISO 8601, luôn có hậu tố Z (= 09:00 giờ Việt Nam)
+  eventName: 'Ocean Guardians Workshop',
   announceEverySeconds: 60,                // tần suất đọc cho screen reader
   submitTimeoutMs: 8000,
   mockDelayMs: 1200,
@@ -219,8 +224,8 @@ Nếu một slice thấy cần tách nhỏ hơn, tách thêm commit, không gộ
 
 | ID | Việc | Cổng kiểm tra |
 |---|---|---|
-| T-01-H | `index.html` theo 3.3: skip-link, landmark, 1 `h1`, vùng countdown với 4 ô số, `<time>`, vùng form (chưa có JS) | 0 `div`, 0 inline style/handler, `href="#…"` đều có đích |
-| T-01-C | `tokens.css`, `hub.css`: màu trong `:root`, dark mode theo OS, 375px không scroll ngang, `focus-visible`, `prefers-reduced-motion`, `[data-state]` cho countdown và form | 0 hex ngoài `:root`, contrast ≥ 4.5:1 sáng/tối |
+| T-01-H | `index.html` theo 3.3: skip-link, landmark, 1 `h1`, vùng countdown với 4 ô số và `<time>`, phần giới thiệu, `section#register` mới có tiêu đề và đoạn dẫn (form thêm ở T-04-H). Giờ tĩnh trong `<time datetime>` trùng `CONFIG`; T-03-J ghi đè từ `CONFIG` khi chạy | 0 `div`, 0 inline style/handler, `href="#…"` đều có đích |
+| T-01-C | `tokens.css`, `hub.css`: màu trong `:root`, dark mode theo OS, 375px không scroll ngang, `focus-visible`, `prefers-reduced-motion`, `[data-state]` cho countdown (state của form ở T-04-C) | 0 hex ngoài `:root`, contrast ≥ 4.5:1 sáng/tối |
 | T-01-J | `config.js` theo 3.2 | Một chỗ duy nhất định nghĩa mốc sự kiện |
 
 ### S1 – Countdown
@@ -315,7 +320,7 @@ Kiểm tay: 375px không scroll ngang, chỉ dùng bàn phím, Lighthouse Access
 
 ## 11. Câu hỏi mở (mặc định đã chọn, không chặn việc)
 
-1. **Sự kiện:** mặc định "Web Foundations Demo Day", mốc `2026-12-20T09:00:00Z`, chỉ là nội dung mẫu cho bài lab. Thay trong `CONFIG` nếu có sự kiện thật. Nếu để mốc đã qua, trang hiện trạng thái "started".
+1. **Sự kiện:** "Ocean Guardians Workshop" (chủ đề bảo vệ biển), mốc `2026-12-20T02:00:00Z`, nội dung mẫu. Đổi trong `CONFIG` nếu có sự kiện thật. Nếu để mốc đã qua, trang hiện trạng thái "started".
 2. **Ngôn ngữ trang:** tiếng Anh (`lang="en"`), như các bài trước.
 3. **Số field form:** 3 field (`name`, `email`, `note`). `note` là ô tự do, dùng để thử nghiệm làm sạch input và XSS.
 4. **Công cụ audit:** Lighthouse và axe-core cài trong thư mục tạm, không đưa vào repo (như HW1).

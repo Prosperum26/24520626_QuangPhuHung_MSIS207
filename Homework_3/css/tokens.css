@@ -35,17 +35,14 @@
   --selection-bg: var(--foam);
   --selection-text: var(--ink);
 
-  /* Sea band (header, hero, footer): the same in both themes. Sand on deep is 5.91:1 */
-  --band-bg: var(--sea-deep);
-  --band-text: var(--sand);
-  --band-ring: var(--sand);
+  /* Tide pool (the countdown): the same in both themes. Sand on deep is 5.91:1 */
+  --tide-bg: var(--sea-deep);
+  --tide-text: var(--sand);
+  --tide-back: var(--sea-mid);
+  --tide-ring: var(--sand);
 
-  /* Countdown cells sit on the band as pearl pills, in both themes */
-  --cell-bg: var(--pearl);
-  --cell-value: var(--ink);
-  --cell-label: var(--sea-deep);
-
-  --shadow: color-mix(in srgb, var(--ink) 22%, transparent);
+  /* Dotted rule between list rows */
+  --rule: color-mix(in srgb, var(--sea-mid) 70%, transparent);
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -62,6 +59,8 @@
   --radius-m: 1.5rem;
   --radius-l: 2.5rem;
   --radius-pill: 999px;
+  --blob: 58% 42% 46% 54% / 46% 54% 46% 54%;
+  --blob-back: 44% 56% 54% 46% / 56% 44% 56% 44%;
 
   /* Typography: Nunito, a rounded sans, self-hosted (css/fonts.css) */
   --font-sans: "Nunito", ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -69,8 +68,8 @@
   --font-size-base: 1rem;
   --font-size-lg: 1.25rem;
   --font-size-xl: clamp(1.75rem, 4vw + 0.5rem, 2.5rem);
-  --font-size-hero: clamp(2.25rem, 8vw, 4rem);
-  --font-size-count: clamp(1.5rem, 7vw, 3rem);
+  --font-size-hero: clamp(3rem, 14vw, 6rem);
+  --font-size-count: clamp(3.25rem, 15vw, 5.5rem);
   --font-weight-heading: 800;
   --line-height: 1.6;
   --measure: 62ch;
@@ -78,8 +77,8 @@
   /* Layout */
   --content-max: 64rem;
   --gutter: var(--space-4);
+  --edge: max(var(--gutter), calc((100% - var(--content-max)) / 2));
   --focus-width: 3px;
-  --card-min: 15rem;
 
   /* Motion */
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
