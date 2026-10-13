@@ -113,7 +113,7 @@ Panel là `<p>`/`<section>` có heading đúng cấp, 0 `<div>` làm khung (như
 | `submitting` | `RESOLVE` | `success` | Trạng thái cuối, không có đường quay lại |
 | `submitting` | `REJECT` hoặc `TIMEOUT` | `error` | Không mất dữ liệu người dùng đã nhập |
 | `submitting` | `SUBMIT` | `submitting` | **Bỏ qua** (đây là chỗ chống double-submit, S3) |
-| `error` | `RETRY` | `submitting` | Gửi lại cùng dữ liệu |
+| `error` | `RETRY` hoặc `SUBMIT` hợp lệ | `submitting` | Gửi lại cùng dữ liệu (`RETRY`) hoặc dữ liệu mới (`SUBMIT`, ví dụ Enter trong form) |
 | `error` | `EDIT` | `idle` | Cho sửa rồi gửi tiếp |
 
 - Đúng 4 state: `idle | submitting | success | error`. Không thêm state.
@@ -126,7 +126,7 @@ Panel là `<p>`/`<section>` có heading đúng cấp, 0 `<div>` làm khung (như
 |---|---|---|
 | `countdown.js` | `remaining(targetMs, nowMs)` → `{ done, days, hours, minutes, seconds, totalMs }`; `start({ targetIso, onTick, onDone, onInvalid })` → `{ stop() }` | Mỗi tick tính lại từ `Date.now()` so với mốc tuyệt đối, **không bao giờ giảm biến đếm**. `start` gọi lần hai thì dừng bản cũ trước. `stop()` idempotent, xoá sạch timer và listener |
 | `sanitize.js` | `cleanName(s)`, `cleanEmail(s)`, `cleanNote(s)`, `validate(raw, limits)` | Thuần. `validate` trả `{ ok, values, errors }` |
-| `form-machine.js` | `create(initial)` → `{ state, dispatch(event) }` | Thuần, test được trong console |
+| `form-machine.js` | `create(initial)` → `{ state, requestId, dispatch(type, detail?) }` | Thuần. `SUBMIT` mang `{ valid }`; `RESOLVE`/`REJECT`/`TIMEOUT` mang `{ requestId }`, lệch id thì bị bỏ. Sự kiện không hợp lệ ở state hiện tại bị bỏ qua |
 | `registration-api.js` | `submit(payload, { signal, mockOutcome, mockDelayMs })` → `Promise` | Giả lập. Tôn trọng `AbortSignal` |
 | `main.js` | không có | Chỗ duy nhất biết tất cả; ghi DOM bằng `textContent` |
 

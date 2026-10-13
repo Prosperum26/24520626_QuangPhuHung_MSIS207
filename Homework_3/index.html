@@ -9,13 +9,74 @@
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/hub.css">
+  <link rel="stylesheet" href="css/art.css">
   <noscript><link rel="stylesheet" href="css/noscript.css"></noscript>
   <script src="js/config.js" defer></script>
   <script src="js/countdown.js" defer></script>
+  <script src="js/form-machine.js" defer></script>
+  <script src="js/registration-api.js" defer></script>
   <script src="js/main.js" defer></script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Illustration sprite: drawn by hand as vectors, coloured by classes in css/art.css -->
+  <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="art-turtle" viewBox="0 0 240 180">
+        <ellipse class="a-skin" cx="157" cy="34" rx="31" ry="11" transform="rotate(-35 157 34)"/>
+        <ellipse class="a-skin" cx="157" cy="146" rx="31" ry="11" transform="rotate(35 157 146)"/>
+        <ellipse class="a-skin" cx="62" cy="45" rx="20" ry="9" transform="rotate(39 62 45)"/>
+        <ellipse class="a-skin" cx="62" cy="135" rx="20" ry="9" transform="rotate(-39 62 135)"/>
+        <polygon class="a-skin" points="26,90 46,80 46,100"/>
+        <ellipse class="a-skin" cx="194" cy="90" rx="22" ry="17"/>
+        <circle class="a-ink" cx="203" cy="83" r="3.2"/>
+        <ellipse class="a-shell" cx="112" cy="90" rx="66" ry="50"/>
+        <polygon class="a-scute" points="90,70 134,70 150,90 134,110 90,110 74,90"/>
+        <path class="a-seam" d="M90 70 L74 50 M134 70 L150 50 M150 90 L177 90 M134 110 L150 130 M90 110 L74 130 M74 90 L47 90"/>
+      </symbol>
+
+      <symbol id="art-fish" viewBox="0 0 64 36">
+        <path class="a-fill" d="M46 18 L62 5 Q57 18 62 31 Z"/>
+        <ellipse class="a-fill" cx="27" cy="18" rx="23" ry="13"/>
+        <path class="a-seam" d="M33 7 Q39 18 33 29"/>
+        <circle class="a-ink" cx="13" cy="15" r="2.6"/>
+      </symbol>
+
+      <symbol id="art-bubbles" viewBox="0 0 60 120">
+        <circle class="a-bubble" cx="30" cy="96" r="14"/>
+        <circle class="a-bubble" cx="14" cy="58" r="9"/>
+        <circle class="a-bubble" cx="40" cy="30" r="6"/>
+        <circle class="a-bubble" cx="22" cy="8" r="4"/>
+        <path class="a-glint" d="M24 91 Q25 86 30 85"/>
+      </symbol>
+
+      <symbol id="art-seaweed" viewBox="0 0 70 150">
+        <path class="a-blade" d="M22 150 C2 118 44 98 22 66 C6 42 32 26 22 6"/>
+        <path class="a-blade" d="M46 150 C30 126 64 108 48 82 C38 64 56 52 50 36"/>
+      </symbol>
+
+      <symbol id="art-coral" viewBox="0 0 90 120">
+        <path class="a-branch" d="M44 120 V62 M44 92 L20 66 M44 78 L68 48 M44 100 L70 84"/>
+        <circle class="a-tip" cx="44" cy="58" r="7"/>
+        <circle class="a-tip" cx="19" cy="62" r="6"/>
+        <circle class="a-tip" cx="69" cy="44" r="6"/>
+        <circle class="a-tip" cx="73" cy="82" r="5"/>
+      </symbol>
+
+      <symbol id="art-starfish" viewBox="0 0 80 80">
+        <polygon class="a-star" points="40.0,11.0 48.8,30.9 70.4,33.1 54.3,47.6 58.8,68.9 40.0,58.0 21.2,68.9 25.7,47.6 9.6,33.1 31.2,30.9"/>
+        <circle class="a-dot" cx="40" cy="40" r="2.6"/>
+        <circle class="a-dot" cx="40" cy="26" r="2"/>
+        <circle class="a-dot" cx="52" cy="38" r="2"/>
+        <circle class="a-dot" cx="28" cy="38" r="2"/>
+      </symbol>
+
+      <pattern id="art-wave" width="64" height="24" patternUnits="userSpaceOnUse">
+        <path class="a-wave" d="M0 12 Q16 -2 32 12 T64 12"/>
+      </pattern>
+    </defs>
+  </svg>
 
   <header class="site-header">
     <a class="brand" href="#top">Ocean Guardians</a>
@@ -34,6 +95,11 @@
 
       <section class="countdown" id="countdown" data-state="running" aria-labelledby="countdown-title">
         <h2 id="countdown-title" class="countdown-title">Starts in</h2>
+
+        <svg class="art art-turtle" aria-hidden="true" focusable="false"><use href="#art-turtle"/></svg>
+        <svg class="art art-fish art-fish-a" aria-hidden="true" focusable="false"><use href="#art-fish"/></svg>
+        <svg class="art art-fish art-fish-b" aria-hidden="true" focusable="false"><use href="#art-fish"/></svg>
+        <svg class="art art-bubbles" aria-hidden="true" focusable="false"><use href="#art-bubbles"/></svg>
 
         <ul class="countdown-grid">
           <li class="countdown-cell">

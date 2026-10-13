@@ -222,6 +222,143 @@
   background-color: var(--surface);
 }
 
+/* 6b. Registration form and its four states ----------------------------------
+   JS writes #register[data-state]; CSS shows or hides each part from it. */
+
+.reg-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+  max-inline-size: 34rem;
+}
+
+.reg-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.field label {
+  font-weight: 700;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-s);
+  background-color: var(--bg);
+  color: var(--text);
+  resize: vertical;
+}
+
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.field-hint {
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.field-error {
+  color: var(--danger);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+}
+
+.field-error:empty {
+  display: none;
+}
+
+.btn {
+  padding: var(--space-3) var(--space-8);
+  border: 2px solid var(--btn-bg);
+  border-radius: var(--radius-pill);
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: color-mix(in srgb, var(--btn-bg) 82%, var(--text));
+}
+
+.btn-quiet {
+  background-color: transparent;
+  color: var(--btn-bg);
+}
+
+.btn-quiet:hover {
+  background-color: color-mix(in srgb, var(--btn-bg) 14%, transparent);
+}
+
+.reg-error,
+.reg-success {
+  display: none;
+  padding: var(--space-4) var(--space-6);
+  border: 2px solid var(--danger);
+  border-radius: var(--radius-m);
+}
+
+.reg-error {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.reg-error-message {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.reg-success {
+  border-color: var(--success);
+}
+
+.reg-success h3 {
+  color: var(--success);
+}
+
+.reg-success :focus-visible {
+  outline-offset: 4px;
+}
+
+.register[data-state="submitting"] .reg-form {
+  cursor: progress;
+}
+
+.register[data-state="submitting"] .btn {
+  cursor: progress;
+  opacity: 0.8;
+}
+
+.register[data-state="error"] .reg-error {
+  display: flex;
+}
+
+.register[data-state="success"] .reg-form,
+.register[data-state="success"] .section-lead {
+  display: none;
+}
+
+.register[data-state="success"] .reg-success {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
 /* 7. Footer ------------------------------------------------------------------ */
 
 .site-footer {
