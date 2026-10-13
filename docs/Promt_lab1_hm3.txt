@@ -1,0 +1,3039 @@
+  ⎿  SessionStart:startup hook error
+  ⎿  [bash C:\Users\Phu Hung\.claude\plugins\cache\anthropic-plugin-directory\cl
+     aude-memory\1.0.0-0afb7b2da7cc/hooks/scripts/memory-context.sh]:
+     C:/Users/Phu: line 1: syntax error near unexpected token `('
+
+> W2: Drum Kit Engine (Contract-First)• MANDATORY ARCHITECTURAL DECOUPLING:• •
+  Step 1: Commit HTML data-sound contract before touching JavaScript.• • Step
+  2: Implement polyphonic Audio playback engine independently.• • Step 3:
+  Implement keydown listener with event.repeat throttling.• • Step 4: Implement
+  FIFO Beat Recorder (timestamped event queue). must refactor in 3 mins. lập
+  task decompition cho task này đi, đừng over thinnk quá, chia tầm 5 6 commit
+  thôi
+
+● W2 Drum Kit: chia task thành 6 commit
+
+  Thứ tự đi từ contract (HTML) sang engine (audio), rồi input, rồi recorder. Mỗi
+  tầng độc lập với tầng sau.
+
+  #: 1
+  Commit: feat(drumkit): add HTML data-sound contract
+  Nội dung: Markup .pad có data-key, data-sound, <audio> hoặc đường dẫn sample.
+  Chưa có JS. Ghi rõ contract trong comment hoặc README: pad nào ↔ key nào ↔
+  sound nào.
+  Done khi: Mở HTML thấy đủ pad, tất cả attribute khớp nhau, không cần JS để
+  đọc.
+  ────────────────────────────────────────
+  #: 2
+  Commit: feat(drumkit): polyphonic audio engine
+  Nội dung: Module audio-engine.js export play(soundId). Mỗi lần play clone node
+
+  Audio hoặc tạo AudioBufferSourceNode mới để overlap được. Chỉ đọc data-sound,
+   không biết gì về keyboard.
+  Done khi: Gọi play('kick') liên tục từ console, các tiếng chồng lên nhau,
+  không
+  bị cắt.
+  ────────────────────────────────────────
+  #: 3
+  Commit: feat(drumkit): keydown listener with repeat throttling
+  Nội dung: Module input.js: keydown → if (e.repeat) return → tra [data-key] →
+  emit play + thêm class .playing. Dùng keyup hoặc transitionend để bỏ class.
+  Done khi: Giữ phím chỉ phát 1 lần, gõ nhanh nhiều phím vẫn phát đủ.
+  ────────────────────────────────────────
+  #: 4
+  Commit: feat(drumkit): FIFO beat recorder
+  Nội dung: Module recorder.js: queue {sound, t} với t = performance.now() -
+  start. API: start(), stop(), record(sound), getQueue(). Chỉ push, không phát.
+  Done khi: Bấm record, gõ vài phím, getQueue() ra mảng đúng thứ tự và timestamp
+
+  tăng dần.
+  ────────────────────────────────────────
+  #: 5
+  Commit: feat(drumkit): playback via setTimeout schedule + wiring
+  Nội dung: Replay queue theo FIFO (shift() hoặc duyệt theo thứ tự), dùng offset
+
+  t để lên lịch gọi play(). Nối recorder vào input. Thêm nút Record, Stop,
+  Play.
+  Done khi: Record một đoạn, Play lại đúng nhịp.
+  ────────────────────────────────────────
+  #: 6
+  Commit: refactor(drumkit): tidy modules & remove coupling
+  Nội dung: Rà lại ranh giới: engine không import input/recorder, input chỉ gọi
+  qua callback hoặc event, không còn global state. Xoá code thừa.
+  Done khi: grep không thấy phụ thuộc chéo ngược chiều. Chạy lại cả flow vẫn ổn.
+
+  Lưu ý nhanh
+
+  - Decoupling: luồng chỉ đi một chiều: HTML contract → engine ← input →
+    recorder. Input gọi engine.play và recorder.record, hai cái này không biết
+    nhau.
+  - Repeat throttling: e.repeat chỉ chặn auto-repeat của OS, không chặn gõ nhanh
+    hai phím khác nhau. Đúng ý, vì cần polyphonic.
+  - Refactor 3 phút: commit 6 nên chỉ là đổi tên, tách hàm, xoá thừa. Nếu logic
+    đúng từ commit 2–5 thì không phải sửa nhiều.
+
+  Mình không tự commit. Khi code xong mình sẽ đề xuất đúng lát cắt này để bạn
+  commit. Muốn mình bắt đầu từ commit 1 không?
+
+> tạo task democostion trong homework 2 đi
+
+  Searched for 1 pattern, ran 1 shell command (ctrl+o to expand)
+
+● Có convention sẵn: mỗi exercise có TASK_DECOMPOSITION.md. Mình xem một file
+  mẫu và thư mục hiện có.
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Write(Homework_2\TASK_DECOMPOSITION.md)
+  ⎿  Wrote 251 lines to Homework_2\TASK_DECOMPOSITION.md
+       1 # TASK_DECOMPOSITION – Homework 2: Drum Kit Engine (Contract-Fir
+       2
+       3 > Work Breakdown Structure (WBS) cho HW2.
+         uy tắc §6 của `project-rules.md`.
+       5 > Mỗi prompt AI tham chiếu **đúng 1** task ID (ví dụ `T-03-J`) v
+       6 > **Luật của đề:** decoupling bắt buộc. HTML contract xong trước
+          khi chạm JS; audio engine, keyboard listener, recorder là 3 mod
+       7
+       8 ---
+      10 ## 1. Mục tiêu và phạm vi
+     … +335 lines (ctrl+o to expand)
+
+● Mình đã tạo Homework_2/TASK_DECOMPOSITION.md, theo cùng format với Homework_1
+  và Exercise_4. Mình chưa chạy lệnh grep ở mục 6 và chưa commit.
+
+  Nội dung chính:
+  - Contract (mục 3): có markup mẫu cho data-key, data-sound và data-playing.
+    API của 3 module không import chéo nhau, chỉ main.js biết cả ba. Mỗi event
+    trong queue có dạng {sound, t}, với t tính từ performance.now() lúc start().
+  - Config tập trung (3.4): phục vụ đợt refactor 3 phút. Đổi một phím hay đổi
+    tốc độ phát lại chỉ sửa một dòng.
+  - Kế hoạch commit (mục 4): commit 1 chỉ có HTML, CSS và âm thanh, không có JS.
+    Các commit sau là engine → keyboard → recorder → wiring → refactor.
+  - Task chi tiết (mục 5): mỗi task có cổng kiểm tra thử được trong console.
+    Những lỗi cần tránh được ghi sẵn:
+    - Lỗi slide 23: querySelector với " hoặc \ làm selector ném SyntaxError, nên
+      cần CSS.escape hoặc dùng map.
+    - play() bị từ chối thì phải bắt lỗi.
+    - Không dùng currentTime = 0 trên cùng một node, vì cách đó cắt tiếng cũ nên
+      không còn polyphonic.
+  - Mục 6 trở đi: các lệnh grep để kiểm tra module không phụ thuộc chéo, cùng
+    danh sách rủi ro.
+
+  Cần bạn quyết (mục 9):
+  1. Nguồn âm thanh: repo chưa có file .wav nào. Mình mặc định dùng file CC0 và
+     đặt ở assets/sounds/. Nếu không có file, mình đổi sang tổng hợp bằng Web
+     Audio, chỉ sửa audio-engine.js.
+  2. Số pad: mình mặc định 9 pad (a s d f g h j k l).
+
+  Gợi ý commit (bạn tự chạy):
+  git add Homework_2/TASK_DECOMPOSITION.md
+  git commit -m "docs(spec): task decomposition for homework 2"
+
+  Làm tiếp T-01 (HTML contract) luôn không?
+
+> <ide_opened_file>The user opened the file
+  c:\Dev\Project\MSIS207_Lab1\Homework_2\TASK_DECOMPOSITION.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+> Đọc project-rules.md và task T-01-H, T-01-C, T-01-A trong
+  TASK_DECOMPOSITION.md. Hoàn thiện index.html theo HTML contract: skip-link,
+  semantic landmarks, một h1, 9 drum pads sử dụng data-key/data-sound và các
+  phần tử audio tương ứng. Xây dựng css/tokens.css và css/drum-kit.css với
+  responsive grid, dark mode theo OS, focus-visible, reduced motion và trạng
+  thái [data-playing]; bổ sung các file âm thanh .wav phù hợp trong
+  assets/sounds/ và ghi nguồn nếu cần. Tuyệt đối không viết JavaScript, inline
+  handler hoặc inline style. Kiểm tra contract, accessibility và responsive
+  trước khi kết thúc. Chỉ đề xuất commit feat(drumkit): add HTML data-sound
+  contract, không tự commit.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Write(Homework_2\index.html)
+  ⎿  Wrote 100 lines to Homework_2\index.html
+       1 <!DOCTYPE html>
+       2 <html lang="en">
+       3 <head>
+       5   <meta name="viewport" content="width=device-width, initial-sca
+         le=1.0">
+       6   <meta name="description" content="A keyboard-playable drum kit
+          with nine pads and a beat recorder.">
+       8   <link rel="icon" href="data:,">
+       9   <link rel="stylesheet" href="css/tokens.css">
+      10   <link rel="stylesheet" href="css/drum-kit.css">
+     … +116 lines (ctrl+o to expand)
+
+● Write(Homework_2\css\tokens.css)
+  ⎿  Wrote 35 lines to Homework_2\css\tokens.css
+       1 /* All colors live here. Every other stylesheet uses var(--token
+         ) only. */
+       2 :root {
+       3   color-scheme: light dark;
+       4
+       6   --surface: #ffffff;
+       7   --text: #1c1b1f;
+       8   --text-muted: #55525c;
+       9   --border: #6b6860;
+      10   --accent: #5b2bd1;
+     … +26 lines (ctrl+o to expand)
+
+● Write(Homework_2\css\drum-kit.css)
+  ⎿  Wrote 175 lines to Homework_2\css\drum-kit.css
+       1 *, *::before, *::after {
+       2   box-sizing: border-box;
+       3   margin: 0;
+       4   padding: 0;
+       5 }
+       6
+       7 body {
+       8   min-height: 100vh;
+       9   display: flex;
+      10   flex-direction: column;
+     … +167 lines (ctrl+o to expand)
+
+● Write(Homework_2\assets\sounds\README.md)
+  ⎿  Wrote 5 lines to Homework_2\assets\sounds\README.md
+      1 # Sound credits
+      2
+      3 All nine samples (`kick`, `snare`, `hihat`, `openhat`, `clap`, `t
+        om`, `crash`, `ride`, `cowbell`) were synthesized from scratch fo
+        r this project with a short Python script (standard library only:
+         16-bit mono 44.1 kHz WAV).
+      4
+      5 No third-party recordings are used, so there is no external licen
+        se to attribute. The samples are original work and may be reused
+        freely.
+     … +1 line (ctrl+o to expand)
+
+  Listed 1 directory, ran 2 shell commands (ctrl+o to expand)
+
+● Đang xem ảnh chụp 375px để kiểm tra layout.
+
+  Read 1 file (ctrl+o to expand)
+
+● Edge headless có độ rộng tối thiểu nên ảnh bị cắt, chưa phải kiểm tra 375px
+  thật. Mình dùng iframe 375px trong file tạm ở scratchpad.
+
+  Read 1 file, ran 2 shell commands (ctrl+o to expand)
+
+● T-01-H, T-01-C và T-01-A đã xong, chưa có JavaScript và chưa commit.
+
+  File đã tạo
+
+  - index.html (Homework_2/index.html): skip-link, header, main#main-content,
+    footer, một h1, hai h2 (Pads, Beat recorder). Có 9 pad <button
+    class="drum-pad"> với data-key là a s d f g h j k l và data-sound. Mỗi pad
+    có đúng một <audio data-sound> tương ứng. Thanh recorder có Record, Stop,
+    Play, hai nút sau đang disabled.
+  - css/tokens.css (Homework_2/css/tokens.css) và css/drum-kit.css
+    (Homework_2/css/drum-kit.css): grid auto-fit minmax(7rem, 1fr) cho pad,
+    flexbox cho thanh recorder, dark mode theo OS (prefers-color-scheme),
+    :focus-visible, prefers-reduced-motion (transition chỉ bật khi người dùng
+    không tắt chuyển động), và .drum-pad[data-playing].
+  - assets/sounds/ (Homework_2/assets/sounds/): 9 file .wav (kick, snare, hihat,
+    openhat, clap, tom, crash, ride, cowbell) và README.md
+    (Homework_2/assets/sounds/README.md) ghi nguồn.
+
+  Nguồn âm thanh
+
+  Repo chưa có sample nào, nên mình tự tổng hợp 9 file bằng Python thư viện
+  chuẩn (sine sweep, noise lọc, sóng vuông). Không dùng bản ghi bên thứ ba nên
+  không có license cần ghi. Chất lượng kiểu máy trống đơn giản; mình chưa nghe
+  thử các file, bạn nghe lại giúp. Muốn tiếng thật hơn thì tải bộ CC0 về thay
+  file, tên file giữ nguyên là khớp contract.
+
+  Kết quả kiểm tra
+
+  - Contract: 9 pad, 9 audio khớp 1-1 theo data-sound, không trùng data-key, các
+    file src đều tồn tại, mọi href="#…" trỏ đúng id.
+  - Cấm kỵ: 0 <div>, 0 style=, 0 inline handler, 0 <script>; không có hex nào
+    ngoài :root; grep các pattern cấm (keyCode, innerHTML, onclick=, var , CDN)
+    không ra gì.
+  - Contrast (tính tay, ngưỡng AA 4.5:1 cho chữ, 3:1 cho viền UI):
+
+  ┌──────────────────────────────────────────┬──────┬──────┐
+  │                                          │ Sáng │ Tối  │
+  ├──────────────────────────────────────────┼──────┼──────┤
+  │ Chữ / nền                                │ 15.6 │ 15.6 │
+  ├──────────────────────────────────────────┼──────┼──────┤
+  │ Chữ phụ / nền                            │ 6.95 │ 8.7  │
+  ├──────────────────────────────────────────┼──────┼──────┤
+  │ Chữ trên nền accent (pad đang nhấn, nút) │ 7.75 │ 8.2  │
+  ├──────────────────────────────────────────┼──────┼──────┤
+  │ Viền / nền                               │ 5.1  │ 5.3  │
+  └──────────────────────────────────────────┴──────┴──────┘
+
+  - 375px: render trong iframe 375px, scrollWidth bằng clientWidth nên không
+    scroll ngang. Layout ra 2 cột, pad cao tối thiểu 96px nên đủ lớn để chạm.
+  - Dark mode: đã xem bản chụp, hiển thị đúng.
+
+  Chưa kiểm tra: Lighthouse, và việc nghe thử âm thanh. Hai nút Record/Stop/Play
+  chưa có hành vi vì JS thuộc các task sau (nút Record hiện vẫn bấm được nhưng
+  chưa làm gì).
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/index.html Homework_2/css Homework_2/assets
+  git commit -m "feat(drumkit): add HTML data-sound contract"
+
+  Tiếp theo là T-02-J (polyphonic audio engine), bạn muốn làm luôn không?
+
+> <ide_opened_file>The user opened the file
+  c:\Dev\Project\MSIS207_Lab1\Homework_2\index.html in the IDE. This may or may
+  not be related to the current task.</ide_opened_file>
+
+> . Tạo js/audio-engine.js độc lập với API init(root) và play(soundId), sử dụng
+  Map để ánh xạ các nguồn audio[data-sound]. Mỗi lần gọi play() phải tạo
+  instance phát âm thanh riêng để nhiều tiếng có thể chồng lên nhau, không
+  reset currentTime trên cùng một audio node. Xử lý lỗi từ play().catch() và bỏ
+  qua an toàn nếu soundId không tồn tại; dọn các audio clone sau khi phát
+  xong. Không import hoặc phụ thuộc vào keyboard input, recorder hay main.js.
+  Kiểm tra bằng DevTools với play('kick') nhiều lần liên tiếp và play('xyz').
+  Chỉ đề xuất commit feat(drumkit): polyphonic audio engine, không tự commit.
+
+● Write(Homework_2\js\audio-engine.js)
+  ⎿  Wrote 42 lines to Homework_2\js\audio-engine.js
+       1 // Polyphonic audio engine. Reads <audio data-sound> sources, kn
+         ows nothing about
+         (root), AudioEngine.play(soundId).
+       3 (function () {
+       4   'use strict';
+       6   const SOUND_ATTR = 'data-sound';
+       7   const sources = new Map();
+       8
+         once.
+      10   function dispose(clone) {
+     … +40 lines (ctrl+o to expand)
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● T-02-J đã xong: js/audio-engine.js (Homework_2/js/audio-engine.js). Mình chưa
+  commit.
+
+  Cách hoạt động
+
+  - Nạp script: module là IIFE và gắn window.AudioEngine = { init, play }, không
+    dùng import. Lý do là spec nạp script bằng defer, và main.js sẽ gọi nó sau.
+  - init(root): quét audio[data-sound] vào một Map. Gọi lại thì dựng lại map từ
+    đầu. Nếu trùng data-sound, nguồn đầu tiên được giữ.
+  - play(soundId): mỗi lần gọi tạo một node mới bằng cloneNode(true) rồi play().
+    Không đụng currentTime của node gốc, nên các tiếng chồng lên nhau được. Hàm
+    trả true nếu có phát, false nếu bỏ qua.
+  - Dọn dẹp: các clone bị gỡ src và gọi load() khi gặp ended, error, hoặc khi
+    play() bị từ chối. Việc này idempotent nên gọi nhiều lần không sao.
+  - Id lạ: soundId không tồn tại (kể cả undefined) thì trả false, không ném lỗi.
+
+  Kết quả kiểm tra
+
+  Mình chạy file test tạm trong scratchpad, bằng Edge headless:
+  - play('kick') gọi 5 lần liên tiếp cho ra 5 node riêng biệt, đều chạy cùng
+    lúc. Node gốc không bị dùng lại, currentTime của nó vẫn là 0.
+  - play('xyz') và play(undefined) đều trả false, console không có lỗi và không
+    có unhandled rejection.
+  - Dọn dẹp qua ended: mình bắn sự kiện ended giả lên 5 clone, cả 5 đều được gỡ
+    src.
+  - Dọn dẹp qua lỗi: một clone trỏ tới file không tồn tại cũng được gỡ src.
+  - init gọi lại vẫn chạy bình thường.
+  - Grep module độc lập: chỉ khớp ở hai dòng comment, không có import hay tham
+    chiếu tới keyboard, recorder, main.js.
+
+  Hạn chế: headless không phát âm thanh thật nên sự kiện ended không tự bắn. Vì
+  vậy mình kiểm tra đường dọn dẹp bằng sự kiện giả; chưa kiểm chứng cả chuỗi
+  phát, kết thúc, dọn trên trình duyệt thật. Bạn nên tự nghe thử một lần.
+
+  Tự kiểm tra trong DevTools
+
+  index.html chưa nạp script này (việc nối dây thuộc T-05). Bạn dán nội dung
+  audio-engine.js vào console của trang rồi chạy:
+  AudioEngine.init(document);
+  for (let i = 0; i < 5; i++) AudioEngine.play('kick');  // nghe 5 tiếng chồng
+  nhau
+  AudioEngine.play('xyz');                               // false, không lỗi
+  Nếu muốn nạp bằng <script src="js/audio-engine.js" defer> thì sửa index.html,
+  nhưng việc đó ngoài scope task này.
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/js/audio-engine.js
+  git commit -m "feat(drumkit): polyphonic audio engine"
+
+  Làm tiếp T-03-J (keydown với event.repeat) không?
+
+> Ok tiếp tục thực hiện T03 đi
+
+● Write(Homework_2\js\keyboard-input.js)
+  ⎿  Wrote 73 lines to Homework_2\js\keyboard-input.js
+       1 // Turns key presses and pad clicks into hits. Knows only the HT
+         ML contract
+          one to the
+       3 // callback. Public API: KeyboardInput.init(root, onHit, options
+         ?).
+       5   'use strict';
+       6
+       7   const DEFAULTS = {
+       9     soundAttr: 'data-sound',
+      10     playingAttr: 'data-playing',
+     … +71 lines (ctrl+o to expand)
+
+● Update(Homework_2\js\keyboard-input.js)
+  ⎿  Added 1 line
+      41  
+      42      function onKeydown(event) {
+      43        if (event.repeat) return;
+      44 +      if (typeof event.key !== 'string') return;               
+      45        if (event.ctrlKey || event.metaKey || event.altKey) retur
+          n;
+      46        if (event.target instanceof Element && event.target.close
+          st(EDITABLE)) return;
+      47  
+  Ran 2 shell commands (ctrl+o to expand)
+
+● T-03-J đã xong: js/keyboard-input.js (Homework_2/js/keyboard-input.js). Mình
+  chưa commit.
+
+  Cách hoạt động
+
+  - API: KeyboardInput.init(root, onHit, options?). Mỗi hit hợp lệ gọi
+    onHit(soundId, padElement). Module chỉ biết HTML contract, không biết hit
+    dùng để làm gì. options ghi đè tên attribute và thời gian highlight, mặc
+    định đặt ở đầu file.
+  - keydown: một listener ở document. if (event.repeat) return; đứng đầu tiên.
+    Tiếp theo bỏ qua khi event.key không phải chuỗi, khi có Ctrl/Meta/Alt (không
+    chặn phím tắt trình duyệt), và khi đang gõ trong input, textarea, select
+    hoặc [contenteditable].
+  - Tra pad: dùng Map dựng sẵn từ [data-key][data-sound] với key đã
+    toLowerCase(), không dùng querySelector với event.key. Nhờ đó phím như " hay
+    \ không ném SyntaxError.
+  - Click: listener uỷ quyền ở root, tính cả khi bấm vào <kbd> hay <span> bên
+    trong pad. Bấm Enter/Space khi pad đang focus cũng đi qua đường này, nên chỉ
+    có một đường vào onHit.
+  - Highlight: hit ghi data-playing, gỡ bằng setTimeout (mặc định 120ms), không
+    dùng transitionend. Lý do: khi người dùng bật reduced-motion thì không có
+    transition nên transitionend không bắn. Hit liên tiếp trên cùng pad sẽ khởi
+    động lại timer.
+  - init gọi lại: gỡ listener cũ và dọn timer trước khi gắn mới. onHit không
+    phải hàm thì ném TypeError ngay lúc nối dây.
+
+  Kết quả kiểm tra
+
+  Mình chạy test trong Edge headless, nạp module vào trang index.html thật, tất
+  cả đúng như mong đợi:
+
+  ┌───────────────────────────────────┬────────────────────────────────┐
+  │            Tình huống             │            Kết quả             │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Bấm a                             │ 1 hit (kick)                   │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Giữ a (repeat: true)              │ 0 hit                          │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ s rồi d                           │ cả hai chạy                    │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ A hoa                             │ kick                           │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ ", \, Enter, x                    │ 0 hit, không lỗi               │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Ctrl+a, Meta+a                    │ 0 hit                          │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ a trong <input>                   │ 0 hit                          │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Click pad, click <span> bên trong │ đúng sound                     │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Click nút Record                  │ 0 hit                          │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ data-playing                      │ được set, rồi gỡ sau 300ms     │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ init lần hai rồi bấm a            │ 1 hit, không nhân đôi listener │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ init thiếu onHit                  │ TypeError                      │
+  ├───────────────────────────────────┼────────────────────────────────┤
+  │ Lỗi console                       │ không có                       │
+  └───────────────────────────────────┴────────────────────────────────┘
+
+  Grep module độc lập sạch: không có từ engine hay recorder, không import, không
+  keyCode/keypress/which/innerHTML/var.
+
+  Chưa làm: index.html chưa nạp script này (thuộc T-05). Giống bước trước, muốn
+  thử trong DevTools thì dán file vào console rồi chạy
+  KeyboardInput.init(document, (id) => console.log(id)).
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/js/keyboard-input.js
+  git commit -m "feat(drumkit): keydown listener with repeat throttling"
+
+  Làm tiếp T-04-J (FIFO Beat Recorder) không?
+
+> Đọc project-rules.md và chỉ thực hiện task T-04-J trong
+  TASK_DECOMPOSITION.md. Tạo js/beat-recorder.js độc lập với các API start(),
+  stop(), record(soundId), getQueue(), playback(onHit) và isRecording(). Queue
+  phải tuân theo FIFO, mỗi event có dạng { sound: 'kick', t: 1234 }, trong đó t
+  là số mili giây tính từ mốc performance.now() lúc bắt đầu ghi. start() xóa
+  queue cũ; record() khi chưa ghi là no-op. Playback sử dụng setTimeout theo
+  timestamp, lưu timer ID để stop() hủy toàn bộ timer và ngăn phát chồng nhiều
+  lượt. Module không được trực tiếp phát âm thanh hoặc phụ thuộc vào
+  engine/input. Kiểm tra thứ tự sự kiện, khoảng cách thời gian và dừng giữa
+  playback. Chỉ đề xuất commit feat(drumkit): FIFO beat recorder, không tự
+  commit.
+
+● Write(Homework_2\js\beat-recorder.js)
+  ⎿  Wrote 81 lines to Homework_2\js\beat-recorder.js
+       1 // FIFO beat recorder: a timestamped event queue. It stores and
+       2 // never produces sound itself; playback reports each hit to a c
+         allback.
+       3 // Public API: BeatRecorder.start / stop / record / getQueue / p
+       4 (function () {
+       5   'use strict';
+       7   let queue = [];          // [{ sound, t }], oldest first
+       8   let recording = false;
+       9   let startedAt = 0;       // performance.now() when start() was
+      10   let timers = [];         // pending playback timeout ids
+     … +81 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● T-04-J đã xong: js/beat-recorder.js (Homework_2/js/beat-recorder.js). Mình
+  chưa commit.
+
+  Cách hoạt động
+
+  - Queue: mảng { sound, t }, ghi theo thứ tự đến (FIFO). t =
+    Math.round(performance.now() - startedAt), tính từ mốc lúc start(), không
+    cộng dồn delta.
+  - start(): xoá queue cũ, hủy playback đang chạy, bật ghi.
+  - stop(): tắt ghi và hủy mọi timer playback, giữ nguyên queue.
+  - record(soundId): no-op khi chưa ghi.
+  - getQueue(): trả bản sao, sửa hay đảo mảng bên ngoài không làm hỏng queue
+    thật.
+  - playback(onHit, { speed, onEnd }?): snapshot queue rồi setTimeout(..., t /
+    speed) cho từng event, lưu id vào timers. Trả false nếu đang phát, đang ghi,
+    queue rỗng, onHit không phải hàm hoặc speed không hợp lệ, nên không thể
+    phát chồng hai lượt. onEnd chạy đúng một lần khi phát xong tự nhiên, không
+    chạy khi stop() hủy giữa chừng.
+  - Độc lập: module không phát âm thanh, chỉ gọi onHit(sound) do main.js đưa
+    vào.
+
+  Hai thứ thêm ngoài danh sách API: isPlaying() và tùy chọn onEnd. Hai thứ này
+  để T-05 chuyển mode về idle khi phát xong; bỏ đi thì main.js không biết lúc
+  nào kết thúc. speed là tùy chọn của playback, mặc định 1, khớp với "hệ số
+  nhân" trong 3.4.
+
+  Kết quả kiểm tra
+
+  Mình chạy test trong Edge headless:
+
+  ┌─────────────────────────────────┬───────────────────────────────────────┐
+  │           Tình huống            │                Kết quả                │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ record trước start              │ no-op, queue rỗng                     │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Ghi kick, chờ 500ms, snare, chờ │ queue kick@0, snare@500, clap@750,    │
+  │  250ms, clap, tom               │ tom@750                               │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Thứ tự và t                     │ thứ tự đúng, t không giảm             │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Khoảng cách giữa các event      │ 500, 250                              │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Playback đầy đủ                 │ đúng thứ tự, đúng offset, onEnd đúng  │
+  │                                 │ 1 lần, queue vẫn giữ                  │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Gọi playback lần hai khi đang   │ false                                 │
+  │ phát                            │                                       │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ stop() lúc 300ms                │ chỉ phát kick, không còn timer, onEnd │
+  │                                 │  = 0                                  │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Phát lại sau khi stop           │ được                                  │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ speed: 2                        │ offset 0, 250, 375, 375               │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ start() khi đang phát           │ hủy playback và xoá queue             │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ playback khi đang ghi, hoặc     │ false                                 │
+  │ onHit không hợp lệ              │                                       │
+  ├─────────────────────────────────┼───────────────────────────────────────┤
+  │ Lỗi console                     │ không có                              │
+  └─────────────────────────────────┴───────────────────────────────────────┘
+
+  Grep module độc lập sạch: không có engine, audio, keyboard, .play(, import,
+  innerHTML, var.
+
+  Hạn chế: Edge headless chạy bằng thời gian ảo nên các mốc ra chính xác tuyệt
+  đối (500, 250, ...). Trên trình duyệt thật setTimeout sẽ lệch vài ms, và tab
+  chạy nền có thể lệch hơn. Spec đã ghi nhận hạn chế này ở mục 8.
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/js/beat-recorder.js
+  git commit -m "feat(drumkit): FIFO beat recorder"
+
+  Làm tiếp T-05-J (main.js nối dây) không?
+
+> Đọc project-rules.md và chỉ thực hiện task T-05-J trong
+  TASK_DECOMPOSITION.md. Tạo js/main.js làm composition root duy nhất kết nối
+  audio engine, keyboard input và beat recorder; nạp các module bằng script
+  defer theo đúng thứ tự trong contract. Xây dựng callback onHit(soundId, el)
+  để phát âm thanh và ghi event khi recorder đang recording; playback phải gọi
+  engine thông qua callback nhưng không ghi ngược vào queue. Kết nối các nút
+  Record, Stop và Play, cập nhật trạng thái disabled và .recorder-status bằng
+  một hàm setMode duy nhất với các trạng thái idle, recording, playing. Chỉ
+  chỉnh HTML nếu thực sự thiếu nút hoặc liên kết script, không phá vỡ contract
+  đã chốt. Kiểm tra toàn bộ quy trình Record → Stop → Play và lỗi console. Chỉ
+  đề xuất commit feat(drumkit): wire modules and recorder controls, không tự
+  commit.
+
+● Write(Homework_2\js\main.js)
+  ⎿  Wrote 82 lines to Homework_2\js\main.js
+       1 // Composition root: the only file that knows AudioEngine, Keybo
+         ardInput and BeatRecorder.
+       2 // Everything a live-defense change might touch lives in CONFIG.
+       3 (function () {
+       4   'use strict';
+       6   const CONFIG = {
+       7     keyAttr: 'data-key',
+       8     soundAttr: 'data-sound',
+       9     playingAttr: 'data-playing',
+      10     playingMs: 120,       // pad highlight duration
+     … +79 lines (ctrl+o to expand)
+
+● Update(Homework_2\index.html)
+  ⎿  Added 4 lines
+       8    <link rel="icon" href="data:,">
+       9    <link rel="stylesheet" href="css/tokens.css">
+      10    <link rel="stylesheet" href="css/drum-kit.css">
+      11 +  <script src="js/audio-engine.js" defer></script>             
+      12 +  <script src="js/keyboard-input.js" defer></script>           
+      13 +  <script src="js/beat-recorder.js" defer></script>            
+      14 +  <script src="js/main.js" defer></script>                     
+      15  </head>
+      16  <body>
+      17    <a href="#main-content" class="skip-link">Skip to main conten
+          t</a>
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● T-05-J đã xong: js/main.js (Homework_2/js/main.js) và 4 thẻ script thêm vào
+  index.html (Homework_2/index.html). Mình chưa commit.
+
+  Cách hoạt động
+
+  - Composition root: main.js là file duy nhất biết cả ba module. Đầu file có
+    khối CONFIG chứa tên attribute, thời gian highlight và playbackSpeed.
+  - onHit(soundId): gọi AudioEngine.play, rồi BeatRecorder.record nếu đang ghi.
+    Đây là callback cho phím và click.
+  - Phát lại: dùng callback onReplay riêng, chỉ gọi engine, không đi qua onHit,
+    nên hit phát lại không bao giờ bị ghi ngược vào queue.
+  - setMode('idle' | 'recording' | 'playing'): là chỗ duy nhất ghi disabled của
+    ba nút và text của .recorder-status.
+    - idle: chỉ Record bật, Play bật khi queue có hit.
+    - recording và playing: chỉ Stop bật.
+  - onEnd của playback: đưa về idle khi phát xong.
+  - Quản lý focus (thêm ngoài spec): khi nút đang focus bị disabled thì focus
+    chuyển sang nút kế tiếp. Nếu không, người dùng bàn phím mất vị trí mỗi lần
+    bấm Record hay Play.
+  - HTML: chỉ thêm 4 thẻ <script defer> trong <head> theo thứ tự engine, input,
+    recorder, main. Nút và markup contract giữ nguyên.
+
+  Kết quả kiểm tra
+
+  Mình chạy quy trình đầy đủ trên trang thật trong Edge headless:
+
+  ┌─────────────────────────────┬───────────────────────────────────────────┐
+  │            Bước             │                  Kết quả                  │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Nạp trang                   │ cả 3 global tồn tại, mode idle (chỉ       │
+  │                             │ Record bật)                               │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Gõ a khi chưa ghi           │ ra tiếng, queue vẫn 0                     │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Record                      │ Stop bật, trạng thái "Recording…"         │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Gõ a, s, s, d, a            │ ra tiếng và vào queue đủ thứ tự với       │
+  │                             │ offset (kick@0 snare@400 … kick@600)      │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Stop                        │ Play bật, "Beat ready: 5 hits."           │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Play                        │ đúng 5 tiếng theo thứ tự                  │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Gõ f lúc đang phát          │ ra tiếng nhưng không vào queue, queue vẫn │
+  │                             │  5                                        │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Playback xong               │ tự về idle                                │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Stop giữa lúc phát          │ không còn tiếng nào sau đó                │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Record rồi Stop ngay (take  │ Play vẫn tắt, status rỗng                 │
+  │ rỗng)                       │                                           │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Chuyển focus giữa các nút   │ đúng nút kế tiếp ở cả bốn bước            │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Lỗi và unhandled rejection  │ không có                                  │
+  ├─────────────────────────────┼───────────────────────────────────────────┤
+  │ Grep keyCode, innerHTML,    │ sạch                                      │
+  │ onclick=, var , style=      │                                           │
+  └─────────────────────────────┴───────────────────────────────────────────┘
+
+  Giới hạn:
+  - Mình chỉ kiểm tra "không lỗi console" qua listener error và
+    unhandledrejection cùng log của Edge. Log của Edge chỉ ra một dòng từ
+    extension của trình duyệt, không phải từ trang. Lỗi lúc nạp script đầu tiên
+    không bắt được bằng listener, nhưng mọi chức năng đều chạy nên script nạp
+    thành công.
+  - Thời gian chạy ảo, nên khoảng cách phát lại và việc ended dọn clone vẫn chưa
+    kiểm chứng với âm thanh thật. Bạn nên bấm thử Record → gõ → Stop → Play
+    trên trình duyệt thật một lần.
+  - Khi phát lại, pad chưa nháy sáng vì data-playing do KeyboardInput ghi và
+    spec T-05 không yêu cầu. Nếu muốn nháy, đó là thay đổi riêng.
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/js/main.js Homework_2/index.html
+  git commit -m "feat(drumkit): wire modules and recorder controls"
+
+  Còn T-06: refactor và audit ranh giới module. Làm tiếp không?
+
+> ok cái cuối Đọc project-rules.md và chỉ thực hiện task T-06 trong
+  TASK_DECOMPOSITION.md. Rà soát toàn bộ các module trong js/ để đảm bảo
+  audio-engine.js, keyboard-input.js và beat-recorder.js không import hoặc gọi
+  trực tiếp lẫn nhau; chỉ main.js được kết nối cả ba. Tập trung các hằng số như
+  tên attribute, thời gian hiệu ứng nhấn và playback speed vào một khối CONFIG
+  tại vị trí phù hợp để có thể thay đổi nhanh trong vấn đáp. Loại bỏ code
+  chết, giữ nguyên public API và không thêm tính năng ngoài phạm vi bài. Chạy
+  các lệnh audit trong đề, kiểm tra responsive, accessibility và thử đổi một
+  phím cùng playback speed ×2; mỗi thay đổi phải chỉ cần sửa một dòng cấu hình
+  tương ứng. Báo cáo kết quả kiểm tra và các vấn đề còn tồn tại. Chỉ đề xuất
+  commit refactor(drumkit): isolate modules and centralize config, không tự
+  commit. Sau đó hoàn thiện homework 2
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● Cả hai test (đổi phím và tăng speed ×2) đều pass chỉ với một dòng thay đổi.
+  Tuy nhiên diff của main.js lệch toàn file, nên mình sẽ kiểm tra line ending vì
+  có thể script Python đã đổi LF thành CRLF khi ghi trên Windows. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Đúng như nghi ngờ: ba file bị đổi sang CRLF, trong khi repo lưu LF. Mình đưa
+  về LF để diff chỉ chứa thay đổi thật.
+
+  Ran 4 shell commands (ctrl+o to expand)
+
+● Write(Homework_2\README.md)
+  ⎿  Wrote 48 lines to Homework_2\README.md
+      1 # Homework 2: Drum Kit Engine
+      2
+      3 A keyboard-playable drum kit with nine pads and a FIFO beat recor
+      4
+      5 ## Run
+      6
+      7 Serve the folder with Live Server and open `http://localhost:5500
+      8
+      9 Press `A S D F G H J K L` or tap a pad. Press Record, play a patt
+        ern, press Stop, then Play to hear it back.
+     … +55 lines (ctrl+o to expand)
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● T-06 và phần hoàn thiện Homework 2 đã xong. Mình chưa commit gì. Kiểm tra bằng
+  Edge headless nên chưa có tiếng thật.
+
+  T-06: refactor
+
+  - Cấu hình về một chỗ: keyboard-input.js và audio-engine.js trước đây tự giữ
+    giá trị mặc định ('data-key', 120, 'data-sound'...) trùng với CONFIG ở
+    main.js. Sửa một chỗ mà chỗ kia vẫn giữ giá trị cũ thì dễ lệch. Giờ hai
+    module không còn mặc định, chỉ nhận cấu hình từ main.js, thiếu thì ném
+    TypeError rõ ràng. Toàn bộ tên attribute, playingMs và playbackSpeed nằm
+    trong CONFIG ở main.js.
+  - Code chết: đã xoá BeatRecorder.isPlaying() (mình thêm ở T-04 nhưng không ai
+    dùng). API recorder về đúng 6 hàm trong spec.
+  - Nhãn phím tự đồng bộ: main.js điền nhãn <kbd> từ data-key, để đổi phím chỉ
+    sửa một dòng. Đây là thêm nhỏ ngoài việc rà soát thuần tuý, bạn có thể bỏ
+    khối đó nếu không muốn. HTML vẫn giữ chữ cái tĩnh làm dự phòng khi tắt JS.
+  - Public API: vẫn đủ 6 hàm của recorder. Hai hàm init của engine và input nhận
+    thêm tham số cấu hình (engine { soundAttr }, input { keyAttr, soundAttr,
+    playingAttr, playingMs }), nên không còn gọi được kiểu cũ init(root) hay
+    init(root, onHit) mà không có cấu hình.
+  - Line ending: script Python mình dùng để sửa file đã đổi 3 file JS sang CRLF
+    trong khi repo lưu LF. Mình đã đưa về LF, nên diff chỉ có thay đổi thật.
+  - Spec: đã cập nhật 4 dòng trong TASK_DECOMPOSITION.md cho khớp chữ ký hàm
+    mới.
+
+  Kết quả kiểm tra
+
+  - Audit trong đề:
+    - Grep pattern cấm (keyCode, keypress, .which, innerHTML, onclick=, var):
+      sạch.
+    - Grep CDN và style=: sạch.
+    - Grep phụ thuộc chéo (đã bỏ comment): ba module đều không tham chiếu nhau.
+    - Hex ngoài :root: sạch.
+  - Đổi một phím: đổi data-key="a" thành "q" ở một dòng HTML. Phím a không ra
+    tiếng, phím q ra kick, nhãn pad hiện Q.
+  - Speed ×2: đổi playbackSpeed từ 1 thành 2 ở một dòng. Bản thu kick@0,
+    snare@600 phát lại thành 0 và 300.
+  - Hồi quy: chạy lại toàn bộ quy trình Record → Stop → Play, đều đúng như lần
+    trước, không lỗi.
+  - Responsive: ở 320, 375, 768 và 1280px đều không scroll ngang; số cột lần
+    lượt 2, 2, 5, 6; mọi nút ≥ 44px.
+  - Accessibility: lang=en, có title, 1 h1, heading đi h1 → h2 → h2, mỗi
+    landmark đúng 1, phần tử focus đầu tiên là skip-link, mọi nút có tên truy
+    cập, mỗi <audio> có pad khớp. Contrast đã tính ở T-01. Mình chưa chạy
+    Lighthouse hay screen reader.
+
+  Hoàn thiện Homework 2
+
+  Mình thêm Homework_2/README.md: cách chạy, sơ đồ kiến trúc, bảng "đổi gì thì
+  sửa ở đâu" cho vấn đáp và các hạn chế đã biết.
+
+  Còn tồn tại
+
+  - Chưa nghe âm thanh thật. Headless không phát tiếng, nên chuỗi phát, kết
+    thúc, dọn clone chỉ được kiểm tra bằng sự kiện giả. Bạn nên bấm thử Record →
+    gõ → Stop → Play trên trình duyệt thật.
+  - Timing replay dùng setTimeout, trên trình duyệt thật sẽ lệch vài ms (đã ghi
+    trong README).
+  - Phát lại không làm pad nháy sáng. Spec không yêu cầu nên mình để nguyên.
+  - Ở màn hình rộng, 9 pad chia 5+4 hoặc 6+3 hàng, hơi lệch về mặt thẩm mỹ.
+  - Prompt log: các file docs/Promt_*.txt là bản export phiên làm việc nên mình
+    không tạo thay bạn. DoD yêu cầu ghi prompt và lỗi AI, nên bạn export phiên
+    này vào docs/ như các bài trước.
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_2/js Homework_2/TASK_DECOMPOSITION.md
+  git commit -m "refactor(drumkit): isolate modules and centralize config"
+
+  git add Homework_2/README.md
+  git commit -m "docs(drumkit): add Homework 2 README"
+
+> <ide_opened_file>The user opened the file
+  c:\Dev\Project\MSIS207_Lab1\docs\Promt_lab1_hm2.txt in the IDE. This may or
+  may not be related to the current task.</ide_opened_file>
+
+> Homework 3: Resilient Event Hub & AI Failure AuditWeb Application Development
+  | Lab 1: Modern Web Foundations & AI-Assisted Engineering • Page 25 of
+  26HW3: Resilient Landing Page (3 Slices)• SLICE 1: Drift-Free Countdown
+  Engine (UTC ISO 8601 timestamps).• SLICE 2: State-Machine Form (Idle ->
+  Submitting -> Success/Error).• SLICE 3: Double-submit prevention & input
+  sanitization (zero XSS).• GIT AUDIT RULE: Minimum 5 atomic commits
+  corresponding to slices.• ONE-SHOT PROMPTING BAN:• • Passing the entire
+  prompt to AI triggers severe timezone & memory leak bugs.Mandatory AI Failure
+  Mode Report (15%)• MANDATORY REPORT: AI_FAILURE_AUDIT.md• Students must
+  document 3 AI-induced defects caught during review:• 1. Defect Description
+  (e.g. setInterval drift, innerHTML vulnerability).• 2. Diagnostic Method (Git
+  diff inspection or DevTools breakpoint).• 3. Refactored Solution (Your
+  clean, verified engineering fix).• LIVE DEFENSE: Be prepared to explain any
+  line from your Git history.
+  Ok chuyển sang là homework 3 đi, bài tập này khác 1 tí là phải làm kèm 1 cái
+  AI audit falure, nôm na thì lúc làm bạn có thể sẽ phát hiện có những thứ cần
+  quyết định của con người, hoặc cái bạn đã làm nhưng xem lại thì có thể cho
+  mình nhiều option để chọn cải thiện (Chứ ko phải tự tạo lỗi tự fix =))))),
+  bước đầu với tạo task decomposition trong folder homwwork 3, đề xuất xem sau
+  step nào thì nên audit lại 1 lần, mình nghĩ nên audit 2 lần, 1 lần giữa dev
+  và 1 lần sau hoàn thiện
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(Homework_3\TASK_DECOMPOSITION.md)
+  ⎿  Wrote 321 lines to Homework_3\TASK_DECOMPOSITION.md
+      1 # TASK_DECOMPOSITION – Homework 3: Resilient Event Hub & AI Failu
+      2
+      3 > Work Breakdown Structure (WBS) cho HW3.
+        y tắc §6 của `project-rules.md`.
+      5 > Mỗi prompt AI tham chiếu **đúng 1** task ID (ví dụ `T-03-J`) và
+      6 > **Luật của đề:** cấm one-shot prompt (đưa cả đề cho AI sinh lỗi
+         timezone và memory leak). Làm theo 3 slice, tối thiểu 5 commit n
+      7 > **Báo cáo bắt buộc (15%):** `AI_FAILURE_AUDIT.md` với ≥ 3 lỗi d
+        o AI gây ra, bắt được lúc review. Cách làm audit ở mục 5.
+      9 ---
+     … +475 lines (ctrl+o to expand)
+
+● Update(Homework_3\TASK_DECOMPOSITION.md)
+  ⎿  Added 1 line, removed 1 line
+      81  | `#countdown[data-state="running\|done\|invalid"]` | Vùng đếm 
+          ngược; JS chỉ ghi attribute, CSS đọc attribute |
+      82  | `#cd-days`, `#cd-hours`, `#cd-minutes`, `#cd-seconds` | Bốn ô
+           số, ghi bằng `textContent` |
+      83  | `.countdown-time` | `<time datetime="…Z">` giờ bắt đầu, hiển 
+          thị theo giờ địa phương và có kèm UTC |
+      84 -| `.countdown-status[role="status"]` | Thông báo cho screen rea
+         -der, cập nhật thưa (xem D7), không cập nhật mỗi giây |         
+      84 +| `.countdown-status[role="status"]` | Thông báo cho screen rea
+         +der, cập nhật thưa (xem D5), không cập nhật mỗi giây |         
+      85  | `#register[data-state="idle\|submitting\|success\|error"]` | 
+          Vùng form; nguồn sự thật duy nhất của state |
+      86  | `#reg-form` | `<form novalidate>`; validate bằng JS, vẫn dùng
+           `required`, `type`, `maxlength` |
+      87  | `#reg-name`, `#reg-email`, `#reg-note` | Ba field, mỗi field 
+          có `<label for>` và `aria-describedby` tới thông báo lỗi riêng 
+          |
+
+● Written for: bạn (sinh viên làm HW3, cần vừa làm bài vừa bảo vệ). Mình đã tạo
+  Homework_3/TASK_DECOMPOSITION.md, chưa viết code và chưa commit.
+
+  Bố cục
+
+  - 3 slice theo đề. Mỗi slice tách phần lõi thuần (không chạm DOM) khỏi phần
+    gắn DOM:
+    - S1: countdown tính từ mốc UTC …Z.
+    - S2: state machine form 4 state, test được ngay trong console.
+    - S3: chống double-submit và làm sạch input.
+  - Contract (mục 3): cấu trúc file, CONFIG một chỗ, id và data-state, bảng
+    chuyển state, API từng module.
+  - Commit (mục 6): 11 commit, vượt mức tối thiểu 5. Hai commit audit nằm xen
+    giữa.
+
+  Audit: mình đồng ý với 2 lần
+
+  ┌──────────┬────────────────┬─────────────────────────────────────────────┐
+  │  Audit   │   Đặt ở đâu    │                    Lý do                    │
+  ├──────────┼────────────────┼─────────────────────────────────────────────┤
+  │ A (giữa  │ Sau T-05 (xong │ S3 gia cố thứ S2 vừa làm, nên phát hiện ở A │
+  │ dev)     │  S1+S2), trước │  quyết định cách S3 thiết kế. Timer là chỗ  │
+  │          │  S3            │ AI hay sai nhất, bắt sớm khi code còn nhỏ   │
+  ├──────────┼────────────────┼─────────────────────────────────────────────┤
+  │ B (hoàn  │ Sau T-08 (xong │ Chỉ B mới thấy lỗi xuất hiện khi 3 slice    │
+  │ thiện)   │  S3) và polish │ chạy cùng nhau, và kiểm tra hồi quy các sửa │
+  │          │                │  của A                                      │
+  └──────────┴────────────────┴─────────────────────────────────────────────┘
+
+  Mình thêm một thói quen rẻ tiền: sau mỗi output của AI, ghi 1–2 dòng vào "Nhật
+  ký ứng viên" cuối AI_FAILURE_AUDIT.md. Nhờ vậy cuối bài có khoảng 5 ứng viên
+  để chọn ra ≥ 3 mục tốt nhất.
+
+  Đúng ý bạn: không tự tạo lỗi rồi tự sửa
+
+  Mục 5.1 định nghĩa 3 loại phát hiện hợp lệ: lỗi thật, điểm đề không quy định
+  mà AI có thể chọn sai, và điểm chạy đúng nhưng có phương án tốt hơn. Mẫu mỗi
+  mục báo cáo giữ đúng 3 trường đề yêu cầu (mô tả, cách phát hiện, giải pháp) và
+  thêm 2 trường: phương án A/B/C và quyết định của bạn. Mục 4 liệt kê sẵn 12
+  điểm cần bạn quyết (D1–D12). AI sẽ trình bày lựa chọn kèm hệ quả khi tới task
+  liên quan, không chọn ngầm. Ví dụ:
+  - D1/D2: cách lên lịch tick và nguồn đồng hồ.
+  - D5: có để aria-live đọc đồng hồ mỗi giây hay không.
+  - D9: nút khi đang gửi dùng disabled hay aria-disabled; disabled làm người
+    dùng bàn phím mất focus.
+  - D10: làm sạch input theo kiểu từ chối hay chuẩn hoá.
+
+  Cần bạn xác nhận
+
+  Mình tự đặt sự kiện mẫu là "Web Foundations Demo Day", mốc
+  2026-12-20T09:00:00Z, đổi được một dòng trong CONFIG. Form có 3 field (name,
+  email, note), backend là adapter giả lập (D6). Nếu bạn có sự kiện thật hoặc
+  muốn hướng khác thì nói để mình sửa trước khi commit spec.
+
+  Đề xuất commit (bạn tự chạy):
+  git add Homework_3/TASK_DECOMPOSITION.md
+  git commit -m "docs(spec): task decomposition for homework 3"
+
+  Spec đã xong, bạn xác nhận hay chỉnh gì thì cho mình biết, rồi mình làm T-01
+  (skeleton HTML/CSS/config) nhé?
+
+> <ide_selection>The user selected the lines 200 to 200 from
+  c:\Dev\Project\MSIS207_Lab1\Homework_3\TASK_DECOMPOSITION.md:
+  docs(spec): task decomposition for homework 3
+
+  This may or may not be related to the current task.</ide_selection>
+
+> Ok trước đó chủ đề landing page sự kiện bạn tính làm là gì vậy
+
+● Mình chưa chọn chủ đề thật. Trong spec chỉ có một sự kiện mẫu để có cái mà đếm
+  ngược và đăng ký: "Web Foundations Demo Day", bắt đầu 2026-12-20T09:00:00Z.
+  Tên và mốc này nằm ở CONFIG, đổi một dòng là xong.
+
+  Nội dung trang mình định làm rất tối giản:
+  - Hero: tên sự kiện và đồng hồ đếm ngược (ngày, giờ, phút, giây). Bên dưới là
+    giờ bắt đầu theo giờ địa phương và UTC.
+  - Mô tả: hai ba câu ngắn về sự kiện.
+  - Form đăng ký: họ tên, email, ghi chú.
+
+  Mình cố ý không bịa diễn giả, địa điểm hay số liệu (theo rule 8 của
+  project-rules.md). Cái tên cũng chỉ là chỗ giữ chỗ: nó nghe hơi chung chung và
+  không gắn gì với bạn.
+
+  Bạn có thể chọn hướng nào cũng được, vì logic bên dưới (countdown, state
+  machine, sanitize) không phụ thuộc chủ đề:
+
+  ┌─────────────────┬───────────────────────────────────────────────────────┐
+  │      Hướng      │                        Ghi chú                        │
+  ├─────────────────┼───────────────────────────────────────────────────────┤
+  │ Giữ placeholder │ Nhanh nhất, không rủi ro bịa thông tin                │
+  ├─────────────────┼───────────────────────────────────────────────────────┤
+  │ Demo Day của    │ Gần với bối cảnh bài lab, nghe thật hơn. Cần bạn xác  │
+  │ lớp MSIS207     │ nhận có thật hay chỉ là kịch bản                      │
+  ├─────────────────┼───────────────────────────────────────────────────────┤
+  │ Sự kiện bạn tự  │ Ví dụ meetup, workshop. Bạn đưa tên và mô tả ngắn,    │
+  │ đặt             │ mình đưa vào CONFIG                                   │
+  ├─────────────────┼───────────────────────────────────────────────────────┤
+  │ Hợp với         │ Chủ đề biển (bảng màu #086288, #4D8DBA, #97D7FF,      │
+  │ portfolio HW1   │ #FFEFC4) cho đồng bộ thị giác. Chọn hướng này thì tên │
+  │                 │  sự kiện cũng đổi theo                                │
+  └─────────────────┴───────────────────────────────────────────────────────┘
+
+  Bạn chọn hướng nào để mình sửa spec rồi bắt đầu T-01?
+
+> Lấy workshop chủ đề bảo vệ biển đi, lấy bộ màu cũ bên hw1 nhưng mở rộng,
+  phong cách tròn 1 tí, bắt đầu dựng khung T-01 đi
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Write(Homework_3\js\config.js)
+  ⎿  Wrote 11 lines to Homework_3\js\config.js
+       1 // The single place to change the event, timing and limits. Load
+       2 // the other scripts receive what they need from main.js, they d
+         o not read this directly.
+       4   eventName: 'Ocean Guardians Workshop',
+         ys ends in Z
+       6   announceEverySeconds: 60,                // how often a screen
+       7   submitTimeoutMs: 8000,
+       8   mockDelayMs: 1200,
+         '
+         00 }),
+     … +6 lines (ctrl+o to expand)
+
+● Write(Homework_3\css\tokens.css)  ⎿  Wrote 182 lines to Homework_3\css\tokens.css
+       1 /* =============================================================
+       2    T-01-C – Tokens & reset
+       3    Hex values live ONLY in the primitive block. Every rule uses
+         semantic
+       5    Palette: the four sea colours of Homework 1, plus pearl (soft
+          surface),
+       7    =============================================================
+         ============= */
+       8
+      10   /* Primitives */
+     … +180 lines (ctrl+o to expand)
+
+● Write(Homework_3\index.html)
+  ⎿  Wrote 95 lines to Homework_3\index.html
+       1 <!DOCTYPE html>
+       2 <html lang="en">
+       4   <meta charset="UTF-8">
+       5   <meta name="viewport" content="width=device-width, initial-sca
+         le=1.0">
+         ecting the ocean. Count down to the start and reserve your seat.
+         ">
+       7   <title>Ocean Guardians Workshop</title>
+       9   <link rel="stylesheet" href="css/fonts.css">
+      10   <link rel="stylesheet" href="css/tokens.css">
+     … +103 lines (ctrl+o to expand)
+
+● Write(Homework_3\css\hub.css)
+  ⎿  Wrote 241 lines to Homework_3\css\hub.css
+       1 /* =============================================================
+       2    T-01-C – Layout and components (mobile-first, 375px)
+       3    Uses only tokens from tokens.css: no colour values here.
+       4    Content is centred by padding on each band, not by wrapper el
+       5    =============================================================
+         ============= */
+       7 /* 1. Page frame -----------------------------------------------
+         ------------- */
+       8
+      10 main > section,
+     … +244 lines (ctrl+o to expand)
+
+● Write(Homework_3\css\noscript.css)
+  ⎿  Wrote 5 lines to Homework_3\css\noscript.css
+      1 /* Loaded only when JavaScript is off: the numbers would stay at
+        "--" forever,
+      2    so hide the grid and let the plain start time carry the messag
+        e. */
+      3 .countdown-grid {
+      4   display: none;
+      5 }
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Đang kiểm tra T-01: cấu trúc, contract, rồi chụp ảnh ở 375px và desktop, cả
+  hai theme.
+
+  Read 3 files, ran 3 shell commands (ctrl+o to expand)
+
+● T-01 đã xong: skeleton HTML, CSS và config. Mình chưa commit.
+
+  Đã làm
+
+  - Chủ đề: "Ocean Guardians Workshop", gồm hero, đồng hồ đếm ngược, 3 chủ đề
+    giới thiệu chung chung và section#register. Section này mới có tiêu đề và
+    đoạn dẫn, form thêm ở T-04. Không bịa diễn giả, địa điểm hay số liệu. Mốc là
+    2026-12-20T02:00:00Z, tức 09:00 giờ Việt Nam.
+  - Bộ màu: giữ 5 màu biển của HW1 rồi mở rộng. --pearl là nền mềm, --kelp dành
+    cho thành công, --coral dành cho lỗi. Hai màu kelp và coral có thêm bản sáng
+    cho dark mode.
+  - Phong cách tròn: token --radius-s/m/l/pill. Hero và footer bo góc lớn, ô đếm
+    ngược bo tròn, thẻ và nhãn dạng viên thuốc. Font Nunito tự host, copy từ
+    HW1.
+  - Dark mode theo OS qua prefers-color-scheme, chưa có nút chuyển.
+  - Theo cả noscript.css: khi tắt JS thì ẩn lưới số "--", chỉ giữ dòng giờ bắt
+    đầu.
+  - Spec: đã cập nhật chủ đề, mốc giờ, danh sách file và các dòng liên quan của
+    T-01 trong TASK_DECOMPOSITION.md.
+
+  Kết quả kiểm tra
+
+  - Contrast (tính tay): chữ trên nền ≥ 5.3:1 ở cả hai theme. Viền input ≥
+    3.15:1. Riêng coral và kelp: bản sáng ≥ 5.3:1 trên cả sand và pearl, bản
+    sáng cho dark ≥ 6.2:1.
+  - Responsive: ở 320, 375, 768 và 1280px đều không scroll ngang. Ô đếm ngược
+    rộng 62px ở 320px vẫn vừa. Font Nunito nạp được.
+  - Contract: 1 h1, 0 <div>, thứ tự heading đúng. Mọi href="#…" đều có đích, đủ
+    các id cần thiết, data-state ban đầu là running và idle. CONFIG đã
+    Object.freeze cả khối lồng. <time datetime> trùng CONFIG.
+  - Grep: không có innerHTML, var, onclick=, style=", CDN, và không có hex ngoài
+    khối primitive của tokens.css.
+  - Ảnh chụp: đã xem ở 375px (hai theme) và desktop. Layout và bo tròn đúng ý,
+    chưa có JS nên số vẫn là --.
+  - Chưa kiểm tra: Lighthouse và axe.
+
+  Ghi vào "Nhật ký ứng viên" cho báo cáo audit
+
+  Mình thấy 3 điểm đáng cân nhắc, chưa chọn hướng nào, để bạn quyết khi tới T-02
+  và T-03:
+  1. Giờ nằm ở hai nơi: datetime tĩnh trong HTML và CONFIG. T-03 sẽ ghi đè từ
+     CONFIG, nhưng nếu quên sửa HTML thì khi tắt JS trang hiển thị giờ cũ.
+     Phương án: giữ trùng lặp có chủ đích, hoặc bỏ giờ tĩnh khỏi HTML và chỉ cho
+     JS điền.
+  2. const CONFIG không nằm trên window: các script khác vẫn đọc được qua scope
+     toàn cục, nhưng đây là phụ thuộc ngầm giữa config.js và main.js. Phương án:
+     để vậy (đơn giản), hoặc gắn vào một namespace như window.HubConfig cho rõ
+     ràng.
+  3. Số -- hiện trước khi JS chạy: có thể nhấp nháy một chút. Phương án: để --,
+     để 0, hoặc ẩn lưới đến lần tick đầu.
+
+  CSP <meta> chưa thêm vì spec để ở T-08 (D11).
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_3/index.html Homework_3/css Homework_3/js Homework_3/assets
+  git commit -m "feat(hub): add page skeleton and HTML contract"
+
+  Làm tiếp T-02-J (countdown engine) không? Trước khi viết mình sẽ trình bày D1
+  (cách lên lịch tick) và D2 (nguồn đồng hồ) để bạn chọn.
+
+> <ide_opened_file>The user opened the file
+  c:\Dev\Project\MSIS207_Lab1\Homework_3\TASK_DECOMPOSITION.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+> Skeleton thì ok, nhưng đồ họa bị formal AI quen thuộc quá, bạn thử phá cách
+  giao diện đi. Sáu đó thự hiện phần countdown S1 đi, trước đó cho mình các
+  option bạn có thể sử dụng
+
+● Skill(frontend-design:frontend-design)
+  ⎿  Successfully loaded skill
+
+● Mình sẽ bỏ băng xanh phẳng, nhãn in hoa và 3 thẻ giống hệt nhau, thay bằng
+  "vũng thủy triều" bo tròn bất đối xứng chứa đồng hồ khổng lồ, vẫn giữ nguyên
+  contract HTML. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Write(Homework_3\css\hub.css)
+  ⎿  Added 120 lines, removed 91 lines
+       1  /* ============================================================
+          ==============
+       2     T-01-C – Layout and components (mobile-first, 375px)
+       3     Uses only tokens from tokens.css: no colour values here.
+       4 -   Content is centred by padding on each band, not by wrapper e
+         -lements.                                                       
+       4 +   Idea: the page is a beach. The one memorable object is the c
+         +ountdown, a                                                    
+       5 +   tide pool: an uneven round blob of deep water with a second 
+         +blob behind it.                                                
+       6 +   Everything else stays quiet: plain text on sand, one soft co
+         +ntainer.                                                       
+       7 +   Content is centred by --edge padding on each section, not by
+         + wrapper elements.                                             
+       8     ============================================================
+          ============== */
+       9  
+       7 -/* 1. Page frame ----------------------------------------------
+         --------------- */                                              
+      10 +/* 1. Frame ---------------------------------------------------
+         +--------------- */                                             
+      11  
+      12  .site-header,
+      10 -main > section,                                                
+      13 +.hero,                                                         
+      14 +.about,                                                        
+      15  .site-footer {
+      12 -  padding-inline: max(var(--gutter), calc((100% - var(--content
+         --max)) / 2));                                                  
+      16 +  padding-inline: var(--edge);                                 
+      17  }
+      18  
+      19  .visually-hidden {
+     ...
+       41    transform: translateY(0);
+       42  }
+       43  
+       40 -/* 2. Header (1D -> flex) ------------------------------------
+          ----------------- */                                           
+       44 +/* 2. Header (1D -> flex): plain, no band --------------------
+          +---------------- */                                           
+       45  
+       46  .site-header {
+       47    display: flex;
+       48    flex-wrap: wrap;
+       45 -  align-items: center;                                        
+       49 +  align-items: baseline;                                      
+       50    justify-content: space-between;
+       51    gap: var(--space-2) var(--space-6);
+       48 -  padding-block: var(--space-4);                              
+       49 -  background-color: var(--band-bg);                           
+       50 -  color: var(--band-text);                                    
+       52 +  padding-block: var(--space-6) 0;                            
+       53  }
+       54  
+       53 -.site-header a {                                              
+       54 -  color: var(--band-text);                                    
+       55 -}                                                             
+       56 -                                                              
+       57 -.site-header :focus-visible,                                  
+       58 -.site-footer :focus-visible {                                 
+       59 -  outline-color: var(--band-ring);                            
+       60 -}                                                             
+       61 -                                                              
+       55  .brand {
+       63 -  font-weight: var(--font-weight-heading);                    
+       56 +  color: var(--heading);                                      
+       57    font-size: var(--font-size-lg);
+       58 +  font-weight: var(--font-weight-heading);                    
+       59    text-decoration: none;
+       60  }
+       61  
+       62  .nav-list {
+       63    display: flex;
+       70 -  gap: var(--space-2);                                        
+       64 +  gap: var(--space-6);                                        
+       65  }
+       66  
+       73 -.nav-list a {                                                 
+       74 -  display: inline-block;                                      
+       75 -  padding: var(--space-2) var(--space-4);                     
+       76 -  border-radius: var(--radius-pill);                          
+       77 -  text-decoration: none;                                      
+       78 -}                                                             
+       67 +/* 3. Hero (2D -> grid) --------------------------------------
+          +---------------- */                                           
+       68  
+       80 -.nav-list a:hover {                                           
+       81 -  background-color: color-mix(in srgb, var(--band-text) 16%, t
+          -ransparent);                                                  
+       82 -}                                                             
+       83 -                                                              
+       84 -/* 3. Hero ---------------------------------------------------
+          ----------------- */                                           
+       85 -                                                              
+       69  .hero {
+       87 -  display: flex;                                              
+       88 -  flex-direction: column;                                     
+       89 -  align-items: flex-start;                                    
+       90 -  gap: var(--space-4);                                        
+       91 -  padding-block: var(--space-8) var(--space-12);              
+       92 -  border-radius: 0 0 var(--radius-l) var(--radius-l);         
+       93 -  background-color: var(--band-bg);                           
+       94 -  color: var(--band-text);                                    
+       70 +  display: grid;                                              
+       71 +  grid-template-columns: minmax(0, 1fr);                      
+       72 +  gap: var(--space-6);                                        
+       73 +  padding-block: var(--space-12) var(--space-16);             
+       74  }
+       75  
+       76  .hero h1 {
+       98 -  color: var(--band-text);                                    
+       77 +  max-inline-size: 9ch;                                       
+       78 +  font-size: var(--font-size-hero);                           
+       79 +  letter-spacing: -0.035em;                                   
+       80 +  line-height: 0.92;                                          
+       81  }
+       82  
+      101 -.eyebrow {                                                    
+      102 -  padding: var(--space-1) var(--space-4);                     
+      103 -  border: 2px solid var(--band-text);                         
+      104 -  border-radius: var(--radius-pill);                          
+      105 -  font-size: var(--font-size-sm);                             
+      106 -  font-weight: 700;                                           
+      107 -  letter-spacing: 0.04em;                                     
+      108 -  text-transform: uppercase;                                  
+      109 -}                                                             
+      110 -                                                              
+       83  .hero-lead {
+      112 -  max-width: var(--measure);                                  
+       84 +  max-inline-size: 32ch;                                      
+       85    font-size: var(--font-size-lg);
+       86  }
+       87  
+      116 -/* 4. Countdown (grid) ---------------------------------------
+          ---------------- */                                            
+       88 +/* 4. Countdown: the tide pool -------------------------------
+          +----------------- */                                          
+       89  
+       90  .countdown {
+       91 +  position: relative;                                         
+       92 +  isolation: isolate;                                         
+       93    display: flex;
+       94    flex-direction: column;
+      121 -  gap: var(--space-3);                                        
+      122 -  width: 100%;                                                
+       95 +  gap: var(--space-4);                                        
+       96    margin-top: var(--space-4);
+       97 +  padding: var(--space-12) var(--space-8);                    
+       98 +  border-radius: var(--blob);                                 
+       99 +  background-color: var(--tide-bg);                           
+      100 +  color: var(--tide-text);                                    
+      101  }
+      102  
+      103 +/* The second, lighter pool behind the first. Decorative: gene
+          +rated content. */                                             
+      104 +.countdown::before {                                          
+      105 +  content: "";                                                
+      106 +  position: absolute;                                         
+      107 +  inset: calc(-1 * var(--space-3)) calc(-1 * var(--space-3)) c
+          +alc(-1 * var(--space-4)) var(--space-3);                      
+      108 +  z-index: -1;                                                
+      109 +  border-radius: var(--blob-back);                            
+      110 +  background-color: var(--tide-back);                         
+      111 +  transform: rotate(-3deg);                                   
+      112 +}                                                             
+      113 +                                                              
+      114 +.countdown :focus-visible {                                   
+      115 +  outline-color: var(--tide-ring);                            
+      116 +}                                                             
+      117 +                                                              
+      118  .countdown-title {
+      127 -  color: var(--band-text);                                    
+      119 +  color: var(--tide-text);                                    
+      120    font-size: var(--font-size-lg);
+      121  }
+      122  
+      123  .countdown-grid {
+      124    display: grid;
+      133 -  grid-template-columns: repeat(4, minmax(0, 1fr));           
+      134 -  gap: var(--space-2);                                        
+      125 +  grid-template-columns: repeat(2, minmax(0, 1fr));           
+      126 +  gap: var(--space-4) var(--space-6);                         
+      127  }
+      128  
+      129  .countdown-cell {
+      130    display: flex;
+      131    flex-direction: column;
+      140 -  align-items: center;                                        
+      141 -  padding: var(--space-3) var(--space-1);                     
+      142 -  border-radius: var(--radius-m);                             
+      143 -  background-color: var(--cell-bg);                           
+      144 -  box-shadow: 0 0.5rem 1.25rem var(--shadow);                 
+      132  }
+      133  
+      134  .cd-value {
+      148 -  color: var(--cell-value);                                   
+      135    font-size: var(--font-size-count);
+      136    font-weight: var(--font-weight-heading);
+      137    font-variant-numeric: tabular-nums;
+      152 -  line-height: 1.1;                                           
+      138 +  letter-spacing: -0.04em;                                    
+      139 +  line-height: 0.95;                                          
+      140  }
+      141  
+      142  .cd-label {
+      156 -  color: var(--cell-label);                                   
+      143    font-size: var(--font-size-sm);
+      144    font-weight: 700;
+      145  }
+     ...
+      148    font-size: var(--font-size-sm);
+      149  }
+      150  
+      151 +.countdown .countdown-time {                                  
+      152 +  color: var(--tide-text);                                    
+      153 +}                                                             
+      154 +                                                              
+      155  /* State from the DOM: JS writes data-state, CSS only reads it
+           . */
+      156  .countdown-done,
+      157  .countdown-invalid {
+      158    display: none;
+      169 -  padding: var(--space-3) var(--space-4);                     
+      170 -  border-radius: var(--radius-m);                             
+      171 -  background-color: var(--cell-bg);                           
+      172 -  color: var(--cell-value);                                   
+      173 -  font-weight: 700;                                           
+      159 +  font-size: var(--font-size-xl);                             
+      160 +  font-weight: var(--font-weight-heading);                    
+      161 +  line-height: 1.15;                                          
+      162  }
+      163  
+      164  .countdown[data-state="done"] .countdown-grid,
+     ...
+      175    display: block;
+      176  }
+      177  
+      190 -/* 5. Content sections ---------------------------------------
+          ----------------- */                                           
+      178 +/* 5. About: text-led rows, not cards ------------------------
+          +---------------- */                                           
+      179  
+      192 -.about,                                                       
+      193 -.register {                                                   
+      180 +.about {                                                      
+      181    display: flex;
+      182    flex-direction: column;
+      183    gap: var(--space-4);
+      197 -  padding-block: var(--space-12);                             
+      184 +  padding-block: var(--space-8) var(--space-12);              
+      185  }
+      186  
+      187  .section-lead {
+      201 -  max-width: var(--measure);                                  
+      188 +  max-inline-size: var(--measure);                            
+      189  }
+      190  
+      191  .topic-list {
+      192 +  margin-top: var(--space-4);                                 
+      193 +}                                                             
+      194 +                                                              
+      195 +.topic {                                                      
+      196    display: grid;
+      206 -  grid-template-columns: repeat(auto-fit, minmax(min(100%, var
+          -(--card-min)), 1fr));                                         
+      207 -  gap: var(--space-4);                                        
+      197 +  grid-template-columns: minmax(0, 1fr);                      
+      198 +  gap: var(--space-2);                                        
+      199 +  padding-block: var(--space-6);                              
+      200 +  border-top: 4px dotted var(--rule);                         
+      201  }
+      202  
+      210 -.topic-card {                                                 
+      203 +.topic h3 {                                                   
+      204 +  color: var(--text);                                         
+      205 +}                                                             
+      206 +                                                              
+      207 +.topic p {                                                    
+      208 +  max-inline-size: 48ch;                                      
+      209 +}                                                             
+      210 +                                                              
+      211 +/* 6. Register: one soft container ---------------------------
+          +----------------- */                                          
+      212 +                                                              
+      213 +.register {                                                   
+      214    display: flex;
+      215    flex-direction: column;
+      213 -  gap: var(--space-2);                                        
+      214 -  padding: var(--space-6);                                    
+      215 -  border: 2px solid var(--border);                            
+      216 -  border-radius: var(--radius-m);                             
+      216 +  gap: var(--space-4);                                        
+      217 +  margin-inline: var(--edge);                                 
+      218 +  margin-bottom: var(--space-12);                             
+      219 +  padding: var(--space-8) var(--space-6);                     
+      220 +  border-radius: var(--radius-l);                             
+      221    background-color: var(--surface);
+      222  }
+      223  
+      220 -/* 6. Footer -------------------------------------------------
+          ----------------- */                                           
+      224 +/* 7. Footer -------------------------------------------------
+          +----------------- */                                          
+      225  
+      226  .site-footer {
+      227    padding-block: var(--space-6);
+      224 -  border-radius: var(--radius-l) var(--radius-l) 0 0;         
+      225 -  background-color: var(--band-bg);                           
+      226 -  color: var(--band-text);                                    
+      228 +  border-top: 4px dotted var(--rule);                         
+      229 +  color: var(--text-muted);                                   
+      230    font-size: var(--font-size-sm);
+      231  }
+      232  
+      230 -/* 7. Wider screens ------------------------------------------
+          ----------------- */                                           
+      233 +/* 8. Wider screens ------------------------------------------
+          +----------------- */                                          
+      234  
+      235  @media (min-width: 48rem) {
+      236    .hero {
+      234 -    padding-block: var(--space-16);                           
+      237 +    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);  
+      238 +    column-gap: var(--space-12);                              
+      239 +    align-items: end;                                         
+      240 +    padding-block: var(--space-16) 6rem;                      
+      241    }
+      242  
+      243 +  .hero h1 {                                                  
+      244 +    grid-column: 1;                                           
+      245 +  }                                                           
+      246 +                                                              
+      247 +  .hero-lead {                                                
+      248 +    grid-column: 1;                                           
+      249 +  }                                                           
+      250 +                                                              
+      251 +  .countdown {                                                
+      252 +    grid-column: 2;                                           
+      253 +    grid-row: 1 / span 2;                                     
+      254 +    padding: var(--space-16) var(--space-12);                 
+      255 +  }                                                           
+      256 +                                                              
+      257    .countdown-grid {
+      238 -    max-width: 36rem;                                         
+      239 -    gap: var(--space-4);                                      
+      258 +    grid-template-columns: repeat(2, auto);                   
+      259 +    justify-content: start;                                   
+      260    }
+      261 +                                                              
+      262 +  .topic {                                                    
+      263 +    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);     
+      264 +    column-gap: var(--space-8);                               
+      265 +  }                                                           
+      266 +                                                              
+      267 +  .register {                                                 
+      268 +    padding: var(--space-12);                                 
+      269 +  }                                                           
+      270  }
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Tôi thấy hai lỗi: blob phụ đè lên blob chính do vấn đề stacking context, và
+  tiêu đề bị ngắt giữa chữ. Tôi sẽ sửa cả hai, đồng thời đặt padding blob theo
+  phần trăm để chữ nằm trong vùng an toàn của đường cong. · summary
+
+  Read 3 files, ran 2 shell commands (ctrl+o to expand)
+
+● Có scroll ngang ở 320, 375 và 768px do blob phụ bị xoay tràn ra mép. Mình chặn
+  ở cấp hero bằng overflow-x: clip rồi đo lại.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Giao diện đã đổi xong và không còn scroll ngang. Giờ tới phần countdown: mình
+  cần bạn chọn vài điểm đề không quy định trước khi viết countdown.js.
+
+● User answered Claude's questions:
+  ⎿  · D1: Lên lịch tick của đồng hồ bằng cách nào? → setTimeout tự canh đầu
+     giây (Recommended)
+     · D2: Dùng nguồn đồng hồ nào để tính thời gian còn lại? → Date.now()
+     (Recommended)
+     · D3: Khi tab bị ẩn rồi hiện lại, xử lý thế nào? → Tính lại ngay khi hiện
+     (Recommended)
+     · D5: Screen reader nghe đồng hồ như thế nào? → Thông báo mỗi 60 giây
+     (Recommended)
+
+● Mình đã ghi 4 lựa chọn của bạn. D4 chưa hỏi, mình dùng mặc định (tới mốc thì
+  hiện "started"). Bắt đầu T-02-J, lõi thuần không chạm DOM.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(Homework_3\js\countdown.js)
+  ⎿  Wrote 101 lines to Homework_3\js\countdown.js
+       1 // Drift-free countdown engine. Pure core: it never touches the
+       2 // re-reads the clock and compares it with an absolute UTC targe
+       3 // ever decremented, so a late or throttled timer cannot make th
+         e display drift.
+         down.start.
+       6   'use strict';
+       8   // Strict UTC ISO 8601: must end in Z. A string without an off
+         set would be
+         zone bug we avoid.
+         2})(\.\d{1,3})?Z$/;
+     … +113 lines (ctrl+o to expand)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● T-02-J đã qua 13/13 test và 4 gate sạch. Giờ mình sửa engine để gọi Date.now()
+  lười thay vì giữ tham chiếu lúc start, giúp ghi đè đồng hồ trong DevTools khi
+  test/demo, trước khi chuyển sang T-03. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(Homework_3\js\main.js)
+  ⎿  Wrote 110 lines to Homework_3\js\main.js
+       1 // Composition root: the only script that touches the DOM. It re
+         ceives values from
+         t is below.
+       3 (function () {
+       4   'use strict';
+       6   const LOCALE = 'en-GB';
+       7
+       8   // ---- Countdown --------------------------------------------
+       9
+      10   function plural(n, word) {
+     … +115 lines (ctrl+o to expand)
+
+  Read 2 files, ran 4 shell commands (ctrl+o to expand)
+
+● S1 (countdown) và đồ họa mới đã xong, nhưng chưa commit. Mình chạy test engine
+  bằng đồng hồ giả trong Node và test binding trong Edge headless, không có
+  trình duyệt thật.
+
+  Đồ họa
+
+  Skeleton đã commit rồi, nên phần này sẽ thành một commit riêng. Mình bỏ phong
+  cách quen thuộc:
+  - Bỏ băng xanh phẳng, nhãn in hoa và 3 thẻ giống hệt nhau. Header giờ chỉ là
+    chữ trên nền cát.
+  - Một thứ đáng nhớ duy nhất: đồng hồ là một "vũng thủy triều", tức một khối
+    nước xanh sâu bo tròn bất đối xứng, có một khối xanh nhạt xoay nhẹ phía sau.
+    Số đếm khổng lồ nằm trong đó. Padding theo phần trăm chiều rộng để chữ luôn
+    nằm trong đường cong.
+  - Tiêu đề cỡ lớn, ba dòng, chữ sát nhau, không bao giờ bị ngắt giữa từ.
+  - Phần giới thiệu là ba dòng chữ ngăn bằng đường chấm, không còn thẻ. Form
+    đăng ký sau này nằm trong một khối bo mềm duy nhất.
+  - Mình đã chụp ảnh 375px và desktop, cả hai theme. Hai lỗi mình tự gây ra khi
+    dựng đã sửa trước khi xong: khối phụ đè lên khối chính, và scroll ngang do
+    khối xoay tràn mép (chặn bằng overflow-x: clip). Đo lại ở 320, 375, 768 và
+    1280px đều không còn scroll ngang.
+
+  S1: countdown theo các lựa chọn của bạn
+
+  T-02-J, js/countdown.js (Homework_3/js/countdown.js): lõi thuần, không chạm
+  DOM.
+  - Mỗi tick tính lại từ Date.now() so với mốc UTC tuyệt đối. Không có biến nào
+    bị trừ dần.
+  - Tick tự canh về đầu giây kế của mốc (D1), cộng 5ms để không bao giờ bắn
+    trước ranh giới. Giây làm tròn lên, nên đồng hồ chạm 0 đúng lúc tới mốc.
+  - parseTarget bắt buộc chuỗi có Z và từ chối ngày không tồn tại như
+    2026-02-31.
+  - start gọi lần hai thì dừng bản cũ, stop() idempotent.
+  - Thêm ngoài spec: refresh() trên handle và tham số now để test. Cả hai nhỏ
+    nhưng là bổ sung, bạn có thể bỏ nếu thấy thừa.
+
+  Kết quả:
+  - 13/13 test trong Node với đồng hồ và timer giả: mốc quá khứ, đúng 0, 1ms
+    trước mốc, trên 99 ngày, mốc sai, timer bị trễ ngẫu nhiên tới 900ms mà mọi
+    tick vẫn khớp thời gian thật, 50 chu kỳ start/stop không sót timer, onTick
+    ném lỗi không làm đứt lịch.
+  - 4 gate trong spec sạch: không có document/window, không setInterval, không
+    biến đếm bị trừ, không parse ngày không có Z.
+
+  T-03-J, js/main.js (Homework_3/js/main.js):
+  - Ghi 4 ô bằng textContent, data-state qua một hàm setState.
+  - datetime lấy từ CONFIG và hiển thị theo giờ địa phương kèm UTC.
+  - Tab hiện lại thì tính lại ngay (D3), và gỡ listener khi xong hoặc khi mốc
+    không hợp lệ.
+  - Thông báo cho screen reader mỗi 60 giây (D5). Đo 125s thấy đúng 2 lần cập
+    nhật.
+  - D4 mình dùng mặc định: tới mốc thì hiện "The workshop has started."
+
+  Kết quả trong Edge:
+  - Số hiển thị khớp giá trị tính tay (67:10:32:37).
+  - Giả lập tab ngủ (đồng hồ nhảy +3 ngày 5 giờ rồi phát visibilitychange): hiển
+    thị 64:05:32:34, đúng.
+  - Mốc quá khứ chuyển sang done và mốc sai chuyển sang invalid; lưới số ẩn đi,
+    thông báo hiện ra.
+  - Định dạng múi giờ đã thử với Hồ Chí Minh, Los Angeles, London, Auckland và
+    UTC.
+
+  Ghi vào "Nhật ký ứng viên" (để bạn chọn mục cho báo cáo)
+
+  1. Mình tự bắt trước khi commit: now = Date.now giữ tham chiếu lúc start, nên
+     ghi đè đồng hồ trong DevTools không có tác dụng. Mình đã đổi sang () =>
+     Date.now(). Lỗi này chưa nằm trong git history nên làm bằng chứng cho audit
+     sẽ yếu. Đó là lý do mình hỏi bạn muốn giữ mục này hay chỉ dùng những phát
+     hiện có commit.
+  2. Cần bạn quyết: khôi phục từ bfcache (nút Back) có thể không bắn
+     visibilitychange nên đồng hồ đứng cho tới tick kế. Phương án: lắng nghe
+     thêm pageshow, hoặc chấp nhận (tick kế sửa trong ≤ 1 giây).
+  3. Thông báo screen reader: đọc "31 minutes" khi thực tế còn 31 phút 25 giây.
+     Phương án: thêm "about", hoặc làm tròn xuống. Hiện chưa chọn.
+  4. Europe/London: hiển thị thừa "(20 Dec, 02:00 UTC)" vì GMT bằng UTC. Nhỏ
+     nhưng là điểm cải thiện thật.
+
+  Đề xuất 3 commit (bạn tự chạy)
+
+  index.html chứa cả thẻ script của T-03, nên commit 3 cần stage từng đoạn.
+  # 1. Đồ họa mới (không gồm 2 dòng <script> mới trong index.html)
+  git add Homework_3/css/hub.css Homework_3/css/tokens.css
+  Homework_3/TASK_DECOMPOSITION.md
+  git add -p Homework_3/index.html      # chọn các hunk đổi markup, bỏ hunk 2
+  thẻ <script>
+  git commit -m "style(hub): reshape hero as a tide pool and flatten page
+  sections"
+
+  # 2. Engine
+  git add Homework_3/js/countdown.js
+  git commit -m "feat(countdown): drift-free countdown engine"
+
+  # 3. Gắn vào trang
+  git add Homework_3/js/main.js Homework_3/index.html
+  git commit -m "feat(countdown): bind engine to page with lifecycle cleanup"
+  Chưa chạy Lighthouse và axe, để dành cho Audit A. Làm tiếp T-04 (markup form
+  và state machine) không? Mình sẽ hỏi D6, D7, D8 trước khi viết.
+
+> Ok thực hiện tiếp S2 đi Web hiện tại skeleton ok á, đếm ngược cũng ổn nhưng
+  đang trống quá, hoàn thiện xong S2 có thể thêm các phần tử cho web thêm sinh
+  động, áp dụng kĩ thuật vẽ vector svg để có tài nguyên mà thêm vào
+
+● Trước khi viết S2, mình cần bạn chọn 3 điểm đã hẹn ở D6, D7 và D8.  ⎿  Invalid tool parameters
+
+● User answered Claude's questions:
+  ⎿  · D6: Form gửi đăng ký tới đâu? → Adapter giả lập trong repo (Recommended)
+     · D7: Làm sao chứng minh trạng thái error khi vấn đáp? → Cả hai
+     (Recommended)
+     · D8: Khi gửi lỗi, giữ hay xoá dữ liệu người dùng đã nhập? → Giữ nguyên
+     (Recommended)
+
+● Đã ghi nhận D6, D7, D8. Bắt đầu S2: markup và style của form (T-04-H/C), rồi
+  state machine, adapter giả lập và nối dây (T-04-J, T-05-J).
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(Homework_3\js\form-machine.js)
+  ⎿  Wrote 52 lines to Homework_3\js\form-machine.js
+       1 // Form state machine: idle -> submitting -> success | error. Pu
+       2 // which state comes next. It never touches the DOM, timers or t
+         he network.
+         d, dispatch(type, detail?) }
+       4 const FormMachine = (function () {
+       6
+       7   const STATES = Object.freeze(['idle', 'submitting', 'success',
+       8   const SETTLE = Object.freeze({ RESOLVE: 'success', REJECT: 'er
+         ror', TIMEOUT: 'error' });
+      10   function create(initial = 'idle') {
+     … +55 lines (ctrl+o to expand)
+
+● Write(Homework_3\js\registration-api.js)
+  ⎿  Wrote 35 lines to Homework_3\js\registration-api.js
+       1 // Stand-in for a registration backend (no server in this projec
+       2 // mockDelayMs, then succeeds or fails according to mockOutcome,
+          and honours an
+       3 // AbortSignal so a timed-out request really stops.
+         come, mockDelayMs }) -> Promise
+       5 const RegistrationApi = (function () {
+       7
+       8   function abortError() {
+       9     return new DOMException('The request was aborted.', 'AbortEr
+      10   }
+     … +32 lines (ctrl+o to expand)
+
+  Read 1 file, ran 4 shell commands (ctrl+o to expand)
+
+● Form chạy đúng ở cả bốn state. Mình sửa một chi tiết hiển thị ở panel thành
+  công (ô focus đè sát dòng chữ), rồi cập nhật spec và chạy lại các gate.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● S2 đã xong và pass gate sạch. Giờ mình chuyển sang vẽ bộ sprite SVG (rùa biển,
+  cá, bong bóng, rong biển, san hô, sao biển, đường sóng) bằng vector, dùng
+  token màu theo theme. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Write(Homework_3\css\art.css)
+  ⎿  Wrote 193 lines to Homework_3\css\art.css
+       1 /* =============================================================
+       2    Illustrations: a hand-drawn vector sprite (index.html) placed
+          around the
+         ) and coloured
+         e turtle's
+       5    slow drift, and it is off under prefers-reduced-motion.
+         ============= */
+       7
+         --------------- */
+      10 .sprite {
+     … +198 lines (ctrl+o to expand)
+
+  Read 2 files, ran 1 shell command (ctrl+o to expand)
+
+● Minh hoạ hiển thị đúng ở cả desktop và mobile. Mình đo lại scroll ngang, chạy
+  lại các gate và bộ test để chắc không có hồi quy.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● S2 (form) và phần minh hoạ SVG đã xong, chưa commit. Phần form đã được test
+  bằng Node (13 test cho machine và adapter) và Edge headless (luồng đầy đủ, 320
+  đến 1280px). Âm thanh không liên quan, nhưng mình chưa chạy Lighthouse và
+  axe.
+
+  S2: form state machine
+
+  - Form (T-04): gồm 3 field name, email, note, mỗi field có label, vùng lỗi
+    riêng và aria-describedby. State của form nằm ở #register[data-state], CSS
+    đọc để hiện hoặc ẩn từng phần.
+  - form-machine.js: thuần, không chạm DOM. Nhận dispatch(type, detail) và trả
+    state mới. Mỗi lần gửi tăng requestId, phản hồi mang id cũ bị bỏ. Sự kiện
+    không hợp lệ ở state hiện tại bị bỏ qua.
+  - registration-api.js: adapter giả lập (D6), tôn trọng AbortSignal.
+  - main.js (T-05): setState là chỗ duy nhất ghi data-state. Có timeout 8s,
+    thông báo lỗi riêng cho timeout, focus nhảy về field sai đầu tiên hoặc về
+    tiêu đề thành công.
+  - D7 (cả hai): mockOutcome trong CONFIG, và ?demo=error trên URL. Chỉ chấp
+    nhận đúng hai giá trị success và error, giá trị khác bị bỏ qua.
+  - D8: dữ liệu được giữ khi lỗi, nên bấm "Try again" gửi lại đúng dữ liệu cũ.
+
+  Thêm một hành vi spec chưa ghi, mình đã bổ sung vào bảng chuyển state: từ
+  error, một SUBMIT hợp lệ (ví dụ Enter trong form) cũng chuyển sang submitting,
+  giống RETRY.
+
+  Kết quả kiểm tra:
+  - Machine và adapter (Node): 13 test. Gồm chạy thử mọi chuỗi sự kiện dài tới 4
+    bước để xác nhận các state chỉ đến được qua bảng chuyển, phản hồi cũ bị bỏ,
+    và huỷ giữa chừng thật sự dừng timer.
+  - Trình duyệt:
+    - Submit rỗng báo hai lỗi và focus vào field tên.
+    - Email sai báo đúng thông điệp.
+    - Ba lần submit liên tiếp chỉ gọi API một lần, nút đổi thành "Sending…".
+    - Thành công thì focus vào tiêu đề và tên người dùng chỉ hiện thành chữ
+      (<img onerror> không tạo ra thẻ ảnh nào).
+    - ?demo=error ra state lỗi, Retry gửi lại, sửa field thì về idle và giữ dữ
+      liệu.
+    - Timeout ép được (giới hạn 500ms, API 3000ms), phản hồi muộn bị bỏ.
+
+  Minh hoạ SVG
+
+  Mình vẽ tay một sprite 7 hình bằng vector, đặt trong index.html (không cần
+  request thêm, không cần sửa CSP). Màu lấy từ token nên đổi theo theme:
+  - Rùa biển bơi ở mép "vũng nước", có một chuyển động trôi chậm duy nhất, tắt
+    khi người dùng bật reduced-motion.
+  - Hai con cá và bong bóng nhỏ quanh vũng.
+  - Đường sóng làm ranh giới giữa hero và phần giới thiệu.
+  - Rong biển, san hô, sao biển đứng trên ô đăng ký như đáy biển.
+
+  Toàn bộ hình có aria-hidden và không bắt sự kiện chuột. index.html nặng 9.3KB
+  sau khi thêm sprite. Đo ở 320, 375, 768 và 1280px đều không scroll ngang.
+
+  Còn cần bạn nhìn
+
+  - Rùa và cá trên desktop khá nhỏ. Mình thử tăng kích thước thì sợ đè lên chữ,
+    bạn xem thực tế rồi cho mình biết có muốn to hơn không.
+  - Nút Register vẫn bấm được khi đang gửi (chỉ đổi nhãn thành "Sending…"). Việc
+    khoá nút theo D9 để dành cho S3, đúng kế hoạch.
+  - Chưa kiểm tra bằng tay tổng thể trên màn hình thật bằng bàn phím và screen
+    reader.
+
+  Đã đến lúc Audit A theo kế hoạch (xong S1 và S2, trước S3). Mình sẽ chạy ở chế
+  độ review, chỉ liệt kê phát hiện và phương án để bạn chọn, chưa sửa gì.
+
+  Đề xuất commit (bạn tự chạy)
+
+  # 1. Machine + adapter
+  git add Homework_3/js/form-machine.js Homework_3/js/registration-api.js
+  git commit -m "feat(form): state machine and mock registration api"
+
+  # 2. Markup + style + nối dây form (index.html chứa cả sprite SVG, nên stage
+  từng phần)
+  git add Homework_3/css/hub.css Homework_3/js/main.js
+  Homework_3/TASK_DECOMPOSITION.md
+  git add -p Homework_3/index.html      # chọn hunk form và 2 thẻ <script> mới,
+  bỏ phần sprite và art
+  git commit -m "feat(form): registration form with four states"
+
+  # 3. Minh hoạ
+  git add Homework_3/css/art.css Homework_3/css/tokens.css Homework_3/index.html
+  git commit -m "style(hub): add hand-drawn svg illustrations"
+
+  Mình bắt đầu Audit A luôn nhé?
+
+> Ok giờ audit tạo file đi, và brainstorm mình đồng thời luôn
+
+● Mình sẽ review thật sự trước khi viết file: chạy các thí nghiệm tái hiện để có
+  bằng chứng, rồi mới liệt kê phát hiện và phương án cho bạn chọn.
+
+  Ran 6 shell commands (ctrl+o to expand)
+
+● Write(Homework_3\AI_FAILURE_AUDIT.md)
+  ⎿  Wrote 148 lines to Homework_3\AI_FAILURE_AUDIT.md
+      1 # AI_FAILURE_AUDIT – Homework 3: Resilient Event Hub
+      3 > Báo cáo lỗi do AI gây ra, bắt được lúc review (đề yêu cầu ≥ 3 m
+        ục, mỗi mục có: mô tả lỗi, cách phát hiện, giải pháp đã refactor)
+      4 > Thêm hai trường để trung thực về quá trình: **Phương án** (các
+      5 > Quy tắc: chỉ ghi thứ **có thật trong code AI sinh ra**, kèm các
+        h tái hiện. Không dựng lỗi để có cái mà sửa. Mỗi audit chạy ở chế
+        g cùng lượt.
+      6
+        u S3. Bản báo cáo cuối (≥ 3 mục) viết ở T-A3.
+      9 ---
+     … +249 lines (ctrl+o to expand)
+
+● Mình thấy một dòng không đúng sự thật trong "Nhật ký ứng viên" (nhắc đến bản
+  đầu render() không hề tồn tại), nên xoá dòng đó. Giờ mình kiểm tra lại số dòng
+  của main.js bên HW2. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Số dòng HW2 đúng là 88 như đã ghi. Giờ brainstorm: bốn quyết định có tác động
+  lớn nhất.
+
+● User answered Claude's questions:
+  ⎿  · A-1: Form gửi email lên URL khi chưa có JS (đã tái hiện). Xử lý thế nào?
+     → CSP form-action none + ẩn form khi tắt JS (Recommended)
+     · A-2: Thông báo lỗi nằm cách nút Register ~600px, trên điện thoại không
+     thấy. Sửa như thế nào? → Đặt panel ngay dưới nút Register (Recommended)
+     · A-4: main.js 254 dòng, chứa logic thay vì chỉ nối dây. Trước S3 (sẽ làm
+     nó phình thêm) có tách không? → Rút hàm thuần sang format.js (Recommended)
+     · A-8: Công tắc ?demo=error đi theo bản production. Xử lý thế nào? → Giữ
+     như hiện tại
+
+● Đã ghi nhận 4 quyết định. Mình cập nhật file audit, rồi áp dụng 3 bản sửa
+  (A-1, A-2, A-4); A-8 giữ nguyên nên không đổi code.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Write(Homework_3\js\format.js)
+  ⎿  Wrote 40 lines to Homework_3\js\format.js
+       1 // Pure text helpers for the page: no DOM, no timers, so they ca
+         n be tested alone.
+       2 // Public API: Format.pad, Format.plural, Format.startTime, Form
+       3 const Format = (function () {
+       4   'use strict';
+       5
+       6   const LOCALE = 'en-GB';
+       8   function pad(n) {
+       9     return String(n).padStart(2, '0');
+      10   }
+     … +38 lines (ctrl+o to expand)
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Unit test và gate đạt. Giờ kiểm chứng ba bản sửa trong trình duyệt: chặn gửi
+  native, khi tắt JS, và vị trí panel lỗi trên điện thoại.
+
+  Read 1 file, ran 3 shell commands (ctrl+o to expand)
+
+● Cả ba bản sửa đã được xác nhận. Mình chạy lại toàn bộ luồng và axe để chắc
+  không hồi quy, rồi cập nhật file audit.
+
+  Ran 2 shell commands (ctrl+o to expand)
+● Mình đã tạo Homework_3/AI_FAILURE_AUDIT.md, chạy Audit A (S1 + S2) ở chế độ
+  review, rồi sửa các mục bạn chọn. Chưa commit gì.
+
+  Audit A: phát hiện
+
+  Mình ưu tiên tái hiện được bằng thí nghiệm. 10 mục, trong đó 3 mục đã sửa:
+
+  ID: A-1
+  Mô tả: Form không có method/action, nên khi chưa có JS (hoặc bấm trước khi
+  script defer chạy) nó gửi GET và lộ email lên URL (?name=…&email=…)
+  Kiểm chứng: Tái hiện được
+  Tình trạng: Đã sửa
+  ────────────────────────────────────────
+  ID: A-2
+  Mô tả: Panel lỗi nằm cách nút Register ~600px, trên điện thoại người dùng
+  không
+  thấy phản hồi gì
+  Kiểm chứng: Đo toạ độ ở 375×667
+  Tình trạng: Đã sửa
+  ────────────────────────────────────────
+  ID: A-4
+  Mô tả: main.js 254 dòng, chứa logic thay vì chỉ nối dây
+  Kiểm chứng: Đếm dòng, đối chiếu với HW2 (88 dòng)
+  Tình trạng: Đã sửa
+  ────────────────────────────────────────
+  ID: A-3
+  Mô tả: Bấm "Try again" làm nút tự ẩn, focus bàn phím có thể rơi về body
+  Kiểm chứng: Chưa xác nhận: headless không có focus thật
+  Tình trạng: Chờ bạn thử tay
+  ────────────────────────────────────────
+  ID: A-5 đến A-10
+  Mô tả: bfcache, câu thông báo làm tròn xuống, "(UTC)" thừa ở Europe/London,
+  công tắc ?demo=, đồng hồ tin giờ máy khách, setState không chặn state lạ
+  Kiểm chứng: Phần lớn đọc code
+  Tình trạng: A-8 bạn chọn giữ nguyên; còn lại chờ quyết
+
+  File cũng có mục "Đã kiểm tra, không phát hiện" để giả thuyết bị bác bỏ cũng
+  có bằng chứng:
+  - Số ngày 3 chữ số không tràn ô.
+  - CLS = 0.
+  - Không rò rỉ timer.
+  - Hiển thị tên chứa <img onerror> chỉ thành chữ.
+  - axe-core 0 vi phạm ở cả 4 state (12 mục color-contrast ở mức "cần xem lại",
+    vì axe không tính được nền khi có blob và SVG đè; mình tính tay ≥ 5.3:1).
+
+  Ba bản sửa theo quyết định của bạn
+
+  - A-1: thêm CSP form-action 'none', cộng <noscript> hiện thông báo và ẩn form
+    khi tắt JS. Chạy lại đúng kịch bản cũ thì không còn điều hướng, URL không
+    đổi.
+  - A-2: chuyển panel lỗi xuống ngay dưới nút Register. Đo lại ở 375×667: panel
+    nằm trong viewport.
+  - A-4: rút plural, pad, startTime, announcement sang js/format.js (thuần, 6
+    test Node, 5 múi giờ). main.js xuống còn 221 dòng.
+
+  Các bài test cũ (13 + 13), toàn bộ luồng trình duyệt, axe và đo scroll ngang
+  vẫn đạt sau khi sửa.
+
+  Cần lưu ý trung thực
+
+  - Khi rà lại file mình phát hiện đã viết một dòng sai sự thật trong "Nhật ký
+    ứng viên" (nói bản đầu của render() có thứ tự khác, thực tế không có bản đầu
+    nào như vậy). Mình đã xoá dòng đó.
+  - Các lỗi mình tự bắt trước khi commit (đồng hồ giữ Date.now cố định, khối
+    blob đè nhau, scroll ngang) đã ghi vào nhật ký nhưng đánh dấu "không có
+    commit làm bằng chứng". Với báo cáo cuối, các mục A-1, A-2, A-4 mạnh hơn vì
+    có commit.
+  - Cả ba lỗi A-1, A-2, A-4 đều do mình sinh ra, nhưng vì mình sửa luôn chưa qua
+    một commit riêng nên "code gây lỗi" và "bản sửa" chưa tách thành hai commit
+    trong git. Với A-1, A-2, A-4 thì code gây lỗi đã nằm trong các commit cũ
+    (29d738b, 5ac2eb2...), nên diff của commit sửa sẽ làm bằng chứng được.
+
+  Quyết định còn lại
+
+  Mình đề xuất mặc định để bạn chỉ cần phản đối:
+  - A-3: sau khi bấm Try again, chủ động focus() nút Register. Gộp vào commit D9
+    ở S3.
+  - A-5: thêm lắng nghe pageshow (một dòng).
+  - A-7: so sánh offset thật thay vì dò chuỗi "UTC".
+  - A-6, A-9, A-10: A-6 chưa có mặc định; A-9 nên chấp nhận và nêu hạn chế; A-10
+    thêm kiểm tra nhỏ vào setState.
+
+  Đề xuất commit (bạn tự chạy)
+
+  index.html có hunk của cả ba bản sửa nên cần git add -p:
+  # 1. A-1: chặn gửi native
+  git add Homework_3/css/noscript.css
+  git add -p Homework_3/index.html      # chọn hunk meta CSP và <noscript>
+  git commit -m "fix(form): block native submit without js (audit A-1)"
+
+  # 2. A-2: panel lỗi dưới nút
+  git add Homework_3/css/hub.css
+  git add -p Homework_3/index.html      # chọn hunk di chuyển .reg-error
+  git commit -m "fix(form): show error next to submit button (audit A-2)"
+
+  # 3. A-4: format.js
+  git add Homework_3/js/format.js Homework_3/js/main.js Homework_3/index.html
+  git commit -m "refactor(hub): extract pure formatting helpers (audit A-4)"
+
+  # 4. Báo cáo
+  git add Homework_3/AI_FAILURE_AUDIT.md
+  git commit -m "docs(audit): review of slices 1-2 (audit A)"
+  (hub.css có cả style .reg-nojs của A-1; nếu muốn tách sạch thì thêm -p cho
+  nó.)
+
+  Bạn chốt giúp mình các mặc định cho A-3, A-5, A-7, A-10 (và ý kiến cho A-6,
+  A-9) để mình sửa nốt, hoặc nói luôn để mình chuyển sang S3 (chống
+  double-submit và sanitize) nhé?
+
+> Ok các audit và lựa chọn ổn đấy, hoạn thiện xong thì thực hiện S3 luôn
+
+● Mình ghi nhận các mặc định cho A-3, A-5, A-7, A-9, A-10; riêng A-6 chưa có mặc
+  định nên mình chọn phương án (a) thêm "about" và ghi rõ trong file để bạn
+  phản đối được. Trước khi làm S3, mình cần bạn chốt 4 điểm D9 đến D12.
+
+● User answered Claude's questions:
+  ⎿  · D9: Khi form đang gửi, nút Register xử lý thế nào? → aria-disabled + chặn
+     bằng JS (Recommended)
+     · D10: Làm sạch input theo cách nào? → Tên chuẩn hoá, email từ chối
+     (Recommended)
+     · D11: Các lớp phòng thủ XSS? → textContent + CSP đầy đủ (Recommended)
+     · D12: Chống gửi trùng ở phía máy chủ? → Kèm requestId (randomUUID) trong
+     payload (Recommended)
+
+  Read 1 file (ctrl+o to expand)
+
+● Mình áp dụng các mặc định của Audit A trước (A-3, A-5, A-6, A-7, A-9, A-10),
+  rồi làm S3. Bắt đầu với format.js (A-6, A-7) và test.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Test phát hiện lỗi: với múi giờ UTC, longOffset trả "UTC" thay vì "GMT" khiến
+  phần phụ bị in thừa. Mình sẽ sửa để chấp nhận cả hai giá trị. · summary
+
+  Ran 3 shell commands (ctrl+o to expand)
+
+● Code đúng; chỗ sai là kỳ vọng trong test của mình (en-GB gọi giờ mùa hè London
+  là "BST"). Mình sửa test.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Write(Homework_3\js\sanitize.js)
+  ⎿  Wrote 91 lines to Homework_3\js\sanitize.js
+       1 // Input cleaning and validation. Pure: strings in, strings and
+       2 // Public API: Sanitize.cleanName, cleanNote, cleanEmail, valida
+       3 //
+       4 // Policy: clean at the boundary, encode at the output.
+         ontrol characters
+         stripped: they are
+         extContent.
+       8 //  - email is never rewritten. If it is not a plain address it
+       9 //    silently "fixing" an address could send a confirmation to
+      10 const Sanitize = (function () {
+     … +103 lines (ctrl+o to expand)
+
+● Write(Homework_3\js\registration-api.js)
+  ⎿  Added 25 lines, removed 5 lines
+       1  // Stand-in for a registration backend (no server in this proje
+          ct). It waits
+       2  // mockDelayMs, then succeeds or fails according to mockOutcome
+          , and honours an
+       3 -// AbortSignal so a timed-out request really stops.            
+       4 -// Public API: RegistrationApi.submit(payload, { signal, mockOu
+         -tcome, mockDelayMs }) -> Promise                               
+       3 +// AbortSignal so a timed-out request really stops. Like a real
+         + server it also                                                
+       4 +// remembers idempotency keys: a repeat of an accepted key is a
+         +cknowledged as a                                               
+       5 +// duplicate instead of being registered twice.                
+       6 +// Public API: RegistrationApi.newKey(), RegistrationApi.submit
+         +(payload, { signal, mockOutcome, mockDelayMs })                
+       7  const RegistrationApi = (function () {
+       8    'use strict';
+       9  
+      10 +  const accepted = new Set();   // idempotency keys this "serve
+         +r" has already taken                                           
+      11 +                                                               
+      12    function abortError() {
+      13      return new DOMException('The request was aborted.', 'AbortE
+          rror');
+      14    }
+      15  
+      16 +  // A random UUID v4. randomUUID needs a secure context; the f
+         +allback does not.                                              
+      17 +  function newKey() {                                          
+      18 +    if (typeof crypto.randomUUID === 'function') return crypto.
+         +randomUUID();                                                  
+      19 +    const bytes = crypto.getRandomValues(new Uint8Array(16));  
+      20 +    bytes[6] = (bytes[6] & 0x0f) | 0x40;                       
+      21 +    bytes[8] = (bytes[8] & 0x3f) | 0x80;                       
+      22 +    const hex = Array.from(bytes, (b) => b.toString(16).padStar
+         +t(2, '0')).join('');                                           
+      23 +    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(
+         +12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;               
+      24 +  }                                                            
+      25 +                                                               
+      26 +  // payload: { name, email, note, idempotencyKey }            
+      27    function submit(payload, { signal, mockOutcome = 'success', m
+          ockDelayMs = 1000 } = {}) {
+      28      return new Promise((resolve, reject) => {
+      29        if (signal && signal.aborted) {
+     ...
+      38  
+      39        const timerId = setTimeout(() => {
+      40          if (signal) signal.removeEventListener('abort', onAbort
+          );
+      26 -        if (mockOutcome === 'error') reject(new Error('Registra
+         -tion failed.'));                                               
+      27 -        else resolve({ ok: true });                            
+      41 +        if (mockOutcome === 'error') {                         
+      42 +          reject(new Error('Registration failed.'));           
+      43 +          return;                                              
+      44 +        }                                                      
+      45 +        const duplicate = accepted.has(payload.idempotencyKey);
+      46 +        accepted.add(payload.idempotencyKey);                  
+      47 +        resolve({ ok: true, duplicate });                      
+      48        }, mockDelayMs);
+      49  
+      50        if (signal) signal.addEventListener('abort', onAbort, { o
+          nce: true });
+      51      });
+      52    }
+      53  
+      34 -  return { submit };                                           
+      54 +  return { newKey, submit };                                   
+      55  })();
+
+  Made 2 scratchpad edits +94, ran 3 shell commands (ctrl+o to expand)
+
+● Đây là lỗi trong test của mình: undefined kích hoạt giá trị mặc định của tham
+  số nên email hợp lệ được dùng thay. Mình đổi sang null.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Test bắt được lỗi thật trong code mình viết: cleanNote xoá tab thay vì đổi
+  thành khoảng trắng, nên "y\t\tz" bị dính thành "yz". Mình sửa thứ tự xử lý.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Update(Homework_3\js\sanitize.js)
+  ⎿  Added 1 line
+      43      return text(value)
+      44        .normalize('NFC')
+      45        .replace(/\r\n?/g, '\n')
+      46 +      .replace(/\t/g, ' ')              // a tab separates word
+         +s, so it must not just vanish                                  
+      47        .replace(INVISIBLE, '')
+      48        .replace(CONTROL_EXCEPT_NEWLINE, '')
+      49        .replace(/[^\S\n]+/g, ' ')
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Giờ tôi cần chạy trên máy chủ HTTP thay vì mở bằng file://, vì CSP mới ảnh
+  hưởng đến cách tải script. Tôi sẽ dựng một máy chủ tạm ở thư mục scratchpad,
+  trỏ tới repo bằng junction. · summary
+
+  Made 1 scratchpad edit +96, ran 3 shell commands (ctrl+o to expand)
+
+● Đang chạy bộ kiểm tra S3 trên máy chủ HTTP, kèm log CSP của trình duyệt.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Trang tải tốt trên S3, và log Edge chỉ ghi nhận 4 vi phạm CSP - tất cả đều do
+  chính các đòn tấn công trong bài test gây ra, không có vi phạm nào từ trang
+  thật. Tiếp theo mình chạy axe, kiểm tra scroll ngang và các gate còn lại.
+  · summary
+
+  Ran 5 shell commands (ctrl+o to expand)
+
+● S3 và phần audit còn lại đã xong, chưa commit gì. Mình đã chạy test Node và
+  test trong Edge headless qua máy chủ HTTP tạm (đã tắt); chưa chạy Lighthouse,
+  và chưa thử bằng tay với bàn phím hay screen reader.
+
+  Hoàn thiện Audit A
+
+  Bạn chấp nhận các mặc định nên mình áp dụng hết:
+  - A-3: sau "Try again", focus quay về nút Register.
+  - A-5: thêm pageshow cho trường hợp khôi phục từ bfcache.
+  - A-6: câu thông báo có "About".
+  - A-7: so sánh offset thật. London mùa đông chỉ in một giờ, mùa hè in 03:00
+    BST (… UTC).
+  - A-9: chấp nhận, ghi hạn chế vào đầu countdown.js.
+  - A-10: setState của form ném TypeError nếu nhận state lạ.
+
+  A-6 chưa có mặc định nên mình chọn "About" và ghi rõ trong file để bạn phản
+  đối được.
+
+  S3 theo quyết định D9 đến D12
+
+  - T-06, chống double-submit: nút dùng aria-disabled và JS bỏ qua mọi lần gửi
+    khi đang gửi. Mỗi lần đăng ký có một idempotencyKey (UUID, tên khác
+    requestId của máy trạng thái để khỏi nhầm). Gửi lại sau lỗi dùng lại cùng
+    khoá, sửa dữ liệu rồi gửi thì khoá mới. Adapter giả lập nhớ khoá đã nhận và
+    trả duplicate: true nếu gặp lại.
+  - T-07, sanitize.js: tên và ghi chú được chuẩn hoá (NFC, bỏ ký tự điều khiển
+    và ký tự ẩn/đảo chiều, gộp khoảng trắng); email chỉ bị từ chối nếu sai,
+    không bao giờ bị sửa. Giá trị đã làm sạch được ghi lại vào ô để người dùng
+    thấy cái sẽ gửi.
+  - T-08, XSS: nội dung người dùng chỉ vào DOM qua textContent. Thêm CSP đầy đủ
+    (default-src 'none'; script-src 'self'; …; form-action 'none'). CSP chặn
+    data: nên mình thay favicon bằng assets/favicon.svg.
+
+  Kết quả kiểm tra
+
+  - Unit test Node: 13 (countdown), 13 (machine, adapter), 6 (format), 18
+    (sanitize và adapter) đều đạt.
+  - Double-submit: 1 submit cộng 4 lần bấm hoặc requestSubmit trong lúc đang gửi
+    chỉ gọi API đúng 1 lần. Nút vẫn giữ focus, không dùng disabled.
+  - Idempotency: retry và gửi lại từ lỗi dùng cùng khoá; sau khi sửa dữ liệu thì
+    khoá mới.
+  - Sanitize trong form thật: "  �Anna \t  Le  " được gửi đi là "Anna Le"; email
+    sai bị chặn và focus vào ô email; tên toàn số báo lỗi.
+  - XSS: 4 payload (<img onerror>, "><script>, javascript:, <svg onload>) đều
+    hiển thị thành chữ, 0 thẻ img, 0 phần tử con. Thử chèn thẳng script inline,
+    script ngoài và handler inline: CSP chặn cả ba, không cái nào chạy. Log của
+    Edge chỉ có đúng các vi phạm do chính các đòn thử này gây ra.
+  - Hồi quy: A-1 vẫn giữ (gửi native không có main.js không điều hướng),
+    countdown ở các trạng thái, timeout, axe-core 0 vi phạm ở 4 state, không
+    scroll ngang ở 320, 375, 768 và 1280px, các gate grep sạch.
+
+  Lỗi do chính mình gây ra, bắt được lúc kiểm thử (đã ghi vào nhật ký)
+
+  - cleanNote xoá tab thay vì đổi thành khoảng trắng, nên "y⇥⇥z" thành "yz".
+    Test bảng đầu vào bắt được.
+  - Mình đoán longOffset trả "GMT" cho offset 0, thực tế trả "GMT+00:00". Bắt
+    bằng test nhiều múi giờ, rồi dò bằng formatToParts.
+  - Hai lỗi nằm ở test chứ không ở code (tham số mặc định undefined, kỳ vọng
+    "GMT+1" thay vì "BST").
+
+  Các lỗi này đều được sửa trước khi commit nên không có commit làm bằng chứng.
+  Với báo cáo cuối, A-1, A-2, A-4 (có commit) mạnh hơn.
+
+  Còn lại
+
+  - Audit B (toàn trang, Lighthouse, kiểm tra hồi quy) chưa chạy. Bạn muốn chạy
+    ngay không?
+  - A-3 vẫn cần bạn thử tay: Tab tới "Try again", Enter, xem phím Tab kế tiếp đi
+    đâu.
+  - Mình đã cập nhật TASK_DECOMPOSITION.md (bảng "Đã chốt" cho D1 đến D12, cấu
+    trúc file mới) và AI_FAILURE_AUDIT.md.
+
+  Đề xuất commit (bạn tự chạy)
+
+  Các commit A-1, A-2, A-4 và audit A đã có trong git. main.js có nhiều hunk của
+  các commit khác nhau nên cần git add -p:
+  # 1. Audit A: countdown (A-5, A-6, A-7, A-9)
+  git add Homework_3/js/format.js Homework_3/js/countdown.js
+  git add -p Homework_3/js/main.js          # chọn hunk pageshow
+  git commit -m "fix(countdown): refresh on bfcache restore and tidy time text
+  (audit A-5..A-7)"
+
+  # 2. Audit A: form (A-3, A-10)
+  git add -p Homework_3/js/main.js          # chọn hunk focus sau Try again và
+  guard setState
+  git commit -m "fix(form): keep focus after retry and reject unknown states
+  (audit A-3, A-10)"
+
+  # 3. T-06
+  git add Homework_3/js/registration-api.js
+  git add -p Homework_3/js/main.js Homework_3/css/hub.css   # aria-disabled,
+  guard submit, attemptKey, .btn[aria-disabled]
+  git commit -m "feat(form): prevent double submit with idempotency key"
+
+  # 4. T-07
+  git add Homework_3/js/sanitize.js
+  git add -p Homework_3/js/main.js Homework_3/index.html    #
+  readRaw/Sanitize.validate, thẻ script sanitize.js
+  git commit -m "feat(form): input sanitization"
+
+  # 5. T-08
+  git add Homework_3/assets/favicon.svg Homework_3/index.html   # CSP đầy đủ và
+  favicon
+  git commit -m "feat(hub): strict csp and zero-xss rendering"
+
+  # 6. Tài liệu
+  git add Homework_3/TASK_DECOMPOSITION.md Homework_3/AI_FAILURE_AUDIT.md
+  git commit -m "docs(audit): record audit A follow-ups and slice 3 decisions"
+
+  Mình chạy Audit B luôn nhé?
+
+> <ide_opened_file>The user opened the file
+  c:\Dev\Project\MSIS207_Lab1\Homework_3\js\countdown.js in the IDE. This may
+  or may not be related to the current task.</ide_opened_file>
+
+> yeah trước đó hoạn thiện giao diện web lại 1 tí đi, thêm hover này nọ cải
+  thiện UX, điều chỉnh đồng hồ lại cho cân bằng, nhìn web hiện tại vẫn như 1
+  skeleton ấy sau đó hãy chạy audit B
+  ⎿  Interrupted · What should Claude do instead?
+
+> yeah trước đó hoạn thiện giao diện web lại 1 tí đi, thêm hover này nọ cải
+  thiện UX, điều chỉnh đồng hồ lại cho cân bằng, nhìn web hiện tại vẫn như 1
+  skeleton ấy sau đó hãy chạy audit B ngắn hoàn thiện
+
+● Mình xem lại giao diện hiện tại bằng ảnh chụp trước khi sửa, để chỉnh đúng
+  chỗ.
+
+  Read 3 files, ran 1 shell command (ctrl+o to expand)
+
+● Mình thấy rõ layout đang bị trống trải: khoảng cách lớn giữa tiêu đề và đoạn
+  dẫn, đồng hồ lệch, thiếu nút kêu gọi hành động và chân trang sơ sài. Mình sẽ
+  viết lại bố cục, thêm tương tác, giữ nguyên contract HTML. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Giờ viết lại CSS bố cục, thêm tương tác hover/focus và phần minh hoạ mới.
+  Ran 1 shell command (ctrl+o to expand)
+
+● Write(Homework_3\css\hub.css)
+  ⎿  Added 223 lines, removed 33 lines
+       1  /* ============================================================
+          ==============
+       2 -   T-01-C – Layout and components (mobile-first, 375px)        
+       2 +   Layout and components (mobile-first, 375px)                 
+       3     Uses only tokens from tokens.css: no colour values here.
+       4     Idea: the page is a beach. The one memorable object is the c
+          ountdown, a
+       5 -   tide pool: an uneven round blob of deep water with a second 
+         -blob behind it.                                                
+       6 -   Everything else stays quiet: plain text on sand, one soft co
+         -ntainer.                                                       
+       5 +   tide pool: a round blob of deep water, ringed with ripples, 
+         +holding four                                                   
+       6 +   glass tiles. Everything else stays quiet: text on sand, one 
+         +soft container,                                                
+       7 +   and a deep-sea band for the footer.                         
+       8     Content is centred by --edge padding on each section, not by
+           wrapper elements.
+       9     ============================================================
+          ============== */
+      10  
+      11  /* 1. Frame ---------------------------------------------------
+          --------------- */
+      12  
+      13 +html {                                                         
+      14 +  /* Anchor jumps and focus scrolling stop below the sticky hea
+         +der (WCAG 2.4.11) */                                           
+      15 +  scroll-padding-top: 5rem;                                    
+      16 +}                                                              
+      17 +                                                               
+      18  .site-header,
+      19  .hero,
+      20  .about,
+     ...
+      35    position: absolute;
+      36    top: var(--space-2);
+      37    left: var(--space-2);
+      32 -  z-index: 20;                                                 
+      38 +  z-index: 40;                                                 
+      39    padding: var(--space-2) var(--space-4);
+      40    border-radius: var(--radius-pill);
+      41    background-color: var(--btn-bg);
+     ...
+      47    transform: translateY(0);
+      48  }
+      49  
+      44 -/* 2. Header (1D -> flex): plain, no band ---------------------
+         ---------------- */                                             
+      50 +/* 2. Header (1D -> flex): sticky, frosted --------------------
+         +---------------- */                                            
+      51  
+      52  .site-header {
+      53 +  position: sticky;                                            
+      54 +  top: 0;                                                      
+      55 +  z-index: 30;                                                 
+      56    display: flex;
+      57    flex-wrap: wrap;
+      49 -  align-items: baseline;                                       
+      58 +  align-items: center;                                         
+      59    justify-content: space-between;
+      60    gap: var(--space-2) var(--space-6);
+      52 -  padding-block: var(--space-6) 0;                             
+      61 +  padding-block: var(--space-3);                               
+      62 +  background-color: color-mix(in srgb, var(--bg) 90%, transpare
+         +nt);                                                           
+      63 +  backdrop-filter: blur(10px);                                 
+      64  }
+      65  
+      66  .brand {
+     ...
+       72  
+       73  .nav-list {
+       74    display: flex;
+       64 -  gap: var(--space-6);                                        
+       75 +  align-items: center;                                        
+       76 +  gap: var(--space-2);                                        
+       77  }
+       78  
+       79 +.nav-list a {                                                 
+       80 +  display: inline-block;                                      
+       81 +  padding: var(--space-1) var(--space-3);                     
+       82 +  border-radius: var(--radius-pill);                          
+       83 +  color: var(--link);                                         
+       84 +  font-weight: 700;                                           
+       85 +  text-decoration: none;                                      
+       86 +  /* The underline is a background so it can grow on hover. */
+       87 +  background-image: linear-gradient(currentColor, currentColor
+          +);                                                            
+       88 +  background-repeat: no-repeat;                               
+       89 +  background-position: var(--space-3) calc(100% - 2px);       
+       90 +  background-size: calc(100% - 2 * var(--space-3)) 2px;       
+       91 +}                                                             
+       92 +                                                              
+       93 +.nav-list a.nav-cta {                                         
+       94 +  background-image: none;                                     
+       95 +  background-color: var(--btn-bg);                            
+       96 +  color: var(--btn-text);                                     
+       97 +}                                                             
+       98 +                                                              
+       99 +.nav-list a:hover {                                           
+      100 +  background-size: calc(100% - 2 * var(--space-3)) 4px;       
+      101 +}                                                             
+      102 +                                                              
+      103 +.nav-list a.nav-cta:hover {                                   
+      104 +  background-color: color-mix(in srgb, var(--btn-bg) 82%, var(
+          +--text));                                                     
+      105 +}                                                             
+      106 +                                                              
+      107  /* 3. Hero (2D -> grid) --------------------------------------
+           ---------------- */
+      108  
+      109  .hero {
+      110    display: grid;
+      111    grid-template-columns: minmax(0, 1fr);
+      112    gap: var(--space-6);
+       73 -  padding-block: var(--space-12) var(--space-16);             
+      113 +  padding-block: var(--space-8) var(--space-16);              
+      114    isolation: isolate; /* keeps the tide pool's back blob (z-in
+           dex -1) above the page, below the pool */
+      115    overflow-x: clip; /* the rotated back blob may poke past the
+            viewport edge; never scroll sideways */
+      116  }
+     ...
+      127    font-size: var(--font-size-lg);
+      128  }
+      129  
+      130 +.hero-actions {                                               
+      131 +  display: flex;                                              
+      132 +  flex-wrap: wrap;                                            
+      133 +  gap: var(--space-3);                                        
+      134 +}                                                             
+      135 +                                                              
+      136  /* 4. Countdown: the tide pool -------------------------------
+           ----------------- */
+      137  
+      138  .countdown {
+      139    position: relative;
+      140    display: flex;
+      141    flex-direction: column;
+      142 +  align-items: center;                                        
+      143    gap: var(--space-4);
+      144    margin-top: var(--space-4);
+       98 -  padding: 17%; /* percent of width: keeps text inside the cur
+          -ve of the blob */                                             
+      145 +  padding: 17%; /* percent of width: keeps content inside the 
+          +curve of the blob */                                          
+      146    border-radius: var(--blob);
+      147    background-color: var(--tide-bg);
+      148 +  background-image: repeating-radial-gradient(                
+      149 +    circle at 50% 50%,                                        
+      150 +    transparent 0,                                            
+      151 +    transparent 3.5rem,                                       
+      152 +    var(--ripple) 3.5rem,                                     
+      153 +    var(--ripple) calc(3.5rem + 2px)                          
+      154 +  );                                                          
+      155    color: var(--tide-text);
+      156 +  text-align: center;                                         
+      157  }
+      158  
+      159  /* The second, lighter pool behind the first. Decorative: gene
+           rated content. */
+     ...
+      179  .countdown-grid {
+      180    display: grid;
+      181    grid-template-columns: repeat(2, minmax(0, 1fr));
+      127 -  gap: var(--space-4) var(--space-6);                         
+      182 +  gap: var(--space-2);                                        
+      183 +  width: 100%;                                                
+      184  }
+      185  
+      186 +/* Four glass tiles: equal weight, centred, so the pool reads 
+          +as balanced */                                                
+      187  .countdown-cell {
+      188    display: flex;
+      189    flex-direction: column;
+      190 +  align-items: center;                                        
+      191 +  padding: var(--space-2) var(--space-1);                     
+      192 +  border: 2px solid var(--tile-line);                         
+      193 +  border-radius: var(--radius-m);                             
+      194 +  background-color: var(--tile);                              
+      195  }
+      196  
+      197  .cd-value {
+     ...
+      199    font-weight: var(--font-weight-heading);
+      200    font-variant-numeric: tabular-nums;
+      201    letter-spacing: -0.04em;
+      140 -  line-height: 0.95;                                          
+      202 +  line-height: 1;                                             
+      203  }
+      204  
+      205  .cd-label {
+     ...
+      238    display: block;
+      239  }
+      240  
+      179 -/* 5. About: text-led rows, not cards ------------------------
+          ----------------- */                                           
+      241 +/* 5. About: text-led rows with a round icon -----------------
+          +----------------- */                                          
+      242  
+      243  .about {
+      244    display: flex;
+      245    flex-direction: column;
+      246    gap: var(--space-4);
+      185 -  padding-block: var(--space-8) var(--space-12);              
+      247 +  padding-block: var(--space-8) var(--space-16);              
+      248  }
+      249  
+      250  .section-lead {
+     ...
+      257  
+      258  .topic {
+      259    display: grid;
+      198 -  grid-template-columns: minmax(0, 1fr);                      
+      199 -  gap: var(--space-2);                                        
+      200 -  padding-block: var(--space-6);                              
+      201 -  border-top: 4px dotted var(--rule);                         
+      260 +  grid-template-columns: 3.5rem minmax(0, 1fr);               
+      261 +  column-gap: var(--space-4);                                 
+      262 +  row-gap: var(--space-1);                                    
+      263 +  align-items: center;                                        
+      264 +  /* Negative margin + padding: the hover tint reaches past th
+          +e text, the text stays aligned */                             
+      265 +  margin-inline: calc(-1 * var(--space-4));                   
+      266 +  padding: var(--space-6) var(--space-4);                     
+      267 +  border-radius: var(--radius-m);                             
+      268 +  background-image: radial-gradient(circle at 50% 50%, var(--r
+          +ule) 1.6px, transparent 2.2px);                               
+      269 +  background-size: 10px 4px;                                  
+      270 +  background-repeat: repeat-x;                                
+      271 +  background-position: 0 0;                                   
+      272  }
+      273  
+      274  .topic h3 {
+     ...
+      279    max-inline-size: 48ch;
+      280  }
+      281  
+      282 +.topic-icon {                                                 
+      283 +  grid-row: span 2;                                           
+      284 +  width: 3.5rem;                                              
+      285 +  aspect-ratio: 1;                                            
+      286 +  padding: 0.7rem;                                            
+      287 +  border: 2px solid var(--border);                            
+      288 +  border-radius: 50%;                                         
+      289 +  background-color: var(--surface);                           
+      290 +}                                                             
+      291 +                                                              
+      292  /* 6. Register: one soft container ---------------------------
+           ----------------- */
+      293  
+      294  .register {
+     ...
+      296    flex-direction: column;
+      297    gap: var(--space-4);
+      298    margin-inline: var(--edge);
+      219 -  margin-bottom: var(--space-12);                             
+      299 +  margin-bottom: var(--space-16);                             
+      300    padding: var(--space-8) var(--space-6);
+      301    border-radius: var(--radius-l);
+      302    background-color: var(--surface);
+     ...
+      341    resize: vertical;
+      342  }
+      343  
+      344 +.field input:hover,                                           
+      345 +.field textarea:hover,                                        
+      346 +.field input:focus,                                           
+      347 +.field textarea:focus {                                       
+      348 +  border-color: var(--heading);                               
+      349 +}                                                             
+      350 +                                                              
+      351  .field input[aria-invalid="true"],
+      352  .field textarea[aria-invalid="true"] {
+      353    border-color: var(--danger);
+      354  }
+      355  
+      356  .field-hint {
+      357 +  display: flex;                                              
+      358 +  flex-wrap: wrap;                                            
+      359 +  justify-content: space-between;                             
+      360 +  gap: 0 var(--space-4);                                      
+      361    color: var(--text-muted);
+      362    font-size: var(--font-size-sm);
+      363  }
+      364  
+      365 +.field-count {                                                
+      366 +  font-variant-numeric: tabular-nums;                         
+      367 +}                                                             
+      368 +                                                              
+      369  .field-error {
+      370    color: var(--danger);
+      371    font-size: var(--font-size-sm);
+     ...
+      376    display: none;
+      377  }
+      378  
+      379 +/* Buttons: <button> and <a> share one look */                
+      380  .btn {
+      381 +  display: inline-flex;                                       
+      382 +  align-items: center;                                        
+      383 +  justify-content: center;                                    
+      384    padding: var(--space-3) var(--space-8);
+      385    border: 2px solid var(--btn-bg);
+      386    border-radius: var(--radius-pill);
+      387    background-color: var(--btn-bg);
+      388    color: var(--btn-text);
+      389    font-weight: 800;
+      390 +  text-decoration: none;                                      
+      391    cursor: pointer;
+      392  }
+      393  
+     ...
+      402  
+      403  .btn-quiet:hover {
+      404    background-color: color-mix(in srgb, var(--btn-bg) 14%, tran
+           sparent);
+      405 +  color: var(--btn-bg);                                       
+      406  }
+      407  
+      408 +.btn:active {                                                 
+      409 +  transform: translateY(1px);                                 
+      410 +}                                                             
+      411 +                                                              
+      412  .reg-error,
+      413  .reg-success {
+      414    display: none;
+     ...
+      436  
+      437  .reg-success {
+      438    border-color: var(--success);
+      439 +  max-inline-size: 34rem;                                     
+      440  }
+      441  
+      442  .reg-success h3 {
+     ...
+      471    gap: var(--space-2);
+      472  }
+      473  
+      368 -/* 7. Footer -------------------------------------------------
+          ------------------ */                                          
+      474 +/* 7. Footer: the deep-sea band ------------------------------
+          +------------------ */                                         
+      475  
+      476  .site-footer {
+      371 -  padding-block: var(--space-6);                              
+      372 -  border-top: 4px dotted var(--rule);                         
+      373 -  color: var(--text-muted);                                   
+      477 +  position: relative;                                         
+      478 +  display: flex;                                              
+      479 +  flex-wrap: wrap;                                            
+      480 +  align-items: center;                                        
+      481 +  justify-content: space-between;                             
+      482 +  gap: var(--space-2) var(--space-6);                         
+      483 +  padding-block: var(--space-8);                              
+      484 +  border-radius: var(--radius-l) var(--radius-l) 0 0;         
+      485 +  background-color: var(--tide-bg);                           
+      486 +  color: var(--tide-text);                                    
+      487 +}                                                             
+      488 +                                                              
+      489 +.site-footer :focus-visible {                                 
+      490 +  outline-color: var(--tide-ring);                            
+      491 +}                                                             
+      492 +                                                              
+      493 +.footer-name {                                                
+      494 +  font-size: var(--font-size-lg);                             
+      495 +  font-weight: var(--font-weight-heading);                    
+      496 +}                                                             
+      497 +                                                              
+      498 +.footer-small {                                               
+      499    font-size: var(--font-size-sm);
+      500  }
+      501  
+      502 +.to-top {                                                     
+      503 +  color: var(--tide-text);                                    
+      504 +  font-weight: 700;                                           
+      505 +  text-underline-offset: 0.25em;                              
+      506 +}                                                             
+      507 +                                                              
+      508 +.to-top:hover {                                               
+      509 +  text-decoration-thickness: 3px;                             
+      510 +}                                                             
+      511 +                                                              
+      512  /* 8. Wider screens ------------------------------------------
+           ----------------- */
+      513  
+      514  @media (min-width: 48rem) {
+      380 -  .countdown-grid {                                           
+      381 -    grid-template-columns: repeat(2, auto);                   
+      382 -    justify-content: start;                                   
+      515 +  .topic {                                                    
+      516 +    grid-template-columns: 3.5rem minmax(0, 2fr) minmax(0, 3fr
+          +);                                                            
+      517 +    column-gap: var(--space-6);                               
+      518    }
+      519  
+      385 -  .topic {                                                    
+      386 -    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);     
+      387 -    column-gap: var(--space-8);                               
+      520 +  .topic-icon {                                               
+      521 +    grid-row: auto;                                           
+      522    }
+      523  
+      524    .register {
+      525      padding: var(--space-12);
+      526    }
+      527 +                                                              
+      528 +  .countdown-grid {                                           
+      529 +    gap: var(--space-4);                                      
+      530 +  }                                                           
+      531 +                                                              
+      532 +  .countdown-cell {                                           
+      533 +    padding: var(--space-3) var(--space-2);                   
+      534 +  }                                                           
+      535  }
+      536  
+      537  /* Title left, pool right, only when the title fits its column
+            */
+      538  @media (min-width: 64rem) {
+      539    .hero {
+      540      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      541 +    grid-template-rows: auto auto 1fr;                        
+      542      column-gap: var(--space-12);
+      400 -    align-items: end;                                         
+      401 -    padding-block: var(--space-16) 6rem;                      
+      543 +    align-items: start;                                       
+      544 +    padding-block: var(--space-12) 6rem;                      
+      545    }
+      546  
+      547    .hero h1,
+      405 -  .hero-lead {                                                
+      548 +  .hero-lead,                                                 
+      549 +  .hero-actions {                                             
+      550      grid-column: 1;
+      551    }
+      552  
+      553    .countdown {
+      554      grid-column: 2;
+      411 -    grid-row: 1 / span 2;                                     
+      555 +    grid-row: 1 / -1;                                         
+      556 +    align-self: center;                                       
+      557      padding: 15%;
+      558    }
+      559  }
+      560 +                                                              
+      561 +/* 9. Hover and motion: only where there is a pointer, only if
+          + allowed --------- */                                         
+      562 +                                                              
+      563 +@media (hover: hover) {                                       
+      564 +  .btn:hover,                                                 
+      565 +  .nav-list a.nav-cta:hover {                                 
+      566 +    transform: translateY(-2px);                              
+      567 +  }                                                           
+      568 +                                                              
+      569 +  .btn:hover {                                                
+      570 +    box-shadow: 0 0.5rem 1rem color-mix(in srgb, var(--ink) 22
+          +%, transparent);                                              
+      571 +  }                                                           
+      572 +                                                              
+      573 +  .btn[aria-disabled="true"]:hover {                          
+      574 +    transform: none;                                          
+      575 +    box-shadow: none;                                         
+      576 +  }                                                           
+      577 +                                                              
+      578 +  .topic:hover {                                              
+      579 +    background-color: var(--hover-tint);                      
+      580 +  }                                                           
+      581 +                                                              
+      582 +  .topic:hover .topic-icon {                                  
+      583 +    transform: rotate(-8deg) scale(1.08);                     
+      584 +  }                                                           
+      585 +}                                                             
+      586 +                                                              
+      587 +.topic:focus-within {                                         
+      588 +  background-color: var(--hover-tint);                        
+      589 +}                                                             
+      590 +                                                              
+      591 +@media (prefers-reduced-motion: no-preference) {              
+      592 +  .nav-list a,                                                
+      593 +  .btn,                                                       
+      594 +  .topic,                                                     
+      595 +  .topic-icon,                                                
+      596 +  .field input,                                               
+      597 +  .field textarea {                                           
+      598 +    transition: background-size var(--motion-fast) var(--ease-
+          +out),                                                         
+      599 +                background-color var(--motion-fast) var(--ease
+          +-out),                                                        
+      600 +                border-color var(--motion-fast) var(--ease-out
+          +),                                                            
+      601 +                transform var(--motion-fast) var(--ease-out), 
+      602 +                box-shadow var(--motion-fast) var(--ease-out);
+      603 +  }                                                           
+      604 +}                                                             
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Tôi sẽ sửa hai chỗ: header trên điện thoại bị xuống hai hàng do sticky chiếm
+  nhiều màn hình, và hai con sao biển ở cuối trang nằm sát nhau quá. Sau đó sẽ
+  chạy lại toàn bộ kiểm tra. · summary
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Giờ chạy Audit B. Mình cài Lighthouse ở thư mục tạm (ngoài repo) và chạy song
+  song với bộ kiểm tra tự viết.
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Lighthouse cho kết quả rất tốt: mobile 99/100/100/100, desktop
+  100/100/100/100, các điểm chưa tối đa chủ yếu do server Python thử nghiệm
+  thiếu nén/cache. Giờ tôi sẽ chạy bộ kiểm tra riêng cho giao diện mới cùng toàn
+  bộ hồi quy. · summary
+
+  Made 1 scratchpad edit +41, ran 1 shell command (ctrl+o to expand)
+
+● Audit B phát hiện hai lỗi thực sự từ giao diện mới: số ngày 3 chữ số tràn ô ở
+  320px và header xuống hai hàng cao 80px trùng với scroll-padding. Mình sẽ sửa
+  bằng cách dùng container query cho cỡ chữ đồng hồ theo bề rộng ô, đồng thời
+  làm header gọn lại. · summary
+
+  Read 2 files, ran 3 shell commands (ctrl+o to expand)
+
+● Giao diện mới ổn ở cả hai theme và cả mobile lẫn desktop. Mình ghi Audit B và
+  viết luôn báo cáo cuối (3 mục có commit làm bằng chứng) vào file audit.
+
+  Made 2 scratchpad edits +163, ran 2 shell commands (ctrl+o to expand)
+
+● Giao diện đã hoàn thiện và Audit B đã chạy xong, chưa commit gì. Kiểm tra bằng
+  Edge headless và Lighthouse trên máy chủ HTTP tạm (đã tắt).
+
+  Giao diện hoàn thiện
+
+  Mình đã chỉ ra vì sao nó còn giống skeleton: khoảng trống giữa tiêu đề và đoạn
+  dẫn, đồng hồ lệch trái, chưa có nút kêu gọi, ô đăng ký trơ trọi, chân trang
+  trống. Đã sửa:
+  - Đồng hồ cân bằng: nội dung căn giữa, bốn ô kính đều nhau, thêm các vòng gợn
+    sóng mờ trên mặt nước, vũng gần tròn hơn. Cỡ chữ tính theo chiều rộng của
+    chính ô.
+  - Hero: thêm hai nút "Reserve your seat" và "What we will cover". Cột trái và
+    vũng nước cân nhau, rùa và cá vẫn quanh vũng.
+  - Header dính, mờ kính: liên kết Register là nút tròn, gạch chân của "About"
+    lớn dần khi rê chuột.
+  - Phần giới thiệu: mỗi chủ đề có biểu tượng tròn vẽ tay (chai nhựa, san hô,
+    người). Rê chuột thì hàng đổi nền và biểu tượng xoay nhẹ.
+  - Form: ô nhập đổi viền khi rê và khi focus, bộ đếm "42/300" trong ô ghi chú.
+    Nút nâng lên khi rê, nhấn thì lún xuống.
+  - Ô đăng ký (màn hình rộng): có thêm cảnh rùa, cá, bong bóng bên phải.
+  - Chân trang: thành dải biển sâu bo góc, có san hô và liên kết "Back to top".
+  - Mọi hiệu ứng chuyển động và hover chỉ bật khi thiết bị có chuột và người
+    dùng không tắt chuyển động.
+
+  Audit B (ngắn)
+
+  - Lighthouse: mobile 99/100/100/100, desktop 100/100/100/100. Phần chưa tối đa
+    (nén, cache) là do máy chủ Python thử nghiệm chứ không phải trang.
+  - axe-core: 0 vi phạm ở 4 state.
+  - Hồi quy: S3 và các bản sửa Audit A đều đạt (double-submit, khoá idempotency,
+    4 payload XSS, CSP chặn script/handler inline, chặn gửi native, pageshow,
+    timeout). Log của Edge chỉ có các vi phạm CSP do chính các đòn thử nghiệm
+    gây ra.
+  - Khác: thứ tự Tab hợp lý (11 điểm dừng, 0 tabindex dương), mục tiêu chạm đều
+    ≥ 24px, animation của rùa tắt khi bật reduced-motion, không scroll ngang ở 8
+    độ rộng.
+
+  Phát hiện:
+  - B-2 (lỗi thật, đã sửa): sau khi đổi sang ô kính, số ngày 3 chữ số ở 320px
+    rộng 87px trong ô 86px, tức tràn ô. Mình đo bằng mốc +183 ngày, sửa bằng
+    container query (50cqi), đo lại còn 62px trong ô 86px.
+  - B-1 (UX): header dính xuống hai hàng dưới 340px. Đã thu gọn và tăng
+    scroll-padding; chấp nhận phần còn lại.
+  - B-3: Lighthouse mobile 99 do 5 stylesheet chặn render. Mình đề xuất giữ
+    nguyên để dễ chỉnh khi vấn đáp; bạn đổi sang preload font hoặc gộp CSS nếu
+    muốn 100.
+  - B-4: hover và focus chưa xem được bằng ảnh vì headless không ép được :hover.
+    Bạn nên rê chuột và Tab thử một lượt.
+
+  Báo cáo cuối
+
+  Mình đã viết sẵn phần "Báo cáo cuối" trong AI_FAILURE_AUDIT.md
+  (Homework_3/AI_FAILURE_AUDIT.md) với 3 lỗi có commit làm bằng chứng (git
+  history thật, đã kiểm tra hash):
+  1. Email lọt lên URL khi chưa có JS (commit sửa 409ad23).
+  2. Thông báo lỗi nằm ngoài màn hình trên điện thoại (91d0082).
+  3. main.js vượt vai trò composition root (cbb4d7a).
+
+  Mỗi mục có đủ: mô tả lỗi, cách phát hiện, phương án đã cân nhắc, quyết định
+  của bạn và giải pháp (kèm đoạn trước/sau).
+
+  Đề xuất commit (bạn tự chạy)
+
+  # 1. Bộ đếm ghi chú
+  git add -p Homework_3/js/main.js Homework_3/index.html Homework_3/css/hub.css
+   # chỉ hunk .field-count / showNoteCount
+  git commit -m "feat(form): live note character counter"
+
+  # 2. Hoàn thiện giao diện
+  git add Homework_3/css/tokens.css Homework_3/css/art.css Homework_3/index.html
+  Homework_3/css/hub.css
+  git commit -m "style(hub): finish layout with hero actions, tiles, hover
+  states and footer band"
+
+  # 3. Sửa B-2 (nếu muốn tách riêng, dùng add -p cho hub.css và tokens.css)
+  git commit -m "fix(countdown): size digits from tile width (audit B-2)"
+
+  # 4. Báo cáo
+  git add Homework_3/AI_FAILURE_AUDIT.md
+  git commit -m "docs(audit): audit B and final failure report"
+
+  Còn một việc nhỏ: A-3 (focus sau khi bấm "Try again") nên thử tay một lần, như
+  đã ghi trong báo cáo. Bạn muốn mình làm gì tiếp theo, hoặc dừng ở đây cho
+  Homework 3?
+
+> /usage
+  ⎿  You are currently using your subscription to power your Claude Code usage
+
+     Current session: 31% used · resets Oct 14, 3am (Asia/Ho_Chi_Minh)
+     Current week (all models): 5% used · resets Oct 20, 10pm (Asia/Ho_Chi_Minh)
+
+     What's contributing to your limits usage?
+     Approximate, based on local sessions on this machine — does not include other devices or claude.ai. Behaviors are independent characteristics, not a breakdown.
+
+     Last 24h · 121 requests · 1 session
+       97% of your usage was at >150k context
+       Top skills: /frontend-design:frontend-design 12%
+       Top plugins: frontend-design 12%
+
+     Last 7d · 1979 requests · 34 sessions
+       80% of your usage was at >150k context
+       Top skills: /remotion:remotion-best-practices 5%, /easy-instruct:easy-instruct 3%, /superpowers:test-driven-development 1%, /skill-creator:skill-creator 1%, /superpowers:writing-plans 1%, /superpowers:brainstorming 1%, /frontend-design:frontend-design 1%
+       Top subagents: fork 2%, general-purpose 1%
+       Top plugins: remotion 5%, superpowers 3%, easy-instruct 3%, skill-creator 1%, frontend-design 1%
+       Top MCP servers: plugin:easy-instruct:easy-instruct 3%
+
+     breakdown · sonnet: 100% · haiku: 0% · cache hit: 99%
+
+> <ide_opened_file>The user opened the file
+  c:\Dev\Project\MSIS207_Lab1\Homework_3\AI_FAILURE_AUDIT.md in the IDE. This
+  may or may not be related to the current task.</ide_opened_file>
+
+> trong lúc chạy audit bạn có thể thêm hiệu ứng này cho background đỡ trống
+  không Floating translucent bubbles rising through the viewport. Each bubble
+  is a radial-gradient circle with varying size, position, and animation
+  duration — creating a natural, stochastic underwater effect., thêm chuyển màu
+  nhạt dần xuống luôn
+  Làm được, nhưng mình nghĩ nên làm sau khi Audit B xong rồi chạy lại vài kiểm
+  tra nhanh. Đổi giao diện giữa lúc đang đo Lighthouse và axe sẽ làm số liệu
+  audit không còn khớp với bản cuối. Mình chưa kiểm chứng gì cho phần này, nên
+  dưới đây là cách làm dự kiến.
+
+  Bong bóng nổi
+
+  Dùng CSS thuần, không JS. Khoảng 10 đến 12 phần tử <span aria-hidden="true">
+  trong một lớp cố định (position: fixed, pointer-events: none, nằm dưới nội
+  dung). Dự án cấm style="" và đã có CSP style-src 'self'. Vì vậy mỗi bong bóng
+  phải khác kích thước, vị trí ngang và thời gian bay bằng class hoặc
+  :nth-child, không dùng thuộc tính inline.
+  Mỗi bong bóng là một vòng tròn radial-gradient trong suốt, màu lấy từ token
+  (--foam, --sand) pha bằng color-mix. Nó bay lên bằng transform và opacity,
+  thêm chút lắc ngang bằng keyframes. Chỉ dùng transform và opacity để không
+  ảnh hưởng CLS hay TBT.
+  Giữ độ mờ thấp để chữ phía trên vẫn đạt tương phản 4.5:1. Axe vốn đã báo "cần
+  xem lại" ở phần tương phản chữ trên nền có hình, nên mình sẽ đo lại sau khi
+  thêm.
+  Tắt hoặc giữ đứng yên khi prefers-reduced-motion: reduce, đúng quy tắc dự án.
+  Chuyển màu nhạt dần xuống
+  Mình hiểu là nền chuyển dần từ cát ở trên xuống một sắc xanh nhạt hơn ở dưới
+  (và ngược lại ở dark mode, từ --ink sang xanh sâu). Cần bạn xác nhận hướng:
+  bạn muốn nhạt dần hay đậm dần về phía chân trang? Chữ phía dưới sẽ phải đạt
+  tương phản với màu nền cuối cùng, nên việc chọn hướng ảnh hưởng tới cách chọn
+  màu.
+
+  Sau Audit B mình sẽ làm hiệu ứng này trong một commit riêng, rồi chạy lại
+  axe, Lighthouse và đo scroll ngang.
+  thêm nhanh cái này nữa là hoàn thiện hw3
+  ⎿  Interrupted · What should Claude do instead?
+
+> không cần chạy audit lại, chỉ thêm hiệu ứng background
+
+● Mình làm đúng hướng bạn nói: nền chuyển dần từ cát xuống xanh nhạt hơn ở dưới
+  (dark mode: từ --ink lên xanh biển nhạt hơn), cộng bong bóng nổi bằng CSS
+  thuần. Trước tiên tính tương phản của màu nền cuối để chọn tỉ lệ pha an toàn.
+
+  Ran 1 shell command (ctrl+o to expand)
+
+● Đã chốt màu an toàn: light mode pha 50% --foam với --pearl (#cbe8f0, đạt
+  5.25:1), dark mode pha 35% --sea-deep vào --ink (đạt ~10:1). Giờ tôi bắt đầu
+  viết code. · summary
+
+  Ran 2 shell commands (ctrl+o to expand)
+
+● Ở 320px, cả 12 bong bóng chuyển động bình thường — các kết quả 0 ở hai lần đo
+  sau là do iframe nằm ngoài khung nhìn test chứ không phải lỗi trang. Mình sẽ
+  đo lại từng độ rộng riêng để kiểm tra chính xác hơn. · summary
+
+  Read 2 files, ran 2 shell commands (ctrl+o to expand)
+
+● Hiệu ứng nền đã xong, chưa commit. Mình chỉ kiểm tra riêng phần này và không
+  chạy lại Lighthouse hay axe như bạn nói.
+
+  Đã thêm
+
+  Bong bóng nổi. 12 bong bóng trong suốt, mỗi cái khác kích thước (0.8 đến
+  3.4rem), làn ngang, thời gian bay (18 đến 34 giây) và độ lắc. Chúng bay lên
+  rồi mờ dần, có điểm sáng và viền mờ như bọt thật.
+  - CSS thuần, không JS, không style="". Giá trị riêng của từng bong bóng nằm
+    trong :nth-child ở art.css (Homework_3/css/art.css), còn màu lấy từ token
+    pha trong suốt.
+  - Lớp bong bóng position: fixed, z-index: -1, pointer-events: none,
+    aria-hidden, nằm sau nội dung (khung đăng ký che bong bóng khi đi qua).
+  - Chỉ dùng transform và opacity. Khi người dùng bật prefers-reduced-motion:
+    reduce, cả lớp bị ẩn.
+
+  Chuyển màu nhạt dần xuống. Mình hiểu là nền chuyển từ cát ở trên sang xanh
+  nhạt hơn ở dưới (ngược lại ở dark mode: từ --ink sang xanh biển sáng hơn một
+  chút). Một phần tư đầu trang giữ màu phẳng (khu hero đã kiểm tra tương phản),
+  sau đó nhạt dần.
+  - Màu cuối chọn theo phép tính tương phản: sáng thì chữ --sea-deep đạt 5.25:1
+    trên #cbe8f0; tối thì chữ sand khoảng 10:1.
+
+  Kiểm tra
+
+  - 12 bong bóng chuyển động thật ở 320, 375 và 1100px; kích thước và thời gian
+    đều khác nhau.
+  - Bật reduced-motion: animation tắt, 0 bong bóng hiển thị.
+  - Không scroll ngang, 0 thuộc tính style inline, grep và gate hex sạch. Đã xem
+    ảnh chụp cả hai theme: chữ vẫn rõ, bong bóng nhạt và không cản đọc.
+  - Lần đo đầu cho 0 bong bóng chuyển động ở hai độ rộng sau là lỗi của bài test
+    (iframe nằm ngoài khung nhìn nên không được vẽ), đo lại riêng từng độ rộng
+    đều đạt.
+
+  Chưa kiểm chứng: Lighthouse và axe sau thay đổi này. Axe vốn đã báo "cần xem
+  lại" phần tương phản chữ trên nền có hình, và nền giờ có thêm gradient, nên số
+  đo trong Audit B có thể không còn khớp hoàn toàn với bản cuối. Nếu bạn muốn
+  số liệu chính xác cho báo cáo thì nên chạy lại một lần.
+
+  Đề xuất commit (bạn tự chạy)
+
+  git add Homework_3/css/tokens.css Homework_3/css/art.css Homework_3/index.html
+  git commit -m "style(hub): add fading page gradient and rising bubbles"
