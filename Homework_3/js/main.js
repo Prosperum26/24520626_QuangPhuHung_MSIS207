@@ -49,8 +49,14 @@
       if (!document.hidden) handle.refresh();
     }
 
+    // Back/forward can restore the page from the bfcache without a visibilitychange.
+    function onPageShow(event) {
+      if (event.persisted) handle.refresh();
+    }
+
     function release() {
       document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pageshow', onPageShow);
     }
 
     const handle = Countdown.start({
@@ -70,6 +76,7 @@
     // Only listen while there is something left to count.
     if (root.dataset.state === 'running') {
       document.addEventListener('visibilitychange', onVisibility);
+      window.addEventListener('pageshow', onPageShow);
     }
   }
 
@@ -107,6 +114,7 @@
     const machine = FormMachine.create('idle');
     const outcome = pickOutcome(config.mockOutcome);
     let lastValues = null;
+    let attemptKey = null;  // one key per registration attempt; a retry reuses it
 
     // CONFIG owns the limits; the HTML attributes are only the no-JS fallback.
     fields.name.maxLength = config.limits.nameMax;
@@ -115,10 +123,15 @@
 
     // The single place that writes #register[data-state] and what depends on it.
     function setState(next) {
+      if (!FormMachine.STATES.includes(next)) {
+        throw new TypeError(`setState: unknown form state "${next}"`);
+      }
       root.dataset.state = next;
       const submitting = next === 'submitting';
       form.setAttribute('aria-busy', String(submitting));
       Object.values(fields).forEach((el) => { el.readOnly = submitting; });
+      // aria-disabled, not disabled: the button keeps keyboard focus while it waits.
+      submitBtn.setAttribute('aria-disabled', String(submitting));
       submitBtn.textContent = BUTTON_LABEL[next] || 'Register';
       statusEl.textContent = submitting ? 'Sending your registration…' : '';
     }
@@ -131,18 +144,9 @@
       else el.removeAttribute('aria-invalid');
     }
 
-    // Reads the form and reports every problem at once.
-    function validate() {
-      const values = {
-        name: fields.name.value.trim(),
-        email: fields.email.value.trim(),
-        note: fields.note.value.trim(),
-      };
-      const errors = {};
-      if (!values.name) errors.name = 'Enter your name.';
-      if (!values.email) errors.email = 'Enter your email address.';
-      else if (fields.email.validity.typeMismatch) errors.email = 'Enter a valid email address, like name@example.com.';
-      return { ok: Object.keys(errors).length === 0, values, errors };
+    // What the visitor typed, untouched; Sanitize decides what is acceptable.
+    function readRaw() {
+      return { name: fields.name.value, email: fields.email.value, note: fields.note.value };
     }
 
     function render(next, cause) {
@@ -168,7 +172,7 @@
         apply('TIMEOUT', { requestId: id });
       }, config.submitTimeoutMs);
 
-      RegistrationApi.submit(values, {
+      RegistrationApi.submit({ ...values, idempotencyKey: attemptKey }, {
         signal: controller.signal,
         mockOutcome: outcome,
         mockDelayMs: config.mockDelayMs,
@@ -180,8 +184,15 @@
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      const result = validate();
+      // Already sending (a second click, Enter, a double-tap): do nothing at all.
+      if (machine.state === 'submitting') return;
+
+      const result = Sanitize.validate(readRaw(), config.limits);
       Object.keys(fields).forEach((key) => showFieldError(key, result.errors[key]));
+      // Show the visitor what will actually be sent if cleaning changed it.
+      fields.name.value = result.values.name;
+      fields.note.value = result.values.note;
+
       const before = machine.state;
       const next = machine.dispatch('SUBMIT', { valid: result.ok });
       if (!result.ok) {
@@ -190,6 +201,7 @@
         return;
       }
       if (next === 'submitting' && before !== 'submitting') {
+        if (before === 'idle') attemptKey = RegistrationApi.newKey();
         lastValues = result.values;
         setState(next);
         send(result.values);
@@ -202,6 +214,7 @@
       const next = machine.dispatch('RETRY');
       if (next === 'submitting' && before !== 'submitting') {
         setState(next);
+        submitBtn.focus(); // the Try again button just hid itself: keep focus in the form
         send(lastValues);
       }
     });

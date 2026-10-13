@@ -345,7 +345,7 @@
   cursor: progress;
 }
 
-.register[data-state="submitting"] .btn {
+.btn[aria-disabled="true"] {
   cursor: progress;
   opacity: 0.8;
 }

@@ -4,7 +4,7 @@
 > Thêm hai trường để trung thực về quá trình: **Phương án** (các hướng sửa khả dĩ) và **Quyết định** (bạn chọn gì và vì sao).
 > Quy tắc: chỉ ghi thứ **có thật trong code AI sinh ra**, kèm cách tái hiện. Không dựng lỗi để có cái mà sửa. Mỗi audit chạy ở chế độ review (`project-rules.md` §2.6): chỉ liệt kê, không sửa trong cùng lượt.
 
-Trạng thái: **Audit A đã chạy; A-1, A-2, A-4 đã sửa (chờ commit), A-8 đã quyết giữ nguyên; A-3, A-5, A-6, A-7, A-9, A-10 chờ quyết**. Audit B chạy sau S3. Bản báo cáo cuối (≥ 3 mục) viết ở T-A3.
+Trạng thái: **Audit A xong, mọi mục đã có quyết định (A-8 và A-9 giữ nguyên/chấp nhận, các mục còn lại đã sửa, chờ commit). S3 đã làm xong. Audit B chưa chạy.** Audit B chạy sau S3. Bản báo cáo cuối (≥ 3 mục) viết ở T-A3.
 
 ---
 
@@ -65,8 +65,8 @@ Trạng thái: **Audit A đã chạy; A-1, A-2, A-4 đã sửa (chờ commit), A
   - (b) Cho vùng trạng thái "Sending…" nhận focus (`tabindex="-1"`).
   - (c) Để nguyên, chấp nhận. Không khuyến nghị.
   - Liên quan D9 (nút khoá khi đang gửi) ở S3, nên gom xử lý chung.
-- **Quyết định:** _chờ_ (đề xuất mặc định: (a), gom vào commit D9)
-- **Giải pháp đã refactor:** _chờ_
+- **Quyết định:** (a) Sau khi gửi lại, chủ động `focus()` nút Register (mặc định đã đề xuất, bạn chấp nhận). Gộp với D9: nút dùng `aria-disabled` nên giữ được focus.
+- **Giải pháp đã refactor:** Trong handler của "Try again", gọi `submitBtn.focus()` sau `setState('submitting')`. Kiểm chứng: focus tại "Try again", bấm, `document.activeElement` là `reg-submit`, `aria-disabled="true"`. Phần "focus fixup" thật của trình duyệt vẫn nên thử tay. Commit: _chờ bạn commit_.
 
 #### A-4 – `main.js` vượt vai trò composition root
 - **Mô tả:** spec 3.5 và nguyên tắc HW2 nói `main.js` là chỗ duy nhất **nối** các module. Hiện nó dài 254 dòng và chứa logic: `formatStart`, `plural`, `announcement`, `validate`, và việc ghi trạng thái ra DOM của hai tính năng. Các hàm thuần này không test được nếu không dựng DOM, đúng loại thứ mà ta đã tách ra module riêng ở nơi khác. S3 sẽ thêm khoá nút, sanitize, CSP nên file còn phình tiếp.
@@ -82,18 +82,21 @@ Trạng thái: **Audit A đã chạy; A-1, A-2, A-4 đã sửa (chờ commit), A
 - **Mô tả:** khi người dùng bấm Back/Forward và trình duyệt khôi phục trang từ bộ nhớ đệm (bfcache), timer bị đóng băng rồi chạy tiếp, nhưng `visibilitychange` có thể không bắn. Đồng hồ hiển thị giá trị cũ cho tới tick kế (tối đa ~1 giây). Chỉ là hiện tượng ngắn, vì mỗi tick tính lại từ mốc tuyệt đối.
 - **Cách phát hiện:** suy luận từ đặc tả, chưa tái hiện (headless không có bfcache).
 - **Phương án:** (a) thêm `pageshow` (với `event.persisted`) gọi `refresh()`; (b) chấp nhận.
-- **Quyết định:** _chờ_ (đề xuất mặc định: (a), một dòng)
+- **Quyết định:** (a) Thêm `pageshow` với `event.persisted` gọi `refresh()` (mặc định đề xuất, bạn chấp nhận).
+- **Giải pháp đã refactor:** Thêm `onPageShow` vào `initCountdown`, gỡ cùng `visibilitychange` khi xong. Kiểm chứng: đồng hồ nhảy +2 ngày rồi phát `pageshow(persisted)`, hiển thị `65:09:35:51` đúng bằng giá trị tính tay. Commit: _chờ bạn commit_.
 
 #### A-6 – Câu thông báo cho screen reader làm tròn xuống
 - **Mô tả:** `announcement()` đọc `values.minutes` nguyên, nên "31 minutes left" khi thực tế còn 31 phút 25 giây. Số đếm dùng `ceil` cho giây nhưng câu thông báo thì cắt bỏ phần giây, hai nơi làm tròn khác chiều nhau.
 - **Phương án:** (a) thêm "about"; (b) làm tròn lên phút để khớp quy ước `ceil`; (c) giữ nguyên.
-- **Quyết định:** _chờ_
+- **Quyết định:** (a) Thêm "About" (không có mặc định đề xuất, mình chọn rồi ghi rõ để bạn phản đối được; bạn chưa phản đối).
+- **Giải pháp đã refactor:** `Format.announcement` bắt đầu bằng "About 27 days, 4 hours and 31 minutes left…". Cập nhật test. Commit: _chờ bạn commit_.
 
 #### A-7 – Múi giờ offset 0 vẫn in "(… UTC)"
 - **Mô tả:** `formatStart` bỏ phần UTC chỉ khi chuỗi chứa "UTC". Vùng như Europe/London mùa đông hiển thị "GMT" (offset 0) nên bị in thừa "(20 Dec, 02:00 UTC)".
 - **Cách phát hiện:** chạy `formatStart` với 5 múi giờ, London cho `20 December 2026 at 02:00 GMT (20 Dec, 02:00 UTC)`.
 - **Phương án:** so sánh offset thật (`getTimezoneOffset() === 0`) thay vì dò chuỗi.
-- **Quyết định:** _chờ_
+- **Quyết định:** Đổi sang so sánh offset thật (mặc định đề xuất, bạn chấp nhận).
+- **Giải pháp đã refactor:** `Format.isZeroOffset` đọc `timeZoneName: 'longOffset'` và coi `GMT`, `UTC`, `GMT+00:00` là offset 0. London mùa đông giờ chỉ in `20 December 2026 at 02:00 GMT`; mùa hè in `03:00 BST (20 Jul, 02:00 UTC)`. 6 test Node. Commit: _chờ bạn commit_.
 
 #### A-8 – Công tắc demo đi theo bản production
 - **Mô tả:** `?demo=error` ép giao diện lỗi cho bất kỳ ai. Đã whitelist đúng hai giá trị nên không có lỗ hổng injection, nhưng là một bề mặt hành vi mà người dùng thật không cần.
@@ -103,12 +106,14 @@ Trạng thái: **Audit A đã chạy; A-1, A-2, A-4 đã sửa (chờ commit), A
 #### A-9 – Đồng hồ tin giờ máy khách
 - **Mô tả:** dùng `Date.now()` (D2). Máy khách chỉnh sai giờ thì đếm sai, ngay cả khi mốc UTC đúng. Đã ghi nhận ở D2, đưa vào đây để có phương án.
 - **Phương án:** (a) chấp nhận và nêu hạn chế; (b) lấy giờ máy chủ qua `Date` header của một request cùng origin để tính độ lệch (cần mạng, `connect-src 'self'`).
-- **Quyết định:** _chờ_ (đề xuất mặc định: (a))
+- **Quyết định:** (a) Chấp nhận và nêu hạn chế (mặc định đề xuất, bạn chấp nhận).
+- **Giải pháp đã refactor:** Không đổi code. Ghi hạn chế vào đầu `countdown.js` để người đọc thấy ngay.
 
 #### A-10 – `setState` không từ chối state lạ
 - **Mô tả:** `setState(next)` ghi thẳng `dataset.state`. Máy trạng thái chỉ trả giá trị hợp lệ, nhưng nếu sau này có chỗ gọi nhầm thì CSS im lặng không khớp gì. Bài Ex4 từng làm hàm này từ chối giá trị ngoài `STATES`.
 - **Phương án:** thêm kiểm tra `FormMachine.STATES.includes(next)`.
-- **Quyết định:** _chờ_
+- **Quyết định:** Thêm kiểm tra (mặc định đề xuất, bạn chấp nhận).
+- **Giải pháp đã refactor:** `setState` của form ném `TypeError` nếu state không thuộc `FormMachine.STATES`. Commit: _chờ bạn commit_.
 
 ### Đã kiểm tra, không phát hiện lỗi
 
@@ -133,6 +138,10 @@ Ghi nhanh sau mỗi output của AI. Mục nào có **commit làm bằng chứng
 | T-02-J | Bản đầu của `start()` có `now = Date.now`, tức giữ tham chiếu hàm lúc gọi, nên ghi đè `Date.now` trong DevTools không có tác dụng. AI tự bắt khi viết test và sửa thành `() => Date.now()` **trước khi commit** | Không (đã sửa trước commit) |
 | Đồ họa | Bản redesign đầu: khối phụ ("vũng" nhạt) đè lên khối chính do `isolation: isolate` đặt sai chỗ; và khối xoay gây scroll ngang ở 320/375/768px | Không (sửa trước commit) |
 | T-05 | Assertion "gửi lại cùng dữ liệu" trong bài test viết sai (so sánh tham chiếu `!==` trong khi thực tế gửi lại đúng đối tượng cũ). Lỗi nằm ở test, không ở code | Không |
+| T-07 | `cleanNote` xoá tab thay vì đổi thành khoảng trắng, nên "y⇥⇥z" thành "yz" (hai từ dính nhau). Bắt bằng test bảng đầu vào của `sanitize.js`; sửa bằng cách đổi tab thành dấu cách trước khi bỏ ký tự điều khiển | Không (sửa trước commit) |
+| A-7 | Mình giả định `longOffset` trả "GMT" cho offset 0, nhưng thực tế trả "GMT+00:00" (và lần đầu cho "UTC" cũng sai). Bắt bằng test nhiều múi giờ, rồi dò thực tế bằng `formatToParts` thay vì đoán | Không (sửa trước commit) |
+| Test | Hai lỗi nằm ở **test**, không ở code: `undefined` kích hoạt tham số mặc định nên email hợp lệ được dùng thay; kỳ vọng "GMT+1" sai (en-GB gọi là "BST") | Không (không phải lỗi sản phẩm) |
+| S3 | Khi thêm CSP đầy đủ, mình phải đổi `<link rel="icon" href="data:,">` sang file thật, vì `img-src 'self'` chặn `data:`; và các công cụ test dùng `eval` bị CSP chặn nên phải đổi cách spy API | Không (phát hiện lúc kiểm thử) |
 
 > Gợi ý khi viết bản cuối: mục có commit bằng chứng và có phương án thật sự đáng cân nhắc là A-1, A-2, A-4 (và A-3 nếu xác nhận được bằng tay).
 

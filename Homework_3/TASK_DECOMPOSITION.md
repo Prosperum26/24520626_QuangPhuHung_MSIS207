@@ -47,21 +47,24 @@ Homework_3/
 ├── AI_FAILURE_AUDIT.md          ← T-A2 (và nhật ký ứng viên từ đầu)
 ├── index.html                   ← T-01-H
 ├── assets/fonts/                ← Nunito (copy từ HW1)
+├── assets/favicon.svg           ← T-08-J (CSP `img-src 'self'` không cho `data:`)
 ├── css/
 │   ├── fonts.css                ← T-01-C (copy từ HW1)
 │   ├── tokens.css               ← T-01-C
 │   ├── hub.css                  ← T-01-C (+ trạng thái form ở T-04-C)
-│   └── noscript.css             ← T-01-C: ẩn lưới số khi tắt JS
+│   ├── art.css                  ← minh hoạ SVG (sprite nằm trong index.html)
+│   └── noscript.css             ← T-01-C: ẩn lưới số và form khi tắt JS
 └── js/
     ├── config.js                ← T-01-J  CONFIG duy nhất
     ├── countdown.js             ← T-02-J  lõi thuần, không chạm DOM
+    ├── format.js                ← audit A-4: hàm định dạng thuần (giờ, số nhiều, câu thông báo)
     ├── sanitize.js              ← T-07-J  lõi thuần
     ├── form-machine.js          ← T-04-J  state machine, không chạm DOM
     ├── registration-api.js      ← T-04-J  adapter giả lập gửi form
     └── main.js                  ← T-03-J, T-05-J, T-08-J  nối dây, chạm DOM
 ```
 
-Thứ tự `<script defer>`: `config` → `countdown` → `sanitize` → `form-machine` → `registration-api` → `main`. Không `<script>` inline, không inline handler.
+Thứ tự `<script defer>`: `config` → `countdown` → `format` → `sanitize` → `form-machine` → `registration-api` → `main`. Không `<script>` inline, không inline handler.
 
 ### 3.2 `CONFIG` (một chỗ, sửa một dòng là đổi được)
 
@@ -125,9 +128,9 @@ Panel là `<p>`/`<section>` có heading đúng cấp, 0 `<div>` làm khung (như
 | Module | API | Ghi chú |
 |---|---|---|
 | `countdown.js` | `remaining(targetMs, nowMs)` → `{ done, days, hours, minutes, seconds, totalMs }`; `start({ targetIso, onTick, onDone, onInvalid })` → `{ stop() }` | Mỗi tick tính lại từ `Date.now()` so với mốc tuyệt đối, **không bao giờ giảm biến đếm**. `start` gọi lần hai thì dừng bản cũ trước. `stop()` idempotent, xoá sạch timer và listener |
-| `sanitize.js` | `cleanName(s)`, `cleanEmail(s)`, `cleanNote(s)`, `validate(raw, limits)` | Thuần. `validate` trả `{ ok, values, errors }` |
+| `sanitize.js` | `cleanName(s)`, `cleanEmail(s)`, `cleanNote(s)`, `validate(raw, limits)` | Thuần. `validate` trả `{ ok, values, errors }` và báo mọi lỗi cùng lúc |
 | `form-machine.js` | `create(initial)` → `{ state, requestId, dispatch(type, detail?) }` | Thuần. `SUBMIT` mang `{ valid }`; `RESOLVE`/`REJECT`/`TIMEOUT` mang `{ requestId }`, lệch id thì bị bỏ. Sự kiện không hợp lệ ở state hiện tại bị bỏ qua |
-| `registration-api.js` | `submit(payload, { signal, mockOutcome, mockDelayMs })` → `Promise` | Giả lập. Tôn trọng `AbortSignal` |
+| `registration-api.js` | `newKey()`, `submit(payload, { signal, mockOutcome, mockDelayMs })` → `Promise<{ ok, duplicate }>` | Giả lập. Tôn trọng `AbortSignal`; nhớ các `idempotencyKey` đã nhận và trả `duplicate: true` nếu gặp lại |
 | `main.js` | không có | Chỗ duy nhất biết tất cả; ghi DOM bằng `textContent` |
 
 ---
@@ -152,6 +155,23 @@ Panel là `<p>`/`<section>` có heading đúng cấp, 0 `<div>` làm khung (như
 | D12 | Idempotency của lần gửi | (a) chỉ chống ở client; (b) kèm `requestId` (`crypto.randomUUID()`) trong payload để server khử trùng | (b) | T-06-J |
 
 Nếu gặp thêm điểm quyết định mới khi code, thêm dòng vào bảng này **trước** khi chọn.
+
+### Đã chốt
+
+| ID | Chọn | Ghi chú |
+|---|---|---|
+| D1 | `setTimeout` tự canh đầu giây | Canh theo mốc của sự kiện, cộng 5ms để không bắn trước ranh giới |
+| D2 | `Date.now()` | Hạn chế đã ghi trong `countdown.js` và audit A-9 |
+| D3 | Tính lại ngay khi tab hiện | Cộng `pageshow` cho bfcache (audit A-5) |
+| D4 | Hiện "started" khi tới mốc | Mặc định, không hỏi |
+| D5 | Thông báo mỗi 60 giây | Câu thông báo có "About" (audit A-6) |
+| D6 | Adapter giả lập trong repo | `registration-api.js` |
+| D7 | `CONFIG.mockOutcome` và `?demo=` | Whitelist `success`, `error`; giữ ở bản production (audit A-8) |
+| D8 | Giữ dữ liệu khi lỗi | Retry gửi lại đúng dữ liệu cũ |
+| D9 | `aria-disabled` + chặn bằng JS | Nút giữ focus khi đang gửi |
+| D10 | Tên và ghi chú chuẩn hoá, email từ chối | Không sửa email âm thầm; hiển thị lại giá trị đã làm sạch trong ô |
+| D11 | `textContent` + CSP đầy đủ | Không dùng Trusted Types |
+| D12 | Khoá idempotency trong payload | Tên trường `idempotencyKey` (tránh nhầm với `requestId` của máy trạng thái); gửi lại sau lỗi dùng lại cùng khoá, sửa dữ liệu rồi gửi thì khoá mới |
 
 ---
 

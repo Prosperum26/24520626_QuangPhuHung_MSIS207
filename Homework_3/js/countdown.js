@@ -1,6 +1,8 @@
 // Drift-free countdown engine. Pure core: it never touches the DOM. Each tick
 // re-reads the clock and compares it with an absolute UTC target; nothing is
 // ever decremented, so a late or throttled timer cannot make the display drift.
+// Limit (accepted): the clock is the visitor's own, so a device set to the wrong
+// time counts down wrongly even though the UTC target is right.
 // Public API: Countdown.parseTarget, Countdown.remaining, Countdown.start.
 const Countdown = (function () {
   'use strict';
