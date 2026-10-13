@@ -3,40 +3,7 @@
 (function () {
   'use strict';
 
-  const LOCALE = 'en-GB';
-
   // ---- Countdown -----------------------------------------------------------
-
-  function plural(n, word) {
-    return `${n} ${word}${n === 1 ? '' : 's'}`;
-  }
-
-  function pad(n) {
-    return String(n).padStart(2, '0');
-  }
-
-  // "20 December 2026 at 09:00 GMT+7 (20 Dec, 02:00 UTC)" in the visitor's zone.
-  // timeZone is only passed by tests; undefined means the visitor's own zone.
-  function formatStart(ms, timeZone) {
-    const local = new Intl.DateTimeFormat(LOCALE, {
-      day: 'numeric', month: 'long', year: 'numeric',
-      hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
-      timeZoneName: 'short', timeZone,
-    }).format(ms);
-    if (local.includes('UTC')) return local;
-    const utc = new Intl.DateTimeFormat(LOCALE, {
-      day: 'numeric', month: 'short',
-      hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
-      timeZoneName: 'short', timeZone: 'UTC',
-    }).format(ms);
-    return `${local} (${utc})`;
-  }
-
-  // One sentence for screen readers, coarse on purpose (see announceEverySeconds).
-  function announcement(values) {
-    if (values.totalMs < 60000) return 'Less than a minute left until the workshop starts.';
-    return `${plural(values.days, 'day')}, ${plural(values.hours, 'hour')} and ${plural(values.minutes, 'minute')} left until the workshop starts.`;
-  }
 
   function initCountdown(config) {
     const root = document.querySelector('#countdown');
@@ -58,21 +25,21 @@
     const targetMs = Countdown.parseTarget(config.eventStartUtc);
     if (!Number.isNaN(targetMs)) {
       timeEl.setAttribute('datetime', config.eventStartUtc);
-      timeEl.textContent = formatStart(targetMs);
+      timeEl.textContent = Format.startTime(targetMs);
     }
 
     let lastAnnounced = null;
 
     function render(values) {
-      cells.days.textContent = pad(values.days);
-      cells.hours.textContent = pad(values.hours);
-      cells.minutes.textContent = pad(values.minutes);
-      cells.seconds.textContent = pad(values.seconds);
+      cells.days.textContent = Format.pad(values.days);
+      cells.hours.textContent = Format.pad(values.hours);
+      cells.minutes.textContent = Format.pad(values.minutes);
+      cells.seconds.textContent = Format.pad(values.seconds);
 
       const slot = Math.floor(values.totalMs / 1000 / config.announceEverySeconds);
       if (slot !== lastAnnounced) {
         lastAnnounced = slot;
-        statusEl.textContent = announcement(values);
+        statusEl.textContent = Format.announcement(values);
       }
     }
 
@@ -183,7 +150,7 @@
       setState(next);
       if (next === 'error') errorMsg.textContent = MESSAGES[cause] || MESSAGES.REJECT;
       if (next === 'success') {
-        const when = Number.isNaN(targetMs) ? '' : ` See you on ${formatStart(targetMs)}.`;
+        const when = Number.isNaN(targetMs) ? '' : ` See you on ${Format.startTime(targetMs)}.`;
         successMsg.textContent = `Thanks, ${lastValues.name}. Your registration is confirmed.${when}`;
         successTitle.focus();
       }
