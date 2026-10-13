@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'; form-action 'none'">
+  <meta name="description" content="A community workshop on protecting the ocean. Count down to the start and reserve your seat.">
+  <title>Ocean Guardians Workshop</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/hub.css">
+  <link rel="stylesheet" href="css/art.css">
+  <noscript><link rel="stylesheet" href="css/noscript.css"></noscript>
+  <script src="js/config.js" defer></script>
+  <script src="js/countdown.js" defer></script>
+  <script src="js/format.js" defer></script>
+  <script src="js/sanitize.js" defer></script>
+  <script src="js/form-machine.js" defer></script>
+  <script src="js/registration-api.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Illustration sprite: drawn by hand as vectors, coloured by classes in css/art.css -->
+  <svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="art-turtle" viewBox="0 0 240 180">
+        <ellipse class="a-skin" cx="157" cy="34" rx="31" ry="11" transform="rotate(-35 157 34)"/>
+        <ellipse class="a-skin" cx="157" cy="146" rx="31" ry="11" transform="rotate(35 157 146)"/>
+        <ellipse class="a-skin" cx="62" cy="45" rx="20" ry="9" transform="rotate(39 62 45)"/>
+        <ellipse class="a-skin" cx="62" cy="135" rx="20" ry="9" transform="rotate(-39 62 135)"/>
+        <polygon class="a-skin" points="26,90 46,80 46,100"/>
+        <ellipse class="a-skin" cx="194" cy="90" rx="22" ry="17"/>
+        <circle class="a-ink" cx="203" cy="83" r="3.2"/>
+        <ellipse class="a-shell" cx="112" cy="90" rx="66" ry="50"/>
+        <polygon class="a-scute" points="90,70 134,70 150,90 134,110 90,110 74,90"/>
+        <path class="a-seam" d="M90 70 L74 50 M134 70 L150 50 M150 90 L177 90 M134 110 L150 130 M90 110 L74 130 M74 90 L47 90"/>
+      </symbol>
+
+      <symbol id="art-fish" viewBox="0 0 64 36">
+        <path class="a-fill" d="M46 18 L62 5 Q57 18 62 31 Z"/>
+        <ellipse class="a-fill" cx="27" cy="18" rx="23" ry="13"/>
+        <path class="a-seam" d="M33 7 Q39 18 33 29"/>
+        <circle class="a-ink" cx="13" cy="15" r="2.6"/>
+      </symbol>
+
+      <symbol id="art-bubbles" viewBox="0 0 60 120">
+        <circle class="a-bubble" cx="30" cy="96" r="14"/>
+        <circle class="a-bubble" cx="14" cy="58" r="9"/>
+        <circle class="a-bubble" cx="40" cy="30" r="6"/>
+        <circle class="a-bubble" cx="22" cy="8" r="4"/>
+        <path class="a-glint" d="M24 91 Q25 86 30 85"/>
+      </symbol>
+
+      <symbol id="art-seaweed" viewBox="0 0 70 150">
+        <path class="a-blade" d="M22 150 C2 118 44 98 22 66 C6 42 32 26 22 6"/>
+        <path class="a-blade" d="M46 150 C30 126 64 108 48 82 C38 64 56 52 50 36"/>
+      </symbol>
+
+      <symbol id="art-coral" viewBox="0 0 90 120">
+        <path class="a-branch" d="M44 120 V62 M44 92 L20 66 M44 78 L68 48 M44 100 L70 84"/>
+        <circle class="a-tip" cx="44" cy="58" r="7"/>
+        <circle class="a-tip" cx="19" cy="62" r="6"/>
+        <circle class="a-tip" cx="69" cy="44" r="6"/>
+        <circle class="a-tip" cx="73" cy="82" r="5"/>
+      </symbol>
+
+      <symbol id="art-starfish" viewBox="0 0 80 80">
+        <polygon class="a-star" points="40.0,11.0 48.8,30.9 70.4,33.1 54.3,47.6 58.8,68.9 40.0,58.0 21.2,68.9 25.7,47.6 9.6,33.1 31.2,30.9"/>
+        <circle class="a-dot" cx="40" cy="40" r="2.6"/>
+        <circle class="a-dot" cx="40" cy="26" r="2"/>
+        <circle class="a-dot" cx="52" cy="38" r="2"/>
+        <circle class="a-dot" cx="28" cy="38" r="2"/>
+      </symbol>
+
+      <symbol id="art-bottle" viewBox="0 0 48 48">
+        <rect class="a-fill" x="18" y="2" width="12" height="7" rx="2.5"/>
+        <path class="a-skin" d="M19 9h10v6c0 3.5 7 5.5 7 12v14a5 5 0 0 1-5 5H17a5 5 0 0 1-5-5V27c0-6.5 7-8.5 7-12z"/>
+        <rect class="a-dot" x="13" y="26" width="22" height="10" rx="3"/>
+        <path class="a-seam" d="M17 31q3-3 6 0t6 0"/>
+      </symbol>
+
+      <symbol id="art-people" viewBox="0 0 48 48">
+        <circle class="a-skin" cx="12" cy="20" r="5"/>
+        <path class="a-skin" d="M3 42q0-13 9-13t9 13z"/>
+        <circle class="a-shell" cx="36" cy="20" r="5"/>
+        <path class="a-shell" d="M27 42q0-13 9-13t9 13z"/>
+        <circle class="a-fill" cx="24" cy="14" r="6"/>
+        <path class="a-fill" d="M13 46q0-16 11-16t11 16z"/>
+      </symbol>
+
+      <pattern id="art-wave" width="64" height="24" patternUnits="userSpaceOnUse">
+        <path class="a-wave" d="M0 12 Q16 -2 32 12 T64 12"/>
+      </pattern>
+    </defs>
+  </svg>
+
+  <span class="bubbles" aria-hidden="true">
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+    <span class="bubble"></span>
+  </span>
+
+  <header class="site-header">
+    <a class="brand" href="#top">Ocean Guardians</a>
+    <nav aria-label="Page sections">
+      <ul class="nav-list">
+        <li><a href="#about">About</a></li>
+        <li><a class="nav-cta" href="#register">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <h1 id="hero-title">Ocean Guardians Workshop</h1>
+      <p class="hero-lead">A hands-on workshop on protecting the sea, from cutting plastic at home to joining a local coastal clean-up.</p>
+      <p class="hero-actions">
+        <a class="btn" href="#register">Reserve your seat</a>
+        <a class="btn btn-quiet" href="#about">What we will cover</a>
+      </p>
+
+      <section class="countdown" id="countdown" data-state="running" aria-labelledby="countdown-title">
+        <h2 id="countdown-title" class="countdown-title">Starts in</h2>
+
+        <svg class="art art-turtle" aria-hidden="true" focusable="false"><use href="#art-turtle"/></svg>
+        <svg class="art art-fish art-fish-a" aria-hidden="true" focusable="false"><use href="#art-fish"/></svg>
+        <svg class="art art-fish art-fish-b" aria-hidden="true" focusable="false"><use href="#art-fish"/></svg>
+        <svg class="art art-bubbles" aria-hidden="true" focusable="false"><use href="#art-bubbles"/></svg>
+
+        <ul class="countdown-grid">
+          <li class="countdown-cell">
+            <span class="cd-value" id="cd-days">--</span>
+            <span class="cd-label">Days</span>
+          </li>
+          <li class="countdown-cell">
+            <span class="cd-value" id="cd-hours">--</span>
+            <span class="cd-label">Hours</span>
+          </li>
+          <li class="countdown-cell">
+            <span class="cd-value" id="cd-minutes">--</span>
+            <span class="cd-label">Minutes</span>
+          </li>
+          <li class="countdown-cell">
+            <span class="cd-value" id="cd-seconds">--</span>
+            <span class="cd-label">Seconds</span>
+          </li>
+        </ul>
+
+        <p class="countdown-when">
+          Starts on <time class="countdown-time" datetime="2026-12-20T02:00:00Z">20 December 2026, 02:00 UTC</time>
+        </p>
+        <p class="countdown-done">The workshop has started. Welcome aboard!</p>
+        <p class="countdown-invalid">The countdown is unavailable right now. Please check back soon.</p>
+        <p class="countdown-status visually-hidden" role="status"></p>
+      </section>
+    </section>
+
+    <svg class="waterline" aria-hidden="true" focusable="false"><rect width="100%" height="24" fill="url(#art-wave)"/></svg>
+
+    <section class="about" id="about" aria-labelledby="about-title">
+      <h2 id="about-title">Why the ocean needs us</h2>
+      <p class="section-lead">Healthy seas depend on everyday choices. In this workshop we turn good intentions into small, repeatable actions.</p>
+
+      <ul class="topic-list">
+        <li class="topic">
+          <svg class="topic-icon" aria-hidden="true" focusable="false"><use href="#art-bottle"/></svg>
+          <h3>Cut single-use plastic</h3>
+          <p>Spot the plastics you use every day and swap them for lasting alternatives.</p>
+        </li>
+        <li class="topic">
+          <svg class="topic-icon" aria-hidden="true" focusable="false"><use href="#art-coral"/></svg>
+          <h3>Protect coastal habitats</h3>
+          <p>See how reefs, mangroves and beaches shelter marine life, and how to leave them undisturbed.</p>
+        </li>
+        <li class="topic">
+          <svg class="topic-icon" aria-hidden="true" focusable="false"><use href="#art-people"/></svg>
+          <h3>Act together locally</h3>
+          <p>Find clean-ups and community groups near you, and plan your first step.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="register" id="register" data-state="idle" aria-labelledby="register-title">
+      <svg class="art art-seaweed" aria-hidden="true" focusable="false"><use href="#art-seaweed"/></svg>
+      <svg class="art art-coral" aria-hidden="true" focusable="false"><use href="#art-coral"/></svg>
+      <svg class="art art-starfish" aria-hidden="true" focusable="false"><use href="#art-starfish"/></svg>
+      <svg class="art art-scene-turtle" aria-hidden="true" focusable="false"><use href="#art-turtle"/></svg>
+      <svg class="art art-scene-fish" aria-hidden="true" focusable="false"><use href="#art-fish"/></svg>
+      <svg class="art art-scene-bubbles" aria-hidden="true" focusable="false"><use href="#art-bubbles"/></svg>
+      <h2 id="register-title">Save your seat</h2>
+      <p class="section-lead">Register to take part in the workshop.</p>
+      <noscript><p class="reg-nojs">Registration needs JavaScript. Please turn it on and reload this page.</p></noscript>
+
+      <form class="reg-form" id="reg-form" novalidate>
+        <ul class="reg-fields">
+          <li class="field">
+            <label for="reg-name">Full name</label>
+            <input type="text" id="reg-name" name="name" autocomplete="name" required maxlength="80" aria-describedby="reg-name-error">
+            <p class="field-error" id="reg-name-error"></p>
+          </li>
+          <li class="field">
+            <label for="reg-email">Email address</label>
+            <input type="email" id="reg-email" name="email" autocomplete="email" required maxlength="254" aria-describedby="reg-email-error">
+            <p class="field-error" id="reg-email-error"></p>
+          </li>
+          <li class="field">
+            <label for="reg-note">Note (optional)</label>
+            <textarea id="reg-note" name="note" rows="3" maxlength="300" aria-describedby="reg-note-hint reg-note-error"></textarea>
+            <p class="field-hint" id="reg-note-hint">Anything we should know, up to 300 characters. <span class="field-count" aria-hidden="true"></span></p>
+            <p class="field-error" id="reg-note-error"></p>
+          </li>
+        </ul>
+        <button type="submit" class="btn" id="reg-submit">Register</button>
+        <p class="reg-status visually-hidden" role="status"></p>
+      </form>
+
+      <p class="reg-error">
+        <span class="reg-error-message" role="alert"></span>
+        <button type="button" class="btn btn-quiet reg-retry">Try again</button>
+      </p>
+
+      <section class="reg-success" aria-labelledby="reg-success-title">
+        <h3 id="reg-success-title" tabindex="-1">You're registered</h3>
+        <p class="reg-success-message"></p>
+      </section>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <svg class="art art-foot-coral" aria-hidden="true" focusable="false"><use href="#art-coral"/></svg>
+    <p class="footer-name">Ocean Guardians Workshop</p>
+    <p class="footer-small">&copy; 2026</p>
+    <a class="to-top" href="#top">Back to top</a>
+  </footer>
+</body>
+</html>

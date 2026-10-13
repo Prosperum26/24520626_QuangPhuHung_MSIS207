@@ -1,0 +1,298 @@
+/* ==========================================================================
+   Illustrations: a hand-drawn vector sprite (index.html) placed around the
+   page. All of it is decorative (aria-hidden, no pointer events) and coloured
+   from tokens, so it follows the theme. The only movement is the turtle's
+   slow drift, and it is off under prefers-reduced-motion.
+   ========================================================================== */
+
+/* 1. Sprite and placement ---------------------------------------------------- */
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.art {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 2. Colours (classes inside the symbols) ------------------------------------ */
+
+.a-skin { fill: var(--art-skin); }
+.a-shell { fill: var(--art-shell); }
+.a-scute { fill: var(--art-scute); }
+.a-ink { fill: var(--text); }
+.a-fill { fill: var(--art-warm); }
+.a-tip { fill: var(--art-warm); }
+.a-dot { fill: var(--bg); }
+
+.a-seam,
+.a-glint,
+.a-bubble,
+.a-wave {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.a-seam { stroke: var(--art-seam); stroke-width: 3; opacity: 0.55; }
+.a-glint { stroke: var(--art-line); stroke-width: 3; }
+.a-bubble { stroke: var(--art-line); stroke-width: 3; }
+.a-wave { stroke: var(--art-line); stroke-width: 3; }
+
+.a-blade,
+.a-branch {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.a-blade { stroke: var(--art-shell); stroke-width: 12; }
+.a-branch { stroke: var(--art-warm); stroke-width: 10; }
+
+.a-star {
+  fill: var(--art-warm);
+  stroke: var(--art-warm);
+  stroke-width: 10;
+  stroke-linejoin: round;
+}
+
+/* 3. Hero: turtle, fish and bubbles live around the tide pool ---------------- */
+
+.art-turtle {
+  right: var(--space-2);
+  bottom: calc(-1 * var(--space-8));
+  width: 5.5rem;
+  aspect-ratio: 240 / 180;
+  scale: -1 1; /* faces left on small screens, where it swims out of the pool's lower right */
+}
+
+.art-fish {
+  aspect-ratio: 64 / 36;
+}
+
+.art-fish-a {
+  bottom: calc(-1 * var(--space-6));
+  left: var(--space-4);
+  width: 3rem;
+}
+
+.art-fish-b {
+  --art-warm: var(--sea-mid);
+  bottom: calc(-1 * var(--space-8));
+  left: 5.25rem;
+  width: 2.1rem;
+}
+
+/* Bubbles rise inside the pool, so they borrow the pale foam colour. */
+.art-bubbles {
+  --art-line: var(--foam);
+  top: 14%;
+  right: 7%;
+  width: 1.5rem;
+  aspect-ratio: 60 / 120;
+}
+
+/* 4. Waterline between hero and about ---------------------------------------- */
+
+.waterline {
+  display: block;
+  width: 100%;
+  height: 24px;
+  margin-top: calc(-1 * var(--space-6));
+  pointer-events: none;
+}
+
+/* 5. Seabed: plants stand on the registration container ---------------------- */
+
+.register {
+  position: relative;
+}
+
+.art-seaweed {
+  --art-shell: var(--sea-mid);
+  right: var(--space-4);
+  bottom: calc(100% - 1.2rem);
+  width: 2.4rem;
+  aspect-ratio: 70 / 150;
+}
+
+.art-coral {
+  right: 4.6rem;
+  bottom: calc(100% - 1.2rem);
+  width: 3rem;
+  aspect-ratio: 90 / 120;
+}
+
+.art-starfish {
+  left: calc(-1 * var(--space-2));
+  bottom: calc(-1 * var(--space-4));
+  width: 3.25rem;
+  aspect-ratio: 1;
+  rotate: 14deg;
+}
+
+/* 5b. Registration scene (wide screens only) and footer plants ---------------- */
+
+.art-scene-turtle,
+.art-scene-fish,
+.art-scene-bubbles {
+  display: none;
+}
+
+.art-foot-coral {
+  right: var(--space-8);
+  bottom: calc(100% - 1.2rem);
+  width: 3rem;
+  aspect-ratio: 90 / 120;
+  --art-warm: var(--coral);
+}
+
+/* 6. Wider screens ------------------------------------------------------------ */
+
+@media (min-width: 48rem) {
+  .art-seaweed {
+    right: var(--space-8);
+    width: 3.2rem;
+  }
+
+  .art-coral {
+    right: 6.5rem;
+    width: 4rem;
+  }
+
+  .art-starfish {
+    width: 4.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .art-scene-turtle,
+  .art-scene-fish,
+  .art-scene-bubbles {
+    display: block;
+  }
+
+  .art-scene-turtle {
+    right: var(--space-12);
+    bottom: 4.5rem;
+    width: 13rem;
+    aspect-ratio: 240 / 180;
+  }
+
+  .art-scene-fish {
+    right: 17rem;
+    bottom: 11rem;
+    width: 3.5rem;
+    aspect-ratio: 64 / 36;
+  }
+
+  .art-scene-bubbles {
+    right: 6rem;
+    bottom: 13.5rem;
+    width: 2.25rem;
+    aspect-ratio: 60 / 120;
+  }
+
+  /* Pool sits to the right: the turtle now swims toward it from the left. */
+  .art-turtle {
+    right: auto;
+    bottom: 1.5rem;
+    left: calc(-1 * var(--space-16) - var(--space-4));
+    width: 9.5rem;
+    scale: 1 1;
+  }
+
+  .art-fish-a {
+    left: 1.5rem;
+    width: 4rem;
+  }
+
+  .art-fish-b {
+    left: 7rem;
+    width: 2.8rem;
+  }
+
+  .art-bubbles {
+    width: 2rem;
+  }
+}
+
+/* 7. Motion: one slow drift, only if the visitor allows motion ---------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .art-turtle,
+  .art-scene-turtle {
+    animation: drift 7s ease-in-out infinite;
+  }
+
+  @keyframes drift {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-0.5rem) rotate(3deg); }
+  }
+}
+
+/* 8. Rising bubbles: a fixed layer behind the page ---------------------------
+   Twelve translucent spheres, each with its own size, lane, speed and sway
+   (custom properties set per nth-child, so there is no inline style). Only
+   transform and opacity move, so layout and paint are untouched. Hidden when the
+   visitor asks for less motion. */
+
+.bubbles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+}
+
+.bubble {
+  position: absolute;
+  bottom: -12vh;
+  left: var(--x);
+  width: var(--s);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 28%, var(--bubble-glint) 0, transparent 26%),
+    radial-gradient(circle at 50% 50%, var(--bubble-fill) 0, var(--bubble-fill) 60%, var(--bubble-rim) 100%);
+  opacity: 0;
+}
+
+.bubble:nth-child(1)  { --x: 6%;  --s: 1.2rem; --d: 22s; --delay: -3s;  --sway: 20px; }
+.bubble:nth-child(2)  { --x: 14%; --s: 2.6rem; --d: 30s; --delay: -14s; --sway: -26px; }
+.bubble:nth-child(3)  { --x: 23%; --s: 0.9rem; --d: 19s; --delay: -9s;  --sway: 14px; }
+.bubble:nth-child(4)  { --x: 31%; --s: 1.8rem; --d: 26s; --delay: -20s; --sway: 22px; }
+.bubble:nth-child(5)  { --x: 40%; --s: 3.4rem; --d: 34s; --delay: -6s;  --sway: -30px; }
+.bubble:nth-child(6)  { --x: 48%; --s: 1.1rem; --d: 21s; --delay: -17s; --sway: 16px; }
+.bubble:nth-child(7)  { --x: 56%; --s: 2.2rem; --d: 28s; --delay: -2s;  --sway: -22px; }
+.bubble:nth-child(8)  { --x: 64%; --s: 0.8rem; --d: 18s; --delay: -12s; --sway: 12px; }
+.bubble:nth-child(9)  { --x: 72%; --s: 1.6rem; --d: 24s; --delay: -25s; --sway: -18px; }
+.bubble:nth-child(10) { --x: 80%; --s: 2.9rem; --d: 32s; --delay: -10s; --sway: 28px; }
+.bubble:nth-child(11) { --x: 88%; --s: 1.3rem; --d: 20s; --delay: -5s;  --sway: -16px; }
+.bubble:nth-child(12) { --x: 95%; --s: 2rem;   --d: 27s; --delay: -22s; --sway: 20px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .bubble {
+    animation: rise var(--d) linear var(--delay) infinite;
+  }
+
+  @keyframes rise {
+    0%   { transform: translate3d(0, 0, 0) scale(0.85); opacity: 0; }
+    8%   { opacity: 1; }
+    50%  { transform: translate3d(calc(var(--sway) * -1), -55vh, 0) scale(1); }
+    92%  { opacity: 1; }
+    100% { transform: translate3d(var(--sway), -120vh, 0) scale(1.1); opacity: 0; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubbles {
+    display: none;
+  }
+}
