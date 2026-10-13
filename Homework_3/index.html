@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="form-action 'none'">
   <meta name="description" content="A community workshop on protecting the ocean. Count down to the start and reserve your seat.">
   <title>Ocean Guardians Workshop</title>
   <link rel="icon" href="data:,">
@@ -185,6 +186,11 @@
         <button type="submit" class="btn" id="reg-submit">Register</button>
         <p class="reg-status visually-hidden" role="status"></p>
       </form>
+
+      <p class="reg-error">
+        <span class="reg-error-message" role="alert"></span>
+        <button type="button" class="btn btn-quiet reg-retry">Try again</button>
+      </p>
 
       <section class="reg-success" aria-labelledby="reg-success-title">
         <h3 id="reg-success-title" tabindex="-1">You're registered</h3>
