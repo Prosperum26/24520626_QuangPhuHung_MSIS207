@@ -1,0 +1,182 @@
+/* ==========================================================================
+   T-01-C – Tokens & reset
+   Hex values live ONLY in the primitive block. Every rule uses semantic
+   tokens, so a colour change is a one-line edit.
+   Palette: the four sea colours of Homework 1, plus pearl (soft surface),
+   kelp (success) and coral (error / warm accent).
+   ========================================================================== */
+
+:root {
+  /* Primitives */
+  --sea-deep: #086288;
+  --sea-mid: #4D8DBA;
+  --foam: #97D7FF;
+  --sand: #FFEFC4;
+  --ink: #04293A;
+  --pearl: #FFF8E1;
+  --kelp: #1B6B4F;
+  --kelp-light: #7FD8B0;
+  --coral: #B3361B;
+  --coral-light: #FF9B85;
+
+  /* Semantic colours – light theme */
+  --bg: var(--sand);
+  --surface: var(--pearl);
+  --text: var(--ink);
+  --text-muted: var(--sea-deep);
+  --heading: var(--sea-deep);
+  --link: var(--sea-deep);
+  --border: var(--sea-mid);
+  --focus-ring: var(--sea-deep);
+  --btn-bg: var(--sea-deep);
+  --btn-text: var(--sand);
+  --success: var(--kelp);
+  --danger: var(--coral);
+  --selection-bg: var(--foam);
+  --selection-text: var(--ink);
+
+  /* Sea band (header, hero, footer): the same in both themes. Sand on deep is 5.91:1 */
+  --band-bg: var(--sea-deep);
+  --band-text: var(--sand);
+  --band-ring: var(--sand);
+
+  /* Countdown cells sit on the band as pearl pills, in both themes */
+  --cell-bg: var(--pearl);
+  --cell-value: var(--ink);
+  --cell-label: var(--sea-deep);
+
+  --shadow: color-mix(in srgb, var(--ink) 22%, transparent);
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Shape: round on purpose */
+  --radius-s: 0.75rem;
+  --radius-m: 1.5rem;
+  --radius-l: 2.5rem;
+  --radius-pill: 999px;
+
+  /* Typography: Nunito, a rounded sans, self-hosted (css/fonts.css) */
+  --font-sans: "Nunito", ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: clamp(1.75rem, 4vw + 0.5rem, 2.5rem);
+  --font-size-hero: clamp(2.25rem, 8vw, 4rem);
+  --font-size-count: clamp(1.5rem, 7vw, 3rem);
+  --font-weight-heading: 800;
+  --line-height: 1.6;
+  --measure: 62ch;
+
+  /* Layout */
+  --content-max: 64rem;
+  --gutter: var(--space-4);
+  --focus-width: 3px;
+  --card-min: 15rem;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --motion-fast: 0.2s;
+}
+
+/* Dark theme follows the OS */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--ink);
+    --surface: color-mix(in srgb, var(--sea-mid) 14%, var(--ink));
+    --text: var(--sand);
+    --text-muted: var(--foam);
+    --heading: var(--foam);
+    --link: var(--foam);
+    --focus-ring: var(--foam);
+    --btn-bg: var(--foam);
+    --btn-text: var(--ink);
+    --success: var(--kelp-light);
+    --danger: var(--coral-light);
+    --selection-bg: var(--sea-deep);
+    --selection-text: var(--sand);
+  }
+}
+
+html {
+  color-scheme: light dark;
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* Base typography */
+body {
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height);
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--heading);
+  font-weight: var(--font-weight-heading);
+  line-height: 1.15;
+}
+
+h1 { font-size: var(--font-size-hero); }
+h2 { font-size: var(--font-size-xl); }
+h3 { font-size: var(--font-size-lg); }
+
+a {
+  color: var(--link);
+  text-underline-offset: 0.2em;
+}
+
+::selection {
+  background-color: var(--selection-bg);
+  color: var(--selection-text);
+}
+
+:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

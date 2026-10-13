@@ -1,0 +1,5 @@
+/* Loaded only when JavaScript is off: the numbers would stay at "--" forever,
+   so hide the grid and let the plain start time carry the message. */
+.countdown-grid {
+  display: none;
+}

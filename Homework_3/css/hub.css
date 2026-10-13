@@ -1,0 +1,241 @@
+/* ==========================================================================
+   T-01-C – Layout and components (mobile-first, 375px)
+   Uses only tokens from tokens.css: no colour values here.
+   Content is centred by padding on each band, not by wrapper elements.
+   ========================================================================== */
+
+/* 1. Page frame ------------------------------------------------------------ */
+
+.site-header,
+main > section,
+.site-footer {
+  padding-inline: max(var(--gutter), calc((100% - var(--content-max)) / 2));
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 20;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* 2. Header (1D -> flex) ---------------------------------------------------- */
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-6);
+  padding-block: var(--space-4);
+  background-color: var(--band-bg);
+  color: var(--band-text);
+}
+
+.site-header a {
+  color: var(--band-text);
+}
+
+.site-header :focus-visible,
+.site-footer :focus-visible {
+  outline-color: var(--band-ring);
+}
+
+.brand {
+  font-weight: var(--font-weight-heading);
+  font-size: var(--font-size-lg);
+  text-decoration: none;
+}
+
+.nav-list {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.nav-list a {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+}
+
+.nav-list a:hover {
+  background-color: color-mix(in srgb, var(--band-text) 16%, transparent);
+}
+
+/* 3. Hero ------------------------------------------------------------------- */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding-block: var(--space-8) var(--space-12);
+  border-radius: 0 0 var(--radius-l) var(--radius-l);
+  background-color: var(--band-bg);
+  color: var(--band-text);
+}
+
+.hero h1 {
+  color: var(--band-text);
+}
+
+.eyebrow {
+  padding: var(--space-1) var(--space-4);
+  border: 2px solid var(--band-text);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hero-lead {
+  max-width: var(--measure);
+  font-size: var(--font-size-lg);
+}
+
+/* 4. Countdown (grid) ------------------------------------------------------ */
+
+.countdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  margin-top: var(--space-4);
+}
+
+.countdown-title {
+  color: var(--band-text);
+  font-size: var(--font-size-lg);
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.countdown-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-3) var(--space-1);
+  border-radius: var(--radius-m);
+  background-color: var(--cell-bg);
+  box-shadow: 0 0.5rem 1.25rem var(--shadow);
+}
+
+.cd-value {
+  color: var(--cell-value);
+  font-size: var(--font-size-count);
+  font-weight: var(--font-weight-heading);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.cd-label {
+  color: var(--cell-label);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+}
+
+.countdown-when {
+  font-size: var(--font-size-sm);
+}
+
+/* State from the DOM: JS writes data-state, CSS only reads it. */
+.countdown-done,
+.countdown-invalid {
+  display: none;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-m);
+  background-color: var(--cell-bg);
+  color: var(--cell-value);
+  font-weight: 700;
+}
+
+.countdown[data-state="done"] .countdown-grid,
+.countdown[data-state="done"] .countdown-when,
+.countdown[data-state="done"] .countdown-title,
+.countdown[data-state="invalid"] .countdown-grid,
+.countdown[data-state="invalid"] .countdown-when,
+.countdown[data-state="invalid"] .countdown-title {
+  display: none;
+}
+
+.countdown[data-state="done"] .countdown-done,
+.countdown[data-state="invalid"] .countdown-invalid {
+  display: block;
+}
+
+/* 5. Content sections ------------------------------------------------------- */
+
+.about,
+.register {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-block: var(--space-12);
+}
+
+.section-lead {
+  max-width: var(--measure);
+}
+
+.topic-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--card-min)), 1fr));
+  gap: var(--space-4);
+}
+
+.topic-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-m);
+  background-color: var(--surface);
+}
+
+/* 6. Footer ----------------------------------------------------------------- */
+
+.site-footer {
+  padding-block: var(--space-6);
+  border-radius: var(--radius-l) var(--radius-l) 0 0;
+  background-color: var(--band-bg);
+  color: var(--band-text);
+  font-size: var(--font-size-sm);
+}
+
+/* 7. Wider screens ---------------------------------------------------------- */
+
+@media (min-width: 48rem) {
+  .hero {
+    padding-block: var(--space-16);
+  }
+
+  .countdown-grid {
+    max-width: 36rem;
+    gap: var(--space-4);
+  }
+}
