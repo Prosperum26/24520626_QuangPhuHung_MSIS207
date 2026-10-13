@@ -316,6 +316,12 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2) var(--space-4);
+  max-inline-size: 34rem;
+}
+
+.reg-nojs {
+  max-inline-size: var(--measure);
+  font-weight: 700;
 }
 
 .reg-error-message {
