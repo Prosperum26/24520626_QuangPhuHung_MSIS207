@@ -50,6 +50,12 @@
   --art-soft: var(--foam);
   --art-line: var(--sea-mid);
 
+  /* Ripples drawn on the pool, and the tint of a hovered row */
+  --ripple: color-mix(in srgb, var(--tide-text) 9%, transparent);
+  --tile: color-mix(in srgb, var(--tide-text) 8%, transparent);
+  --tile-line: color-mix(in srgb, var(--tide-text) 30%, transparent);
+  --hover-tint: color-mix(in srgb, var(--sea-mid) 14%, transparent);
+
   /* Dotted rule between list rows */
   --rule: color-mix(in srgb, var(--sea-mid) 70%, transparent);
 
@@ -68,8 +74,8 @@
   --radius-m: 1.5rem;
   --radius-l: 2.5rem;
   --radius-pill: 999px;
-  --blob: 58% 42% 46% 54% / 46% 54% 46% 54%;
-  --blob-back: 44% 56% 54% 46% / 56% 44% 56% 44%;
+  --blob: 54% 46% 51% 49% / 49% 52% 48% 51%;
+  --blob-back: 46% 54% 52% 48% / 53% 46% 54% 47%;
 
   /* Typography: Nunito, a rounded sans, self-hosted (css/fonts.css) */
   --font-sans: "Nunito", ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -78,7 +84,6 @@
   --font-size-lg: 1.25rem;
   --font-size-xl: clamp(1.75rem, 4vw + 0.5rem, 2.5rem);
   --font-size-hero: clamp(3rem, 14vw, 6rem);
-  --font-size-count: clamp(3.25rem, 15vw, 5.5rem);
   --font-weight-heading: 800;
   --line-height: 1.6;
   --measure: 62ch;

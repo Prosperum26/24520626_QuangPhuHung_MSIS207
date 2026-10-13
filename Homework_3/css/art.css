@@ -136,6 +136,22 @@
   rotate: 14deg;
 }
 
+/* 5b. Registration scene (wide screens only) and footer plants ---------------- */
+
+.art-scene-turtle,
+.art-scene-fish,
+.art-scene-bubbles {
+  display: none;
+}
+
+.art-foot-coral {
+  right: var(--space-8);
+  bottom: calc(100% - 1.2rem);
+  width: 3rem;
+  aspect-ratio: 90 / 120;
+  --art-warm: var(--coral);
+}
+
 /* 6. Wider screens ------------------------------------------------------------ */
 
 @media (min-width: 48rem) {
@@ -155,6 +171,33 @@
 }
 
 @media (min-width: 64rem) {
+  .art-scene-turtle,
+  .art-scene-fish,
+  .art-scene-bubbles {
+    display: block;
+  }
+
+  .art-scene-turtle {
+    right: var(--space-12);
+    bottom: 4.5rem;
+    width: 13rem;
+    aspect-ratio: 240 / 180;
+  }
+
+  .art-scene-fish {
+    right: 17rem;
+    bottom: 11rem;
+    width: 3.5rem;
+    aspect-ratio: 64 / 36;
+  }
+
+  .art-scene-bubbles {
+    right: 6rem;
+    bottom: 13.5rem;
+    width: 2.25rem;
+    aspect-ratio: 60 / 120;
+  }
+
   /* Pool sits to the right: the turtle now swims toward it from the left. */
   .art-turtle {
     right: auto;
@@ -182,7 +225,8 @@
 /* 7. Motion: one slow drift, only if the visitor allows motion ---------------- */
 
 @media (prefers-reduced-motion: no-preference) {
-  .art-turtle {
+  .art-turtle,
+  .art-scene-turtle {
     animation: drift 7s ease-in-out infinite;
   }
 

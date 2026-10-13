@@ -4,7 +4,7 @@
 > Thêm hai trường để trung thực về quá trình: **Phương án** (các hướng sửa khả dĩ) và **Quyết định** (bạn chọn gì và vì sao).
 > Quy tắc: chỉ ghi thứ **có thật trong code AI sinh ra**, kèm cách tái hiện. Không dựng lỗi để có cái mà sửa. Mỗi audit chạy ở chế độ review (`project-rules.md` §2.6): chỉ liệt kê, không sửa trong cùng lượt.
 
-Trạng thái: **Audit A xong, mọi mục đã có quyết định (A-8 và A-9 giữ nguyên/chấp nhận, các mục còn lại đã sửa, chờ commit). S3 đã làm xong. Audit B chưa chạy.** Audit B chạy sau S3. Bản báo cáo cuối (≥ 3 mục) viết ở T-A3.
+Trạng thái: **Audit A và B đã chạy; mọi mục đã có quyết định. Báo cáo cuối ở cuối file.** Audit B chạy sau S3. Bản báo cáo cuối (≥ 3 mục) viết ở T-A3.
 
 ---
 
@@ -142,15 +142,153 @@ Ghi nhanh sau mỗi output của AI. Mục nào có **commit làm bằng chứng
 | A-7 | Mình giả định `longOffset` trả "GMT" cho offset 0, nhưng thực tế trả "GMT+00:00" (và lần đầu cho "UTC" cũng sai). Bắt bằng test nhiều múi giờ, rồi dò thực tế bằng `formatToParts` thay vì đoán | Không (sửa trước commit) |
 | Test | Hai lỗi nằm ở **test**, không ở code: `undefined` kích hoạt tham số mặc định nên email hợp lệ được dùng thay; kỳ vọng "GMT+1" sai (en-GB gọi là "BST") | Không (không phải lỗi sản phẩm) |
 | S3 | Khi thêm CSP đầy đủ, mình phải đổi `<link rel="icon" href="data:,">` sang file thật, vì `img-src 'self'` chặn `data:`; và các công cụ test dùng `eval` bị CSP chặn nên phải đổi cách spy API | Không (phát hiện lúc kiểm thử) |
+| Giao diện | Sau khi đổi sang bốn ô kính trong "vũng nước", số ngày 3 chữ số ở 320px rộng 87px trong ô 86px (xem B-2). AI dùng cỡ chữ cố định theo `vw` mà không tính ô co lại | Không (đo và sửa trước commit) |
 
-> Gợi ý khi viết bản cuối: mục có commit bằng chứng và có phương án thật sự đáng cân nhắc là A-1, A-2, A-4 (và A-3 nếu xác nhận được bằng tay).
+> Báo cáo cuối dùng A-1, A-2, A-4: có commit làm bằng chứng và có phương án thật sự đáng cân nhắc.
 
 ---
 
-## Audit B – hoàn thiện (chưa chạy)
+---
 
-Sẽ chạy sau T-08. Phạm vi: toàn trang, double-submit, XSS, CSP, a11y, Lighthouse, hồi quy các sửa của Audit A.
+## Audit B – hoàn thiện
 
-## Báo cáo cuối (T-A3)
+**Phạm vi:** toàn trang sau khi hoàn thiện giao diện (header dính, nút kêu gọi, ô kính, hover, minh hoạ, chân trang) và S3.
+**Công cụ:** Lighthouse 12.8.2 (mobile và desktop), axe-core 4.10.2 (4 state), đo hình học bằng script (nhiều độ rộng), 4 bộ test Node (50 test), bộ kiểm tra S3 trong Edge qua máy chủ HTTP (cài ngoài repo), các gate grep.
 
-Chọn ≥ 3 mục từ Audit A và B, viết lại theo mẫu: Mô tả lỗi, Cách phát hiện (kèm lệnh hoặc ảnh), Phương án, Quyết định, Giải pháp đã refactor (kèm commit và đoạn code trước/sau).
+### Kết quả tổng
+
+| Hạng mục | Kết quả |
+|---|---|
+| Lighthouse mobile | Performance 99, Accessibility 100, Best Practices 100, SEO 100 (LCP 1.7s, CLS 0.001, TBT 20ms) |
+| Lighthouse desktop | 100 / 100 / 100 / 100 |
+| axe-core (idle, lỗi validate, error, success) | 0 vi phạm; 1 mục `color-contrast` "cần xem lại" mỗi state (axe không tính được nền khi có blob và SVG đè; tính tay ≥ 5.3:1) |
+| Hồi quy S3 và các sửa của Audit A | Đạt: double-submit, khoá idempotency, sanitize, 4 payload XSS, CSP chặn script và handler inline và script ngoài, `form-action` chặn gửi native, `pageshow`, timeout |
+| Console | Chỉ có đúng các vi phạm CSP do chính các đòn thử nghiệm gây ra, không có vi phạm nào từ trang |
+| Thứ tự Tab | 11 điểm dừng hợp lý (skip-link, brand, About, Register, hai nút hero, ba field, nút gửi, Back to top), 0 `tabindex` dương, nút "Try again" ẩn thì không với tới được |
+| Cấu trúc | 1 `h1`, heading đúng cấp, 4 landmark, 16 SVG đều `aria-hidden`, mọi anchor có đích |
+| Mục tiêu chạm | Không phần tử tương tác nào nhỏ hơn 24px (WCAG 2.5.8) ở 340 đến 1280px |
+| Giảm chuyển động | Animation của rùa tắt khi `prefers-reduced-motion: reduce` (`drift` thành `none`) |
+| Scroll ngang | Không có ở 320, 340, 360, 375, 390, 768, 1100, 1280px |
+
+### Phát hiện
+
+| ID | Loại | Mức | Mô tả ngắn | Tình trạng |
+|---|---|---|---|---|
+| B-1 | Lỗi UX | Thấp | Header dính xuống hai hàng dưới 340px, chiếm ~14% màn hình 568px | Giảm nhẹ, chấp nhận phần còn lại |
+| B-2 | Lỗi thật | Trung bình | Số ngày 3 chữ số tràn ô ở 320px sau khi đổi sang ô kính | Đã sửa |
+| B-3 | Hiệu năng | Thấp | Lighthouse mobile 99: 5 stylesheet chặn render | Quyết định giữ nguyên |
+| B-4 | Khoảng trống kiểm chứng | Thấp | Trạng thái hover và focus chưa xem được bằng ảnh trong headless | Cần xem tay |
+
+#### B-1 – Header dính xuống hai hàng ở màn hình rất hẹp
+- **Mô tả:** header `position: sticky` chứa tên và hai liên kết. Ở 320px chúng không đủ một hàng, header cao 80px, đúng bằng `scroll-padding-top` ban đầu nên mục tiêu của liên kết neo nằm sát mép dưới header.
+- **Cách phát hiện:** script đo `getBoundingClientRect` của header và `scrollPaddingTop` ở 320, 340, 360, 375, 390, 768, 1100, 1280px.
+- **Phương án:** (a) tăng `scroll-padding-top` và thu gọn nút để header một hàng càng sớm càng tốt; (b) bỏ `sticky` ở màn hình hẹp; (c) giữ nguyên.
+- **Quyết định:** (a). Lý do: thanh điều hướng dính hữu ích khi cuộn trang dài, và (b) mất lợi ích đó ở đúng nơi cần nhất.
+- **Giải pháp đã refactor:** `scroll-padding-top` từ 5rem lên 5.5rem (88px), `padding` của liên kết và cỡ chữ thương hiệu nhỏ lại. Đo lại: header một hàng (50px) từ 340px trở lên; chỉ còn hai hàng (79px) dưới 340px, nhưng `scroll-padding` 88px vẫn lớn hơn. Chấp nhận phần dưới 340px.
+
+#### B-2 – Số ngày 3 chữ số tràn ô ở 320px
+- **Mô tả:** sau khi đổi đồng hồ sang bốn ô kính, cỡ chữ vẫn là `clamp(3.25rem, 15vw, 5.5rem)` tính theo chiều rộng màn hình chứ không theo chiều rộng ô. Ô co lại, nên "183" ngày rộng 87px trong ô 86px, chạm viền. Sự kiện cách hơn 99 ngày hoàn toàn có thể xảy ra.
+- **Cách phát hiện:** đặt mốc sự kiện +183 ngày, đo `#cd-days` và `.countdown-cell` ở 320px: `value 87px, tile 86px`.
+- **Phương án:** (a) giảm cỡ chữ tối thiểu cho mọi trường hợp; (b) container query: cỡ chữ tính theo chiều rộng của chính ô (`cqi`); (c) JS thêm thuộc tính khi có 3 chữ số.
+- **Quyết định:** (b). Lý do: không cần JS, không phải đoán số chữ số, tự thích ứng ở mọi độ rộng.
+- **Giải pháp đã refactor:** `.countdown-cell { container-type: inline-size }` và `.cd-value { font-size: clamp(2.25rem, 50cqi, 4.75rem) }`, xoá token `--font-size-count` không còn dùng. Đo lại: `value 62px, tile 86px`, vừa với khoảng trống. Commit: _chờ bạn commit_.
+
+#### B-3 – Năm stylesheet chặn render
+- **Mô tả:** Lighthouse mobile chấm Performance 99 vì 5 stylesheet (fonts, tokens, hub, art, noscript) chặn render, ước tính tiết kiệm 380 đến 530ms ở mô phỏng mạng chậm. Các mục còn lại (nén, cache dài hạn, rút gọn) là do máy chủ Python thử nghiệm không nén và không đặt header cache, không phản ánh Live Server hay máy chủ thật.
+- **Phương án:** (a) gộp thành một file CSS (khó chỉnh khi vấn đáp); (b) `<link rel="preload">` cho font; (c) giữ nguyên.
+- **Quyết định:** (c), mặc định đề xuất vì 99 đã tốt và chia file giúp trả lời "sửa ở đâu". Có thể đổi sang (b) nếu muốn điểm 100.
+
+#### B-4 – Hover và focus chưa nhìn thấy bằng ảnh
+- **Mô tả:** Edge headless không ép được `:hover`, nên gạch chân nav lớn dần, nút nâng lên, hàng chủ đề đổi nền và biểu tượng xoay mới được kiểm bằng đọc CSS, không phải bằng ảnh chụp. Riêng `prefers-reduced-motion` đã đo thật.
+- **Cách xem tay:** rê chuột qua About, hai nút hero, các hàng chủ đề, ô nhập; Tab qua từng điểm dừng để xem vòng focus.
+
+---
+
+## Báo cáo cuối: ba lỗi do AI gây ra, bắt được lúc review
+
+Ba mục dưới đây đều có **commit sửa** làm bằng chứng và commit gây lỗi nằm trong git history. Mỗi mục theo mẫu đề yêu cầu (mô tả, cách phát hiện, giải pháp), thêm các phương án đã cân nhắc và quyết định.
+
+### 1. Dữ liệu cá nhân lọt lên URL khi form gửi mà không có JavaScript (audit A-1)
+
+**Mô tả lỗi.** `<form id="reg-form" novalidate>` không có `method` và `action`, nên mặc định là GET về chính trang. Mọi thứ chặn gửi native nằm trong `main.js` (`event.preventDefault()`). AI viết form theo hướng "JS xử lý hết" mà không nghĩ tới lúc JS tắt, bị chặn, hoặc chưa tải xong (script `defer`). Khi đó trình duyệt gửi thật và đưa tên, email, ghi chú lên URL, lịch sử trình duyệt, log máy chủ và header `Referer`.
+
+**Cách phát hiện.** Gỡ thẻ `main.js` khỏi bản sao, gọi `form.requestSubmit()` với dữ liệu thật. Kết quả: URL trở thành `?name=Linh+Tran&email=linh%40example.com&note=private+note`. Commit gây lỗi: `29d738b feat(form): registration form with four states`.
+
+**Phương án đã cân nhắc.** (a) chỉ CSP `form-action 'none'`; (b) `method="post"` (hết lộ URL nhưng dữ liệu vẫn bay đi); (c) chỉ ẩn form khi tắt JS (không phủ khoảng thời gian trước khi script chạy); (d) kết hợp CSP và ẩn form.
+
+**Quyết định.** (d): hai biện pháp phủ hai trường hợp khác nhau.
+
+**Giải pháp đã refactor** (commit `409ad23 fix(form): block native submit without js`):
+
+```html
+<!-- trước: không có gì chặn gửi native -->
+<form class="reg-form" id="reg-form" novalidate>
+
+<!-- sau -->
+<meta http-equiv="Content-Security-Policy" content="form-action 'none'">
+<noscript><p class="reg-nojs">Registration needs JavaScript. Please turn it on and reload this page.</p></noscript>
+```
+
+```css
+/* noscript.css: tắt JS thì ẩn form */
+.reg-form { display: none; }
+```
+
+**Kiểm chứng.** Chạy lại đúng kịch bản cũ: `navigated=false`, URL không đổi. Log của trình duyệt ghi `Sending form data to '…?name=Linh+Tran…' violates … form-action 'none'`. Sau khi có CSP đầy đủ ở S3, kịch bản này vẫn đạt.
+
+### 2. Thông báo lỗi nằm ngoài màn hình trên điện thoại (audit A-2)
+
+**Mô tả lỗi.** Panel `.reg-error` được đặt **trên** ba field, còn nút Register nằm dưới cùng. Khi gửi thất bại, người dùng vẫn nhìn nút (nhãn đổi "Sending…" rồi về "Register") còn thông báo nằm xa phía trên, nên không thấy phản hồi nào. Screen reader nghe được nhờ `role="alert"`, nhưng người dùng mắt thường thì không.
+
+**Cách phát hiện.** Viewport 375×667, cuộn nút Register vào cuối màn hình, ép `?demo=error`, gửi, đo `getBoundingClientRect`: panel `top=1661`, nút `top=2257`, cách nhau ~600px, panel không nằm trong viewport. Commit gây lỗi: `29d738b`.
+
+**Phương án đã cân nhắc.** (a) đặt panel ngay dưới nút Register; (b) giữ vị trí nhưng cuộn tới panel; (c) chuyển focus tới panel (đẩy focus khỏi nút vừa bấm); (d) giữ nguyên.
+
+**Quyết định.** (a): lỗi hiện đúng chỗ mắt đang nhìn, không động tới focus hay cuộn trang.
+
+**Giải pháp đã refactor** (commit `91d0082 fix(form): show error next to submit button`):
+
+```html
+<!-- trước: panel nằm trước <form> -->
+<p class="reg-error">…</p>
+<form class="reg-form">…</form>
+
+<!-- sau: panel ngay sau <form>, dưới nút Register -->
+<form class="reg-form">…</form>
+<p class="reg-error">…</p>
+```
+
+**Kiểm chứng.** Đo lại cùng kịch bản: khi nút ở giữa màn hình, panel `top=376, bottom=551` nằm trong viewport. axe-core 0 vi phạm ở cả bốn state.
+
+### 3. `main.js` vượt vai trò composition root (audit A-4)
+
+**Mô tả lỗi.** Spec và nguyên tắc từ Homework 2 nói `main.js` chỉ **nối** các module. AI nhét vào nó 254 dòng gồm cả logic: `formatStart`, `plural`, `announcement`, `pad`, `validate`. Đây đúng là loại hàm thuần mà ở chỗ khác ta đã tách ra module riêng để test; ở đây chúng không test được nếu không dựng DOM.
+
+**Cách phát hiện.** `wc -l Homework_3/js/main.js` (254) so với `Homework_2/js/main.js` (88); đọc `main.js` đối chiếu spec mục 3.5. Commit gây lỗi: `5ac2eb2 feat(countdown): bind engine to page with lifecycle cleanup` và `29d738b`.
+
+**Phương án đã cân nhắc.** (a) để nguyên; (b) rút các hàm thuần sang `format.js`; (c) tách thêm `countdown-view.js` và `form-view.js` để `main.js` chỉ còn nối dây.
+
+**Quyết định.** (b): đủ để test được và giải thích được ranh giới, ít rủi ro hơn (c).
+
+**Giải pháp đã refactor** (commit `cbb4d7a refactor(hub): extract pure formatting helpers`):
+
+```js
+// trước (main.js): các hàm thuần nằm lẫn với việc ghi DOM
+function plural(n, word) { … }
+function formatStart(ms, timeZone) { … }
+function announcement(values) { … }
+
+// sau: js/format.js, không có document, window hay timer
+const Format = (function () { … return { pad, plural, startTime, announcement }; })();
+// main.js chỉ gọi: Format.pad(…), Format.startTime(…), Format.announcement(…)
+```
+
+**Kiểm chứng.** `main.js` từ 254 xuống 221 dòng; thêm 6 test Node cho `format.js` (5 múi giờ, số ít và số nhiều, dưới một phút); gate `grep "document\.|window\.|querySelector"` trên `format.js` rỗng; toàn bộ test và luồng trình duyệt cũ vẫn đạt.
+
+### Mục dự phòng nếu cần thêm
+
+B-2 (số ngày tràn ô) và A-6, A-7 (câu thông báo, múi giờ offset 0) cũng đã sửa và đo lại, nhưng lỗi được bắt trước khi commit nên chưa có commit làm bằng chứng. Xem "Nhật ký ứng viên" ở trên.
+
+### Nhận xét về quy trình
+
+Các lỗi trên đều do AI sinh ra trong những lượt viết code một task. Tách task nhỏ, mỗi lượt một task, giúp mỗi lỗi **lộ ra khi test đúng tầng của nó**: lỗi GET nằm ở form (S2), lỗi vị trí panel nằm ở bố cục, lỗi kiến trúc nằm ở nơi nối dây. Gộp tất cả vào một prompt thì ba lỗi này chồng lên nhau và khó chỉ ra lỗi nào thuộc commit nào.

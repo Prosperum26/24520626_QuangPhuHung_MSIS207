@@ -75,6 +75,22 @@
         <circle class="a-dot" cx="28" cy="38" r="2"/>
       </symbol>
 
+      <symbol id="art-bottle" viewBox="0 0 48 48">
+        <rect class="a-fill" x="18" y="2" width="12" height="7" rx="2.5"/>
+        <path class="a-skin" d="M19 9h10v6c0 3.5 7 5.5 7 12v14a5 5 0 0 1-5 5H17a5 5 0 0 1-5-5V27c0-6.5 7-8.5 7-12z"/>
+        <rect class="a-dot" x="13" y="26" width="22" height="10" rx="3"/>
+        <path class="a-seam" d="M17 31q3-3 6 0t6 0"/>
+      </symbol>
+
+      <symbol id="art-people" viewBox="0 0 48 48">
+        <circle class="a-skin" cx="12" cy="20" r="5"/>
+        <path class="a-skin" d="M3 42q0-13 9-13t9 13z"/>
+        <circle class="a-shell" cx="36" cy="20" r="5"/>
+        <path class="a-shell" d="M27 42q0-13 9-13t9 13z"/>
+        <circle class="a-fill" cx="24" cy="14" r="6"/>
+        <path class="a-fill" d="M13 46q0-16 11-16t11 16z"/>
+      </symbol>
+
       <pattern id="art-wave" width="64" height="24" patternUnits="userSpaceOnUse">
         <path class="a-wave" d="M0 12 Q16 -2 32 12 T64 12"/>
       </pattern>
@@ -86,7 +102,7 @@
     <nav aria-label="Page sections">
       <ul class="nav-list">
         <li><a href="#about">About</a></li>
-        <li><a href="#register">Register</a></li>
+        <li><a class="nav-cta" href="#register">Register</a></li>
       </ul>
     </nav>
   </header>
@@ -95,6 +111,10 @@
     <section class="hero" id="top" aria-labelledby="hero-title">
       <h1 id="hero-title">Ocean Guardians Workshop</h1>
       <p class="hero-lead">A hands-on workshop on protecting the sea, from cutting plastic at home to joining a local coastal clean-up.</p>
+      <p class="hero-actions">
+        <a class="btn" href="#register">Reserve your seat</a>
+        <a class="btn btn-quiet" href="#about">What we will cover</a>
+      </p>
 
       <section class="countdown" id="countdown" data-state="running" aria-labelledby="countdown-title">
         <h2 id="countdown-title" class="countdown-title">Starts in</h2>
@@ -140,14 +160,17 @@
 
       <ul class="topic-list">
         <li class="topic">
+          <svg class="topic-icon" aria-hidden="true" focusable="false"><use href="#art-bottle"/></svg>
           <h3>Cut single-use plastic</h3>
           <p>Spot the plastics you use every day and swap them for lasting alternatives.</p>
         </li>
         <li class="topic">
+          <svg class="topic-icon" aria-hidden="true" focusable="false"><use href="#art-coral"/></svg>
           <h3>Protect coastal habitats</h3>
           <p>See how reefs, mangroves and beaches shelter marine life, and how to leave them undisturbed.</p>
         </li>
         <li class="topic">
+          <svg class="topic-icon" aria-hidden="true" focusable="false"><use href="#art-people"/></svg>
           <h3>Act together locally</h3>
           <p>Find clean-ups and community groups near you, and plan your first step.</p>
         </li>
@@ -158,6 +181,9 @@
       <svg class="art art-seaweed" aria-hidden="true" focusable="false"><use href="#art-seaweed"/></svg>
       <svg class="art art-coral" aria-hidden="true" focusable="false"><use href="#art-coral"/></svg>
       <svg class="art art-starfish" aria-hidden="true" focusable="false"><use href="#art-starfish"/></svg>
+      <svg class="art art-scene-turtle" aria-hidden="true" focusable="false"><use href="#art-turtle"/></svg>
+      <svg class="art art-scene-fish" aria-hidden="true" focusable="false"><use href="#art-fish"/></svg>
+      <svg class="art art-scene-bubbles" aria-hidden="true" focusable="false"><use href="#art-bubbles"/></svg>
       <h2 id="register-title">Save your seat</h2>
       <p class="section-lead">Register to take part in the workshop.</p>
       <noscript><p class="reg-nojs">Registration needs JavaScript. Please turn it on and reload this page.</p></noscript>
@@ -177,7 +203,7 @@
           <li class="field">
             <label for="reg-note">Note (optional)</label>
             <textarea id="reg-note" name="note" rows="3" maxlength="300" aria-describedby="reg-note-hint reg-note-error"></textarea>
-            <p class="field-hint" id="reg-note-hint">Anything we should know, up to 300 characters.</p>
+            <p class="field-hint" id="reg-note-hint">Anything we should know, up to 300 characters. <span class="field-count" aria-hidden="true"></span></p>
             <p class="field-error" id="reg-note-error"></p>
           </li>
         </ul>
@@ -198,7 +224,10 @@
   </main>
 
   <footer class="site-footer">
-    <p>&copy; 2026 Ocean Guardians Workshop</p>
+    <svg class="art art-foot-coral" aria-hidden="true" focusable="false"><use href="#art-coral"/></svg>
+    <p class="footer-name">Ocean Guardians Workshop</p>
+    <p class="footer-small">&copy; 2026</p>
+    <a class="to-top" href="#top">Back to top</a>
   </footer>
 </body>
 </html>

@@ -1,13 +1,19 @@
 /* ==========================================================================
-   T-01-C – Layout and components (mobile-first, 375px)
+   Layout and components (mobile-first, 375px)
    Uses only tokens from tokens.css: no colour values here.
    Idea: the page is a beach. The one memorable object is the countdown, a
-   tide pool: an uneven round blob of deep water with a second blob behind it.
-   Everything else stays quiet: plain text on sand, one soft container.
+   tide pool: a round blob of deep water, ringed with ripples, holding four
+   glass tiles. Everything else stays quiet: text on sand, one soft container,
+   and a deep-sea band for the footer.
    Content is centred by --edge padding on each section, not by wrapper elements.
    ========================================================================== */
 
 /* 1. Frame ------------------------------------------------------------------ */
+
+html {
+  /* Anchor jumps and focus scrolling stop below the sticky header (WCAG 2.4.11) */
+  scroll-padding-top: 5.5rem;
+}
 
 .site-header,
 .hero,
@@ -29,7 +35,7 @@
   position: absolute;
   top: var(--space-2);
   left: var(--space-2);
-  z-index: 20;
+  z-index: 40;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-pill);
   background-color: var(--btn-bg);
@@ -41,27 +47,61 @@
   transform: translateY(0);
 }
 
-/* 2. Header (1D -> flex): plain, no band ------------------------------------ */
+/* 2. Header (1D -> flex): sticky, frosted ------------------------------------ */
 
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
-  gap: var(--space-2) var(--space-6);
-  padding-block: var(--space-6) 0;
+  gap: var(--space-1) var(--space-4);
+  padding-block: var(--space-2);
+  background-color: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(10px);
 }
 
 .brand {
   color: var(--heading);
-  font-size: var(--font-size-lg);
+  font-size: 1rem;
   font-weight: var(--font-weight-heading);
   text-decoration: none;
 }
 
 .nav-list {
   display: flex;
-  gap: var(--space-6);
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.nav-list a {
+  display: inline-block;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  color: var(--link);
+  font-weight: 700;
+  text-decoration: none;
+  /* The underline is a background so it can grow on hover. */
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: var(--space-2) calc(100% - 2px);
+  background-size: calc(100% - 2 * var(--space-2)) 2px;
+}
+
+.nav-list a.nav-cta {
+  background-image: none;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+}
+
+.nav-list a:hover {
+  background-size: calc(100% - 2 * var(--space-2)) 4px;
+}
+
+.nav-list a.nav-cta:hover {
+  background-color: color-mix(in srgb, var(--btn-bg) 82%, var(--text));
 }
 
 /* 3. Hero (2D -> grid) ------------------------------------------------------ */
@@ -70,7 +110,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-6);
-  padding-block: var(--space-12) var(--space-16);
+  padding-block: var(--space-8) var(--space-16);
   isolation: isolate; /* keeps the tide pool's back blob (z-index -1) above the page, below the pool */
   overflow-x: clip; /* the rotated back blob may poke past the viewport edge; never scroll sideways */
 }
@@ -87,18 +127,33 @@
   font-size: var(--font-size-lg);
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
 /* 4. Countdown: the tide pool ------------------------------------------------ */
 
 .countdown {
   position: relative;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--space-4);
   margin-top: var(--space-4);
-  padding: 17%; /* percent of width: keeps text inside the curve of the blob */
+  padding: 17%; /* percent of width: keeps content inside the curve of the blob */
   border-radius: var(--blob);
   background-color: var(--tide-bg);
+  background-image: repeating-radial-gradient(
+    circle at 50% 50%,
+    transparent 0,
+    transparent 3.5rem,
+    var(--ripple) 3.5rem,
+    var(--ripple) calc(3.5rem + 2px)
+  );
   color: var(--tide-text);
+  text-align: center;
 }
 
 /* The second, lighter pool behind the first. Decorative: generated content. */
@@ -124,20 +179,28 @@
 .countdown-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4) var(--space-6);
+  gap: var(--space-2);
+  width: 100%;
 }
 
+/* Four glass tiles: equal weight, centred, so the pool reads as balanced */
 .countdown-cell {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  container-type: inline-size; /* lets .cd-value size itself from the tile, so 3 digits never overflow */
+  padding: var(--space-2) var(--space-1);
+  border: 2px solid var(--tile-line);
+  border-radius: var(--radius-m);
+  background-color: var(--tile);
 }
 
 .cd-value {
-  font-size: var(--font-size-count);
+  font-size: clamp(2.25rem, 50cqi, 4.75rem);
   font-weight: var(--font-weight-heading);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
-  line-height: 0.95;
+  line-height: 1;
 }
 
 .cd-label {
@@ -176,13 +239,13 @@
   display: block;
 }
 
-/* 5. About: text-led rows, not cards ---------------------------------------- */
+/* 5. About: text-led rows with a round icon ---------------------------------- */
 
 .about {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  padding-block: var(--space-8) var(--space-12);
+  padding-block: var(--space-8) var(--space-16);
 }
 
 .section-lead {
@@ -195,10 +258,18 @@
 
 .topic {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-2);
-  padding-block: var(--space-6);
-  border-top: 4px dotted var(--rule);
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+  align-items: center;
+  /* Negative margin + padding: the hover tint reaches past the text, the text stays aligned */
+  margin-inline: calc(-1 * var(--space-4));
+  padding: var(--space-6) var(--space-4);
+  border-radius: var(--radius-m);
+  background-image: radial-gradient(circle at 50% 50%, var(--rule) 1.6px, transparent 2.2px);
+  background-size: 10px 4px;
+  background-repeat: repeat-x;
+  background-position: 0 0;
 }
 
 .topic h3 {
@@ -209,6 +280,16 @@
   max-inline-size: 48ch;
 }
 
+.topic-icon {
+  grid-row: span 2;
+  width: 3.5rem;
+  aspect-ratio: 1;
+  padding: 0.7rem;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  background-color: var(--surface);
+}
+
 /* 6. Register: one soft container -------------------------------------------- */
 
 .register {
@@ -216,7 +297,7 @@
   flex-direction: column;
   gap: var(--space-4);
   margin-inline: var(--edge);
-  margin-bottom: var(--space-12);
+  margin-bottom: var(--space-16);
   padding: var(--space-8) var(--space-6);
   border-radius: var(--radius-l);
   background-color: var(--surface);
@@ -261,14 +342,29 @@
   resize: vertical;
 }
 
+.field input:hover,
+.field textarea:hover,
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--heading);
+}
+
 .field input[aria-invalid="true"],
 .field textarea[aria-invalid="true"] {
   border-color: var(--danger);
 }
 
 .field-hint {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 var(--space-4);
   color: var(--text-muted);
   font-size: var(--font-size-sm);
+}
+
+.field-count {
+  font-variant-numeric: tabular-nums;
 }
 
 .field-error {
@@ -281,13 +377,18 @@
   display: none;
 }
 
+/* Buttons: <button> and <a> share one look */
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: var(--space-3) var(--space-8);
   border: 2px solid var(--btn-bg);
   border-radius: var(--radius-pill);
   background-color: var(--btn-bg);
   color: var(--btn-text);
   font-weight: 800;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -302,6 +403,11 @@
 
 .btn-quiet:hover {
   background-color: color-mix(in srgb, var(--btn-bg) 14%, transparent);
+  color: var(--btn-bg);
+}
+
+.btn:active {
+  transform: translateY(1px);
 }
 
 .reg-error,
@@ -331,6 +437,7 @@
 
 .reg-success {
   border-color: var(--success);
+  max-inline-size: 34rem;
 }
 
 .reg-success h3 {
@@ -365,30 +472,66 @@
   gap: var(--space-2);
 }
 
-/* 7. Footer ------------------------------------------------------------------ */
+/* 7. Footer: the deep-sea band ------------------------------------------------ */
 
 .site-footer {
-  padding-block: var(--space-6);
-  border-top: 4px dotted var(--rule);
-  color: var(--text-muted);
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-6);
+  padding-block: var(--space-8);
+  border-radius: var(--radius-l) var(--radius-l) 0 0;
+  background-color: var(--tide-bg);
+  color: var(--tide-text);
+}
+
+.site-footer :focus-visible {
+  outline-color: var(--tide-ring);
+}
+
+.footer-name {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-heading);
+}
+
+.footer-small {
   font-size: var(--font-size-sm);
+}
+
+.to-top {
+  color: var(--tide-text);
+  font-weight: 700;
+  text-underline-offset: 0.25em;
+}
+
+.to-top:hover {
+  text-decoration-thickness: 3px;
 }
 
 /* 8. Wider screens ----------------------------------------------------------- */
 
 @media (min-width: 48rem) {
-  .countdown-grid {
-    grid-template-columns: repeat(2, auto);
-    justify-content: start;
+  .topic {
+    grid-template-columns: 3.5rem minmax(0, 2fr) minmax(0, 3fr);
+    column-gap: var(--space-6);
   }
 
-  .topic {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-    column-gap: var(--space-8);
+  .topic-icon {
+    grid-row: auto;
   }
 
   .register {
     padding: var(--space-12);
+  }
+
+  .countdown-grid {
+    gap: var(--space-4);
+  }
+
+  .countdown-cell {
+    padding: var(--space-3) var(--space-2);
   }
 }
 
@@ -396,19 +539,67 @@
 @media (min-width: 64rem) {
   .hero {
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
     column-gap: var(--space-12);
-    align-items: end;
-    padding-block: var(--space-16) 6rem;
+    align-items: start;
+    padding-block: var(--space-12) 6rem;
   }
 
   .hero h1,
-  .hero-lead {
+  .hero-lead,
+  .hero-actions {
     grid-column: 1;
   }
 
   .countdown {
     grid-column: 2;
-    grid-row: 1 / span 2;
+    grid-row: 1 / -1;
+    align-self: center;
     padding: 15%;
+  }
+}
+
+/* 9. Hover and motion: only where there is a pointer, only if allowed --------- */
+
+@media (hover: hover) {
+  .btn:hover,
+  .nav-list a.nav-cta:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn:hover {
+    box-shadow: 0 0.5rem 1rem color-mix(in srgb, var(--ink) 22%, transparent);
+  }
+
+  .btn[aria-disabled="true"]:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .topic:hover {
+    background-color: var(--hover-tint);
+  }
+
+  .topic:hover .topic-icon {
+    transform: rotate(-8deg) scale(1.08);
+  }
+}
+
+.topic:focus-within {
+  background-color: var(--hover-tint);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-list a,
+  .btn,
+  .topic,
+  .topic-icon,
+  .field input,
+  .field textarea {
+    transition: background-size var(--motion-fast) var(--ease-out),
+                background-color var(--motion-fast) var(--ease-out),
+                border-color var(--motion-fast) var(--ease-out),
+                transform var(--motion-fast) var(--ease-out),
+                box-shadow var(--motion-fast) var(--ease-out);
   }
 }

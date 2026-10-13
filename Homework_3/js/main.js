@@ -121,6 +121,12 @@
     fields.email.maxLength = config.limits.emailMax;
     fields.note.maxLength = config.limits.noteMax;
 
+    // Live "42/300" beside the note, counted in characters as people see them.
+    const noteCount = form.querySelector('.field-count');
+    function showNoteCount() {
+      noteCount.textContent = `${Array.from(fields.note.value).length}/${config.limits.noteMax}`;
+    }
+
     // The single place that writes #register[data-state] and what depends on it.
     function setState(next) {
       if (!FormMachine.STATES.includes(next)) {
@@ -192,6 +198,7 @@
       // Show the visitor what will actually be sent if cleaning changed it.
       fields.name.value = result.values.name;
       fields.note.value = result.values.note;
+      showNoteCount();
 
       const before = machine.state;
       const next = machine.dispatch('SUBMIT', { valid: result.ok });
@@ -223,9 +230,11 @@
     form.addEventListener('input', (event) => {
       const key = Object.keys(fields).find((k) => fields[k] === event.target);
       if (key) showFieldError(key, '');
+      if (event.target === fields.note) showNoteCount();
       apply('EDIT');
     });
 
+    showNoteCount();
     setState('idle');
   }
 
