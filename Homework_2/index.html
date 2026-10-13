@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A keyboard-playable drum kit with nine pads and a beat recorder.">
+  <title>Drum Kit</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/drum-kit.css">
+  <script src="js/audio-engine.js" defer></script>
+  <script src="js/keyboard-input.js" defer></script>
+  <script src="js/beat-recorder.js" defer></script>
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <h1>Drum Kit</h1>
+    <p>Press a key or tap a pad to play. Record a beat, then play it back.</p>
+  </header>
+
+  <main id="main-content">
+    <section aria-labelledby="pads-title">
+      <h2 id="pads-title">Pads</h2>
+
+      <ul class="pad-grid" aria-label="Drum pads">
+        <li>
+          <button type="button" class="drum-pad" data-key="a" data-sound="kick">
+            <kbd>A</kbd> <span class="pad-label">Kick</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="drum-pad" data-key="s" data-sound="snare">
+            <kbd>S</kbd> <span class="pad-label">Snare</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="drum-pad" data-key="d" data-sound="hihat">
+            <kbd>D</kbd> <span class="pad-label">Hi-hat</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="drum-pad" data-key="f" data-sound="openhat">
+            <kbd>F</kbd> <span class="pad-label">Open hat</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="drum-pad" data-key="g" data-sound="clap">
+            <kbd>G</kbd> <span class="pad-label">Clap</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="drum-pad" data-key="h" data-sound="tom">
+            <kbd>H</kbd> <span class="pad-label">Tom</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="drum-pad" data-key="j" data-sound="crash">
+            <kbd>J</kbd> <span class="pad-label">Crash</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="drum-pad" data-key="k" data-sound="ride">
+            <kbd>K</kbd> <span class="pad-label">Ride</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="drum-pad" data-key="l" data-sound="cowbell">
+            <kbd>L</kbd> <span class="pad-label">Cowbell</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Sound sources: the engine reads these by data-sound, one per pad -->
+      <audio data-sound="kick" src="assets/sounds/kick.wav" preload="auto"></audio>
+      <audio data-sound="snare" src="assets/sounds/snare.wav" preload="auto"></audio>
+      <audio data-sound="hihat" src="assets/sounds/hihat.wav" preload="auto"></audio>
+      <audio data-sound="openhat" src="assets/sounds/openhat.wav" preload="auto"></audio>
+      <audio data-sound="clap" src="assets/sounds/clap.wav" preload="auto"></audio>
+      <audio data-sound="tom" src="assets/sounds/tom.wav" preload="auto"></audio>
+      <audio data-sound="crash" src="assets/sounds/crash.wav" preload="auto"></audio>
+      <audio data-sound="ride" src="assets/sounds/ride.wav" preload="auto"></audio>
+      <audio data-sound="cowbell" src="assets/sounds/cowbell.wav" preload="auto"></audio>
+    </section>
+
+    <section aria-labelledby="recorder-title">
+      <h2 id="recorder-title">Beat recorder</h2>
+
+      <ul class="recorder-bar" aria-label="Beat recorder controls">
+        <li><button type="button" class="recorder-btn" id="rec-start">Record</button></li>
+        <li><button type="button" class="recorder-btn" id="rec-stop" disabled>Stop</button></li>
+        <li><button type="button" class="recorder-btn" id="rec-play" disabled>Play</button></li>
+      </ul>
+      <p class="recorder-status" role="status"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Drum samples are synthesized for this project. See <a href="assets/sounds/README.md">sound credits</a>.</p>
+  </footer>
+</body>
+</html>
