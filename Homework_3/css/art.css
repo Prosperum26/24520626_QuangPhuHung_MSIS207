@@ -1,0 +1,193 @@
+/* ==========================================================================
+   Illustrations: a hand-drawn vector sprite (index.html) placed around the
+   page. All of it is decorative (aria-hidden, no pointer events) and coloured
+   from tokens, so it follows the theme. The only movement is the turtle's
+   slow drift, and it is off under prefers-reduced-motion.
+   ========================================================================== */
+
+/* 1. Sprite and placement ---------------------------------------------------- */
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.art {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 2. Colours (classes inside the symbols) ------------------------------------ */
+
+.a-skin { fill: var(--art-skin); }
+.a-shell { fill: var(--art-shell); }
+.a-scute { fill: var(--art-scute); }
+.a-ink { fill: var(--text); }
+.a-fill { fill: var(--art-warm); }
+.a-tip { fill: var(--art-warm); }
+.a-dot { fill: var(--bg); }
+
+.a-seam,
+.a-glint,
+.a-bubble,
+.a-wave {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.a-seam { stroke: var(--art-seam); stroke-width: 3; opacity: 0.55; }
+.a-glint { stroke: var(--art-line); stroke-width: 3; }
+.a-bubble { stroke: var(--art-line); stroke-width: 3; }
+.a-wave { stroke: var(--art-line); stroke-width: 3; }
+
+.a-blade,
+.a-branch {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.a-blade { stroke: var(--art-shell); stroke-width: 12; }
+.a-branch { stroke: var(--art-warm); stroke-width: 10; }
+
+.a-star {
+  fill: var(--art-warm);
+  stroke: var(--art-warm);
+  stroke-width: 10;
+  stroke-linejoin: round;
+}
+
+/* 3. Hero: turtle, fish and bubbles live around the tide pool ---------------- */
+
+.art-turtle {
+  right: var(--space-2);
+  bottom: calc(-1 * var(--space-8));
+  width: 5.5rem;
+  aspect-ratio: 240 / 180;
+  scale: -1 1; /* faces left on small screens, where it swims out of the pool's lower right */
+}
+
+.art-fish {
+  aspect-ratio: 64 / 36;
+}
+
+.art-fish-a {
+  bottom: calc(-1 * var(--space-6));
+  left: var(--space-4);
+  width: 3rem;
+}
+
+.art-fish-b {
+  --art-warm: var(--sea-mid);
+  bottom: calc(-1 * var(--space-8));
+  left: 5.25rem;
+  width: 2.1rem;
+}
+
+/* Bubbles rise inside the pool, so they borrow the pale foam colour. */
+.art-bubbles {
+  --art-line: var(--foam);
+  top: 14%;
+  right: 7%;
+  width: 1.5rem;
+  aspect-ratio: 60 / 120;
+}
+
+/* 4. Waterline between hero and about ---------------------------------------- */
+
+.waterline {
+  display: block;
+  width: 100%;
+  height: 24px;
+  margin-top: calc(-1 * var(--space-6));
+  pointer-events: none;
+}
+
+/* 5. Seabed: plants stand on the registration container ---------------------- */
+
+.register {
+  position: relative;
+}
+
+.art-seaweed {
+  --art-shell: var(--sea-mid);
+  right: var(--space-4);
+  bottom: calc(100% - 1.2rem);
+  width: 2.4rem;
+  aspect-ratio: 70 / 150;
+}
+
+.art-coral {
+  right: 4.6rem;
+  bottom: calc(100% - 1.2rem);
+  width: 3rem;
+  aspect-ratio: 90 / 120;
+}
+
+.art-starfish {
+  left: calc(-1 * var(--space-2));
+  bottom: calc(-1 * var(--space-4));
+  width: 3.25rem;
+  aspect-ratio: 1;
+  rotate: 14deg;
+}
+
+/* 6. Wider screens ------------------------------------------------------------ */
+
+@media (min-width: 48rem) {
+  .art-seaweed {
+    right: var(--space-8);
+    width: 3.2rem;
+  }
+
+  .art-coral {
+    right: 6.5rem;
+    width: 4rem;
+  }
+
+  .art-starfish {
+    width: 4.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  /* Pool sits to the right: the turtle now swims toward it from the left. */
+  .art-turtle {
+    right: auto;
+    bottom: 1.5rem;
+    left: calc(-1 * var(--space-16) - var(--space-4));
+    width: 9.5rem;
+    scale: 1 1;
+  }
+
+  .art-fish-a {
+    left: 1.5rem;
+    width: 4rem;
+  }
+
+  .art-fish-b {
+    left: 7rem;
+    width: 2.8rem;
+  }
+
+  .art-bubbles {
+    width: 2rem;
+  }
+}
+
+/* 7. Motion: one slow drift, only if the visitor allows motion ---------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .art-turtle {
+    animation: drift 7s ease-in-out infinite;
+  }
+
+  @keyframes drift {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-0.5rem) rotate(3deg); }
+  }
+}

@@ -41,6 +41,15 @@
   --tide-back: var(--sea-mid);
   --tide-ring: var(--sand);
 
+  /* Illustrations (css/art.css): decorative, so they only need to look right, not pass contrast */
+  --art-skin: var(--sea-mid);
+  --art-shell: var(--kelp);
+  --art-scute: color-mix(in srgb, var(--kelp) 60%, var(--sand));
+  --art-seam: var(--ink);
+  --art-warm: var(--coral);
+  --art-soft: var(--foam);
+  --art-line: var(--sea-mid);
+
   /* Dotted rule between list rows */
   --rule: color-mix(in srgb, var(--sea-mid) 70%, transparent);
 
@@ -99,6 +108,11 @@
     --btn-text: var(--ink);
     --success: var(--kelp-light);
     --danger: var(--coral-light);
+    --art-shell: var(--kelp-light);
+    --art-scute: color-mix(in srgb, var(--kelp-light) 55%, var(--ink));
+    --art-seam: var(--ink);
+    --art-warm: var(--coral-light);
+    --art-line: var(--sea-mid);
     --selection-bg: var(--sea-deep);
     --selection-text: var(--sand);
   }
